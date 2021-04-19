@@ -1,0 +1,250 @@
+<div id="user-master" class="page-layout carded fullwidth">
+    <div class="center">
+        <div class="outer" fxLayout>
+            <div class="bg"></div>
+            <div>
+                <h3 style="margin: 0px;padding-left: 10px;"><b>User</b></h3>
+            </div>
+            <div fxFlex align="end">
+                <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+            </div>
+        </div>
+        <div fxLayout class="content-card1">
+            <div fxFlex="23" class="side-bar" style="background-color: #f5f5f5">
+                <div class="sidenav-header">
+                    <mat-toolbar>
+                        <mat-toolbar-row fxLayout="row" class="px-8" fxLayoutAlign="space-between center">
+                            <div class="search-wrapper" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                                    <input [(ngModel)]="searchText" type="text" placeholder="Search" fxFlex>
+                                    <mat-icon class="s-16">search</mat-icon>
+                                </div>
+                            </div>
+                        </mat-toolbar-row>
+                    </mat-toolbar>
+                </div>
+                <div class="sidenav-content" fusePerfectScrollbar fxFlex>
+                    <div *ngFor="let user  of AllUsers  | filter: searchText">
+                        <div>
+                            <div class="mx-8 mb-8 mt-0 p-8 leftCard" (click)="loadSelectedUser(user )"
+                                [style.border-left-color]="selectID ==user.UserID?'#efb577':'#cccccc'">
+                                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                                    <div fxFlex><strong>{{user .UserName}}</strong></div>
+                                    <div fxFlex align="end">{{user .CreatedOn | date :'dd/MM/yyyy'}}</div>
+                                </div>
+                                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                                    <div fxFlex><strong></strong>{{user .Email}}</div>
+                                </div>
+                                <!-- <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                    <div fxFlex><strong>AWB : </strong>{{user .PatnerID}}</div>
+                  </div>
+                  <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                    <div fxFlex>{{user .Client}}</div>
+                  </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="(AllUsers  | filter: searchText)?.length === 0" class="no-results-message">
+                        <span class="pl-12"> No results..</span>
+                    </div>
+                </div>
+                <div class="borderRight1"></div>
+            </div>
+            <mat-card fxFlex="77" class="side-bar p-0">
+                <div class="sidenav-content" fxFlex fxLayout="column">
+                    <div fxFlex fxLayout="column" fxLayoutAlign="start" class="p-0 pt-8">
+                        <div fxFlex="0 1 auto" class="px-12 mt-12">
+                            <form autocomplete="off" class="normal" fxLayout="column" fxLayoutGap="0px"
+                                fxLayoutAlign="start" name="form" novalidate [formGroup]="userMainFormGroup">
+
+                                <div fxFlex fxLayout="row" fxLayoutGap="40px">
+
+                                    <div fxFlex="50">
+                                        <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                                            <input matInput placeholder="User Name" formControlName="userName">
+                                            <mat-error
+                                                *ngIf="userMainFormGroup.get('userName').touched &&  userMainFormGroup.get('userName').hasError('required')">
+                                                User
+                                                Name required</mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxFlex="50">
+                                        <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                                            <input matInput placeholder="Email ID" formControlName="email">
+                                            <mat-error
+                                                *ngIf="userMainFormGroup.get('email').touched && userMainFormGroup.get('email').hasError('required')">
+                                                Email is required
+                                            </mat-error>
+                                            <mat-error *ngIf="userMainFormGroup.get('email').touched && !userMainFormGroup.get('email').hasError('required') &&
+                                                    userMainFormGroup.get('email').hasError('email')">
+                                                Please enter a valid email address
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                </div>
+
+                                <div fxFlex fxLayout="row" fxLayoutGap="40px">
+
+                                    <div fxFlex="50">
+                                        <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                                            <input matInput placeholder="Mobile Number"
+                                                pattern="^(\+91[\-\s]?)?[0]?(91)?[6789]\d{9}$"
+                                                formControlName="contactNumber">
+                                            <mat-error
+                                                *ngIf="userMainFormGroup.get('contactNumber').touched && userMainFormGroup.get('contactNumber').hasError('required')">
+                                                Mobile Number is required
+                                            </mat-error>
+                                            <mat-error *ngIf="userMainFormGroup.get('contactNumber').touched && !userMainFormGroup.get('contactNumber').hasError('required') &&
+                                                    userMainFormGroup.get('contactNumber').hasError('pattern')">
+                                                Please enter a valid Mobile Number
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxFlex="50">
+                                        <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                                            <mat-select placeholder="Role Name" formControlName="roleID"
+                                                (selectionChange)="Roleselect($event)">
+                                                <mat-option *ngFor="let rol of AllRoles" [value]="rol.RoleID">
+                                                    <!-- [value]="rol.RoleID" -->
+                                                    {{rol.RoleName}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error
+                                                *ngIf="userMainFormGroup.get('roleID').touched && userMainFormGroup.get('roleID').hasError('required')">
+                                                Role
+                                                Name required</mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+
+                                </div>
+
+                                <div fxFlex fxLayout="row" fxLayoutGap="40px">
+
+                                    <div fxFlex="50">
+                                        <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                                            <input matInput placeholder="Name" formControlName="displayName">
+                                            <mat-error
+                                                *ngIf="userMainFormGroup.get('displayName').touched &&  userMainFormGroup.get('displayName').hasError('required')">
+                                                Display Name required</mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxFlex="48">
+                                        <mat-form-field class="pl-8 pr-12"
+                                            [style.visibility]="bool_role? 'hidden':'visible'"
+                                            style="width: 100%;display: block;">
+
+                                            <mat-select placeholder="Plant" formControlName="Plant" multiple
+                                                [required]='!bool_role'>
+                                                <!-- [disabled]="bool_role ? true : false" -->
+                                                <!-- (selectionChange)="OnAppNameChanged()" -->
+
+                                                <mat-option *ngFor="let mp of AllPlant" [value]="mp.PlantCode">
+                                                    {{mp.PlantCode}}-{{mp.PlantText}}
+                                                </mat-option>
+                                                <mat-error
+                                                    *ngIf="userMainFormGroup.get('displayName').touched &&  userMainFormGroup.get('displayName').hasError('required')">
+                                                    Plant is required</mat-error>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+
+                                </div>
+
+                            </form>
+                            <div fxLayout>
+                                <div fxFlex fxLayoutAlign="end">
+                                    <button class="floatBtn" mat-fab style="background-color: #f6b570"
+                                        (click)="ResetControl()">
+                                        <mat-icon style="color: white;">add</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxFlex class="px-12" [hidden]="!AppUsages?.length">
+                            <div fxLayout="row">
+                                <div fxFlex="100%">
+                                    <div class="SectionTitle">
+                                        <strong>App Usage</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="mt-20" fxLayoutAlign="start center">
+                                <mat-form-field appearance="outline" fxFlex="50">
+                                    <mat-icon class="mr-12" matPrefix>search</mat-icon>
+                                    <input [(ngModel)]="searchTextTwo" matInput placeholder="Search"
+                                        (keyup)="applyFilter($event)">
+                                </mat-form-field>
+                                <div fxFlex fxLayoutAlign="end center">
+                                    <mat-form-field appearance="outline" style="min-width: 100px;">
+                                        <mat-select [(ngModel)]="SelectValue">
+                                            <mat-option value="All">All</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <button (click)="exportAsXLSX()" class="excelBtn mx-24" mat-stroked-button>
+                                        <img class="excelImg" src="assets/images/excel.png">
+                                    </button>
+                                    <!-- <img class="expandImg" src="assets/images/expand.png" (click)="expandClicked()"> -->
+                                </div>
+                            </div>
+                            <table class="table" mat-table [dataSource]="tableDataSource" matSort>
+                                <ng-container matColumnDef="AppName">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> App Name </th>
+                                    <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+                                        <div fxLayout>
+                                            <div class="tableCellBorder"
+                                                [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                                            <div fxFlex class="pl-8">{{element.AppName}} </div>
+                                        </div>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="UsageCount">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Usage </th>
+                                    <td mat-cell *matCellDef="let element" class="QtyClass">
+                                        {{element.UsageCount}}
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="LastUsedOn">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Last UsedOn </th>
+                                    <td mat-cell *matCellDef="let element;let i= index;">
+                                        {{element.LastUsedOn | date :'dd/MM/yyyy hh:mm:ss a'}}
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="tableDisplayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: tableDisplayedColumns;">
+                                </tr>
+                            </table>
+                            <div>
+                                <mat-paginator [pageSizeOptions]="[10,20,50]"></mat-paginator>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <mat-card-actions class="m-0 pl-12 pr-16 cardActions">
+                    <div fxLayout fxFlex fxLayoutAlign="end">
+                        <button *ngIf="selectedUser?.UserID" mat-stroked-button class="DeleteBtn mr-4 mb-8"
+                            (click)="DeleteClicked()">Delete</button>
+                        <button mat-raised-button class="mr-4 mb-8" (click)="ResetControl()"
+                            *ngIf="!selectedUser.UserID">
+                            Clear
+                        </button>
+                        <button (click)="SaveClicked()" class="SaveBtn" mat-raised-button>
+                            {{selectedUser.UserID?'Update':'Create'}}</button>
+                    </div>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+        <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent"
+            mode="indeterminate">
+        </mat-progress-spinner>
+        <div id="overlay" *ngIf="isProgressBarVisibile">
+        </div>
+    </div>
+</div>

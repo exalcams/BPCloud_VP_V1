@@ -1,0 +1,93 @@
+<div id="login" class="inner-scroll normal" fxLayout="row" fxLayoutAlign="start">
+
+  <div id="login-intro" fxFlex fxHide fxShow.gt-xs>
+    <!-- <div *ngIf="currentText" class="description" [ngStyle]="{'color':'white'}"
+      [@animate]="{value:'*',params:{x:'100%'}}">
+      Maximum <span>{{currentText}}</span>
+    </div> -->
+    <!-- <div>
+      Maximum <span>{{currentText}}</span>
+    </div> -->
+
+    <article class="description" [ngStyle]="{'color':'white'}">
+      <h2 class="h1 col-md-offset-2 " style="font-family: Roboto;">Enabling you with
+        <span class="ScrollingText">
+          <span>{{currentText}}</span>
+          <span class="cursor"></span>
+        </span>
+      </h2>
+      <!--<a href="#" class="button col-md-offset-2"><span>Supplier</span></a>
+      <a href="#" class="button col-md-offset-2"><span>Dealer</span></a>
+      <a href="#" class="button col-md-offset-2"><span>Transporter</span></a> -->
+
+    </article>
+
+  </div>
+
+  <div id="login-form-wrapper" [style.background-color]="'white'" fusePerfectScrollbar
+    [@animate]="{value:'*',params:{delay:'300ms',x:'100%'}}">
+    <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-top:20px">
+      <div>
+        <span>
+          <img src="assets/images/exalca.PNG" class="ExalcaLogo">
+        </span>
+      </div>
+      <div  style="margin-bottom: -34px;">
+        <span><img src="assets/images/logo.svg" style="height: 60px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div id="login-form">
+      <div class="title">Sign In</div>
+      <div class="border"></div>
+
+      <!-- <div class="subTitel">Welcome back ! Please Sign In to Continue</div> -->
+
+      <form name="loginForm" [formGroup]="loginForm" novalidate>
+
+        <mat-form-field>
+          <mat-label>User Name</mat-label>
+          <input matInput formControlName="userName" [(ngModel)]="Username">
+          <mat-error *ngIf="loginForm.get('userName').hasError('required')">
+            User name is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password">
+          <mat-error>
+            Password is required
+          </mat-error>
+        </mat-form-field>
+
+        <div class="remember-forgot-password" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center">
+          <span class="forgot-password" style="cursor: pointer;" (click)="openForgetPasswordLinkDialog()">
+            Forgot Password?
+          </span>
+        </div>
+        <div class="remember-forgot-password" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center">
+          <div class="forgot-password" style="cursor: pointer;" (click)="openForgetUserIDLinkDialog()">
+            Forgot User ID?
+          </div>
+        </div>
+
+        <button mat-raised-button color="accent" class="submit-button" aria-label="LOGIN" (click)="loginClicked()">
+          <span class="loginButton">LOG IN </span>
+        </button>
+        <!-- <a class="link" href="/#/register/vendor">Click here to regster</a> -->
+      </form>
+      <!-- <div>
+        <a (click)="openDialog()" style="cursor: pointer;">
+          <p>Supplier Code of Conduct</p>
+        </a>
+      </div>
+      <div>
+        <a style="cursor: pointer;">
+          <p>Benefits being associated with us</p>
+        </a>
+      </div> -->
+    </div>
+    <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+  </div>
+</div>

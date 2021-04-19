@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="168" height="78" viewBox="0 0 168 78">
+    <defs>
+        <filter id="prefix__Rectangle_37" width="168" height="78" x="0" y="0" filterUnits="userSpaceOnUse">
+            <feOffset dy="3"/>
+            <feGaussianBlur result="blur" stdDeviation="3"/>
+            <feFlood flood-opacity=".278"/>
+            <feComposite in2="blur" operator="in"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <style>
+            .prefix__cls-2{fill:#fff}
+        </style>
+    </defs>
+    <g id="prefix__menu" transform="translate(9 6)">
+        <g transform="translate(-9 -6)">
+            <rect id="prefix__Rectangle_37-2" width="150" height="60" data-name="Rectangle 37" rx="8" transform="translate(9 6)" style="opacity:.4;fill:#acacac"/>
+        </g>
+        <g id="prefix__menu-2" data-name="menu" transform="translate(105.859 15.846)">
+            <path id="prefix__Path_34" d="M35.923 2.581A2.593 2.593 0 0 0 33.343 0H2.581a2.581 2.581 0 1 0 0 5.161h30.762a2.61 2.61 0 0 0 2.581-2.581z" class="prefix__cls-2" data-name="Path 34" transform="rotate(-45 30.663 12.701)"/>
+            <path id="prefix__Path_682" d="M35.923 2.581A2.593 2.593 0 0 0 33.343 0H2.581a2.581 2.581 0 1 0 0 5.161h30.762a2.61 2.61 0 0 0 2.581-2.581z" class="prefix__cls-2" data-name="Path 682" transform="rotate(45 1.825 4.406)"/>
+        </g>
+        <path id="prefix__Line_221" d="M0 0L0 27" data-name="Line 221" transform="translate(90.74 17.5)" style="stroke:#fff;fill:none;opacity:.4"/>
+        <g id="prefix__logo_2" data-name="logo 2" transform="translate(9.706 12.318)">
+            <path id="prefix__Path_1" d="M368.591 76.455s4.157-12.393 15.61-11.923 14.59 9.727 14.982 12.707.531 2.569.531 2.569 11.5.715 10.185 11.019-9.887 8.874-9.887 8.874l-31.42.091v-3.523h31.42s6.437.568 6.666-5.443-3.253-7.477-6.964-7.8-3.528-3.221-3.528-3.221-.8-11.789-11.985-11.958-13.465 12.338-13.465 12.338z" data-name="Path 1" transform="translate(-340.357 -64.519)" style="stroke-width:1.6px;stroke:#fff"/>
+            <text id="prefix__Cloud" transform="translate(13.295 28.682)" style="letter-spacing:.03em;font-size:14px;font-family:Baloo-Regular,Baloo;fill:#fff">
+                <tspan x="0" y="0">Cloud</tspan>
+            </text>
+            <text id="prefix__BP" transform="translate(.295 18.682)" style="font-size:13px;font-family:Orbitron-Black,Orbitron;font-weight:800;letter-spacing:.03em;fill:#fff">
+                <tspan x="0" y="0">BP</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

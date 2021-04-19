@@ -1,0 +1,250 @@
+<div id="CAPA-Dashboard" class="page-layout carded" fusePerfectScrollbar>
+  <div class="center" fxLayout="column" fxLayoutGap="10px">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Dashboard</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="../../../../assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+  </div>
+  <div class="Content" style="margin: 20px;">
+    <div class="HeaderCards" fxLayout="row" fxLayoutAlign="space-between center">
+      <mat-card class="example-card" fxFlex="18" (click)="RequestCard(1)">
+        <mat-card-content fxLayout="column">
+          <div fxLayoutGap="20px" style="padding: 25px !important;">
+            <img src="assets/images/pending.png" style="height: 30px;width: 30px;">
+
+            <span class="HeaderCardCount">{{RequestList.length}}</span>
+          </div>
+          <div class="FooterCard">
+            <p style="margin-left: 10px;">Yet To Respond</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="example-card" fxFlex="18" >
+        <mat-card-content fxLayout="column">
+          <div fxLayoutGap="20px" style="padding: 25px !important;" (click)="ResolvedAndDifferedCard(2)">
+            <img src="assets/images/pending.png" style="height: 30px;width: 30px;">
+
+            <span class="HeaderCardCount">{{ResolvedList.length}} / {{DifferedList.length}}</span>
+          </div>
+          <div class="FooterCard">
+            <p style="margin-left: 10px;"><span (click)="ResolvedCard(2)">Resolved</span> / <span (click)="DifferedCard(2)">Differed</span></p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="example-card" fxFlex="18" (click)="AcceptedCard(3)">
+        <mat-card-content fxLayout="column">
+          <div fxLayoutGap="20px" style="padding: 25px !important;" fxLayoutAlign="start center">
+            <!-- <img src="assets/images/pending.png" style="height: 30px;width: 30px;"> -->
+            <mat-icon class="Dashboardicons">done_all</mat-icon>
+            <span class="HeaderCardCount">{{AccpetedList.length}}</span>
+          </div>
+          <div class="FooterCard">
+            <p style="margin-left: 10px;">Accepted</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="example-card" fxFlex="18" (click)="RejectedCard(4)">
+        <mat-card-content fxLayout="column">
+          <div fxLayoutGap="20px" style="padding: 25px !important;" fxLayoutAlign="start center">
+            <mat-icon class="Dashboardicons">report_off</mat-icon>
+            <!-- <img src="assets/images/pending.png" style="height: 30px;width: 30px;"> -->
+            <span class="HeaderCardCount">{{RejectedList.length}}</span>
+          </div>
+          <div class="FooterCard">
+            <p style="margin-left: 10px;">Rejected</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="example-card" fxFlex="18" (click)="ClosedCard(5)">
+        <mat-card-content fxLayout="column">
+          <div fxLayoutGap="20px" style="padding: 25px !important;" fxLayoutAlign="start center">
+            <mat-icon class="Dashboardicons">report_off</mat-icon>
+            <!-- <img src="assets/images/pending.png" style="height: 30px;width: 30px;"> -->
+            <span class="HeaderCardCount">{{ClosedList.length}}</span>
+          </div>
+          <div class="FooterCard">
+            <p style="margin-left: 10px;">Closed</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div fxLayout="column" class="mt-20">
+      <h3 style="margin: 0px;padding-left: 10px;" class="Cl_TableName"><b>{{SelectedCard == 2? TableName == 'Resolved' ? 'Resolved' : TableName == 'Differed' ? 'Differed' : 'Resolved / Differed' :TableName}}</b></h3>
+      <div *ngIf="SelectedCard == 1 || SelectedCard ==  5">
+        <table class="table mt-20" mat-table [dataSource]="DashboardTableDataSource" matSort>
+          <ng-container matColumnDef="ReqID">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              Req ID </th>
+            <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+              <div fxLayout>
+                <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                <div fxFlex class="pl-12">{{element.ReqID}} </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Text">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              Text
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.Text}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="DueDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              Due Date </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.DueDate | date:'dd/MM/yyyy'}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              Status </th>
+            <td mat-cell *matCellDef="let element">
+              <a>{{element.Status}} </a>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Action">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              Action </th>
+            <td mat-cell *matCellDef="let element" style="text-align: center;">
+              <button mat-flat-button color="accent"
+                (click)="SelectedCard == 5?ViewBuyerResponse(element,'Accept'):Response(element)">{{SelectedCard ==
+                5?'View':'Response'}}</button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="DashboardtableColumn;sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: DashboardtableColumn;let even=even">
+          </tr>
+        </table>
+        <div flex fxLayoutAlign="center center" class="TableFooter" style="margin-top: 20px;"
+          *ngIf="!DashboardTableDataSource.data?.length">
+          <mat-icon svgIcon="infoIcon" style="color: #1b56ca;">
+          </mat-icon>
+          <span style="margin-left: 10px;">The table does not contain any records</span>
+        </div>
+        <div>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+        </div>
+      </div>
+
+      <div fxLayout="column" *ngIf="SelectedCard > 1 && SelectedCard < 5">
+        <table class="table mt-20" mat-table [dataSource]="DashboardAccpetTableDataSource" matSort fxFlex>
+          <!-- <ng-container matColumnDef="Select">
+          <th mat-header-cell *matHeaderCellDef style="text-align: center !important;"
+            [ngClass]="BGClassName?.layout?.toolbar?.background" class="TableSelectHeader">
+            <mat-checkbox class="HeaderCheckBox" (change)="SelectAllTableRow()"></mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let element" style="text-align: center !important;">
+            <mat-checkbox (change)="SelectTableRow(element)"
+              [checked]="SelectedResItem.indexOf(element) !== -1 ? true : false"></mat-checkbox>
+          </td>
+        </ng-container> -->
+
+          <ng-container matColumnDef="HeaderText">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              Header Text </th>
+            <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+
+              <div fxLayout>
+                <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                <div fxFlex class="pl-12">{{element.HeaderText}} </div>
+              </div>
+
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="ItemText">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              Item Text
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.ItemText}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="ItemDueDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              Item DueDate </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.ItemDueDate | date:'dd/MM/yyyy'}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="ResponseText">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              Response Text </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.ResponseText}} </td>
+          </ng-container>
+          <ng-container matColumnDef="ResponseDueDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              Response DueDate </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.ResponseDueDate | date:'dd/MM/yyyy'}} </td>
+          </ng-container>
+          <ng-container matColumnDef="Patners">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              Patners </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.Patners}} </td>
+          </ng-container>
+          <ng-container matColumnDef="ResponseItemStatus">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              Response Status </th>
+            <td mat-cell *matCellDef="let element">
+              <a>{{element.ResponseItemStatus}}</a>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="Attachments">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              Attachments </th>
+            <td mat-cell *matCellDef="let element" (click)="ViewAttachment(element)"
+              style="cursor: pointer !important;text-align: center;">
+              <div style="margin-top: 3px; margin-left: 15px;">
+                <span [matBadge]="element.AttachmentID > 0 ? 1 : 0" matBadgeSize="medium" matBadgeColor="accent"
+                  matBadgeOverlap="false"></span>
+              </div>
+              <img style="height: 24px" src="assets/images/attachment.png">
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="Action">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              Action </th>
+            <td mat-cell *matCellDef="let element" style="text-align: center !important;">
+              <!-- <mat-form-field style="min-width: 100px;" appearance="outline" class="TableSelect">
+                <mat-label>Actions</mat-label>
+                <mat-select>
+                  <mat-option value="Accept" (click)="SelectTableRow(element,'Accept')"> Accept</mat-option>
+                  <mat-option value="Reject" (click)="SelectTableRow(element,'Reject')">Reject</mat-option>
+                </mat-select>
+              </mat-form-field> -->
+              <button mat-flat-button color="accent" (click)="ViewBuyerResponse(element,TableName)">View</button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="DashboardAccpetTableColumn;sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: DashboardAccpetTableColumn;let even=even">
+          </tr>
+        </table>
+        <div flex fxLayoutAlign="center center" class="TableFooter" style="margin-top: 20px;"
+          *ngIf="!DashboardAccpetTableDataSource.data?.length">
+          <mat-icon svgIcon="infoIcon" style="color: #1b56ca;">
+          </mat-icon>
+          <span style="margin-left: 10px;">The table does not contain any records</span>
+        </div>
+        <div>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+        </div>
+      </div>
+    </div>
+    <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="isProgressBarVisibile"></div>
+  </div>
+</div>

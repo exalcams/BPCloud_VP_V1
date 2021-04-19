@@ -1,0 +1,51 @@
+.btnBg {
+    background-color: #efb577 !important;
+    // color: #efb577 !important;
+    color:white;
+
+}
+@mixin TableBorderRight($color) {
+    border-right: 1px solid $color;
+  }
+
+  .TableCommon {
+    padding: 5px;
+    font-size: 14px;
+    min-width: 50px !important;
+    white-space: nowrap;
+  }
+  .tableLeftBorder {
+    border-left: 1px solid rgba(0, 0, 0, 0.12);
+  }
+table {
+    width: 100%;
+
+    th {
+      @include TableBorderRight(gray);
+      @extend .TableCommon;
+      // min-width: max-content !important;
+      color: white;
+      background-color: #121214;
+    }
+
+    td {
+      @include TableBorderRight(rgba(0, 0, 0, 0.12));
+      @extend .TableCommon;
+      // min-width: max-content !important;
+      &.QtyClass {
+        text-align: right;
+      }
+      .mat-form-field-underline {
+        display: none;
+      }
+    }
+
+    tr {
+      height: 40px;
+    }
+
+    .mat-sort-header-container {
+      display: flex;
+      justify-content: center;
+    }
+  }

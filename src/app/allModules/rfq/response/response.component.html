@@ -1,0 +1,407 @@
+<div id="rfqresponse" class="page-layout carded fullwidth">
+  <div class="center" fxLayout="column" fxLayoutGap="10px">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>RFQ Response</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div fxLayout='row' class="layout_style">
+      <div fxFlex='50'>
+        <div fxLayout='column'>
+          <label class="Lable_class">XYZ Industries Pvt. Ltd.</label>
+          <div fxLayout='row' style="padding-top: 5%;">
+            <label>RFQ Title:</label>
+            <label class="lable_cls"> ABC XYZ Document</label>
+          </div>
+        </div>
+      </div>
+      <div fxFlex='50' fxLayoutAlign='end'>
+        <div class="Rectangle_box">
+          <div fxLayout='column' fxFlex='30'>
+            <label style="text-align: center;">RFQ Type</label>
+            <div class="border_cls"></div>
+            <div fxLayoutAlign="center center" style="padding-top: 18px;font-size: 25px;">
+              <label>AN</label>
+            </div>
+          </div>
+          <div class="vertical_border"></div>
+
+          <div fxLayout='column' fxFlex='40'>
+            <label style="text-align: center;">RFQ Group</label>
+            <div class="border_cls1"></div>
+            <div fxLayoutAlign="center center" style="padding-top: 18px;font-size: 25px;">
+              <label>Service</label>
+            </div>
+          </div>
+          <div class="vertical_border"></div>
+
+
+          <div fxLayout='column' fxFlex='30'>
+            <label style="text-align: center;">Currency</label>
+            <div class="border_cls"></div>
+            <div fxLayoutAlign="center center" style="padding-top: 18px;font-size: 25px;">
+              <label>INR</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div fxLayout='row' style="padding-top: 20px;padding-left: 30px;">
+      <div fxFlex='65'>
+        <label class="Class_line">Validity</label>
+
+      </div>
+      <div fxFlex='35'>
+        <label class="Class_line">Response</label>
+
+      </div>
+    </div>
+    <div fxLayout='row' fxLayoutAlignGap='20px' style="padding-left: 30px;">
+      <div fxFlex='65'>
+        <div fxFlex='30'>
+          <label class="font-Class1">Start:</label>
+          <label class="font-Class">15/08/2020</label>
+        </div>
+        <div fxFlex='20'>
+          <label class="font-Class1">End:</label>
+          <label class="font-Class">15/08/2020</label>
+        </div>
+      </div>
+      <div fxFlex='35'>
+        <div fxFlex='30'>
+          <label class="font-Class1">Start:</label>
+          <label class="font-Class">15/08/2020</label>
+        </div>
+        <div fxFlex='64' fxLayoutAlign='end'>
+          <label class="font-Class1">End:</label>
+          <label class="font-Class">15/08/2020</label>
+        </div>
+
+      </div>
+    </div>
+    <div fxFlex fxLayout="column" fxLayoutGap="20px" class="Gap_class">
+      <div fxFlex>
+        <span class="title"><strong>Item Details </strong></span>
+      </div>
+
+      <div fxFlex>
+        <div style="overflow-x: auto;" class="table-responsive ">
+          <table class="table " mat-table [dataSource]="ItemDataSource" matSort>
+            <ng-container matColumnDef="select">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 3%;">
+
+              </th>
+              <td mat-cell *matCellDef="let row">
+
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="item">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;border-right: 1px solid #d6d6d6;">
+                Item </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.Item}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="material">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 15%;border-right: 1px solid #d6d6d6;">
+                Material </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.Material}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="materialtext">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 17%;border-right: 1px solid #d6d6d6;">
+                Material Text </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.MaterialText}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="totalqty">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;border-right: 1px solid #d6d6d6;">
+                Tot. Qty. </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.Totalqty}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="per.sche qty">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;border-right: 1px solid #d6d6d6;">
+                Per Schedule Qty. </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.Persche}} </td>
+            </ng-container>
+            <ng-container matColumnDef="no.of.sche">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;border-right: 1px solid #d6d6d6;">
+                No. of Schedules </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.Number}} </td>
+            </ng-container>
+            <ng-container matColumnDef="biddingprice">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;border-right: 1px solid #d6d6d6;">
+                Bidding Price Low </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.Bidding}} </td>
+            </ng-container>
+
+
+            <tr mat-header-row style="height: 40px;" *matHeaderRowDef="displayedItemsColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedItemsColumns;">
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div style="overflow-x: auto;" class="table-responsive ">
+        <table class="table Gap_class " mat-table [dataSource]="DataSource" matSort>
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 3%;">
+
+            </th>
+            <td mat-cell *matCellDef="let row">
+
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="item">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;border-right: 1px solid #d6d6d6;">
+              Bidding Price High </th>
+            <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.Item}} </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="material">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;border-right: 1px solid #d6d6d6;">
+              Interval </th>
+            <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.Material}} </td>
+          </ng-container>
+          <ng-container matColumnDef="materialtext">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;border-right: 1px solid #d6d6d6;">
+              UoM </th>
+            <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.MaterialText}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="totalqty">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;border-right: 1px solid #d6d6d6;">
+              Inco Term </th>
+            <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.Totalqty}} </td>
+          </ng-container>
+          <ng-container matColumnDef="per.sche qty">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;border-right: 1px solid #d6d6d6;">
+              5Q Rating </th>
+            <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.Persche}} </td>
+          </ng-container>
+          <ng-container matColumnDef="no.of.sche">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;border-right: 1px solid #d6d6d6;">
+              Notes </th>
+            <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.Number}} </td>
+          </ng-container>
+          <ng-container matColumnDef="biddingprice">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;border-right: 1px solid #d6d6d6;">
+              Attachments</th>
+            <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.Bidding}} </td>
+          </ng-container>
+          <ng-container matColumnDef="response">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;border-right: 1px solid #d6d6d6;">
+            </th>
+            <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;">
+              <button mat-button class="Rectangle-826 " [ngClass]="statusClass"
+                (click)="RespondClicked()">Respond</button>
+            </td>
+          </ng-container>
+
+
+          <tr mat-header-row style="height: 40px;" *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div fxFlex fxLayout="column" fxLayoutGap="20px" class="Gap_class">
+      <div fxFlex>
+        <span class="title"><strong>Questions </strong></span>
+      </div>
+      <div fxLayout='row' fxLayoutGap="20px" class="Gap_class" style="padding-left: 30px;">
+        <label class="num_label">1</label>
+        <p class="bar_vertical"></p><label class="txt_label">Has the product passed the safety norms mentioned by the
+          Government ?</label>
+        <div fxLayoutAlign='end'>
+          <img class="Img_class" src="assets/images/dot.png">
+        </div>
+      </div>
+      <div fxLayout="column" class="Remarks_box">
+        <div fxFlex="100">
+          <mat-form-field class="Remarks_style">
+            <label style="margin-left: 20px;">Enter your answer here</label>
+            <input class="Input_remarks" matInput>
+          </mat-form-field>
+        </div>
+        <br>
+
+        <div fxLayoutAlign="end">
+          <img class="sendIcon" src="assets/images/send.png">
+        </div>
+      </div>
+      <div fxLayout='row' fxLayoutGap="20px" class="Gap_class" style="padding-left: 30px;">
+        <label class="num_label">2</label>
+        <p class="bar_vertical"></p><label class="txt_label">Has the product passed the safety norms mentioned by the
+          Government ?</label>
+        <div fxLayoutAlign='end'>
+          <img class="Img_class" src="assets/images/dot.png">
+        </div>
+      </div>
+      <div fxLayout="column" class="Remarks_box">
+        <div fxFlex="100">
+          <mat-form-field class="Remarks_style">
+            <label style="margin-left: 20px;">Enter your answer here</label>
+            <input class="Input_remarks" matInput>
+          </mat-form-field>
+        </div>
+        <br>
+
+        <div fxLayoutAlign="end">
+          <img class="sendIcon" src="assets/images/send.png">
+        </div>
+      </div>
+    </div>
+
+
+    <div fxFlex fxLayout="column" fxLayoutGap="20px" class="Gap_class">
+      <div fxFlex>
+        <span class="title"><strong>RFx Attachments </strong></span>
+      </div>
+
+      <div fxLayout='row' fxLayoutGap='5px' fxLayoutAlign='space-between center'
+        style="padding-left:30px; padding-top: 30px;padding-right: 30px;">
+
+        <label>1</label>
+        <p class="bar_vertical gap_betweenClass"></p><label class="title_class"
+          style="margin-left: -30px !important;    margin-right: -35px !important;">Sample Document</label>
+        <div fxLayout='row' class="row_class">
+          <img class="pdf_img" src="assets/images/pdf.png">
+          <div fxLayout='column' fxLayoutAlign='center '>
+            <p style="padding-left: 25px;margin-top: 22px;">doc_new.pdf</p>
+            <div fxLayout='row' class="Class_PDF" fxLayoutAlign='space-between center'>
+              <p>4 Pages</p>
+              <p>24 kb</p>
+            </div>
+          </div>
+        </div>
+
+        <label style="margin-left: 61px;">2</label>
+        <p class="bar_vertical gap_betweenClass"></p><label class="title_class"
+          style="margin-left: -30px !important;">Sample Document</label>
+        <div fxLayout='row' class="row_class">
+          <img class="pdf_img" src="assets/images/pdf.png">
+          <div fxLayout='column' fxLayoutAlign='center '>
+            <p style="padding-left: 25px;margin-top: 22px;">doc_new.pdf</p>
+            <div fxLayout='row' class="Class_PDF" fxLayoutAlign='space-between center'>
+              <p>4 Pages</p>
+              <p>24 kb</p>
+            </div>
+          </div>
+        </div>
+
+        <label style="margin-left: 61px;">3</label>
+        <p class="bar_vertical gap_betweenClass"></p><label class="title_class"
+          style="margin-left: -30px !important;">Sample Document</label>
+        <div fxLayout='row' class="row_class">
+          <img class="pdf_img" src="assets/images/pdf.png">
+          <div fxLayout='column' fxLayoutAlign='center '>
+            <p style="padding-left: 25px;margin-top: 22px;">doc_new.pdf</p>
+            <div fxLayout='row' class="Class_PDF" fxLayoutAlign='space-between center'>
+              <p>4 Pages</p>
+              <p>24 kb</p>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+
+
+
+    <div fxFlex fxLayout="column" fxLayoutGap="20px" class="Gap_class">
+      <div fxFlex>
+        <span class="title"><strong>Response Attachments </strong></span>
+      </div>
+      <div fxLayout='row' fxLayoutGap="20px" style="padding-left: 30px; padding-top: 30px;">
+        <label class="title_class1">Enter Name for Attachment:</label>
+        <div fxLayout='column' style="padding-left: 5px;">
+          <label class="font_lass">Rate Quotation Updated List</label>
+          <div class="line_class"></div>
+        </div>
+        <button mat-button class="Rectangle-708">+ add Attachment</button>
+        <div fxLayout='row' class="row_class1">
+          <img class="pdf_img" src="assets/images/pdf.png">
+          <div fxLayout='column' fxLayoutAlign='center '>
+            <p style="padding-left: 25px;margin-top: 22px;">doc_new.pdf</p>
+            <div fxLayout='row' class="Class_PDF" fxLayoutAlign='space-between center'>
+              <p>4 Pages</p>
+              <p>24 kb</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+
+    <div fxFlex fxLayout="column" fxLayoutGap="20px" class="Gap_class">
+      <div fxFlex>
+        <span class="title"><strong>RFx Remarks </strong></span>
+      </div>
+
+      <label class="remarks_txt">- Reference texts will come here
+      </label>
+      <label class="remarks_txt">- Reference texts will come here
+      </label>
+      <label class="remarks_txt">- Reference texts will come here
+      </label>
+    </div>
+
+
+    <div fxFlex fxLayout="column" fxLayoutGap="20px" class="Gap_class">
+      <div fxFlex>
+        <span class="title"><strong>Response Remarks </strong></span>
+      </div>
+      <div fxLayout="column" class="Remarks_box1">
+        <div fxFlex="100">
+          <mat-form-field class="Remarks_style">
+            <label style="margin-left: 20px;">Enter your answer here</label>
+            <input class="Input_remarks" matInput>
+          </mat-form-field>
+        </div>
+        <br>
+
+        <div fxLayoutAlign="end">
+          <img class="sendIcon" src="assets/images/send.png">
+        </div>
+      </div>
+    </div>
+
+
+    <div fxLayout="row" fxLayoutGap="20px" class="confirm_box">
+      <div fxFlex="50">
+        <div fxFlex="50">
+          <button class="Mute_button" mat-button>Mute</button>
+        </div>
+
+      </div>
+      <div fxFlex="50" fxLayoutAlign="end">
+        <div fxFlex="50" fxLayoutAlign="end">
+          <button class="save_button" mat-button>Save</button>
+        </div>
+        <div fxFlex="50" fxLayoutAlign="end">
+          <button class="release_button" mat-button>Release</button>
+        </div>
+      </div>
+
+    </div>
+    <!-- <div fxLayout class="content-card1">
+    </div> -->
+    <!-- <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="isProgressBarVisibile">
+    </div> -->
+  </div>
+</div>

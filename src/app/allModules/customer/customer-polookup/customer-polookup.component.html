@@ -1,0 +1,441 @@
+<div id="cuspo" class="page-layout carded fullwidth">
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>So Lookup</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div fxLayout class="content-card1">
+      <mat-card fxFlex="100" class="side-bar p-0">
+        <div class="sidenav-content" fxFlex fxLayout="column">
+          <div class="mt-24" style="background-color: #fef8f1;">
+            <div class="container m-12" fxLayout fxLayout.sm="column" fxLayout.xs="column" fxLayoutGap="10px"
+              fxLayoutGap.xs="10">
+              <div fxFlex="7" (click)="tabone()">
+                <div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="10px">
+                  <div class="item-round1">
+                    <div style="margin-top: 3px; margin-left: 30px;">
+                      <span class="test" [matBadge]="sOItemCount?.ItemCount" matBadgeOverlap="false">
+                      </span>
+                    </div>
+                    <div class="item-round2" [class.unSelected]='!tab1'>
+                      <img class="item-image" src="assets/images/shopping-cart.png">
+                      <div style="margin-top: 28px;margin-left: 5px;">Item</div>
+                      <div [class.tab-highlight]='tab1'></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tab-divider"></div>
+              <div fxFlex="7" (click)="tabtwo()">
+                <div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="10px">
+                  <div class="grn-round1">
+                    <div style="margin-top: 3px; margin-left: 30px;">
+                      <span [matBadge]="sOItemCount?.PODCount" matBadgeColor="primary" matBadgeOverlap="false"></span>
+                    </div>
+                    <div class="grn-round2" [class.unSelected]='!tab2'>
+                      <img class="document-image" src="assets/images/deliveryNote.png">
+                      <div style="margin-top: 28px;margin-left: 5px;">POD</div>
+                      <div [class.tab-highlight]='tab2'></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tab-divider"></div>
+              <div fxFlex="7" (click)="tabthree()">
+                <div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="10px">
+                  <div class="org-round1">
+                    <div style="margin-top: 3px; margin-left: 30px;">
+                      <span [matBadge]="sOItemCount?.InvCount" id="mat-badge-content-1" matBadgeOverlap="false"></span>
+                    </div>
+                    <div class="org-round2" [class.unSelected]='!tab3'>
+                      <img class="truck-image" src="assets/images/truck.png">
+                      <div style="margin-top: 28px;margin-left: -5px;">Invoice</div>
+                      <div [class.tab-highlight]='tab3'></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- <div class="tab-divider"></div>
+              <div fxFlex="7" (click)="tabthree()">
+                <div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="10px">
+                  <div class="grn-round1">
+                    <div style="margin-top: 3px; margin-left: 30px;">
+                      <span [matBadge]="sOItemCount?.PODCount" matBadgeColor="primary" matBadgeOverlap="false"></span>
+                    </div>
+                    <div class="grn-round2" [class.unSelected]='!tab3'>
+                      <img class="document-image" src="assets/images/deliveryNote.png">
+                      <div style="margin-top: 28px;margin-left: 5px;">Invoice</div>
+                      <div [class.tab-highlight]='tab3'></div>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+
+              <div class="tab-divider"></div>
+              <div fxFlex="7" (click)="tabfour()">
+                <div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="10px">
+                  <div class="pink-round1">
+                    <div style="margin-top: 3px; margin-left: 30px;">
+                      <span [matBadge]="sOItemCount?.ReturnCount" matBadgeColor="primary"
+                        matBadgeOverlap="false"></span>
+                    </div>
+                    <div class="pink-round2" [class.unSelected]='!tab4'>
+                      <img class="document-image" src="assets/images/Glyph.png">
+                      <div style="margin-top: 28px;margin-left: 5px;">Return</div>
+                      <div [class.tab-highlight]='tab4'></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tab-divider"></div>
+              <div fxFlex="7" (click)="tabfive()">
+                <div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="10px">
+                  <div class="document-round1">
+                    <div style="margin-top: 3px; margin-left: 30px;">
+                      <span [matBadge]="sOItemCount?.DocNumberCount" matBadgeColor="primary"
+                        matBadgeOverlap="false"></span>
+                    </div>
+                    <div class="document-round2" [class.unSelected]='!tab5'>
+                      <img class="document-image" src="assets/images/file.png">
+                      <div style="margin-top: 28px;margin-left: 5px;">Document</div>
+                      <div [class.tab-highlight]='tab5'></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div>
+           
+            <div class="content" fxLayout="column" *ngIf="tab1">
+              <div *ngIf="!SOtems?.length" class="cl_norec">NO Record Found</div>
+              <div class="p-12 mt-24" >
+                <table *ngIf="SOtems?.length" class="table" mat-table [dataSource]="SOItemDataSource" matSort>
+
+                  <ng-container matColumnDef="Item">
+                    <th mat-header-cell *matHeaderCellDef>Item</th>
+                    <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+                      <div fxLayout>
+                        <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                        <div fxFlex class="pl-4">
+                          {{element.Item}}
+                        </div>
+                      </div>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Material">
+                    <th mat-header-cell *matHeaderCellDef>Material</th>
+                    <td mat-cell *matCellDef="let element">{{element.Material}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="MaterialText">
+                    <th mat-header-cell *matHeaderCellDef>Material Text</th>
+                    <td mat-cell *matCellDef="let element">{{element.MaterialText}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="HSN">
+                    <th mat-header-cell *matHeaderCellDef>HSN</th>
+                    <td mat-cell *matCellDef="let element" class="QtyClass">{{element.HSN}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="OrderedQty">
+                    <th mat-header-cell *matHeaderCellDef>Order Qty</th>
+                    <td mat-cell *matCellDef="let element" class="QtyClass">{{element.OrderedQty}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="CompletedQty">
+                    <th mat-header-cell *matHeaderCellDef>Invoiced Qty</th>
+                    <td mat-cell *matCellDef="let element" class="QtyClass">{{element.CompletedQty}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="OpenQty">
+                    <th mat-header-cell *matHeaderCellDef>Open Qty</th>
+                    <td mat-cell *matCellDef="let element" class="QtyClass">{{element.OpenQty}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="DeliveryDate">
+                    <th mat-header-cell *matHeaderCellDef>Delivery date</th>
+                    <td mat-cell *matCellDef="let element">{{element.DeliveryDate|date:'shortDate' }}</td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="SOItemDisplayedColumns;sticky: true"></tr>
+                  <tr mat-row *matRowDef="let row; columns: SOItemDisplayedColumns;let even=even">
+                  </tr>
+                </table>
+                <div>
+                  <mat-paginator [ngStyle]="SOtems?.length ?  {'visibility': 'visible'} : {'visibility': 'hidden'}" [pageSizeOptions]="[10,50,100,250,500,1000]"></mat-paginator>
+                </div>
+              </div>
+              <!-- <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator> -->
+            </div>
+
+
+       
+            <div class="content" fxLayout="column" *ngIf="tab2">
+              <div *ngIf="!AllPODI?.length" class="cl_norec">NO Record Found</div>
+              <div class="p-12 mt-24">
+                <table   *ngIf="AllPODI?.length" class="table" mat-table [dataSource]="PODDataSource" matSort>
+
+                  <ng-container matColumnDef="InvoiceNumber">
+                    <th mat-header-cell *matHeaderCellDef>InvoiceNumber</th>
+                    <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+                      <div fxLayout>
+                        <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                        <div fxFlex class="pl-4">
+                          {{element.InvoiceNumber}}
+                        </div>
+                      </div>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Item">
+                    <th mat-header-cell *matHeaderCellDef>Item</th>
+                    <td mat-cell *matCellDef="let element">{{element.Item}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Material">
+                    <th mat-header-cell *matHeaderCellDef>Material</th>
+                    <td mat-cell *matCellDef="let element">{{element.Material}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="MaterialText">
+                    <th mat-header-cell *matHeaderCellDef>MaterialText</th>
+                    <td mat-cell *matCellDef="let element" class="QtyClass">{{element.MaterialText}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Qty">
+                    <th mat-header-cell *matHeaderCellDef>Qty</th>
+                    <td mat-cell *matCellDef="let element" class="QtyClass">{{element.Qty}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="AttachmentName">
+                    <th mat-header-cell *matHeaderCellDef>AttachmentName</th>
+                    <td mat-cell *matCellDef="let element" class="QtyClass">{{element.AttachmentName}}</td>
+                  </ng-container>
+
+                  <!-- <ng-container matColumnDef="OpenQty">
+                    <th mat-header-cell *matHeaderCellDef>Open Qty</th>
+                    <td mat-cell *matCellDef="let element" class="QtyClass">{{element.OpenQty}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="DeliveryDate">
+                    <th mat-header-cell *matHeaderCellDef>Delivery date</th>
+                    <td mat-cell *matCellDef="let element">{{element.DeliveryDate|date:'shortDate' }}</td>
+                  </ng-container> -->
+
+                  <tr mat-header-row *matHeaderRowDef="PODDisplayedColumns;sticky: true"></tr>
+                  <tr mat-row *matRowDef="let row; columns: PODDisplayedColumns;let even=even">
+                  </tr>
+                </table>
+                <div>
+                  <mat-paginator [ngStyle]="AllPODI?.length ?  {'visibility': 'visible'} : {'visibility': 'hidden'}" [pageSizeOptions]="[10,50,100,250,500,1000]"></mat-paginator>
+                </div>
+              </div>
+
+            </div>
+           
+            <div class="content" fxLayout="column" *ngIf="tab3">
+              <div *ngIf="!AllBPCInv?.length" class="cl_norec"> No Records Found</div>
+              <div class="p-12 mt-24">
+                <table  *ngIf="AllBPCInv?.length" class="table" mat-table [dataSource]="InvoiceDDataSource" matSort>
+
+                  <ng-container matColumnDef="InvoiceNo">
+                    <th mat-header-cell *matHeaderCellDef>InvoiceNumber</th>
+                    <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+                      <div fxLayout>
+                        <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                        <div fxFlex class="pl-4">
+                          {{element.InvoiceNo}}
+                        </div>
+                      </div>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="InvoiceDate">
+                    <th mat-header-cell *matHeaderCellDef>InvoiceDate</th>
+                    <td mat-cell *matCellDef="let element">{{element.InvoiceDate|date:'shortDate' }}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="InvoiceAmount">
+                    <th mat-header-cell *matHeaderCellDef>InvoiceAmount</th>
+                    <td mat-cell *matCellDef="let element">{{element.InvoiceAmount}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Currency">
+                    <th mat-header-cell *matHeaderCellDef>Currency</th>
+                    <td mat-cell *matCellDef="let element" class="QtyClass">{{element.Currency}}</td>
+                  </ng-container>
+
+
+
+                  <!-- <ng-container matColumnDef="OpenQty">
+                    <th mat-header-cell *matHeaderCellDef>Open Qty</th>
+                    <td mat-cell *matCellDef="let element" class="QtyClass">{{element.OpenQty}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="DeliveryDate">
+                    <th mat-header-cell *matHeaderCellDef>Delivery date</th>
+                    <td mat-cell *matCellDef="let element">{{element.DeliveryDate|date:'shortDate' }}</td>
+                  </ng-container> -->
+
+                  <tr mat-header-row *matHeaderRowDef="InvoiceDisplayedColumns;sticky: true"></tr>
+                  <tr mat-row *matRowDef="let row; columns: InvoiceDisplayedColumns;let even=even">
+                  </tr>
+                </table>
+                <div>
+                  <mat-paginator [ngStyle]="AllBPCInv?.length ?  {'visibility': 'visible'} : {'visibility': 'hidden'}" [pageSizeOptions]="[10,50,100,250,500,1000]"></mat-paginator>
+                </div>
+              </div>
+
+              
+            </div>
+          
+            <div class="content" fxLayout="column" *ngIf="tab4">
+              <div *ngIf="!AllReturn?.length" class="cl_norec"> 
+
+                No Records Found
+  
+              </div>
+              <div class="p-12 mt-24" >
+                <table *ngIf="AllReturn?.length" class="table" mat-table [dataSource]="ReturnDataSource" matSort>
+
+                  <ng-container matColumnDef="ReturnOrder">
+                    <th mat-header-cell *matHeaderCellDef>ReturnOrder</th>
+                    <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+                      <div fxLayout>
+                        <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                        <div fxFlex class="pl-4">
+                          {{element.ReturnOrder}}
+                        </div>
+                      </div>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Date">
+                    <th mat-header-cell *matHeaderCellDef>Date</th>
+                    <td mat-cell *matCellDef="let element">{{element.Date|date:'shortDate' }}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Material">
+                    <th mat-header-cell *matHeaderCellDef>Material</th>
+                    <td mat-cell *matCellDef="let element">{{element.Material}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Text">
+                    <th mat-header-cell *matHeaderCellDef>Text</th>
+                    <td mat-cell *matCellDef="let element" class="QtyClass">{{element.Text}}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="Qty">
+                    <th mat-header-cell *matHeaderCellDef>Qty</th>
+                    <td mat-cell *matCellDef="let element" class="QtyClass">{{element.Qty}}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="Status">
+                    <th mat-header-cell *matHeaderCellDef>Status</th>
+                    <td mat-cell *matCellDef="let element" class="QtyClass">{{element.Status}}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="Document">
+                    <th mat-header-cell *matHeaderCellDef>Document</th>
+                    <td mat-cell *matCellDef="let element" class="QtyClass">{{element.Document}}</td>
+                  </ng-container>
+
+
+
+
+                  <tr mat-header-row *matHeaderRowDef="ReturnDisplayedColumns;sticky: true"></tr>
+                  <tr mat-row *matRowDef="let row; columns: ReturnDisplayedColumns;let even=even">
+                  </tr>
+                </table>
+                <!-- <div> -->
+                  <mat-paginator [ngStyle]="AllReturn?.length ?  {'visibility': 'visible'} : {'visibility': 'hidden'}" [pageSizeOptions]="[10,50,100,250,500,1000]"></mat-paginator>
+                <!-- </div> -->
+              </div>
+            </div>
+
+            <!-- tab 5 start-->
+           
+            <div class="content" fxLayout="column" *ngIf="tab5">
+              <div *ngIf="!SODoc?.length" class="cl_norec"> 
+             
+                No Records Found
+             
+            </div>
+              <div class="p-12 mt-24">
+                <table *ngIf="SODoc?.length"  class="table" mat-table [dataSource]="SODocDataSource" matSort>
+
+                  <ng-container matColumnDef="AttachmentName">
+                    <th mat-header-cell *matHeaderCellDef>AttachmentName</th>
+                    <td mat-cell *matCellDef="let element;let odd=odd; let i = index" class="tableLeftBorder pl-0">
+                      <div fxLayout>
+                        <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                        <div fxFlex class="cursorPointer pl-4"
+                          (click)="AttachmentName_clk(element.AttachmentName,i,element.ReferenceNo)">
+                          {{element.AttachmentName}}
+                        </div>
+                      </div>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="ReferenceNo">
+                    <th mat-header-cell *matHeaderCellDef>ReferenceNo</th>
+                    <td mat-cell *matCellDef="let element">{{element.ReferenceNo}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="ContentType">
+                    <th mat-header-cell *matHeaderCellDef>ContentType</th>
+                    <td mat-cell *matCellDef="let element">{{element.ContentType}}</td>
+                  </ng-container>
+
+                  <!-- <ng-container matColumnDef="ContentType">
+        <th mat-header-cell *matHeaderCellDef>ContentType</th>
+        <td mat-cell *matCellDef="let element">{{element.ContentType}}</td>
+      </ng-container> -->
+
+
+
+
+                  <tr mat-header-row *matHeaderRowDef="SODocDisplayedColumns;sticky: true"></tr>
+                  <tr mat-row *matRowDef="let row; columns: SODocDisplayedColumns;let even=even">
+                  </tr>
+                </table>
+                <div>
+                  <mat-paginator [ngStyle]="SODoc?.length ?  {'visibility': 'visible'} : {'visibility': 'hidden'}" [pageSizeOptions]="[10,50,100,250,500,1000]"></mat-paginator>
+                </div>
+              </div>
+            </div>
+
+            <!-- tab 5 end -->
+
+          </div>
+          <!-- mmchng -->
+        </div>
+        <!-- <mat-card-actions class="m-0 pl-12 pr-16 cardActions">
+          <div fxLayout fxLayoutAlign="space-between center">
+            <div fxFlex>
+              <button mat-stroked-button class="DeleteBtn mr-4 mb-4" (click)="DeleteClicked()">Delete</button>
+            </div>
+            <div fxFlex align="end">
+              <button mat-stroked-button class="SaveBtn mb-4" (click)="SaveClicked()">Save
+              </button>
+              <button mat-raised-button class="SubmitBtn mb-4" (click)="SubmitClicked()">Submit</button>
+            </div>
+          </div>
+        </mat-card-actions> -->
+      </mat-card>
+    </div>
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="IsProgressBarVisibile">
+    </div>
+  </div>
+</div>

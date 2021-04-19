@@ -1,0 +1,169 @@
+<div id="products" class="page-layout carded fullwidth">
+  <div class="center">
+
+    <!-- toolbar -->
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Products</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <!-- search bar -->
+    <div fxLayout class="content-card1">
+      <div fxFlex="23" class="side-bar" style="background-color: #f5f5f5">
+        <div class="sidenav-header">
+          <mat-toolbar>
+            <mat-toolbar-row fxLayout="row" class="px-8" fxLayoutAlign="space-between center">
+              <div class="search-wrapper" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                  <input [(ngModel)]="searchText" type="text" placeholder="Search" fxFlex>
+                  <mat-icon class="s-16">search</mat-icon>
+                </div>
+              </div>
+            </mat-toolbar-row>
+          </mat-toolbar>
+        </div>
+        <div class="sidenav-content" fusePerfectScrollbar fxFlex>
+          <div *ngFor="let product  of AllProducts  | filter: searchText">
+            <div>
+              <div class="mx-8 mb-8 mt-0 p-8 leftCard" (click)="loadSelectedProduct(product)"
+              [style.border-left-color]="selectID ==product.ProductID?'#efb577':'#cccccc'">
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex><strong>{{product.MaterialText}}</strong></div>
+                  <div fxFlex align="end">{{product.CreatedOn | date :'dd/MM/yyyy'}}</div>
+                </div>
+                <!-- <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex><strong></strong>Text</div>
+                </div> -->
+              
+              </div>
+            </div>
+          </div>
+          <div *ngIf="(AllProducts  | filter: searchText)?.length === 0" class="no-results-message">
+            <span class="pl-12"> No results..</span>
+          </div>
+        </div>
+        <div class="borderRight1"></div>
+      </div>
+      <!-- input section -->
+      <mat-card fxFlex="77" class="side-bar p-0">
+        <div class="sidenav-content" fxFlex fxLayout="column">
+          <div fxFlex fxLayout="column" class="p-0 pt-8">
+            <div fxFlex class="px-12 mt-4">
+              <form autocomplete="off" class="normal" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="start"
+                name="form" novalidate [formGroup]="ProductsFormGroup">
+
+                <div fxFlex fxLayout="row" fxLayoutGap="40px">
+
+                  <div fxFlex="50">
+                    <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                      <input matInput placeholder="Material Group" formControlName="MaterialGroup">
+                      <mat-error
+                        *ngIf="ProductsFormGroup.get('MaterialGroup').touched &&  ProductsFormGroup.get('MaterialGroup').hasError('required')">
+                        Material Group is required</mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="50">
+                    <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                      <input matInput placeholder="Material Text" formControlName="MaterialText">
+                      <mat-error
+                        *ngIf="ProductsFormGroup.get('MaterialText').touched && ProductsFormGroup.get('MaterialText').hasError('required')">
+                        Material Text is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                </div>
+
+                <div fxFlex fxLayout="row" fxLayoutGap="40px">
+
+                  <div fxFlex="50">
+                    <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                      <input matInput placeholder="Material" formControlName="Material">
+                      <mat-error
+                        *ngIf="ProductsFormGroup.get('Material').touched &&  ProductsFormGroup.get('Material').hasError('required')">
+                        Material is required</mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="50">
+                    <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                      <input matInput placeholder="Stock" formControlName="Stock">
+                      <mat-error
+                        *ngIf="ProductsFormGroup.get('Stock').touched && ProductsFormGroup.get('Stock').hasError('required')">
+                        Stock is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                </div>
+              
+                <div fxFlex fxLayout="row" fxLayoutGap="40px">
+
+                  <div fxFlex="50">
+                    <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                      <input matInput placeholder="Base Price" formControlName="BasePrice">
+                      <mat-error
+                        *ngIf="ProductsFormGroup.get('BasePrice').touched &&  ProductsFormGroup.get('BasePrice').hasError('required')">
+                        Base Price is required</mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="50" class="pl-8 pr-12"  fxLayoutGap="10px" >
+                    <div fxFlex="10"  class="pl-8">
+                    <mat-label class="Fav_text">Favourite</mat-label> 
+                  </div>
+                  <div fxFlex="90">
+                      <ul class="list-inline rating-list" *ngFor="let star of stars; let i= index" > 
+                        <li (click)="countStar(star)" id="{{'starId'+i}}" [ngClass]="{'selected': (star <= selectedValue)}" (mouseover)="addClass_fav(star)"  (mouseout)="removeClass_fav(star)"> ★
+                        </li>
+                    </ul>
+                  </div>
+                    <!-- </mat-form-field> -->
+                  </div>
+
+                </div>
+                 <div fxFlex>
+                   <div>
+                    <button   mat-raised-button style="background-color:#f6b570;color:white">
+                      Discount</button>
+                   </div>
+                 </div>
+                
+              </form>
+              <div fxLayout>
+                <div fxFlex fxLayoutAlign="end">
+                  <button class="floatBtn" mat-fab style="background-color: #f6b570;" (click)="ResetControl()">
+                    <mat-icon style="color: white;">add</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <mat-card-actions class="m-0 pl-12 pr-16 cardActions">
+          <div fxLayout fxFlex fxLayoutAlign="end">
+            <button *ngIf="selectedProduct?.ProductID" mat-stroked-button
+              class="DeleteBtn mr-4 mb-8" (click)="DeleteClicked()">Delete</button>
+            <button mat-raised-button class="mr-4 mb-8" (click)="ResetControl()"
+            *ngIf="!selectedProduct?.ProductID" >
+              Clear
+            </button>
+            <button (click)="SaveClicked()" class="SaveBtn" mat-raised-button>
+              {{selectedProduct.ProductID?'Update':'Create'}}</button>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="isProgressBarVisibile">
+    </div>
+
+    </div>
+  </div>

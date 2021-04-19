@@ -1,0 +1,61 @@
+@import "src/@fuse/scss/fuse";
+.discount-dialog {
+  @include media-breakpoint("xs") {
+    width: 100%;
+  }
+
+  @include media-breakpoint-up("sm") {
+    width: 800px;
+  }
+  .mat-radio-button {
+    margin: 0 5px;
+  }
+  .mat-dialog-container {
+    padding: 0;
+    border-radius: 0px;
+  }
+
+  .dialog-content-wrapper {
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .toolBg {
+    background-color: #121214 !important;
+    color: white !important;
+  }
+  .btnBg{
+    background-color: #efb577 !important;
+    color: white !important;
+  }
+  .header-card{
+    border: solid 2px #e0e0e0;
+    background-color: #ffffff;
+    border-left: solid 8px #3380d7;
+  }
+  .bg_wrapper{
+    background:url("/assets/images/Discount.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .form_wrapper{
+      background-color: white;
+  }
+  .card-label{
+    font-weight: 500;
+  }
+  .card-value{
+    font-weight: 600;
+  }
+  .date{
+    opacity: 0.8;
+  }
+  .form_field{
+    width: 80%;
+  }
+  .approve_txt{
+    color: #26b329;
+  }
+  .reject_txt{
+    color: #d6201d;
+  }
+}

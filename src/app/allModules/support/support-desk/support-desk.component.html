@@ -1,0 +1,115 @@
+<div id="supportdesk" class="page-layout carded" fusePerfectScrollbar>
+  <div class="center" fxLayout="column" fxLayoutGap="10px">
+    <div>
+      <div class="outer" fxLayout>
+        <div class="bg"></div>
+        <div>
+          <h3 style="margin: 0px;padding-left: 10px;"><b>Helpdesk</b></h3>
+        </div>
+        <div fxFlex align="end">
+          <span><img src="../../../../assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+        </div>
+      </div>
+      <div fxLayout *ngIf="supports?.length===0 && isSupport">
+        <div fxFlex>
+          <div fxFlex="30" style="margin-left: 5%;margin-top: 5%;">
+            <div fxLayout="row" fxLayoutAlign="start">
+              <div><span style="font-size: 35px !important;">Let's Connect For </span></div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start">
+              <div><span style="font-size: 35px !important;">SUPPORT </span></div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start">
+              <div style="margin-top: 5%;"><span style="opacity: 0.6;">For any element related queries or</span></div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start">
+              <div><span style="opacity: 0.6;">issues, please write to us.</span></div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start">
+              <div fxLayoutAlign="start" style="margin-top: 10%;">
+                <button mat-button class="Btn1" style="width: 140%;"
+                  [ngClass]="BGClassName?.layout?.navbar?.primaryBackground" (click)="addSupportTicketClicked()">Connect
+                  with Us
+                  !
+                </button>
+              </div>
+            </div>
+          </div>
+          <div fxFlex="70">
+            <div fxLayoutAlign="end">
+              <div><span><img style="height: 450px;margin-right: 90px !important;margin-top: 10%;"
+                    src="../../../../assets/images/illustration.png"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="padding: 30px;" class="content" fxLayout="column">
+
+      <table *ngIf="supports?.length" style="width: 100% !important;" class="table" mat-table
+        [dataSource]="supportDataSource" matSort>
+
+        <ng-container matColumnDef="SupportID">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Support ID</th>
+          <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+            <div fxLayout>
+              <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+              <div fxFlex class="pl-4">{{element.SupportID}} </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Reason">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Reason </th>
+          <td mat-cell *matCellDef="let element"> {{element.Reason}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+          <td mat-cell *matCellDef="let element"> {{element.Date | date :'dd/MM/yyyy'}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="Status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+          <td mat-cell *matCellDef="let element">
+            <!-- <img width="50" class="element-image" *ngIf="element.Status" style="cursor: pointer;" [src]="element.Status==='Open' ?'assets/images/open3.png':
+                 element.Status==='Closed' ?'assets/images/close.png':''" /> -->
+            <span class="statusFont" [style.color]="getStatusColor(element.Status)">{{element.Status}}</span>
+          </td>
+        </ng-container>
+
+
+        <!-- <tr mat-header-row *matHeaderRowDef="supportDisplayedColumns;sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: supportDisplayedColumns;let even=even" matRipple
+            style=" cursor: pointer;">
+          </tr> -->
+        <tr [ngClass]="BGClassName?.layout?.toolbar?.background" mat-header-row
+          *matHeaderRowDef="supportDisplayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: supportDisplayedColumns;" (click)="onSupportRowClicked(row)"
+          style=" cursor: pointer;" [class.highlight]="row === selectedSupport"></tr>
+      </table>
+      <!-- <div flex fxLayoutAlign="center center" style="margin-top: 10px;" *ngIf="!supports?.length">
+        <mat-icon svgIcon="infoIcon" style="color: #1b56ca;">
+        </mat-icon>
+        <span style="margin-left: 10px;">The table does not contain any records</span>
+      </div> -->
+      <div flex>
+        <mat-paginator [hidden]="!supports?.length" [pageSize]="5" [pageSizeOptions]="[10, 20, 30, 50, 75, 100]"
+          showFirstLastButtons>
+        </mat-paginator>
+      </div>
+      <div fxLayout>
+        <div fxFlex fxLayoutAlign="end">
+          <button *ngIf="supports[0]?.PatnerID===this.authenticationDetails.UserName" class="float-add-button" mat-fab
+            style="background-color: #f6b570" (click)="addSupportTicketClicked()">
+            <mat-icon style="color: white;">add</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="isProgressBarVisibile">
+    </div>
+  </div>
+</div>

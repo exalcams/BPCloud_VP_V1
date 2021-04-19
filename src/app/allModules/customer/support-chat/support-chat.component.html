@@ -1,0 +1,220 @@
+<div id="custsupportchat" class="page-layout carded fullwidth">
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Helpdesk</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div fxLayout class="content-card1">
+      <div fxFlex class="side-bar p-0">
+        <div class="sidenav-content" fxFlex fxLayout="column">
+          <div fxFlex fxLayout="column" class="p-0 pt-8">
+
+            <div fxLayout class="px-32 mt-4">
+              <div fxFlex class="Rectangle-721">
+                <div fxFlex="70" style="padding: 10px;">
+                  <div fxFlex>
+                    <div fxLayout="row" fxLayoutAlign="start">
+                      <div fxFlex="50" fxLayout="row" fxLayoutGap="5px" class=" p-4">
+                        <div fxFlex style="text-align: right;">Support Ticket ID : </div>
+                        <div fxFlex style="font-weight: bold;text-align: left;  line-height: 19px;">
+                          #{{SupportHeader.SupportID}}</div>
+                      </div>
+                      <div fxFlex="50" fxLayout="row" fxLayoutGap="5px" class=" p-4">
+                        <div fxFlex style="text-align: right;">Created On : </div>
+                        <div fxFlex style="font-weight: bold; text-align: left;  line-height: 19px;">
+                          {{SupportHeader.Date |  date : 'dd/MM/yyyy'}}
+                        </div>
+                      </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start">
+                      <div fxFlex="50" fxLayout="row" fxLayoutGap="5px" class=" p-4">
+                        <div fxFlex style="text-align: right;">Plant : </div>
+                        <div fxFlex style="font-weight: bold;text-align: left;  line-height: 19px;">
+                          {{SupportHeader.Plant}}</div>
+                        <!-- Assigned To: <span style="font-weight: bold;">{{SupportHeader.AssignTo}}</span> -->
+                      </div>
+                      <div fxFlex="50" fxLayout="row" fxLayoutGap="5px" class=" p-4">
+                        <div fxFlex style="text-align: right;">Reason Code : </div>
+                        <div fxFlex style="font-weight: bold; text-align: left;  line-height: 19px;">
+                          {{SupportHeader.ReasonCode}}</div>
+                        <!-- Reason Code: <span
+                          style="font-weight: bold;">{{SupportHeader.ReasonCode}}</span> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style="border-left: 1px solid #e0e0e0;"></div>
+                <div fxFlex="30" style="padding: 10px;">
+                  <div fxLayout="row" fxLayoutAlign="start">
+                    <div fxFlex="100" class=" p-4">
+                      <span style="border-bottom: 2px solid #e0e0e0;">Attachments:</span>
+                      <div *ngFor="let supportAttachment of SupportAttachments">
+                        <div fxFlex fxLayout="row wrap">
+                          <div fxFlex *ngIf="supportAttachment.SupportID==SupportHeader.SupportID"
+                            (click)="GetSupportAttachment(supportAttachment?.AttachmentName,supportAttachment.AttachmentFile)"
+                            class="pdfLinkClass pl-8">
+                            <img class="attachmentIcon" src="assets/images/attachmentNew (1).png"
+                              (click)="GetSupportAttachment(supportAttachment?.AttachmentName,supportAttachment.AttachmentFile)">
+                            <span
+                              style="font-size: 12px;color: #3380d7;cursor: pointer !important;">{{supportAttachment?.AttachmentName}}</span>
+                          </div>
+                        </div>
+                        <!-- <div fxFlex (click)="GetSupportAttachment(supportAttachment?.name)" class="pdfLinkClass pl-8">
+                        <span style="font-weight: bold;font-size: 20px;">{{supportAttachment?.size}}</span>
+                      </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div fxFlex fxLayout="row" fxLayoutGap="5px" class="px-32 mt-12 mb-12"
+              *ngFor="let supportLog of SupportLogs;let i=index;let first = first;let last = last">
+
+              <div fxFlex="20" fxLayout="column">
+                <div fxFlex>
+                  <div fxLayout="row" class="left-open-container" [style.margin-top]="first?'20px':'-51px'"
+                    [style.border-color]="supportLog.Status==='Closed'?'#4FAB6D':supportLog.Status==='Pending'?' #EF8377':
+                    supportLog.Status==='Open'?'#efb577':''">
+                    <div fxFlex="10">
+                      <div [style.background-color]="supportLog.Status==='Closed'?'#4FAB6D':supportLog.Status==='Pending'?' #EF8377'
+                        :supportLog.Status==='Open'?'#efb577':''" class="left-status-container">
+                        {{supportLog.Status | uppercase}}</div>
+                    </div>
+                    <div fxFlex="75" fxLayout="column" fxLayoutAlign="space-evenly end" style="padding: 10px;">
+                      <div fxFlex>
+                        <span> {{supportLog.PatnerID}}</span>
+                      </div>
+                      <div fxFlex>
+                        <span>{{supportLog.CreatedOn | date:'dd/MM/yyyy'}}</span>
+                      </div>
+                    </div>
+                    <div fxFlex="15" fxLayout fxLayoutAlign="center center">
+                      <mat-icon>account_circle</mat-icon>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div fxFlex="5">
+                <!-- [style.padding-top]="first?'51px':''" -->
+                <div fxLayout="column" fxLayoutAlign="space-around center" [style.margin-top]="first?'51px':''">
+                  <!-- <div *ngIf="!first" style="margin-top: -42px;"
+                    [class]="supportLog.Status==='Closed'?'green-timeline':supportLog.Status==='Open'?'orange-timeline':''">
+                  </div> -->
+                  <div class="round" [style.margin-top]="first?'':'-20px'" [style.border-color]="supportLog.Status==='Closed'?'#4FAB6D':supportLog.Status==='Pending'?' #EF8377'
+                    :supportLog.Status==='Open'?'#efb577':''">
+                  </div>
+                  <div *ngIf="!last" [class]="supportLog.Status==='Closed'?'green-timeline':supportLog.Status==='Pending'?'red-timeline'
+                    :supportLog.Status==='Open'?'orange-timeline':''">
+                  </div>
+                  <!-- <div class="round" *ngIf="!last" [style.border-color]="supportLog.Status==='Closed'?'#4FAB6D':supportLog.Status==='Pending'?'#EF8377':
+                    supportLog.Status==='Open'?'#efb577':''">
+                  </div> -->
+                </div>
+              </div>
+              <div fxFlex="75" fxLayout="row">
+                <div *ngIf="supportLog.Status==='Open'" [style.margin-top]="first?'':'-71px'" fxFlex>
+                  <form name="form" class="normal" [formGroup]="SupportLogFormGroup">
+                    <div fxFlex fxLayout="column" class="comment-container-arrow">
+                      <div fxFlex>
+                        <mat-form-field style="width: 100% !important;" class="example-full-width">
+                          <textarea matInput style="height: 50px !important;" formControlName="Comments"
+                            placeholder="Enter your comment here......"></textarea>
+                        </mat-form-field>
+                        <mat-error
+                          *ngIf="SupportLogFormGroup.get('Comments').touched && SupportLogFormGroup.get('Comments').hasError('required')">
+                          Comments is required
+                        </mat-error>
+                      </div>
+                      <div fxFlex fxLayout="row" style="padding: 0px 10px 10px 10px ">
+                        <div fxLayout="row" fxLayoutAlign="start">
+                          <img class="textAreaIcon" style="padding-left: 20px;"
+                            src="assets/images/attachmentNew (1).png" (click)="fileInput1.click()">
+                          <input hidden type="file" accept="image/x-png,image/gif,image/jpeg,image/jpg,application/pdf"
+                            #fileInput1 id="file" (change)="OnFileClicked($event)" />
+                        </div>
+                        <div fxFlex (click)="GetSupportAttachment(fileToUpload?.name,fileToUpload)"
+                          class="pdfLinkClass pl-8">
+                          <span style="font-weight: bold;font-size: 10px;">{{fileToUpload?.name}}</span>
+                        </div>
+                        <div fxFlex>
+                          <div fxLayoutAlign="end">
+                            <button mat-stroked-button class="mark-as-resolved mr-12"
+                              (click)="MarkAsResolvedClicked()">Mark as
+                              resolved</button>
+                            <img class="textAreaIcon" style="padding-right: 20px;" src="assets/images/send.png"
+                              (click)="SendResponseClicked()">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div *ngIf="supportLog.Status==='Pending'" [style.margin-top]="first?'':'-71px'" fxFlex>
+                  <div fxFlex fxLayout="column" style="height: 138px;" class="comment-container-arrow">
+                    <div fxFlex="100" class="p-4">
+                      <div class="pb-12"> <span class="pl-12 pb-12">{{supportLog.Remarks}}</span></div>
+                      <div *ngFor="let supportAttachment of SupportAttachments">
+                        <div *ngIf="supportAttachment.SupportLogID==supportLog.ID" fxFlex
+                          (click)="GetSupportAttachment(supportAttachment?.AttachmentName,supportAttachment.AttachmentFile)"
+                          class="pdfLinkClass pl-8">
+                          <img class="attachmentIcon" src="assets/images/attachmentNew (1).png"
+                            (click)="GetSupportAttachment(supportAttachment?.AttachmentName,supportAttachment.AttachmentFile)">
+                          <span
+                            style="font-size: 12px;color: #3380d7;cursor: pointer !important;">{{supportAttachment?.AttachmentName}}</span>
+                        </div>
+                        <!-- <div fxFlex (click)="GetSupportAttachment(supportAttachment?.name)" class="pdfLinkClass pl-8">
+                        <span style="font-weight: bold;font-size: 20px;">{{supportAttachment?.size}}</span>
+                      </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="supportLog.Status==='Closed'" [style.margin-top]="first?'':'-71px'" fxFlex>
+                  <div fxFlex fxLayout="column" style="height: 138px;" class="comment-container-arrow">
+                    <div fxFlex="100" class="p-4">
+                      <div class="pb-12"> <span class="pl-12 pb-12">{{supportLog.Remarks}}</span></div>
+                      <div *ngFor="let supportAttachment of SupportAttachments">
+                        <div *ngIf="supportAttachment?.SupportID===supportLog.ID" fxFlex
+                          (click)="GetSupportAttachment(supportAttachment?.AttachmentName,supportAttachment.AttachmentFile)"
+                          class="pdfLinkClass pl-8">
+                          <img class="attachmentIcon" src="assets/images/attachmentNew (1).png"
+                            (click)="GetSupportAttachment(supportAttachment?.AttachmentName,supportAttachment.AttachmentFile)">
+                          <span
+                            style="font-size: 12px;color: #3380d7;cursor: pointer !important;">{{supportAttachment?.AttachmentName}}</span>
+                        </div>
+                        <!-- <div fxFlex (click)="GetSupportAttachment(supportAttachment?.name)" class="pdfLinkClass pl-8">
+                        <span style="font-weight: bold;font-size: 20px;">{{supportAttachment?.size}}</span>
+                      </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div fxLayout class="px-32 mt-4">
+              <div fxFlex fxLayoutAlign="end">
+                <button class="float-add-button" mat-fab style="background-color: #f6b570"
+                  (click)="AddCommentClicked()">
+                  <mat-icon style="color: white;">add</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="IsProgressBarVisibile">
+    </div>
+  </div>
+</div>

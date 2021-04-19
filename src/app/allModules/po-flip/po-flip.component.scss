@@ -1,0 +1,463 @@
+@import "src/@fuse/scss/fuse";
+#po-flip {
+  background-color: white;
+  .center {
+    padding: 0px !important;
+    max-width: 2000px;
+    margin: 0 auto;
+
+    @include media-breakpoint-down(md) {
+      padding: 0 !important;
+    }
+    #headerCard {
+      position: fixed;
+      height: 50px;
+      box-shadow: 0 -5px 10px 0 rgba(0, 0, 0, 0.16);
+      background-color: #ffffff;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      margin-bottom: 0px;
+      z-index: 100;
+    }
+    .content-pos {
+      margin-top: -27px !important;
+    }
+    .content-card1 {
+      display: flex;
+      flex: 1;
+      position: relative;
+      border-radius: 10px;
+
+      //   .mat-sidenav-container {
+      //     display: flex;
+      //     flex: 1;
+      //     width: 100%;
+
+      //     > .mat-sidenav-content,
+      //     > .mat-drawer-content {
+      //       display: flex;
+      //       flex: 1 1 auto;
+      //       min-height: 100%;
+      //       height: auto;
+      //     }
+
+      //     > .mat-drawer-content {
+      //       max-width: 100%;
+      //     }
+
+      //     mat-sidenav {
+      //       display: flex;
+      //       flex-direction: column;
+      //       width: 400px;
+      //       max-width: 90%;
+      //       box-shadow: 0 0 1px rgba(0, 0, 0, 0.37);
+      //       overflow: hidden;
+      //     }
+      //   }
+    }
+  }
+  .outer {
+    position: relative;
+    z-index: 1;
+    .bg {
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-image: url("assets/images/header_2.png");
+      opacity: 0.1;
+      background-repeat: no-repeat;
+    }
+    width: 100%;
+    object-fit: contain;
+    line-height: 50px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .topbarClass {
+    background: url("/assets/images/backgrounds/header 2.png") no-repeat;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .progressBarPostion {
+    position: absolute !important;
+    top: 350px;
+    z-index: 1;
+    left: 55%;
+  }
+  .side-bar {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    .sidenav-content {
+      overflow: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+  .side-bar-items {
+    text-decoration: none !important;
+    display: flex;
+    align-items: center;
+    height: 50px;
+    padding: 0 24px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 0 25px 25px 0;
+    margin-right: 7px;
+  }
+  .search {
+    height: 36px;
+    line-height: 36px;
+    padding: 8px;
+    font-size: 13px;
+    // border-radius: 18px;
+    border: 1px solid;
+    overflow: hidden;
+    background-color: #ffffff;
+    border-color: #ffffff;
+    // border-color: rgba(0, 0, 0, 0.12);
+    @include mat-elevation(1);
+
+    mat-icon.s-16 {
+      color: rgba(0, 0, 0, 0.54) !important;
+    }
+
+    .icon {
+      margin: 0;
+      color: rgba(0, 0, 0, 0.54);
+    }
+
+    input {
+      padding: 0 12px 0 8px;
+      background-color: #ffffff;
+      height: 36px;
+      border: none;
+    }
+  }
+  .calendarImg {
+    height: 20px;
+    margin-bottom: 12px;
+  }
+  .mat-radio-outer-circle {
+    border-color: #44a200;
+  }
+  .mat-radio-inner-circle {
+    background-color: #44a200;
+  }
+  .cardHeader {
+    background-color: #fffdf9;
+  }
+  .sectionHeader {
+    font-weight: bold;
+    font-size: 18px;
+  }
+  .SaveBtn {
+    background-color: #efb577;
+    color: white;
+    margin-bottom: 8px;
+  }
+  .DeleteBtn {
+    background-color: white;
+    color: #efb577;
+  }
+  .SaveAsDraftBtn {
+    background-color: white;
+    color: #efb577;
+  }
+  @mixin TableBorderRight($color) {
+    border-right: 1px solid $color;
+  }
+  .TablePadFont {
+    padding: 5px;
+    font-size: 12px;
+    min-width: 100px !important;
+  }
+  .TableCommon {
+    padding: 5px;
+    font-size: 12px;
+    min-width: 50px !important;
+    white-space: nowrap;
+  }
+  table {
+    width: 100%;
+
+    th {
+      @include TableBorderRight(gray);
+      @extend .TableCommon;
+      // min-width: max-content !important;
+      color: white;
+      background-color: #121214;
+    }
+
+    td {
+      @include TableBorderRight(rgba(0, 0, 0, 0.12));
+      @extend .TableCommon;
+      // min-width: max-content !important;
+      &.QtyClass {
+        text-align: right;
+      }
+      .mat-form-field-underline {
+        display: none;
+      }
+    }
+
+    tr {
+      height: 40px;
+    }
+
+    .mat-sort-header-container {
+      display: flex;
+      // justify-content: center;
+    }
+  }
+  .abnormal {
+    .mat-form-field-flex > .mat-form-field-infix {
+      padding: 0.3em 0px !important;
+    }
+    .mat-form-field-label-wrapper {
+      top: -1.5em;
+    }
+    .mat-form-field-wrapper {
+      margin: 0 !important;
+      padding-bottom: 4px !important;
+      padding-top: 4px !important;
+    }
+    .mat-form-field-appearance-outline .mat-form-field-flex {
+      padding: 0 0.4em 0 0.4em;
+    }
+    .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+      transform: translateY(-1.1em) scale(0.75);
+      width: 133.33333%;
+    }
+    .mat-form-field-outline-start,
+    .mat-form-field-outline-end {
+      border-radius: 0 !important;
+    }
+  }
+  .tableLeftBorder {
+    border-left: 1px solid rgba(0, 0, 0, 0.12);
+  }
+  .tableCellBorder {
+    height: 20px;
+    vertical-align: middle;
+    width: 10px;
+    background-color: #d87e39;
+    opacity: 0.7;
+  }
+  .icon {
+    margin: 0;
+    color: rgba(0, 0, 0, 0.54);
+  }
+
+  //   input {
+  //     padding: 0 12px 0 8px;
+  //     background-color: #ffffff;
+  //     height: 36px;
+  //     border: none;
+  //   }
+  .mat-form-field-flex > .mat-form-field-infix {
+    padding: 0.3em 0px !important;
+  }
+  .mat-form-field-label-wrapper {
+    top: -1.5em;
+  }
+  .mat-form-field-wrapper {
+    margin: 1em 0 0 0;
+    padding-bottom: 1em;
+  }
+
+  .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+    transform: translateY(-1.1em) scale(0.75);
+    width: 133.33333%;
+  }
+  .Rectangle {
+    // width: 152px;
+    min-height: 45px;
+    border-radius: 9px;
+    border: solid 1px #cccccc;
+    background-color: #ffffff;
+    cursor: pointer !important;
+    border-left: 5px solid #abf7b9;
+  }
+  .Rectangle-1 {
+    // width: 152px;
+    min-height: 45px;
+    border-radius: 5px;
+    border: solid 2px #f4cda4;
+    cursor: pointer !important;
+  }
+  .Rectangle-106 {
+    width: 30px;
+    height: 25px;
+    opacity: 0.2;
+    border-radius: 2px;
+    background-color: #f9d2a8;
+  }
+  .tableCellBorder {
+    height: 20px;
+    vertical-align: middle;
+    width: 10px;
+    background-color: #d87e39;
+    opacity: 0.7;
+  }
+  .leftCard {
+    @include mat-elevation(2);
+    background: white;
+    border-left: 5px solid #efb577;
+    margin-left: 20px;
+    cursor: pointer !important;
+  }
+  .flip-rectangle-card {
+    cursor: pointer !important;
+    // height: 115px;
+    // border-radius: 7px;
+    border: solid 2px #e0e0e0;
+    background-color: #ffffff;
+    border-left: solid 8px #3380d7;
+  }
+  .doc-number {
+    // width: 90px;
+    // height: 33px;
+    // font-family: SegoeUI;
+    font-size: 16px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 0.77;
+    letter-spacing: 0.5px;
+    text-align: left;
+    color: #3e3e3e;
+    // padding: 20px;
+  }
+  .doc-date {
+    // width: 59px;
+    // height: 33px;
+    //font-family: SegoeUI;
+    font-size: 16px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 0.77;
+    letter-spacing: 0.5px;
+    text-align: left;
+    color: #3e3e3e;
+    // padding: 20px;
+  }
+  .no-flip-created-for-this-po {
+    // width: 349px;
+    // height: 33px;
+    //font-family: SegoeUI;
+    font-size: 16px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 0.77;
+    letter-spacing: 0.5px;
+    text-align: left;
+    color: #3e3e3e;
+  }
+  .alert {
+    width: 31.5px;
+    height: 27.4px;
+    object-fit: contain;
+  }
+  .flipInfoCard {
+    // @include mat-elevation(2);
+    // min-height: 80px;
+    /* padding: 10px !important; */
+    // border-radius: 0px 9px 9px 0px;
+    cursor: pointer !important;
+    width: 100%;
+    border: solid 2px #e0e0e0;
+    background-color: #ffffff;
+    border-left: solid 8px #3380d7;
+  }
+  .addIcon {
+    height: 20px;
+    margin-top: 25px;
+    padding-left: 4px;
+    cursor: pointer !important;
+  }
+  .Btn {
+    border: solid 2px #efb577;
+    // border-color: #efb577;
+    background-color: white;
+    color: #efb577;
+    height: 35px;
+    width: 25%;
+  }
+  .Btn1 {
+    border-color: #efb577;
+    background-color: #efb577;
+    color: white;
+    border-radius: 5px;
+    height: 40px;
+    width: 30%;
+  }
+  .title {
+    // border-bottom: 2px solid #efb577;
+    font-size: 20px;
+  }
+  .underline{
+    height: 2.5px;
+    width: 79px;
+    margin-top: 0px;
+    margin-left: 16px;
+}
+  .mat-input-element:disabled {
+    color: black;
+  }
+  // .addIcon {
+  //   height: 20px;
+  //   margin-top: 16px;
+  //   padding-left: 4px;
+  //   cursor: pointer !important;
+  // }
+  .addAttachmentClass {
+    margin-top: 25px;
+    color: #4784f7;
+    cursor: pointer !important;
+  }
+  .addBlueIcon {
+    @extend .addIcon;
+    margin-top: 0px;
+    height: 15px;
+  }
+  .attachClass {
+    // margin-top: 25px;
+    padding-left: 8px;
+    cursor: pointer !important;
+    color: #4784f7;
+  }
+
+  body.theme-default .mat-form-field-appearance-legacy .mat-form-field-underline {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+  }
+  .mat-header {
+    display: flex;
+    justify-content: center !important;
+  }
+  #footerCard {
+    position: fixed;
+    height: 50px;
+    box-shadow: 0 -5px 10px 0 rgba(0, 0, 0, 0.16);
+    background-color: #ffffff;
+    bottom: 40px;
+    left: 363px;
+    right: 0px;
+    margin-bottom: 0px;
+    z-index: 100;
+  }
+  .pdfLinkClass {
+    color: #1e8bed;
+    cursor: pointer;
+  }
+  .card-actions {
+    box-shadow: 0 -5px 10px 0 rgba(0, 0, 0, 0.16);
+  }
+}

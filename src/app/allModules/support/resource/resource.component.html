@@ -1,0 +1,189 @@
+<div id="resourcePage" class="page-layout carded" fusePerfectScrollbar>
+  <div class="center" fxLayout="column" fxLayoutGap="10px">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Resources</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="../../../../assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+
+    <div class="content" fxFlex fxLayout="column" fxLayoutGap="30px">
+      <div fxLayout="row" fxFlex="100%" fxLayoutAlign="space-around center">
+        <div fxFlex="40%">
+          <h2><strong>Resources</strong></h2>
+          <!-- <hr class="rightFlexHr"> -->
+          <div [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="rightFlexHr"></div>
+        </div>
+        <div fxFlex="60%">
+          <div class="search-wrapper" fxFlex fxLayout="row" fxLayoutAlign="start center">
+            <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+              <input [(ngModel)]="searchText" type="text" placeholder="Search your question" fxFlex="85">
+              <div fxFlex style="border-left: 1px solid #e1e1e1; height: 36px; margin-right: 10px;">
+              </div>
+              <!-- <mat-icon class="s-16">search</mat-icon>appearance="outline" -->
+              <div fxFlex="15">
+                <mat-form-field style="width: 100%;height: 56px; padding-right: 10px">
+                  <mat-label>Search</mat-label>
+                  <mat-select>
+                    <mat-option value="Option1">Option1</mat-option>
+                    <mat-option value="Option2">Option2</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div fxLayout="row" fxFlex="100%" fxLayoutAlign="space-around center" fxLayoutGap="20px">
+        <!-- <div fxFlex="50%"> -->
+        <mat-card (click)="onArticlesClicked()" fxFlex="50%" fxLayout="column" fxLayoutAlign="space-around center"
+          fxLayoutGap="20px" style="padding: 10px;  cursor: pointer;">
+          <!-- <mat-card-content class="staySafe"> -->
+          <div fxFlex>
+            <img src="../../../../assets/icons/custom/article.svg" style="height: 120px;">
+          </div>
+          <div fxFlex>
+            <span><strong style="font-size: 24px;">Articles</strong></span>
+          </div>
+          <div fxFlex style="text-align: center;line-height: 0.9 !important;
+          letter-spacing: -0.1px !important;">
+            <p>
+              Create new articles to add to the knowledge base, agents
+            </p>
+            <p>
+              can create, edit and view the articles. When you create the
+            </p>
+            <p>
+              article, create and assign the relavant category
+            </p>
+          </div>
+          <!-- </mat-card-content> -->
+        </mat-card>
+        <!-- <div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="20px">
+
+          </div> -->
+        <!-- </div> -->
+        <mat-card (click)="onFAQClicked()" fxFlex="50%" fxLayout="column" fxLayoutAlign="space-around center"
+          fxLayoutGap="20px" style="padding: 10px; cursor: pointer;">
+          <!-- <mat-card-content class="staySafe"> -->
+          <div fxFlex>
+            <img src="../../../../assets/icons/custom/question.svg" style="height: 120px;">
+          </div>
+          <div fxFlex>
+            <span><strong style="font-size: 24px;">Frequently Asked Questions</strong></span>
+          </div>
+          <div fxFlex style="text-align: center;line-height: 0.9 !important;
+          letter-spacing: -0.1px !important;">
+            <p>
+              Add the frequently asked question that you want to display
+            </p>
+            <p>
+              on the front page of your portal.When you create the FAQ,
+            </p>
+            <p>
+              create and design the relavant category
+            </p>
+          </div>
+          <!-- </mat-card-content> -->
+        </mat-card>
+      </div>
+    </div>
+
+    <!-- <div class="content">
+      <form autocomplete="off" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" novalidate
+        [formGroup]="SearchFormGroup">
+        <div fxLayout="row" fxFlex="100%" fxLayoutAlign="stretch">
+          <div fxFlex="40%">
+            <mat-form-field style="width: 80%;">
+              <input matInput placeholder="Date" [matDatepicker]="picker1" formControlName="FromDate"
+                (dateChange)="DateSelected()">
+              <mat-datepicker-toggle matSuffix [for]="picker1">
+                <img matDatepickerToggleIcon class="calendarImg" src="assets/images/calendar.png">
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div fxFlex="40%">
+            <mat-form-field style="width: 80%;">
+              <input matInput placeholder="Date" [matDatepicker]="picker2" formControlName="ToDate"
+                (dateChange)="DateSelected()">
+              <mat-datepicker-toggle matSuffix [for]="picker2">
+                <img matDatepickerToggleIcon class="calendarImg" src="assets/images/calendar.png">
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+            <div *ngIf="isDateError" class="DateError">
+              To date should not be less than from date
+            </div>
+          </div>
+          <div fxFlex="20" class="ml-44 mt-8" fxlayoutAlign="start center">
+            <button mat-raised-button class="SaveBtn" (click)="SearchClicked()">Search</button>
+          </div>
+        </div>
+      </form>
+    </div> -->
+    <!-- <div fxFlex class="content mt-8">
+      <div fxLayout="row" fxFlex="100%" fxLayoutAlign="stretch">
+        <table class="table" mat-table [dataSource]="PaymentDataSource" matSort>
+          <ng-container matColumnDef="PaymentDoc">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Payment Doc </th>
+            <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+              <div fxLayout>
+                <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                <div fxFlex class="pl-8"><u style="color: #6fa3e2;">{{element.PaymentDoc}}</u> </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Date">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Date </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.Date | date : 'dd/MM/yyyy'}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Amount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Amount </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.Amount}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Attachment">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Attachment </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="rectangle">
+                <div fxLayout="row" fxFlex="100%" fxLayoutAlign="stretch">
+                  <div fxFlex="25%" fxLayoutAlign="space-around center">
+                    <span class="rectangle-106"> <img style="vertical-align: -webkit-baseline-middle;"
+                        src="assets/images/imageIcon.png"></span>
+                  </div>
+                  <div fxFlex fxLayoutAlign="start center">
+                    {{element.Attachment}}
+                  </div>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Remark">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Remark </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.Remark}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="PaymentDisplayedColumns;sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: PaymentDisplayedColumns;let even=even" matRipple
+            style=" cursor: pointer;">
+          </tr>
+        </table>
+      </div>
+    </div> -->
+
+    <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="isProgressBarVisibile">
+    </div>
+  </div>
+</div>

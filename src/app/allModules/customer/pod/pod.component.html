@@ -1,0 +1,147 @@
+<div id="pod" class="page-layout carded fullwidth">
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>POD Due List</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div fxLayout class="content-card1">
+      <!-- <div fxFlex="23" class="side-bar" style="background-color: #f5f5f5">
+        <div class="sidenav-header">
+          <mat-toolbar>
+            <mat-toolbar-row fxLayout="row" class="px-8" fxLayoutAlign="space-between center">
+              <div class="search-wrapper" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                  <input [(ngModel)]="searchText" type="text" placeholder="Search" fxFlex>
+                  <mat-icon class="s-16">search</mat-icon>
+                </div>
+              </div>
+            </mat-toolbar-row>
+          </mat-toolbar>
+        </div>
+        <div class="sidenav-content" fusePerfectScrollbar fxFlex>
+          <div *ngFor="let usr of AllPODHeaders | filter: searchText">
+            <div>
+              <div class="mx-8 mb-8 mt-0 p-8 leftCard" (click)="LoadSelectedPOD(usr)"
+                [style.border-left-color]="SelectedInvoiceNumber==usr.InvoiceNumber?'#efb577':'#cccccc'">
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex><strong>{{usr.InvoiceNumber}}</strong></div>
+                  <div fxFlex align="end">{{usr.CreatedOn | date :'dd/MM/yyyy'}}</div>
+                </div>
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex><strong>PO : </strong>{{usr.DocNumber}}</div>
+                </div>
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex><strong>AWB : </strong>{{usr.InvoiceNumber}}</div>
+                </div>
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex>{{usr.VessleNumber}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="(AllPODHeaders | filter: searchText)?.length === 0" class="no-results-message">
+            <span class="pl-12"> No results..</span>
+          </div>
+        </div>
+        <div class="borderRight1"></div>
+      </div> -->
+      <mat-card fxFlex="100" class="side-bar p-0">
+        <div class="sidenav-content" fxFlex fxLayout="column">
+          <div class="px-12 mt-24">
+            <div *ngIf="!AllPODHeaders?.length" class="cl_norec"> 
+             
+                No Records Found
+             
+            </div>
+            <table *ngIf="AllPODHeaders?.length" mat-table [dataSource]="PODataSource" matSort>
+              <ng-container matColumnDef="InvoiceNumber">
+                <th mat-header-cell *matHeaderCellDef> Invoice Number </th>
+                <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+                  <div fxLayout>
+                    <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                    <div fxFlex class="pl-4">
+                      <span class="cursorPointer"
+                        (click)="GotoPODDetails(element.InvoiceNumber)">{{element.InvoiceNumber}}</span>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="InvoiceDate">
+                <th mat-header-cell *matHeaderCellDef> Invoice Date </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.InvoiceDate | date :'dd/MM/yyyy'}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="Amount">
+                <th mat-header-cell *matHeaderCellDef> Amount </th>
+                <td mat-cell *matCellDef="let element" class="QtyClass">
+                  {{element.Amount}}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="Currency">
+                <th mat-header-cell *matHeaderCellDef> Currency </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.Currency}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="DocNumber">
+                <th mat-header-cell *matHeaderCellDef> Document Number </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.DocNumber}}
+                </td>
+              </ng-container>
+
+
+              <ng-container matColumnDef="TruckNumber">
+                <th mat-header-cell *matHeaderCellDef> Truck Number </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.TruckNumber}}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="Transporter">
+                <th mat-header-cell *matHeaderCellDef> Transporter </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.Transporter}}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="VessleNumber">
+                <th mat-header-cell *matHeaderCellDef> Vessle Number </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.VessleNumber}}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="Status">
+                <th mat-header-cell *matHeaderCellDef> Status </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.Status}}
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="PODDisplayedColumns;sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: PODDisplayedColumns;let even=even">
+              </tr>
+            </table>
+         
+              <mat-paginator [ngStyle]="AllPODHeaders?.length ?  {'visibility': 'visible'} : {'visibility': 'hidden'}" [pageSizeOptions]="[10,50,100,250,500,1000]"></mat-paginator>
+         
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="IsProgressBarVisibile">
+    </div>
+
+  </div>
+</div>

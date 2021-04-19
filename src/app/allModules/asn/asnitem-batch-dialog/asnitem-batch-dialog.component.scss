@@ -1,0 +1,124 @@
+@import "src/@fuse/scss/fuse";
+.asn-item-batch-dialog {
+    @include media-breakpoint("xs") {
+        width: 100%;
+    }
+
+    @include media-breakpoint-up("sm") {
+        width: 1000px;
+    }
+    .mat-radio-button {
+        margin: 0 5px;
+    }
+    .mat-dialog-container {
+        padding: 0;
+        border-radius: 0px;
+    }
+
+    .dialog-content-wrapper {
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+    }
+    .toolBg {
+        background-color: #121214 !important;
+        color: white !important;
+    }
+    .btnBg {
+        background-color: #efb577 !important;
+        color: white !important;
+    }
+    .ErrorMessage {
+        color: #f44336;
+        font-size: 14px;
+        font-weight: bold;
+    }
+    @mixin TableBorderRight($color) {
+        border-right: 1px solid $color;
+    }
+    .TableCommon {
+        padding: 5px;
+        font-size: 14px;
+        min-width: 50px !important;
+        white-space: nowrap;
+    }
+    table {
+        width: 100%;
+
+        th {
+            @include TableBorderRight(gray);
+            @extend .TableCommon;
+            // min-width: max-content !important;
+            color: white !important;
+            background-color: #121214 !important;
+        }
+
+        td {
+            @include TableBorderRight(rgba(0, 0, 0, 0.12));
+            @extend .TableCommon;
+            // min-width: max-content !important;
+            &.QtyClass {
+                text-align: right;
+            }
+            .mat-form-field-underline {
+                display: none;
+            }
+        }
+
+        tr {
+            height: 40px;
+        }
+
+        .mat-sort-header-container {
+            display: flex;
+            justify-content: center;
+        }
+    }
+    .abnormal {
+        .mat-form-field-flex > .mat-form-field-infix {
+            padding: 0em 0px 0.6em !important;
+        }
+        .mat-form-field-appearance-outline {
+            .mat-form-field-suffix,
+            .mat-form-field-prefix {
+                top: 0.5em;
+                .mat-icon-button {
+                    width: 1.5em;
+                    height: 1.5em;
+                }
+            }
+        }
+        .mat-form-field-infix {
+            width: auto;
+        }
+        .mat-form-field-label-wrapper {
+            top: -1.5em;
+        }
+        .mat-form-field-wrapper {
+            margin: 0 0 0 0;
+            padding-bottom: 0em;
+        }
+        .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+            transform: translateY(-1.1em) scale(0.75);
+            width: 133.33333%;
+        }
+        .mat-form-field-outline-start,
+        .mat-form-field-outline-end {
+            border-radius: 0 !important;
+        }
+    }
+    .tableLeftBorder {
+        border-left: 1px solid rgba(0, 0, 0, 0.12);
+    }
+    .addIcon {
+        height: 26px;
+        margin-top: 25px;
+        padding-left: 8px;
+        cursor: pointer !important;
+    }
+    .removeIcon {
+        height: 20px;
+        padding-right: 16px;
+        cursor: pointer !important;
+    }
+}

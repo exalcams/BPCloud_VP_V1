@@ -1,0 +1,267 @@
+<div id="actioncenter" class="page-layout carded fullwidth" fusePerfectScrollbar>
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Action Center</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div class="content-card1" fxLayoutGap="15px" style="background-color: #F1F1F6;">
+      <!-- First Col -->
+      <mat-card fxFlex="30" class="side-bar p-0">
+        <div class="sidenav-content" fxFlex>
+          <div fxLayout="column" fxLayoutGap="15px">
+
+            <mat-card fxFlex="100%" style="padding: 10px;">
+              <mat-card-content>
+                <div style="background-color: #f2f7fe;">
+                  <div fxFlex fxLayout="column">
+                    <div fxFlex>
+                      <div fxLayout="row" fxLayoutGap="20px" style="padding:10px 10px 0px 10px">
+                        <div fxFlex>
+                          <h6>OUTSTANDING AMOUNT</h6>
+                        </div>
+                        <!-- <div fxFlex>
+                          <h6 style="padding-left: 25px;">AVAILABLE CREDITS</h6>
+                        </div> -->
+                      </div>
+                    </div>
+                    <div fxFlex>
+                      <div fxLayout="row" fxLayoutGap="20px" style="padding:10px 10px 10px 10px">
+                        <div fxFlex>
+                          <h2 style="font-weight: 500;color:#fea320 ;">
+                            ₹{{selectedFact?.OutstandingAmount}}</h2>
+                        </div>
+                        <!-- <div fxFlex>
+                          <h2 style="font-weight: 500;color:#29a747; padding-left: 25px;">
+                            ₹{{selectedFact?.CreditBalance}}</h2>
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <table style="width: 100%;">
+                    <tr>
+                      <td>
+                        <h6 style="padding:10px 0px 0px 10px">OUTSTANDING INVOICE</h6>
+                      </td>
+                      <td style="text-align: left;">
+                        <h6 style="padding:10px 10px 0px 10px">AVAILABLE CREDITS</h6>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <h2 style="padding:5px 0px 0px 10px;font-weight: 500;color:#fea320 ;">
+                          ₹{{selectedFact?.OutstandingAmount}}</h2>
+                      </td>
+                      <td style="text-align: left;">
+                        <h2 style="padding:5px 10px 0px 10px;font-weight: 500;color:#29a747">
+                          ₹{{selectedFact?.CreditBalance}}</h2>
+                      </td>
+                    </tr>
+                  </table> -->
+                </div>
+                <div>
+                  <table style="width: 100%;">
+                    <tr>
+                      <td>
+                        <h4 style="padding:10px 0px 0px 0px">Last Payment Received</h4>
+                      </td>
+                      <!-- <td>
+                      </td> -->
+                    </tr>
+                    <tr>
+                      <td>
+                        <h2 style="padding:5px 0px 0px 8px;font-weight:500;">₹{{selectedFact?.LastPayment}}</h2>
+                      </td>
+                      <td style="text-align: right;">
+                        <span>Payment on</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <!-- <td> <span style="padding-left: 8px;">Received for <span
+                            style="color:deepskyblue;">{{selectedFact?.CreditAmount}}</span></span>
+                      </td> -->
+                      <td></td>
+                      <td style="text-align: right;">
+                        <span><b>{{selectedFact?.LastPaymentDate | date :'dd/MM/yy'}}</b></span>
+                    </tr>
+                  </table>
+                </div>
+              </mat-card-content>
+            </mat-card>
+
+            <mat-card fxFlex="100%" style="padding: 10px;">
+
+              <h2 style="padding:0px 0px 5px 5px;"><strong>{{selectedFact?.Company}}</strong></h2>
+              
+              <!-- <mat-form-field style="padding: 0px 0px 5px 5px;width: 43%; height: 57px;">
+                <mat-select placeholder="Company" [(value)]="default_Company">
+                    <mat-option *ngFor="let fact1 of Fatc_list" [value]="fact1.Company"  (onSelectionChange)="getCompany(fact1)">{{fact1.Company}}
+                    </mat-option>
+                </mat-select>
+              </mat-form-field> -->
+              <h6 style="padding:5px 0px 5px 5px;">{{selectedFact?.Email1}}</h6>
+              <h5 style="padding:5px 0px 5px 5px;"> <span><img src="assets//images/phone-call.svg"> </span>
+                {{selectedFact?.Phone1}}
+              </h5>
+              <h5 style="padding:5px 0px 5px 5px;"> <span><img src="assets//images/noun_mobile phone_117228.svg">
+                </span>
+                {{selectedFact?.Phone2}}
+              </h5>
+              <!-- <h5 style="padding:5px 0px 5px 5px;">Vendor Type : <strong>{{selectedFact?.Type}}</strong></h5> -->
+              <hr>
+              <h6 style="padding:5px 0px 5px 5px;"><strong> GST Information</strong></h6>
+              <h5 style="padding:5px 0px 5px 5px;">GST Treatment : <strong>Registered Business - {{selectedFact?.MSME?'MSME':'Regular'}}</strong></h5>
+              <h5 style="padding:5px 0px 5px 5px;">Business GSTIN : <strong>{{selectedFact?.TaxID1}}</strong></h5>
+              <!-- </mat-card-content> -->
+            </mat-card>
+
+            <!-- <mat-card fxFlex="100%" style="padding: 10px;background-color: #e6e6e6 !important;">
+                <mat-card-content>
+                  <div fxFlex fxLayout>
+                    <div fxFlex fxLayoutAlign="start center">
+                      <span class="view-more-details">View more details/Change</span>
+                    </div>
+                    <div fxFlex fxLayoutAlign="end center">
+                      <span><img src="assets//images/ellipsis.png" style="height: 25px;width: 40px;"></span>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card> -->
+
+          </div>
+        </div>
+        <mat-card-actions class="m-0 card-actions" style="cursor: pointer;" (click)="onFactSheetButtonClicked()">
+          <div fxFlex fxLayout>
+            <div fxFlex="75" fxLayoutAlign="start center">
+              <span class="view-more-details">{{'DASHBOARD.VIEW_MORE_DETAILS' | translate}}</span>
+            </div>
+            <div fxFlex="25" fxLayoutAlign="end center">
+              <!-- <span><img src="assets//images/ellipsis.png" style="height: 25px;width: 40px;"></span> -->
+              <span>
+                <button mat-icon-button [matMenuTriggerFor]="menu1" aria-label="Example icon-button with a menu">
+                  <mat-icon style="font-size: 34px !important;">more_horiz</mat-icon>
+                </button>
+                <mat-menu #menu1="matMenu">
+                  <button mat-menu-item (click)="onFactSheetButtonClicked()">
+                    <mat-icon>dialpad</mat-icon>
+                    <span>Factsheet</span>
+                  </button>
+                </mat-menu>
+              </span>
+            </div>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+      <!-- First Col -->
+
+      <!-- Second Col -->
+      <div fxFlex="40">
+        <div fxLayout="column" fxLayoutGap="15px" style="height: 100%;padding-top: 15px;">
+          <mat-card fxFlex="50%" style="padding: 10px;">
+            <mat-card-content class="staySafe" [style.backgroundImage]="getCard1URL()">
+              <div class="translucentDiv">
+                <div>
+                  <ul>
+                    <li><b>1. STAY </b>home</li>
+                    <li><b>2. KEEP </b>a safe distance</li>
+                    <li><b>3. WASH </b>hands often</li>
+                    <li><b>4. COVER </b>your cough</li>
+                    <li><b>5. SICK? </b>Call the helpline</li>
+                  </ul>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <mat-card fxFlex="50%" style="padding: 10px;">
+            <mat-card-content class="safetyFirst" [style.backgroundImage]="getCard2URL()">
+            </mat-card-content>
+            <!-- <mat-card-content *ngIf="!AttachmentData2" class="safetyFirst">
+            </mat-card-content> -->
+          </mat-card>
+        </div>
+      </div>
+      <!-- Second Col -->
+
+      <!-- Third Col -->
+      <div fxFlex="30" style="height: 100%;background-color: white;">
+        <div fxLayout="column" style="padding: 15px 15px 10px 15px;">
+          <div fxFlex>
+            <h2 style="font-weight: 500;margin: 0px;">
+              <span style="margin:0px 5px 0px 0px;">
+                <img style="width: 32px;
+                height: 32px; margin-top: 5px;" src="assets//images/bot.png">
+              </span>
+              {{'DASHBOARD.SUGGESTED_ACTIONS' | translate}}
+              <span>
+                <button style="height: 25px;width: 40px;float: right;" mat-icon-button [matMenuTriggerFor]="menu"
+                  aria-label="Example icon-button with a menu">
+                  <mat-icon style="font-size: 34px !important;">more_horiz</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <!-- <button mat-menu-item (click)="onAcceptAllButtonClicked()">
+                    <mat-icon>done_all</mat-icon>
+                    <span>Approve All</span>
+                  </button> -->
+                  <button mat-menu-item (click)="onClearAllButtonClicked()">
+                    <mat-icon>notifications_off</mat-icon>
+                    <span>{{'DASHBOARD.CLEAR_ALL' | translate}}</span>
+                  </button>
+                </mat-menu>
+              </span>
+
+            </h2>
+          </div>
+          <!-- <hr class="rightFlexHr"> -->
+          <p [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="underline"></p>
+          <div fxFlex>
+            <mat-tab-group mat-align-tabs="start">
+              <mat-tab label="Action ({{actions?.length}})" class="mat_lable">
+                <div *ngFor="let actionData of actions;let i=index">
+                  <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-top: 20px;">
+                    <p class="line" [ngStyle]="{'background-color':getColor(actionData.AppID)}"
+                      [style.height]="actionData.Action === 'Accept'?'120px':'81px'"></p>
+                    <mat-toolbar class="Rectangle-46">
+                      <mat-toolbar-row class="cl_toolbar_row">
+                        <span class="ActionUpperText">{{actionData.ActionText}}</span>
+                      </mat-toolbar-row>
+
+                      <mat-toolbar-row class="cl_toolbar_row" *ngIf="actionData.Action === 'Accept'">
+                        <span class="ActionUpperText">Do you want to <b>Confirm?</b> </span>
+
+                        <span class="cl_spacer"></span>
+                        <div fxFlex fxLayout.md="column" fxLayoutGap="20px">
+                          <button mat-flat-button class="ActionBTnYes" (click)="YesClicked(actionData)">Yes</button>
+                          <button mat-flat-button class="ActionBTnNo" (click)="NoClicked(actionData)">No</button>
+                        </div>
+
+                      </mat-toolbar-row>
+
+                      <mat-toolbar-row>
+                        <span class="ActionLowerText">{{actionData.Date | date:'dd/MM/yyyy'}},
+                          {{actionData.Time}}</span>
+                        <span class="cl_spacer"></span>
+                        <button *ngIf="actionData.Action != 'Accept'" mat-flat-button class="ActionBTn"
+                          (click)="ActionClicked(actionData)">{{actionData.Action}}</button>
+                      </mat-toolbar-row>
+                    </mat-toolbar>
+                  </div>
+                </div>
+              </mat-tab>
+              <mat-tab label="Notification (0)"></mat-tab>
+            </mat-tab-group>
+          </div>
+
+        </div>
+      </div>
+      <!-- Third Col -->
+    </div>
+    <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="isProgressBarVisibile">
+    </div>
+  </div>
+</div>

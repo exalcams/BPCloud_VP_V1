@@ -1,0 +1,417 @@
+<div id="poddetail" class="page-layout carded fullwidth">
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>POD Due List</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div fxLayout class="content-card1">
+      <!-- <div fxFlex="23" class="side-bar" style="background-color: #f5f5f5">
+        <div class="sidenav-header">
+          <mat-toolbar>
+            <mat-toolbar-row fxLayout="row" class="px-8" fxLayoutAlign="space-between center">
+              <div class="search-wrapper" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                  <input [(ngModel)]="searchText" type="text" placeholder="Search" fxFlex>
+                  <mat-icon class="s-16">search</mat-icon>
+                </div>
+              </div>
+            </mat-toolbar-row>
+          </mat-toolbar>
+        </div>
+        <div class="sidenav-content" fusePerfectScrollbar fxFlex>
+          <div *ngFor="let usr of AllPODHeaders | filter: searchText">
+            <div>
+              <div class="mx-8 mb-8 mt-0 p-8 leftCard" (click)="LoadSelectedPOD(usr)"
+                [style.border-left-color]="SelectedInvoiceNumber==usr.InvoiceNumber?'#efb577':'#cccccc'">
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex><strong>{{usr.InvoiceNumber}}</strong></div>
+                  <div fxFlex align="end">{{usr.CreatedOn | date :'dd/MM/yyyy'}}</div>
+                </div>
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex><strong>PO : </strong>{{usr.DocNumber}}</div>
+                </div>
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex><strong>AWB : </strong>{{usr.InvoiceNumber}}</div>
+                </div>
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex>{{usr.VessleNumber}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="(AllPODHeaders | filter: searchText)?.length === 0" class="no-results-message">
+            <span class="pl-12"> No results..</span>
+          </div>
+        </div>
+        <div class="borderRight1"></div>
+      </div> -->
+      <mat-card fxFlex="100" class="side-bar p-0">
+        <div class="sidenav-content" fxFlex fxLayout="column">
+          <div class="px-12 mt-4">
+            <form autocomplete="off" class="normal" fxLayout="column" fxLayoutAlign="start" name="form" novalidate
+              [formGroup]="PODFormGroup">
+
+              <div fxFlex fxLayout="row wrap">
+                <div fxFlex="24">
+                  <mat-form-field class="pl-8 pr-24" style="width: 100%;">
+                    <input matInput placeholder="Invoice Number" formControlName="InvoiceNumber">
+                    <mat-error
+                      *ngIf="PODFormGroup.get('InvoiceNumber').touched && PODFormGroup.get('InvoiceNumber').hasError('required')">
+                      Invoice Number is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="25">
+                  <mat-form-field class="px-24" style="width: 100%;">
+                    <input matInput placeholder="Invoice Date" [matDatepicker]="picker0" formControlName="InvoiceDate"
+                      [max]="maxDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker0">
+                      <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon" class="mb-12"></mat-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #picker0></mat-datepicker>
+                    <mat-error
+                      *ngIf="PODFormGroup.get('InvoiceDate').touched && PODFormGroup.get('InvoiceDate').hasError('required')">
+                      Invoice Date is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="24" fxLayout>
+                  <div fxFlex='60'>
+                    <mat-form-field class="pl-8 pr-8" style="width: 100%;">
+                      <input matInput placeholder="Amount" formControlName="Amount" (keydown)="decimalOnly($event)"
+                        (keyup)="AmountSelected()">
+                      <mat-error
+                        *ngIf="PODFormGroup.get('Amount').touched && PODFormGroup.get('Amount').hasError('required')">
+                        Amount is required
+                      </mat-error>
+                      <mat-error *ngIf="PODFormGroup.get('Amount').touched && !PODFormGroup.get('Amount').hasError('required')
+          &&PODFormGroup.get('Amount').hasError('pattern')">
+                        Enter a valid number
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex='40'>
+                    <mat-form-field class="pr-24" style="width: 100%;">
+                      <mat-select formControlName="Currency">
+                        <mat-option *ngFor="let count of AllCurrencies" [value]="count.CurrencyCode">
+                          {{count.CurrencyCode}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error
+                        *ngIf="PODFormGroup.get('Currency').touched && PODFormGroup.get('Currency').hasError('required')">
+                        Currency is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+               
+                <div fxFlex="24">
+                  <mat-form-field class="pl-8 pr-24" style="width: 100%;">
+                    <input matInput placeholder="DocNumber" formControlName="DocNumber">
+                    <mat-error
+                      *ngIf="PODFormGroup.get('DocNumber').touched && PODFormGroup.get('DocNumber').hasError('required')">
+                      DocNumber is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div fxFlex="24">
+                  <mat-form-field class="pl-8  px-24" style="width: 100%;">
+                    <input matInput placeholder="Truck number" formControlName="TruckNumber">
+                    <mat-error
+                      *ngIf="PODFormGroup.get('TruckNumber').touched && PODFormGroup.get('TruckNumber').hasError('required')">
+                      Truck Number is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="25">
+                  <mat-form-field class="px-24" style="width: 100%;">
+                    <input matInput placeholder="Transporter" formControlName="Transporter">
+                    <mat-error
+                      *ngIf="PODFormGroup.get('Transporter').touched && PODFormGroup.get('Transporter').hasError('required')">
+                      Transporter is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+               
+                <div fxFlex="24">
+                  <mat-form-field class="pl-8 pr-24" style="width: 100%;">
+                    <input matInput placeholder="Vessel number" formControlName="VessleNumber">
+                    <mat-error
+                      *ngIf="PODFormGroup.get('VessleNumber').touched && PODFormGroup.get('VessleNumber').hasError('required')">
+                      Vessel number is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <!-- <div fxFlex="50" fxLayout>
+                  <div fxFlex='60'>
+                    <mat-form-field class="pl-8 pr-8" style="width: 100%;">
+                      <input matInput placeholder="Amount" formControlName="Amount" (keydown)="decimalOnly($event)"
+                        (keyup)="AmountSelected()">
+                      <mat-error
+                        *ngIf="PODFormGroup.get('Amount').touched && PODFormGroup.get('Amount').hasError('required')">
+                        Amount is required
+                      </mat-error>
+                      <mat-error *ngIf="PODFormGroup.get('Amount').touched && !PODFormGroup.get('Amount').hasError('required')
+          &&PODFormGroup.get('Amount').hasError('pattern')">
+                        Enter a valid number
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex='40'>
+                    <mat-form-field class="pr-24" style="width: 100%;">
+                      <mat-select formControlName="Currency">
+                        <mat-option *ngFor="let count of AllCurrencies" [value]="count.CurrencyCode">
+                          {{count.CurrencyCode}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error
+                        *ngIf="PODFormGroup.get('Currency').touched && PODFormGroup.get('Currency').hasError('required')">
+                        Currency is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div> -->
+
+                
+                <div fxFlex="25">
+                  <mat-form-field class=" pl-8 px-24" style="width: 100%;">
+                    <input matInput placeholder="Status" formControlName="Status">
+                    <mat-error
+                      *ngIf="PODFormGroup.get('Status').touched && PODFormGroup.get('Status').hasError('required')">
+                      Status is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <!-- <div fxFlex="25">
+                  <mat-form-field class="px-24" style="width: 100%;">
+                    <input matInput placeholder="DocNumber" formControlName="DocNumber">
+                    <mat-error
+                      *ngIf="PODFormGroup.get('DocNumber').touched && PODFormGroup.get('DocNumber').hasError('required')">
+                      DocNumber is required
+                    </mat-error>
+                  </mat-form-field>
+                </div> -->
+              </div>
+            </form>
+          </div>
+          <div class="px-12 mt-4">
+            <form autocomplete="off" class="abnormal" name="form" novalidate [formGroup]="PODItemFormGroup">
+              <div style="overflow-x:auto;">
+                <table *ngIf="(SelectedPODView?.PODItems && SelectedPODView?.PODItems?.length)" class="table" mat-table
+                  [dataSource]="PODItemDataSource" formArrayName="PODItems">
+
+                  <ng-container matColumnDef="Item">
+                    <th mat-header-cell *matHeaderCellDef> Item </th>
+                    <td mat-cell *matCellDef="let element;let odd=odd;let index=index" [formGroupName]="index"
+                      class="tableLeftBorder pl-0">
+                      <div fxLayout>
+                        <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                        <div fxFlex class="pl-4">
+                          {{PODItemFormGroup.get('PODItems')?.controls[index]?.get('Item')?.value}}
+                        </div>
+                      </div>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Material">
+                    <th mat-header-cell *matHeaderCellDef> Material </th>
+                    <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index">
+                      <!-- <input matInput formControlName="MaterialText">  -->
+                      {{PODItemFormGroup.get('PODItems')?.controls[index]?.get('Material')?.value}}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="MaterialText">
+                    <th mat-header-cell *matHeaderCellDef> Material Text </th>
+                    <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index">
+                      <!-- <input matInput formControlName="MaterialText">  -->
+                      {{PODItemFormGroup.get('PODItems')?.controls[index]?.get('MaterialText')?.value}}
+                    </td>
+                  </ng-container>
+
+
+                  <ng-container matColumnDef="Qty">
+                    <th mat-header-cell *matHeaderCellDef> Qty </th>
+                    <td mat-cell class="QtyClass" *matCellDef="let element; let index = index" [formGroupName]="index">
+                      <!-- <input matInput formControlName="Qty">  -->
+                      {{PODItemFormGroup.get('PODItems')?.controls[index]?.get('Qty')?.value}}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="ReceivedQty">
+                    <th mat-header-cell *matHeaderCellDef style="width: 120px;"> Received Qty </th>
+                    <td mat-cell class="QtyClass" style="width: 120px;" *matCellDef="let element; let index = index"
+                      [formGroupName]="index">
+                      <mat-form-field appearance="outline" style="width: 100px;">
+                        <input matInput formControlName="ReceivedQty" (keydown)="decimalOnly($event)" (change)="Qty($event)" >
+                        <mat-error *ngIf="PODItemFormGroup.get('PODItems').controls[index]?.get('ReceivedQty').touched && 
+                        PODItemFormGroup.get('PODItems').controls[index]?.get('ReceivedQty').hasError('required')">
+                          *
+                        </mat-error>
+                        <mat-error *ngIf="PODItemFormGroup.get('PODItems').controls[index]?.get('ReceivedQty').touched && 
+                        !PODItemFormGroup.get('PODItems').controls[index]?.get('ReceivedQty').hasError('required')&&
+                        PODItemFormGroup.get('PODItems').controls[index]?.get('ReceivedQty').hasError('pattern')">
+                          *
+                        </mat-error>
+                        <!-- <mat-error *ngIf="
+                        PODItemFormGroup.get('PODItems').controls[index]?.get('MissingQty').hasError('qty') ?   PODItemFormGroup.get('PODItems').controls[index]?.get('MissingQty').
+                       ">
+                          *
+                        </mat-error> -->
+                       <!-- <div *ngIf="PODItemFormGroup.get('PODItems').controls[index]?.get('ReceivedQty').value"></div> -->
+                      </mat-form-field>
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="MissingQty">
+                    <th mat-header-cell *matHeaderCellDef style="width: 120px;"> Missing Qty</th>
+                    <td mat-cell class="QtyClass" style="width: 120px;" *matCellDef="let element; let index = index"
+                      [formGroupName]="index">
+                      <mat-form-field appearance="outline" style="width: 100px;">
+                        <input matInput formControlName="MissingQty" (keydown)="decimalOnly($event)" (change)="Qty($event)">
+                        <!-- <mat-error *ngIf="PODItemFormGroup.get('PODItems').controls[index]?.get('MissingQty').touched && 
+                        PODItemFormGroup.get('PODItems').controls[index]?.get('MissingQty').hasError('required')">
+                          *
+                        </mat-error> -->
+                        <mat-error *ngIf="PODItemFormGroup.get('PODItems').controls[index]?.get('MissingQty').touched && 
+                        !PODItemFormGroup.get('PODItems').controls[index]?.get('MissingQty').hasError('required')&&
+                        PODItemFormGroup.get('PODItems').controls[index]?.get('MissingQty').hasError('pattern')">
+                          *
+                        </mat-error>
+                        <mat-error *ngIf="PODItemFormGroup.get('PODItems').controls[index]?.get('MissingQty').touched && 
+                        !PODItemFormGroup.get('PODItems').controls[index]?.get('MissingQty').hasError('required')&&
+                        PODItemFormGroup.get('PODItems').controls[index]?.get('MissingQty').hasError('min') && 
+                        PODItemFormGroup.get('PODItems').controls[index]?.get('MissingQty').hasError('max')">
+                          *
+                        </mat-error>
+                      </mat-form-field>
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="BreakageQty">
+                    <th mat-header-cell *matHeaderCellDef style="width: 120px;"> Breakage Qty</th>
+                    <td mat-cell class="QtyClass" style="width: 120px;" *matCellDef="let element; let index = index"
+                      [formGroupName]="index">
+                      <mat-form-field appearance="outline" style="width: 100px;">
+                        <input matInput formControlName="BreakageQty" (keydown)="decimalOnly($event)" (change)="Qty($event)">
+                        <!-- <mat-error *ngIf="PODItemFormGroup.get('PODItems').controls[index]?.get('BreakageQty').touched && 
+                        PODItemFormGroup.get('PODItems').controls[index]?.get('BreakageQty').hasError('required')">
+                          *
+                        </mat-error> -->
+                        <mat-error *ngIf="PODItemFormGroup.get('PODItems').controls[index]?.get('BreakageQty').touched && 
+                        !PODItemFormGroup.get('PODItems').controls[index]?.get('BreakageQty').hasError('required')&&
+                        PODItemFormGroup.get('PODItems').controls[index]?.get('BreakageQty').hasError('pattern')">
+                          *
+                        </mat-error>
+                      </mat-form-field>
+                    </td>
+                  </ng-container>
+
+                
+
+                  <ng-container matColumnDef="AcceptedQty">
+                    <th mat-header-cell *matHeaderCellDef style="width: 120px;"> POD Qty</th>
+                    <td mat-cell class="QtyClass editable" *matCellDef="let element; let index = index"
+                      [formGroupName]="index" style="width: 120px;">
+                      <mat-form-field appearance="outline" style="width: 100px;">
+                        <input matInput formControlName="AcceptedQty" (keydown)="decimalOnly($event)" (change)="Qty($event)">
+                        <mat-error *ngIf="PODItemFormGroup.get('PODItems').controls[index]?.get('AcceptedQty').touched && 
+                        PODItemFormGroup.get('PODItems').controls[index]?.get('AcceptedQty').hasError('required')">
+                          *
+                        </mat-error>
+                        <mat-error *ngIf="PODItemFormGroup.get('PODItems').controls[index]?.get('AcceptedQty').touched && 
+                        !PODItemFormGroup.get('PODItems').controls[index]?.get('AcceptedQty').hasError('required')&&
+                        PODItemFormGroup.get('PODItems').controls[index]?.get('AcceptedQty').hasError('pattern')">
+                          *
+                        </mat-error>
+                      </mat-form-field>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Reason">
+                    <th mat-header-cell *matHeaderCellDef style="width: 180px;"> Reason</th>
+                    <td mat-cell *matCellDef="let element; let index = index" style="width: 180px;"
+                      [formGroupName]="index" class="editable">
+                      <mat-form-field appearance="outline" style="width: 150px;">
+                        <!-- <input matInput formControlName="Reason"> -->
+                        <mat-select formControlName="Reason">
+                          <mat-option *ngFor="let count of AllReasons" [value]="count.ReasonText">
+                            {{count.ReasonText}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="PODItemFormGroup.get('PODItems').controls[index]?.get('Reason').touched && 
+                        PODItemFormGroup.get('PODItems').controls[index]?.get('Reason').hasError('required')">
+                          *
+                        </mat-error>
+                      </mat-form-field>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="AttachmentName">
+                    <th mat-header-cell *matHeaderCellDef> Attach</th>
+                    <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index"
+                      style="text-align: center;cursor: pointer;" (click)="CheckPODItemAttachment(index)">
+                      <div style="margin-top: 3px; margin-left: 15px;">
+                        <span
+                          [matBadge]="PODItemFormGroup.get('PODItems')?.controls[index]?.get('AttachmentName')?.value?'1':'0'"
+                          matBadgeColor="accent" matBadgeOverlap="false"></span>
+                      </div>
+                      <img style="height: 30px;cursor: pointer;" src="assets/images/attachment.png">
+                      <input hidden type="file" #fileInput1 id="file" (change)="handleFileInput($event,index)" />
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Remarks">
+                    <th mat-header-cell *matHeaderCellDef> Remarks</th>
+                    <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index"
+                      style="text-align: center;">
+                      <mat-icon (click)="MenuBookClicked(index)">menu_book</mat-icon>
+                      <!-- <mat-form-field appearance="outline" style="width: 150px;">
+                        <input matInput formControlName="Remarks">
+                        <mat-error *ngIf="PODItemFormGroup.get('PODItems').controls[index]?.get('Remarks').touched && 
+                        PODItemFormGroup.get('PODItems').controls[index]?.get('Remarks').hasError('required')">
+                          *
+                        </mat-error>
+                      </mat-form-field> -->
+                    </td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="PODItemDisplayedColumns;sticky: true"></tr>
+                  <tr mat-row *matRowDef="let row; columns: PODItemDisplayedColumns;let even=even">
+                  </tr>
+                </table>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- <div fxLayout id="footerCard">
+          <div fxLayout fxFlex class="my-8 px-12" fxLayoutAlign="end">
+            <button mat-stroked-button class="SaveBtn" (click)="SaveClicked()">Save</button>
+          </div>
+        </div> -->
+        <mat-card-actions class="m-0 pl-12 pr-16 cardActions">
+          <div fxLayout fxLayoutAlign="space-between center">
+            <div fxFlex>
+              <button *ngIf="SelectedPODHeader?.InvoiceNumber && SelectedPODHeader?.Status!='Submitted' " mat-stroked-button class="DeleteBtn mr-4 mb-8"
+                (click)="DeleteClicked()">Delete</button>
+            </div>
+            <div fxFlex align="end">
+              <button *ngIf="SelectedPODHeader?.InvoiceNumber && SelectedPODHeader?.Status!='Submitted'" mat-stroked-button class="SaveBtn mr-8"
+                (click)="SaveClicked()">Save</button>
+              <button *ngIf="SelectedPODHeader?.InvoiceNumber" mat-raised-button class="SubmitBtn"
+                (click)="SubmitClicked()">Submit</button>
+            </div>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="IsProgressBarVisibile">
+    </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+<div class="DialogDiv">
+  <mat-dialog-content id="DialogContent">
+    <iframe [src]="AttachmentData" type="application/pdf"
+      [ngStyle]="{'width': getWidth(),'height':getHeight()}"></iframe>
+    <div fxLayout="row" fxLayoutAlign="end center" >
+      <button mat-button mat-dialog-close style="margin-top: 7px;
+      margin-right: 7px;" class="dialogCloseBtn">Close</button>
+    </div>
+  </mat-dialog-content>
+</div>

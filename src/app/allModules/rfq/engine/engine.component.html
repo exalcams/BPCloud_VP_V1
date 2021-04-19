@@ -1,0 +1,250 @@
+<div id="rfqengine" class="page-layout carded fullwidth">
+  <div class="center" fxLayout="column" fxLayoutGap="10px">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>RFQ Engine</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <!-- <div fxLayout class="content-card1">
+    </div> -->
+    <div fxFlex>
+      <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="50px" style="padding-left: 30px;padding-right: 50px;">
+        <div fxFlex="25">
+          <mat-card class="card_height">
+            <div fxFlex fxLayout="column" class="Gap_class">
+              <div>
+                <span class="title"><strong>Overall Statistics </strong></span>
+                <div class="divider_All"></div>
+              </div>
+              <div>
+                <div fxLayout="row" fxLayoutAlign="space-between end" style="margin-top: 25px;font-weight: 600;
+                                color: #485865;">
+                  <label>Total RFx</label>
+                  <label>40%</label>
+                </div>
+                <div class="progress_first">
+                  <div class="progress_first1"></div>
+                </div>
+              </div>
+              <div>
+                <div fxLayout="row" fxLayoutAlign="space-between end" style="margin-top: 15px;font-weight: 600;
+                              color: #485865;">
+                  <label>Total Rewards Spend</label>
+                  <label>21%</label>
+                </div>
+                <div class="progress_second">
+                  <div class="progress_second1"></div>
+                </div>
+              </div>
+              <div>
+                <div fxLayout="row" fxLayoutAlign="space-between end" style="margin-top: 15px;font-weight: 600;
+                            color: #485865;">
+                  <label>Cost Saved</label>
+                  <label>78%</label>
+                </div>
+                <div class="progress_third">
+                  <div class="progress_third1"></div>
+                </div>
+              </div>
+            </div>
+
+          </mat-card>
+        </div>
+        <div fxFlex="25">
+          <mat-card class="card_height">
+            <div fxFlex fxLayout="column" fxLayoutGap="20px" class="Gap_class">
+              <div fxFlex>
+                <span class="title"><strong>Supplier Turnaround </strong></span>
+                <div class="divider"></div>
+                <div fxLayout="row">
+                  <div fxFlex="65">
+                    <div>
+
+                      <svg width="120" height="120" viewBox="0 0 120 120" class="progress__svg">
+                        <circle [attr.r]="radius" cx="60" cy="60" stroke-width="1" class="progress__meter" />
+                        <text text-anchor="middle" alignment-baseline="middle" transform="rotate(90,70,70)">
+                          <tspan x="60" y="75" dy="0.18em" font-size="20" class="font_class">102</tspan>
+                          <tspan x="60" y="75" dy="1.82em" font-size="10" class="progressSubtitle">Days Remaining
+                          </tspan>
+                        </text>
+                      </svg>
+                      <canvas id="doughnut1" style="margin-top: -140px;
+                                  margin-left: -35px;">
+
+                      </canvas>
+
+                    </div>
+                  </div>
+                  <div fxFlex="5" fxLayoutAlign="center">
+                    <div class="verticalbar"></div>
+                  </div>
+                  <div fxFlex="30" fxLayout="column" fxLayoutAlign="space-evenly center">
+                    <div>
+                      <p class="UnderlineText">On Time</p>
+                      <p class="NumberAlign">12</p>
+                    </div>
+                    <div>
+                      <p class="UnderlineText">Delayed</p>
+                      <p class="NumberAlign">1</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card>
+          <!-- <mat-card class="card_height"> -->
+          <!-- <div fxFlex fxLayout="column" fxLayoutGap="20px" class="Gap_class">
+                          <div fxFlex>
+                              <span class="title"><strong>Status </strong></span>
+                              <div class="divider_status"></div>
+                          </div>
+                          <div >
+                            <canvas  id="doughnut1" style="    display: block;
+                            height: 150px;
+                            width: 235px !important;
+                            margin-top: -21px;"  >
+           
+                            </canvas>
+                            </div>
+                           
+                      </div>
+                  </mat-card> -->
+        </div>
+        <div fxFlex="25">
+          <mat-card class="card_height">
+            <div fxFlex fxLayout="column" fxLayoutGap="20px" class="Gap_class">
+              <div fxFlex>
+                <span class="title"><strong>Status </strong></span>
+                <div class="divider_status"></div>
+              </div>
+              <div id="doughnutChart" fxFlex fxLayoutAlign="center">
+                <canvas class="doughnut_chart" baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels"
+                  [chartType]="doughnutChartType" [options]="doughnutChartOptions" [colors]="colors">
+                </canvas>
+              </div>
+              <div fxLayoutAlign="center" class="Status_cls">RFQ Status</div>
+            </div>
+          </mat-card>
+        </div>
+        <div fxFlex="25">
+          <mat-card class="card_height">
+            <div fxFlex fxLayout="column" fxLayoutGap="20px" class="Gap_class">
+              <div fxFlex>
+                <span class="title"><strong>Plant RFx </strong></span>
+                <div class="divider_plant"></div>
+              </div>
+              <div id="barChart" fxFlex fxLayoutAlign="start" class="pt-0 px-8">
+                <canvas class="bar_chart" #barCanvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
+                  [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" [colors]="barColors">
+                </canvas>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+
+    </div>
+
+    <div fxFlex fxLayout="row" fxLayoutAlign="start" class="Layout_style">
+      <div fxFlex="75">
+        <img src="assets/images/search.png" width="17px" height="17px" class="searchImg">
+        <input type="text" placeholder="Search" class="search-input">
+
+      </div>
+      <div fxFlex="25" fxLayoutAlign="end">
+
+        <mat-form-field appearance="outline" style="height: 35px;margin-top: -7px;">
+          <mat-label style="    margin-top: -10px !important;">Select an option</mat-label>
+          <mat-select style="    margin-top: -10px !important;">
+            <mat-option>None</mat-option>
+            <mat-option value="option1">Yet to convert RFq</mat-option>
+            <!-- <mat-option (click)="ondesc()" value="option4">descending</mat-option> -->
+            <!-- <mat-option value="option1">Option 1</mat-option> -->
+            <mat-option value="option2">All</mat-option>
+            <mat-option value="option3">Null</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+
+
+    </div>
+
+    <table class="table" mat-table [dataSource]="RFQDataSource" matSort>
+      <ng-container matColumnDef="Type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 5%;"> Type </th>
+        <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+          <div fxLayout>
+            <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+            <div fxFlex class="pl-4">{{element.Type}} </div>
+          </div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="RFQID">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%;"> RFQ ID </th>
+        <td mat-cell *matCellDef="let element" style="font-weight: 600;">
+          {{element.RFQID}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%;"> Date </th>
+        <td mat-cell *matCellDef="let element" style="font-weight: 600;">
+          {{element.Date}} </td>
+      </ng-container>
+      <ng-container matColumnDef="full">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Fulfilment </th>
+        <td mat-cell *matCellDef="let element">
+
+          <div class="progress">
+            <ul>
+              <li>
+                <p>Invited</p>
+                <p class="fa"></p>
+                <p>20</p>
+              </li>
+              <li>
+                <p>Responded</p>
+                <p class="fa"></p>
+                <p>18</p>
+              </li>
+              <li>
+                <p>Evaluated</p>
+                <p class="fa"></p>
+                <p>_</p>
+              </li>
+              <li>
+                <p>Awarded</p>
+                <p class="fa"></p>
+                <p>_</p>
+              </li>
+            </ul>
+          </div>
+
+
+
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Next">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%;"> Next Participant </th>
+        <td mat-cell *matCellDef="let element">
+          <button class="Rectangle-708 " mat-button>Acknowledgement</button> </td>
+      </ng-container>
+
+      <tr mat-header-row style="height: 50px;" *matHeaderRowDef="RFQDisplayedColumns"></tr>
+      <tr style="cursor: pointer;" mat-row *matRowDef="let row; columns: RFQDisplayedColumns;">
+      </tr>
+
+    </table>
+    <div fxLayout="row" fxLayoutAlign="end">
+      <img class="img_class" src="assets/images/add.png">
+    </div>
+    <!-- <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="isProgressBarVisibile">
+    </div> -->
+  </div>
+</div>

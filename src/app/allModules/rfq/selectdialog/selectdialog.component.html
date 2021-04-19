@@ -1,0 +1,88 @@
+<div fxLayout="column" style="background-color: #f7f7f7;">
+  <div fxLayout="column" style="margin-left: 40px;
+  margin-top: 25px;">
+    <div fxLayout="row" fxLayoutAlignGap="50px" fxFlex>
+      <div fxFlex="33">
+        <div>
+          <label class="label_clas">Type</label><br>
+          <input class="Rectangle-816">
+        </div>
+      </div>
+      <div fxFlex="33">
+        <div>
+          <label class="label_clas">Vendor Code</label><br>
+          <input class="Rectangle-816">
+        </div>
+      </div>
+      <div fxFlex="33">
+        <div>
+          <label class="label_clas">Vendor Name</label><br>
+          <input class="Rectangle-816">
+        </div>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlignGap="50px" fxFlex style="margin-top:20px">
+      <div fxFlex="33">
+        <div>
+          <label class="label_clas">GST Number</label><br>
+          <input class="Rectangle-816">
+        </div>
+      </div>
+      <div fxFlex="33">
+        <div>
+          <label class="label_clas">City</label><br>
+          <input class="Rectangle-816">
+        </div>
+      </div>
+      <div fxFlex="33" fxLayoutAlign="center">
+        <div>
+          <button mat-raised-button class="submit_class">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="overflow-x: auto;" class="table-responsive ">
+  <table class="table " mat-table [dataSource]="PartnerDataSource" matSort>
+    <ng-container matColumnDef="paydoc">
+      <th mat-header-cell style="max-width: 20px;max-height: 20px;" *matHeaderCellDef class="paydoc"> </th>
+      <td mat-cell style="max-width: 20px;max-height: 20px;" *matCellDef="let element;index as i" class="paydoccell">
+        <div fxLayout="row" fxLayoutAlign="space-evenly center">
+          <div class="tableCellBorder" [ngStyle]="{'background-color':i%2==0 ?'#d87e39' : '#6f52ed'}"> </div>
+          <span class="doctext">{{element.paydoc}}</span>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Check Box </th>
+      <td mat-cell *matCellDef="let element">
+        {{element.Type}}
+      </td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="code">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width:20%;"> Vendor Code </th>
+      <td mat-cell *matCellDef="let element"> {{element.Usertable}} </td>
+    </ng-container>
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Vendor Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.Usertable}} </td>
+    </ng-container>
+    <ng-container matColumnDef="city">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> City </th>
+      <td mat-cell *matCellDef="let element"> {{element.Usertable}} </td>
+    </ng-container>
+    <ng-container matColumnDef="gst">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Vendor GST </th>
+      <td mat-cell *matCellDef="let element"> {{element.Usertable}} </td>
+    </ng-container>
+
+
+    <tr mat-header-row style="height: 40px;" *matHeaderRowDef="displayedPartnerColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedPartnerColumns;">
+    </tr>
+  </table>
+</div>

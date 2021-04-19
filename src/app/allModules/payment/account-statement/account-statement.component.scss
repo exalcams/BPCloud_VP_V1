@@ -1,0 +1,451 @@
+@import "src/@fuse/scss/fuse";
+#accStat {
+    background-color: white;
+    .topbarClass {
+        background: url("/assets/images/backgrounds/header 2.png") no-repeat;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .progressBarPostion {
+        position: absolute !important;
+        top: 350px;
+        z-index: 1;
+        left: 55%;
+    }
+    .center {
+        // padding: 5px !important;
+        background-color: white;
+    }
+    .outer {
+        border-bottom: 1px solid rgba(255, 85, 0, 0.1);
+        position: relative;
+        z-index: 1;
+        .bg {
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-image: url("../../../../assets/images/header_2.png");
+            opacity: 0.1;
+            background-repeat: no-repeat;
+        }
+        width: 100%;
+        object-fit: contain;
+        line-height: 50px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .cardHeader {
+        background-color: #fffdf9;
+        height: 45px;
+    }
+    .boldClass {
+        font-weight: bold;
+    }
+
+    .boldItalicClass {
+        @extend .boldClass;
+        font-style: italic;
+    }
+
+    .semiBoldClass {
+        font-weight: 500;
+    }
+    .SaveBtn {
+        background-color: #efb577;
+        padding: 0px 40px;
+        color: white;
+        margin-top: 2rem;
+    }
+    .subTitle {
+        @extend .semiBoldClass;
+        font-size: 12px;
+        color: #d87060;
+    }
+    .headerMargin {
+        margin-top: -28px;
+    }
+    // .tableData {
+    //   overflow: auto;
+    //   height: 60vh !important;
+    //   min-height: 60vh !important;
+    //   // max-height: 33vh !important;
+    //   .table {
+    //     width: 150vw;
+    //     max-width: 100%;
+    //     overflow: auto;
+    //     margin-bottom: 10px;
+    //     display: table;
+    //     border-collapse: collapse;
+    //     margin: 0px;
+    //     // background-color: rgb(238, 238, 238);
+    //   }
+    //   .row,
+    //   .header-row {
+    //     display: table-row;
+    //     min-height: 36px !important;
+    //   }
+    //   .mat-row:hover {
+    //     background-color: lightgrey;
+    //   }
+    //   .cell,
+    //   .header-cell {
+    //     word-wrap: initial;
+    //     display: table-cell;
+    //     padding: 0px 5px;
+    //     line-break: unset;
+    //     width: fit-content;
+    //     white-space: nowrap;
+    //     overflow: hidden;
+    //     vertical-align: middle;
+    //     text-align: center;
+    //   }
+    //   .header-row,
+    //   .header-cell {
+    //     margin: 0 auto;
+    //     min-height: 100px !important;
+    //     text-align: center;
+    //     vertical-align: middle;
+    //     align-self: center;
+    //   }
+    //   .mat-card {
+    //     min-width: max-content;
+    //     max-width: max-content;
+    //   }
+    //   .sort-header {
+    //     display: flex;
+    //     align-content: center;
+    //     text-align: center;
+    //     justify-content: center;
+    //     font-size: 12pt;
+    //   }
+    //   .header-cell {
+    //     font-weight: bold;
+    //   }
+    // }
+
+    @mixin TableBorderRight($color) {
+        border-right: 1px solid $color;
+    }
+
+    .TableCommon {
+        padding: 5px 10px;
+        font-size: 14px;
+        min-width: 50px !important;
+        white-space: nowrap;
+    }
+
+    table {
+        width: 100%;
+
+        th {
+            @include TableBorderRight(gray);
+            @extend .TableCommon;
+            // min-width: max-content !important;
+            color: white;
+            background-color: #121214;
+        }
+
+        td {
+            @include TableBorderRight(rgba(0, 0, 0, 0.12));
+            @extend .TableCommon;
+            // min-width: max-content !important;
+            &.QtyClass {
+                text-align: left;
+            }
+            .mat-form-field-underline {
+                display: none;
+            }
+        }
+
+        tr {
+            height: 40px;
+        }
+
+        .mat-sort-header-container {
+            display: flex;
+            justify-content: flex-start;
+        }
+    }
+    .pdfLinkClass {
+        color: #1e8bed;
+        cursor: pointer;
+    }
+
+    // td.mat-cell {
+    //   /* row padding */
+    //   padding: 16px 0;
+    //   /* row border */
+    //   border-bottom: 1px solid #ffa600;
+    //   border-top: 1px solid #ffa600;
+    //  }
+
+    //  td.mat-cell:first-child {
+    //    /* row border */
+    //    border-left: 1px solid #ffa600;
+    //  }
+
+    //  td.mat-cell:last-child {
+    //    /* row border */
+    //    border-right: 1px solid #ffa600;
+    //  }
+
+    //  table {
+    //    /* row spacing / margin */
+    //    border-spacing: 0 8px !important;
+    //  }
+    .whiteBg {
+        background-color: white !important;
+    }
+    .btnBg {
+        background-color: #efb577 !important;
+        color: white;
+    }
+    .tile {
+        @include mat-elevation(2);
+        min-height: 60px !important;
+        max-height: 250px !important;
+        img {
+            height: 36px;
+        }
+        cursor: pointer;
+    }
+    .redBorderBottom {
+        border-bottom: 2px solid #f3705a;
+    }
+    .orangeBorderBottom {
+        border-bottom: 2px solid #ffd15c;
+    }
+    .rightCard {
+        min-height: 300px !important;
+        background-color: #f5f5f5;
+    }
+    .topLeftBorderRadius {
+        border-top-left-radius: 20px;
+    }
+    .ticketTile {
+        background-color: white;
+        border-left: 5px solid #cccccc;
+    }
+    .italicClass {
+        font-style: italic;
+    }
+    .avatar1 {
+        height: 40px !important;
+        width: 40px !important;
+        margin: 0 8px 0 0;
+        border-radius: 50%;
+        font-size: 17px;
+        font-weight: 500;
+        text-align: center;
+    }
+    .intervalclass {
+        @extend .italicClass;
+        @extend .semiBoldClass;
+        font-size: small;
+    }
+    .subHeader {
+        font-weight: 500;
+    }
+    .outer-circle {
+        height: 100px;
+        width: 100px;
+        border: 3px dashed red;
+        border-radius: 50%;
+        position: relative;
+    }
+    .inner-circle {
+        // height: 75px;
+        // width: 75px;
+        // border: 1px solid #f3705a;
+        // border-radius: 50%;
+        // background-color: white;
+        position: absolute;
+        top: 11%;
+        left: 11%;
+    }
+    .chart-legend .legend-labels {
+        width: 100px;
+    }
+    .search {
+        height: 36px;
+        line-height: 36px;
+        padding: 8px;
+        font-size: 13px;
+        // border-radius: 18px;
+        border: 1px solid;
+        overflow: hidden;
+        background-color: #ffffff;
+        border-color: #ffffff;
+        // border-color: rgba(0, 0, 0, 0.12);
+        @include mat-elevation(1);
+        border: 1px solid #c3c3c3;
+        mat-icon.s-16 {
+            color: rgba(0, 0, 0, 0.54) !important;
+        }
+
+        .icon {
+            margin: 0;
+            color: rgba(0, 0, 0, 0.54);
+        }
+
+        input {
+            padding: 0 12px 0 8px;
+            background-color: #ffffff;
+            height: 36px;
+            border: none;
+        }
+    }
+
+    .tableLeftBorder {
+        border-left: 1px solid rgba(0, 0, 0, 0.12);
+    }
+
+    .roundCommon {
+        height: 20px;
+        width: 20px;
+        border-radius: 20px;
+        border-width: 3px;
+        border-style: solid;
+    }
+
+    .round {
+        @extend .roundCommon;
+        background-color: white;
+        border-color: gray;
+    }
+    // .round1 {
+    //   @extend .roundCommon;
+    //   background-color: white;
+    //   border-color: #34ad65;
+    // }
+
+    .Rectangle {
+        // width: 152px;
+        min-height: 50px;
+        border-radius: 9px;
+        border: solid 1px #cccccc;
+        background-color: #ffffff;
+        cursor: pointer !important;
+    }
+    .Rectangle-106 {
+        width: 36px;
+        height: 33px;
+        opacity: 0.2;
+        border-radius: 2px;
+        background-color: #f9d2a8;
+    }
+    .tableCellBorder {
+        height: 20px;
+        vertical-align: middle;
+        width: 10px;
+        background-color: #d87e39;
+        opacity: 0.7;
+    }
+    .next {
+        background-color: #e8ffeb;
+        padding: 4px;
+    }
+
+    .mat-form-field-flex > .mat-form-field-infix {
+        padding: 0em 0px 0.6em !important;
+    }
+    .mat-form-field-appearance-outline {
+        .mat-form-field-suffix,
+        .mat-form-field-prefix {
+            top: 0.5em;
+            .mat-icon-button {
+                width: 1.5em;
+                height: 1.5em;
+            }
+        }
+    }
+    .mat-form-field-infix {
+        width: auto;
+    }
+    .mat-form-field-label-wrapper {
+        top: -1.5em;
+    }
+    .mat-form-field-wrapper {
+        margin: 0 0 0 0;
+        padding-bottom: 1em;
+    }
+    .underline {
+        height: 2.5px;
+        width: 140px;
+        position: absolute;
+        margin-left: 30px;
+    }
+    .underline2 {
+        height: 2.5px;
+        width: 63px;
+        position: absolute;
+        margin-left: 24px;
+    }
+    .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+        transform: translateY(-1.1em) scale(0.75);
+        width: 133.33333%;
+    }
+    .mat-form-field-outline-start,
+    .mat-form-field-outline-end {
+        border-radius: 0 !important;
+    }
+
+    .calendarImg {
+        height: 20px;
+        margin-bottom: 12px;
+    }
+    .SaveBtn {
+        background-color: #efb577;
+        padding: 0px 40px;
+        color: white;
+    }
+    .hrLine {
+        height: 1px;
+        background-color: rgba(0, 0, 0, 0.12);
+    }
+    .smallRound {
+        height: 2px;
+        width: 2px;
+        border-radius: 1px;
+        background-color: rgba(0, 0, 0, 0.12);
+    }
+    .expandImg {
+        height: 36px;
+        margin-top: -16px;
+        cursor: pointer;
+    }
+    .excelBtn {
+        margin-top: -16px;
+        min-width: 0px;
+        background-color: white;
+        color: rgb(46, 125, 50);
+        &.mat-stroked-button {
+            // border-radius: 5px;
+            padding: 0px 8px;
+        }
+    }
+    .excelImg {
+        // margin: 4px 6px 4px 4px;
+        height: 24px;
+    }
+    .excelText {
+        color: black;
+    }
+    .DateError {
+        color: #f44336;
+        font-size: 12px;
+        margin-top: -16px;
+        // margin-left: 32px;
+    }
+    .footer{
+        box-shadow: 0 -5px 10px 0 rgba(0, 0, 0, 0.16);
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        height: 6rem;
+    }
+}

@@ -1,0 +1,50 @@
+<div class="Dialog" fxLayout="column">
+  <div fxLayoutAlign="space-between center" class="header">
+    <span class="headerName">{{vendorDetails.Action?'Search Vendor':'Vendors'}}</span>
+    <span class="SelectedVendorCount">{{vendorDetails.Action?SelectedVendors.length:FactsView.length}} Vendors selected</span>
+    <div fxLayoutAlign="end">
+      <button mat-icon-button (click)="closeDialog()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-around center" style="margin-top: 10px !important;">
+    <mat-form-field appearance="outline" style="width: 100%;" fxFlex="45">
+      <mat-icon class="mr-5" matSuffix>search</mat-icon>
+      <input type="text" matInput placeholder="UserName" [(ngModel)]="SearchText" (keyup)="SearchList()">
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="width: 100%;" fxFlex="45">
+      <mat-select placeholder="Type">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let ofStatus of ofStatusOptions" [value]="ofStatus">
+          <!-- (click)="getOfsByOptionClicked()" -->
+          <span>{{ofStatus}}</span>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <mat-dialog-content fxLayout="column" style="margin-bottom: 20px !important;">
+    <mat-selection-list (selectionChange)="ListSelected($event)" [disabled]="DisableSelect">
+      <div *ngFor="let fact of facts" style="margin: 10px !important;">
+        <mat-list-option checkboxPosition="before" [value]="fact"
+          [selected]="SelectedVendors.indexOf(fact) !== -1 ? true : false">
+          <div fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="10px">
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+              <span>{{fact.PatnerID}}</span>
+              <span>{{fact.GSTNumber}}</span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+              <span>{{fact.LegalName}}</span>
+              <span>{{fact.City}}</span>
+            </div>
+          </div>
+
+        </mat-list-option>
+      </div>
+    </mat-selection-list>
+  </mat-dialog-content>
+
+  <div fxLayout="column" fxLayoutAlign="end center" fxFlex style="margin-bottom: 10px;" *ngIf="vendorDetails.Action">
+    <button mat-flat-button color="accent" (click)="Transfer()" class="transferBtn">Transfer</button>
+  </div>
+</div>

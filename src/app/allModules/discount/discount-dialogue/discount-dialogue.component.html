@@ -1,0 +1,94 @@
+<div class="dialog-content-wrapper">
+  <mat-toolbar class="toolBg m-0">
+    <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+      <span class="title dialog-title">Discount Calculation</span>
+      <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+        <mat-icon svgIcon="closeIcon"></mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <mat-dialog-content class="pt-24 px-24 m-0" fusePerfectScrollbar>
+    <div fxLayout="column" fxLayoutAlign="center" class="header-card">
+      <div fxLayout="row" fxLayoutAlign="space-between center" class="px-20 py-16">
+        <div fxFlex='50'>
+          <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="2px" class="date">
+            <div fxFlex="27" fxLayoutAlign="end center"> <span class="card-label"> Invoice NO : </span></div>
+            <div fxLayoutAlign="start center"> <label class="card-value"> {{dialogData.InvoiceNumber}}</label>
+            </div>
+          </div>
+        </div>
+        <div fxFlex='50' fxLayoutAlign="end" class="date">
+          <span class="card-label">Amount : <label class="card-value">{{dialogData.InvoiceAmount}}</label></span>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between center" class="px-20 pb-16">
+        <div fxFlex='50'>
+          <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="2px" class="date">
+            <div fxFlex="27" fxLayoutAlign="end center"> <span class="card-label"> Date : </span></div>
+            <div fxLayoutAlign="start center"> <span class="card-value"> {{dialogData.InvoiceDate |
+                date:'dd/MM/yyyy'}}</span>
+            </div>
+          </div>
+        </div>
+        <div fxFlex='50' fxLayoutAlign="end" class="date">
+          <span class="card-label">Paid Amount : <label class="card-value">{{dialogData.PaidAmount}}</label></span>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between center" class="px-20 pb-16">
+        <div fxFlex='50'>
+          <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="2px" class="date">
+            <div fxFlex="27" fxLayoutAlign="end center"> <span class="card-label"> Document NO : </span></div>
+            <div fxLayoutAlign="start center"> <label class="card-value"> {{dialogData.DocumentNumber}}</label>
+            </div>
+          </div>
+        </div>
+        <div fxFlex='50' fxLayoutAlign="end" class="date">
+          <span class="card-label">Balace Amount : <label class="card-value">{{dialogData.BalanceAmount}}</label></span>
+        </div>
+      </div>
+    </div>
+
+    <div fxLayout="row">
+      <div fxFlex=35 class="bg_wrapper my-16"></div>
+      <div fxFlex=75 class="form_wrapper mt-20">
+        <form name="discountFormGroup" autocomplete="off" [formGroup]="discountFormGroup" novalidate>
+          <div fxFlex fxLayout="column" fxLayoutAlign="center end">
+            <mat-form-field class="px-12 form_field">
+              <mat-label>Remaining Days</mat-label>
+              <input matInput formControlName="RemainingDays" type="number">
+            </mat-form-field>
+            <mat-form-field class="px-12 form_field">
+              <mat-label>Earliest Payment Request Days</mat-label>
+              <input matInput formControlName="EPRD" type="number" (keyup)="handleERPD()" [min]=5 [max]=90>
+              <mat-error
+                *ngIf="discountFormGroup.get('EPRD').touched && discountFormGroup.get('EPRD').hasError('required')">
+                Earliest Payment Request Days</mat-error>
+                <mat-error *ngIf="discountFormGroup.get('EPRD').hasError('min')">Minimum should be 5 days</mat-error>
+                <mat-error *ngIf="discountFormGroup.get('EPRD').hasError('max')">Please enter less than remaining days</mat-error>
+            </mat-form-field>
+            <mat-form-field class="px-12 form_field">
+              <mat-label>Discount Proposed in %</mat-label>
+              <input matInput formControlName="DiscountProposed" type="number">
+            </mat-form-field>
+            <mat-form-field class="px-12 form_field">
+              <mat-label>Post Discount Amount</mat-label>
+              <input matInput formControlName="PostDiscountAmount" type="number">
+            </mat-form-field>
+          </div>
+        </form>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="m-0 p-16" fxLayoutAlign="center center" fxLayoutGap="1rem" align="end">
+    <label class="approve_txt" *ngIf="dialogData.Status=='Approved' && dialogData.isBuyer">**Approved**</label>
+    <label class="reject_txt" *ngIf="dialogData.Status=='Rejected' && dialogData.isBuyer">**Rejected**</label>
+    <button *ngIf="!isChange && !dialogData.isBuyer" mat-raised-button type="button" (click)="CloseClicked()">Cancel</button>
+    <button *ngIf="!isChange && !dialogData.isBuyer" mat-raised-button type="button" class="btnBg"
+      (click)="YesClicked()">Save</button>
+      <button *ngIf="dialogData.isBuyer && !dialogData.Status" mat-raised-button type="button" (click)="CloseClicked()">Reject</button>
+      <button *ngIf="dialogData.isBuyer && !dialogData.Status" mat-raised-button type="button" class="btnBg"
+        (click)="YesClicked()">Approve</button>
+    <button *ngIf="isChange" mat-raised-button type="button" class="btnBg" (click)="ChangeClicked()">Change</button>
+  </mat-dialog-actions>
+</div>

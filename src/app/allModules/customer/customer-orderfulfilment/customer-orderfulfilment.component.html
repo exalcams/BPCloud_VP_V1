@@ -1,0 +1,370 @@
+<div id="cusord" class="page-layout carded" fusePerfectScrollbar>
+  <div class="center" fxLayout="column" fxLayoutGap="10px">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Order Fulfilment</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="../../../../assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div fxFlex fxLayout>
+      <div class="tile mx-20" fxFlex="17" fxLayout="column" fxLayoutAlign="start">
+        <div fxLayoutAlign="start center" class="pt-8">
+          <span class="boldClass orangeBorderBottom pl-8"> Open orders</span>
+        </div>
+        <div fxFlex fxLayoutAlign="center" class="pt-8">
+          <svg height="140" width="140" viewBox="0 0 140 140" class="progress__svg">
+            <circle class="progress__meter" [style.strokeDasharray]="2" cx="70" cy="70" [attr.r]="radius"
+              stroke-width="10" />
+            <circle class="progress__value" [style.strokeDasharray]="circumference"
+              [style.strokeDashoffset]="1-dashoffset1" cx="70" cy="70" [attr.r]="radius" stroke-width="10" />
+            <circle r="49" cx="70" cy="70" stroke="#f3705a" stroke-width="2" fill="none" class="inner-circle" />
+            <text text-anchor="middle" alignment-baseline="middle" transform="rotate(90,70,70)">
+              <tspan x="70" y="70" dy="0.18em" font-size="20">{{progressPercentage1}}</tspan>
+              <!-- <tspan x="70" y="70" dy="1.82em" font-size="10" class="progressSubtitle">Effiency</tspan> -->
+            </text>
+          </svg>
+        </div>
+      </div>
+      <div class="tile mx-20" fxFlex="17" fxLayout="column" fxLayoutAlign="start">
+        <div fxLayoutAlign="start center" class="pt-8">
+          <span class="boldClass orangeBorderBottom pl-8"> Credit Limit</span>
+        </div>
+        <div fxFlex fxLayoutAlign="center" class="pt-8">
+          <svg height="140" width="140" viewBox="0 0 140 140" class="progress__svg">
+            <circle class="progress__meter" [style.strokeDasharray]="2" cx="70" cy="70" [attr.r]="radius"
+              stroke-width="10" />
+            <circle class="progress__value" [style.strokeDasharray]="circumference"
+              [style.strokeDashoffset]="1-dashoffset2" cx="70" cy="70" [attr.r]="radius" stroke-width="10" />
+            <circle r="49" cx="70" cy="70" stroke="#f3705a" stroke-width="2" fill="none" class="inner-circle" />
+            <text text-anchor="middle" alignment-baseline="middle" transform="rotate(90,70,70)">
+              <tspan x="70" y="70" dy="0.18em" font-size="20">{{progressPercentage2}}</tspan>
+              <tspan x="70" y="70" dy="1.82em" font-size="10" class="progressSubtitle">Receivable Amount</tspan>
+            </text>
+          </svg>
+        </div>
+      </div>
+      <div class="tile mx-20" fxFlex="25" fxLayout="column" fxLayoutAlign="start">
+        <div fxLayoutAlign="start center" class="pt-8">
+          <span class="boldClass orangeBorderBottom pl-8"> Fulfilment </span>
+        </div>
+        <div *ngIf="doughnutChartData && doughnutChartData?.length" id="doughnutChart" fxFlex fxLayoutAlign="start" class="pt-8 pl-8 pr-4">
+          <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
+            [options]="doughnutChartOptions" [colors]="colors">
+          </canvas>
+        </div>
+        <!-- <div fxFlex fxLayout fxLayoutAlign="end center">
+          <div fxFlex class="doughnutChartPosition boldClass"> Fulfilment status </div>
+        </div> -->
+      </div>
+      <div class="tile mx-20" fxFlex="41" fxLayout="column" fxLayoutAlign="start">
+        <div fxLayoutAlign="start" class="pt-8">
+          <span class="boldClass orangeBorderBottom pl-8"> Delivery status </span>
+        </div>
+        <div *ngIf="barChartLabels.length" id="barChart" fxFlex fxLayoutAlign="start" class="pt-0 px-8">
+          <canvas #barCanvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+            [legend]="barChartLegend" [chartType]="barChartType" [colors]="barColors">
+          </canvas>
+        </div>
+      </div>
+    </div>
+    <div class="sidenav-content px-24 mt-4" fxFlex>
+      <form class="formGroupStyle" autocomplete="off" fxFlex name="form" [formGroup]="poFormGroup" novalidate>
+        <div FxLayout="row" class="formRowStyle" fxLayout.xs="column">
+          <div fxFlex="20%" class="mr-20">
+            <mat-form-field>
+              <input matInput placeholder="From date" [matDatepicker]="picker1" formControlName="FromDate"
+                (dateChange)="DateSelected()">
+              <!-- <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle> -->
+              <mat-datepicker-toggle matSuffix [for]="picker1">
+                <img matDatepickerToggleIcon class="calendarImg" src="assets/images/calendar.png">
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+              <!-- <mat-error
+                *ngIf="poFormGroup.get('FromDate').touched && poFormGroup.get('FromDate').hasError('required')">
+                From date is required
+              </mat-error> -->
+            </mat-form-field>
+          </div>
+          <div fxFlex="20%" class="mx-20">
+            <mat-form-field>
+              <input matInput placeholder="To Date" [matDatepicker]="picker2" formControlName="ToDate"
+                (dateChange)="DateSelected()">
+              <!-- <mat-datepicker-toggle matSuffix [for]="picker2"> </mat-datepicker-toggle> -->
+              <mat-datepicker-toggle matSuffix [for]="picker2">
+                <img matDatepickerToggleIcon class="calendarImg" src="assets/images/calendar.png">
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker2 color="primary"></mat-datepicker>
+              <!-- <mat-error
+                *ngIf="poFormGroup.get('ToDate').touched && poFormGroup.get('ToDate').hasError('required')">
+                To date is required
+              </mat-error> -->
+            </mat-form-field>
+            <div *ngIf="isDateError" style="color:#f44336;font-size: 12px;margin-top: -16px">
+              To date should not be less than from date
+            </div>
+          </div>
+          <div fxFlex="20%" class="mx-20">
+            <mat-form-field>
+              <mat-select style="width:180px" placeholder="Status" formControlName="Status">
+                <!-- <mat-option>None</mat-option> -->
+                <mat-option *ngFor="let doc1 of AllStatus" [value]="doc1.Value">
+                  <span>{{doc1.Name}}</span>
+                </mat-option>
+              </mat-select>
+              <!-- <mat-error
+                *ngIf="poFormGroup.get('Status').touched && poFormGroup.get('Status').hasError('required')">
+                Status is required
+              </mat-error> -->
+            </mat-form-field>
+            <!-- <mat-form-field appearance="outline" style="width: 120px;">
+              <mat-select formControlName="Status" required>
+              <mat-label>Action</mat-label>
+                <mat-option value="All">All</mat-option>
+                <mat-option value="Open" >Open</mat-option>
+                <mat-option value="ACK">ACK</mat-option>
+                <mat-option value="ASN">ASN</mat-option>
+              </mat-select>
+              <mat-error
+              *ngIf="poFormGroup.get('Status').touched && poFormGroup.get('Status').hasError('required')">
+              Status is required
+          </mat-error>
+            </mat-form-field> -->
+          </div>
+          <div fxFlex="40%" class="ml-20">
+            <button class="mt-4" style="background-color: #efb577;color: white;"
+              mat-raised-button (click)="GetAllPOBasedOnDate()">Search</button>
+          </div>
+        </div>
+      </form>
+      <!-- <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+          <mat-icon class="s-16">search</mat-icon>
+          <input [(ngModel)]="searchText" type="text" placeholder="Search" fxFlex>
+        </div>
+        <div fxFlex class="mr-24" align="end">
+          <mat-form-field appearance="outline" style="width: 120px;">
+            <mat-select [(ngModel)]="FilterVal">
+              <mat-option value="All">All</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div> -->
+
+      <!-- <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator> -->
+    </div>
+    <div *ngIf="!AllSOs?.length" class="cl_norec">No Record Found</div>
+    <div class="px-20 pb-20" >
+      <table  *ngIf="AllSOs?.length"  class="abnormal" mat-table [dataSource]="SODataSource" matSort>
+<!-- 
+        <ng-container matColumnDef="PIRNumber">
+          <th mat-header-cell *matHeaderCellDef> PI/Return Number </th>
+          <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+            <div fxLayout>
+              <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+              <div fxFlex class="pl-4">
+                <span class="cursorPointer" (click)="GotoPIR(element.PIRNumber,element.PIRType)"> {{element.PIRNumber}}</span>
+              </div>
+            </div>
+          </td>
+        </ng-container> -->
+
+        <ng-container matColumnDef="SO">
+          <th mat-header-cell *matHeaderCellDef> SO </th>
+          <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+            <div fxLayout>
+              <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+              <div fxFlex class="pl-4">
+                <span class="cursorPointer" (click)="GotoPOLookup(element.SO)">{{element.SO}}</span>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="PIRType">
+          <th mat-header-cell *matHeaderCellDef> Type </th>
+          <td mat-cell *matCellDef="let element">
+            <span>{{element.PIRType}}</span>
+          </td>
+        </ng-container> -->
+
+        <ng-container matColumnDef="SODate">
+          <th mat-header-cell *matHeaderCellDef> Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.SODate | date :'dd/MM/yyyy'}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Status">
+          <th mat-header-cell *matHeaderCellDef style="width: 400px;"> Order Fulfilment Status </th>
+          <td mat-cell *matCellDef="let element" style="width: 400px;">
+            <div fxLayout class="mx-20 my-8">
+              <div fxFlex="30" fxLayout>
+                <div class="round" [style.border-color]="getStatusColor(element,'order')">
+                </div>
+                <div style="width: 10px;margin-left: -1px !important"
+                [class]="getTimeline(element,'order')"></div>
+                <div [class]="getRestTimeline(element,'order')"  fxFlex>
+                </div>
+              </div>
+              <div fxFlex="30" fxLayout>
+                <div style="width: 10px;margin-right: -1px !important" [class]="getTimeline(element,'Dispatch')"></div>
+                <div class="round" [style.border-color]="getStatusColor(element,'Dispatch')"></div>
+                <div style="width: 10px; margin-left: -1px !important" [class]="getTimeline(element,'Dispatch')"></div>
+                <div [class]="getRestTimeline(element,'Dispatch')"  fxFlex></div>
+              </div>
+              <div fxFlex="30" fxLayout>
+                <div style="width: 10px;margin-right: -1px !important" [class]="getTimeline(element,'Recived')"></div>
+                <div class="round" [style.border-color]="getStatusColor(element,'Recived')"></div>
+                <div style="width: 10px;margin-left: -1px !important" [class]="getTimeline(element,'Recived')"></div>
+                <div [class]="getRestTimeline(element,'Recived')" fxFlex></div>
+              </div>
+              <div fxFlex="10" fxLayout>
+                <div style="width: 10px;margin-right: -1px !important" [class]="getTimeline(element,'Paid')"></div>
+                <div class="round" [style.border-color]="getStatusColor(element,'Paid')"></div>
+              </div>
+            </div>
+            <div fxLayout class="mx-20">
+              <div fxFlex="30">Order</div>
+              <div fxFlex="30">Dispatch</div>
+              <div fxFlex="30">Recived</div>
+              <div fxFlex="10">Paid</div>
+            </div>
+          </td>
+        </ng-container>
+        <!-- <ng-container matColumnDef="Status">
+          <th mat-header-cell *matHeaderCellDef style="width: 400px;"> Order Fulfilment Status </th>
+          <td mat-cell *matCellDef="let element" style="width: 400px;">
+            <div fxLayout class="mx-20 my-8">
+              <div fxFlex="30" fxLayout>
+                <div class="round" [style.border-color]="element.Status==='Open'?'#efb577':'#34ad65'">
+                </div>
+                <div style="width: 10px;margin-left: -1px !important"
+                  [class]="element.Status==='Open'?'orange-timeline':'green-timeline'"></div>
+                <div [class]="element.Status==='Open'?'white-timeline':'green-timeline'" fxFlex>
+                </div>
+              </div>
+              <div fxFlex="30" fxLayout>
+                <div style="width: 10px;margin-right: -1px !important" [class]="getTimeline(element,'Shipped')"></div>
+                <div class="round" [style.border-color]="getStatusColor(element,'Shipped')"></div>
+                <div style="width: 10px; margin-left: -1px !important" [class]="getTimeline(element,'Shipped')"></div>
+                <div [class]="getRestTimeline(element,'Shipped')" fxFlex></div>
+              </div>
+              <div fxFlex="30" fxLayout>
+                <div style="width: 10px;margin-right: -1px !important" [class]="getTimeline(element,'Invoiced')"></div>
+                <div class="round" [style.border-color]="getStatusColor(element,'Invoiced')"></div>
+                <div style="width: 10px;margin-left: -1px !important" [class]="getTimeline(element,'Invoiced')"></div>
+                <div [class]="getRestTimeline(element,'Invoiced')" fxFlex></div>
+              </div>
+              <div fxFlex="10" fxLayout>
+                <div style="width: 10px;margin-right: -1px !important" [class]="getTimeline(element,'Receipt')"></div>
+                <div class="round" [style.border-color]="getStatusColor(element,'Receipt')"></div>
+              </div>
+            </div>
+            <div fxLayout class="mx-20">
+              <div fxFlex="30">SO</div>
+              <div fxFlex="30">Shipped</div>
+              <div fxFlex="30">Invoiced</div>
+              <div fxFlex="10">Paid</div>
+            </div>
+          </td>
+        </ng-container> -->
+
+        <ng-container matColumnDef="Document">
+          <th mat-header-cell *matHeaderCellDef style="width: 80px;"> Document </th>
+          <td mat-cell *matCellDef="let element" (click)="viewOfAttachmentClicked(element)" style="text-align: center;cursor: pointer;">
+            <div style="margin-top: 3px; margin-left: 15px;">
+              <span [matBadge]="element.DocCount" matBadgeColor="accent" matBadgeOverlap="false"></span>
+            </div>
+            <img style="height: 30px;" src="assets/images/attachment.png">
+          </td>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="NextProcess">
+          <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Next Process </th>
+          <td mat-cell *matCellDef="let element" style="text-align: left;">
+            <span>
+              <div [class]="getNextProcess(element)"></div>
+              <button style="background-color: #e8ffeb;color: #000000;" mat-button
+                (click)="NextProcess(element.NextProcess,element.PO)">{{element.NextProcess}}</button>
+            </span>
+          </td>
+        </ng-container> -->
+
+        <ng-container matColumnDef="Action">
+          <th mat-header-cell *matHeaderCellDef style="width: 120px;">Action </th>
+          <td mat-cell *matCellDef="let element;let i= index;" style="text-align: center;width: 120px;">
+            <mat-form-field appearance="outline" style="width: 120px;">
+              <mat-icon matPrefix svgIcon="thunderBlackIcon" height="20px"></mat-icon>
+              <mat-label ng-mouseenter="$mdMenu.open()">Action</mat-label>
+              <mat-select ng-mouseleave="$mdMenu.close()">
+                <!-- <mat-option value="Acknowledge" (click)="Acknowledgement(element.PO)">ACK</mat-option> -->
+                <mat-option value="POLookup" (click)="GotoPOLookup(element.SO)">SO Lookup</mat-option>
+                <mat-option value="SupportDesk" (click)="goToSupportDesk(element.SO)">Support Desk</mat-option>
+                <!-- <mat-option value="ASN" (click)="AdvanceShipment(element.PO)">ASN</mat-option>
+                <mat-option value="POFlip" (click)="POFlip(element.PO)">PO Flip</mat-option> -->
+              </mat-select>
+            </mat-form-field>
+            <!-- <div>
+              <button mat-button [matMenuTriggerFor]="i" (mouseenter)="openMyMenu(i)">Trigger1</button>
+              <mat-menu #i="matMenu" overlapTrigger="false">
+                <span (mouseleave)="closeMyMenu(i)">
+                  <button mat-menu-item>Item 1</button>
+                  <button mat-menu-item>Item 2</button>
+                </span>
+              </mat-menu>
+            </div> -->
+          </td>
+
+        </ng-container>
+
+        <!-- <tr mat-header-row *matHeaderRowDef="posDisplayedColumns;sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: posDisplayedColumns;let even=even" matRipple
+          style=" cursor: pointer;"> -->
+        <tr mat-header-row *matHeaderRowDef="SODisplayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: SODisplayedColumns;">
+        </tr>
+        <!-- <tr [ngClass]="BGClassName?.layout?.toolbar?.background" mat-header-row *matHeaderRowDef="posDisplayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: posDisplayedColumns;" (click)="Checked(row)" style=" cursor: pointer;" [class.highlight]="row === selectedPORow"></tr> -->
+      </table>
+      <div>
+        <mat-paginator  [ngStyle]="AllSOs?.length ?  {'visibility': 'visible'} : {'visibility': 'hidden'}" [pageSizeOptions]="[10,50,100,250,500,1000]"></mat-paginator>
+      </div>
+    </div>
+    <!-- <div fxLayout>
+      <div fxFlex fxLayoutAlign="end" class="floatSection">
+        <button *ngIf="ShowAddBtn" class="floatBtn" mat-fab (click)="AddClicked()">
+          <mat-icon style="color: white;">add</mat-icon>
+        </button>
+      </div>
+      <div id="overlay" *ngIf="!ShowAddBtn" [@animate]="{value:'*',params:{y:'100%'}}" fxFlex fxLayoutAlign="end">
+        <div fxLayout="column" class="floatSection">
+          <div fxLayout>
+            <div class="PIR">Purchase Indent</div>
+            <button class="floatMiniBtn m-8" mat-mini-fab (click)="GotoPIR()">
+           
+              <img src="assets/images/Group.png" class="actionImg">
+            </button>
+          </div>
+          <div fxLayout>
+            <div class="PIR">Return Request</div>
+            <button class="floatMiniBtn m-8" mat-mini-fab (click)="GotoReturn()">
+           
+              <img src="assets/images/Glyph.png" class="actionImg ml-4">
+            </button>
+          </div>
+          <div fxLayout fxLayoutAlign="end">
+            <button class="floatBtn mt-8" mat-fab (click)="ClearClicked()" align="end">
+              <mat-icon style="color: white;">clear</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="IsProgressBarVisibile"></div>
+  </div>
+</div>

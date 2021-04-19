@@ -1,0 +1,181 @@
+<div id="overview" class="page-layout carded">
+  <div class="center" fxLayout="column">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Balance Confirmation</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+
+    <div class="px-20 pb-20" style="margin-top: 10px;">
+      <label style="font-size: 2.5rem;
+      font-weight: 500;">Balance {{BCHeader.Currency}} {{BCHeader.NetDueAmount}} as on {{BCHeader.BalDate |
+        date:'dd/MM/yyyy'}}</label>
+    </div>
+
+    <div class="px-20 pb-20" style="margin-bottom: 10rem;">
+      <div fxLayout="row" class="mt-20" fxLayoutAlign="start center">
+        <!-- <mat-form-field appearance="outline" fxFlex="50">
+          <mat-icon class="mr-12" matPrefix>search</mat-icon>
+          <input [(ngModel)]="searchText" matInput placeholder="Search" (keyup)="applyFilter($event)">
+        </mat-form-field> -->
+        <div fxFlex fxLayoutAlign="end center">
+          <!-- <mat-form-field appearance="outline" style="min-width: 100px;">
+            <mat-select [(ngModel)]="selectValue">
+              <mat-option value="All">All</mat-option>
+              <mat-option value="All">Material</mat-option>
+              <mat-option value="All">PO</mat-option>
+            </mat-select>
+          </mat-form-field> -->
+          <button class="excelBtn ml-24" mat-stroked-button (click)="exportAsXLSX()">
+            <img class="excelImg" src="assets/images/excel.png">
+            <label style="color: black;margin-left: 5px;font-size: 12px;">Download to Excel</label>
+          </button>
+          <!-- <img class="expandImg" src="assets/images/expand.png" (click)="expandClicked()"> -->
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="table" mat-table [dataSource]="balanceConfirmationDataSource" matSort style="margin-top: 10px;">
+
+          <ng-container matColumnDef="FiscalYear">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              FiscalYear </th>
+            <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+              <div fxLayout>
+                <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                <div fxFlex class="pl-8">{{element.FiscalYear}} </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="DocNumber">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              DocNumber </th>
+            <td mat-cell *matCellDef="let element;">
+              {{element.DocNumber}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="DocDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              DocDate</th>
+            <td mat-cell *matCellDef="let element;let i= index;">
+              {{element.DocDate | date:'dd/MM/yyyy'}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="InvoiceNumber">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              InvoiceNumber </th>
+            <td mat-cell *matCellDef="let element;let i= index;">
+              {{element.InvoiceNumber}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="InvoiceAmount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              InvoiceAmount </th>
+            <td mat-cell *matCellDef="let element;let i= index;" class="QtyClass">
+              {{element.InvoiceAmount}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="BillAmount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              BillAmount </th>
+            <td mat-cell *matCellDef="let element;let i= index;" class="QtyClass">
+              {{element.BillAmount}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="PaidAmont">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              PaidAmont </th>
+            <td mat-cell *matCellDef="let element;let i= index;" class="QtyClass">
+              {{element.PaidAmont}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="TDSAmount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              TDSAmount </th>
+            <td mat-cell *matCellDef="let element;let i= index;" class="QtyClass">
+              {{element.TDSAmount}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="TotalPaidAmount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              TotalPaidAmount </th>
+            <td mat-cell *matCellDef="let element;let i= index;" class="QtyClass">
+              {{element.TotalPaidAmount}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="DownPayment">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              DownPayment </th>
+            <td mat-cell *matCellDef="let element;let i= index;" class="QtyClass">
+              {{element.DownPayment}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="NetDueAmount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              NetDueAmount </th>
+            <td mat-cell *matCellDef="let element;let i= index;" class="QtyClass">
+              {{element.NetDueAmount}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Currency">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              Currency </th>
+            <td mat-cell *matCellDef="let element;let i= index;" class="QtyClass">
+              {{element.Currency}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="BalDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+              BalDate </th>
+            <td mat-cell *matCellDef="let element;let i= index;" class="QtyClass">
+              {{element.BalDate | date:'dd/MM/yyyy'}}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="balanceConfirmationDisplayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: balanceConfirmationDisplayedColumns;">
+          </tr>
+        </table>
+      </div>
+      <div>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100, 200, 500]"></mat-paginator>
+      </div>
+    </div>
+
+
+
+    <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="isProgressBarVisibile"></div>
+  </div>
+  <div class="px-20 pb-20" style="position: absolute;width: 100%;
+      bottom: 6rem;" fxLayout fxLayoutAlign="start center" fxLayoutGap="2.5rem">
+    <mat-checkbox [(ngModel)]="isAccepted"></mat-checkbox>
+    <span style="height: 3rem;border-right:2px solid grey;width: 1px;"></span>
+    <div style="width: 100%;">
+      <label style="font-size: 15px;">I acknowledge the balance shown here matches with our book of account</label>
+    </div>
+  </div>
+  <div class="px-20 pb-20 footer" fxLayout="row" fxLayoutAlign="space-between center">
+    <button (click)="handle_getsolved()" mat-raised-button class="SaveBtn"
+      [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">Get Solved</button>
+    <button [disabled]="!isAccepted" (click)="handle_accept()" mat-raised-button class="SaveBtn"
+      [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">Accept & Complete</button>
+  </div>
+</div>

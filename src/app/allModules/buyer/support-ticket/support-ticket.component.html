@@ -1,0 +1,98 @@
+<div id="supsupportticket" class="page-layout carded" fusePerfectScrollbar>
+  <div class="center" fxLayout="column" fxLayoutGap="10px">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Helpdesk</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div style="padding: 30px;">
+      <form autocomplete="off" class="normal" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="start" name="form"
+        novalidate [formGroup]="SupportTicketFormGroup">
+
+        <div fxFlex fxLayout="row" fxLayoutGap="100px">
+          <div fxFlex="50">
+            <mat-form-field class="pr-12" style="width: 100%;">
+              <mat-select placeholder="Reason Select" formControlName="ReasonCode">
+                <mat-option *ngFor="let supportMaster of SupportMasters" [value]="supportMaster.ReasonCode">
+                  {{supportMaster.ReasonText}}
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="SupportTicketFormGroup.get('ReasonCode').touched && SupportTicketFormGroup.get('ReasonCode').hasError('required')">
+                Reason is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="50" fxLayout="column">
+            <div fxFlex>
+              <span style="color: #9d9b9b; font-size: 14px;">Date of Creation</span>
+            </div>
+            <div fxFlex style="margin-top: -20px;">
+              <span style="color:#d87060 ; font-size: 20px;">{{dateOfCreation | date:'EEEE'}}</span>
+              <span style="color:#d87060 ; font-size: 20px;">, </span>
+              <span style="font-size: 20px;">{{dateOfCreation | date:'d MMMM y'}}</span>
+            </div>
+
+          </div>
+        </div>
+        <div fxFlex fxLayout="row">
+          <div fxFlex="50">
+            <mat-form-field class="pr-64" style="width: 100%;">
+              <input matInput placeholder="Document Reference No." formControlName="DocumentRefNo">
+              <mat-error
+                *ngIf="SupportTicketFormGroup.get('DocumentRefNo').touched && SupportTicketFormGroup.get('DocumentRefNo').hasError('required')">
+                Document Reference No. is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div fxFlex fxLayout="column"
+          style="border: solid 1px #b2b2b2;background-color: #ffffff; padding: 5px;">
+          <div fxFlex>
+            <mat-form-field style="width: 100% !important;" class="example-full-width">
+              <!-- <mat-label>Remark</mat-label> -->
+              <textarea matInput style="height: 200px !important;" formControlName="Remarks"
+                placeholder="Remark......"></textarea>
+            </mat-form-field>
+            <mat-error
+              *ngIf="SupportTicketFormGroup.get('Remarks').touched && SupportTicketFormGroup.get('Remarks').hasError('required')">
+              Remarks is required
+            </mat-error>
+          </div>
+          <div fxFlex fxLayout="row" style="padding: 0px 10px 10px 10px ">
+            <div fxLayout="row" fxLayoutAlign="start">
+              <img class="textAreaIcon" style="padding-left: 20px;" src="assets/images/attachmentNew (1).png"
+                (click)="fileInput1.click()">
+              <input hidden type="file" accept="image/x-png,image/gif,image/jpeg,image/jpg,application/pdf" #fileInput1
+                id="file" (change)="OnFileClicked($event)" />
+            </div>
+            <div fxFlex (click)="GetSupportAttachment(fileToUpload?.name,fileToUpload)" class="pdfLinkClass pl-8">
+              <span style="font-weight: bold;font-size: 10px;">{{fileToUpload?.name}}</span>
+            </div>
+            <!-- <div fxFlex *ngIf="!invAttach?.AttachmentName"
+            (click)="GetSupportAttachment(invoiceAttachment?.name,invoiceAttachment)" class="pdfLinkClass pl-8">
+            {{invoiceAttachment?.name}}</div>
+          <div fxFlex *ngIf="invAttach?.AttachmentName"
+            (click)="GetSupportAttachment(invAttach?.AttachmentName)" class="pdfLinkClass pl-8">
+            {{invAttach?.AttachmentName}}
+          </div> -->
+            <div fxFlex>
+              <div fxLayoutAlign="end">
+                <img class="textAreaIcon" style="padding-right: 20px;" src="assets/images/send.png"
+                  (click)="SaveClicked()">
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="IsProgressBarVisibile">
+    </div>
+  </div>
+</div>

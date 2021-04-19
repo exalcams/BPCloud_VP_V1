@@ -1,0 +1,80 @@
+<div id="cardupdate" class="page-layout carded fullwidth">
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Dashboard cards</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div fxLayout="column" class="content-card1">
+      <mat-card class="p-0">
+        <div fxLayout="row">
+          <mat-card class="example-card p-0" fxFlex>
+            <!-- <form [formGroup]="uploadForm"> -->
+            <mat-card-content class="mat_card_content p-8">
+              <div class="cl_div">
+                <ngx-dropzone *ngIf="!AttachmentData1" accept="image/x-png,image/gif,image/jpeg,,image/jpg"
+                  (change)="onSelect1($event)" class="dropzone">
+                  <ngx-dropzone-label>Drop your file here!</ngx-dropzone-label>
+                  <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+                    <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+                  </ngx-dropzone-preview>
+                </ngx-dropzone>
+                <img *ngIf="AttachmentData1" [src]="AttachmentData1" class="iframe" />
+                <!-- <iframe *ngIf="AttachmentData" [src]="AttachmentData" class="iframe"></iframe> -->
+              </div>
+            </mat-card-content>
+            <mat-card-actions class="m-0 px-12 cardActions" *ngIf="(currentUserRole | lowercase)==='administrator'">
+              <div fxLayout fxLayoutAlign="space-between center">
+                <input style="display: none;" type="file" name="profile"
+                  accept="image/x-png,image/gif,image/jpeg,,image/jpg" id="upload" (change)="onFileSelect1($event)"
+                  #fileinput>
+                <button type="button" mat-stroked-button (click)="fileinput.click()" class="DeleteBtn">Select
+                  File</button>
+              </div>
+            </mat-card-actions>
+            <!-- </form> -->
+          </mat-card>
+          <mat-card class="example-card1 p-0" fxFlex>
+            <!-- <form [formGroup]="uploadForm"> -->
+            <mat-card-content class="mat_card_content p-8">
+              <div class="cl_div">
+                <ngx-dropzone *ngIf="!AttachmentData2" accept="image/x-png,image/gif,image/jpeg,,image/jpg"
+                  (change)="onSelect2($event)" class="dropzone">
+                  <ngx-dropzone-label>Drop your file here!</ngx-dropzone-label>
+                  <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+                    <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+                  </ngx-dropzone-preview>
+                </ngx-dropzone>
+                <img *ngIf="AttachmentData2" [src]="AttachmentData2" class="iframe" />
+                <!-- <iframe *ngIf="AttachmentData1" [src]="AttachmentData1" class="iframe"></iframe> -->
+              </div>
+            </mat-card-content>
+            <mat-card-actions class="m-0 px-12 cardActions" *ngIf="(currentUserRole | lowercase)==='administrator'">
+              <div fxLayout fxLayoutAlign="space-between center">
+                <input style="display: none;" type="file" name="profile"
+                  accept="image/x-png,image/gif,image/jpeg,,image/jpg" id="upload" (change)="onFileSelect2($event)"
+                  #fileinput1>
+                <button type="button" mat-stroked-button (click)="fileinput1.click()" class="DeleteBtn">Select
+                  File</button>
+              </div>
+            </mat-card-actions>
+            <!-- </form> -->
+          </mat-card>
+        </div>
+        <mat-card-actions class="m-0 mt-8 px-12 cardActions" *ngIf="(currentUserRole | lowercase)==='administrator'">
+          <div fxLayout fxLayoutAlign="end center">
+            <button type="button" mat-raised-button (click)="SaveDashboardCards()" class="SaveBtn">Upload</button>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="IsProgressBarVisibile">
+    </div>
+  </div>
+</div>

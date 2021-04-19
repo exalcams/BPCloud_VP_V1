@@ -1,0 +1,124 @@
+<div id="invoicepayment" class="page-layout carded fullwidth">
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Invoice Payment</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div fxLayout class="content-card1">
+     
+      <mat-card fxFlex="100" class="side-bar p-0">
+        
+        <div fxFlex fxLayout="column">
+          <div *ngIf="isPayButton &&  this.SelectedPaymentData.length >0"   class="mx-20 my-12"  align="end">
+            <button  [matMenuTriggerFor]="menu"  mat-raised-button  style="background-color:rgb(38, 180, 38);color:white;">Payment</button>
+                   <mat-menu #menu="matMenu" yPosition="below">
+                    <button mat-menu-item>Make Payment</button>
+                    <button mat-menu-item (click)="openPaymentdialog(null)">Record Payment</button>
+                  </mat-menu>
+            </div>
+          <div fxFlex fxLayout="column" class="table mx-20 my-12">
+            <table mat-table [dataSource]="InvoiceDataSource">
+              <ng-container matColumnDef="Select">
+                <th mat-header-cell *matHeaderCellDef style="width: 5%;"> </th>
+                <td mat-cell style="width: 5%;" *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+                  <div fxLayout="row">
+                  <div fxFlex="20" class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                  <div fxFlex="80" fxLayoutAlign="center center"  >
+                    <mat-checkbox (click)="$event.stopPropagation()" 
+                    [disabled]="element.InvoiceAmount ==0 || element.InvoiceAmount==element.PaidAmount" (change)="$event ? TableDataSelection.toggle(element) : null;SelectForPayment();" 
+                     [checked]="TableDataSelection.isSelected(element) && isFullPayCheck" ></mat-checkbox>
+                  </div>
+                </div>
+                </td>
+               
+              </ng-container>
+              <ng-container matColumnDef="InvoiceNo">
+                <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Invoice No</th>
+                <td mat-cell style="width: 10%;" *matCellDef="let element;" >
+                  <div fxLayout>
+                    <div fxFlex >{{element.InvoiceNo}}</div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="Invoicedate">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Invoice Date </th>
+                <td mat-cell style="width: 15%;" *matCellDef="let element">
+                  {{ element.InvoiceDate |date: 'dd/MM/yyyy'}} </td>
+              </ng-container>
+
+
+              <ng-container matColumnDef="PaidAmount">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Paid Amount</th>
+                <td mat-cell style="width: 15%;text-align-last: right;" *matCellDef="let element">
+               <span class="paidLinkClass" (click)="openPaidAmount(element)">  {{element.PaidAmount}} </span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="AWBNumber">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> AWB Number </th>
+                <td mat-cell style="width: 15%;" *matCellDef="let element">
+                  {{element.AWBNumber}}</td>
+              </ng-container>
+
+          
+              <ng-container matColumnDef="PODStatus">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> POD Status </th>
+                <td mat-cell style="width: 15%;" *matCellDef="let element;">
+                <p *ngIf="element.PODDate && element.PODConfirmedBy">Confirmed</p> 
+              <p *ngIf="!element.PODDate && !element.PODConfirmedBy">Open</p>
+            </td>
+              </ng-container>
+
+
+              <ng-container matColumnDef="BalanceAmount">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Balance Amount </th>
+                <td mat-cell style="width: 15%;text-align-last: right;" *matCellDef="let element">
+                  <span *ngIf="element.InvoiceAmount >0">
+                    {{element.InvoiceAmount-element.PaidAmount}}
+                  </span>
+                  <span *ngIf="!element.InvoiceAmount">
+                    {{element.BalanceAmount}}
+                  </span>
+                 
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="Payment">
+                <th mat-header-cell *matHeaderCellDef style="width: 10%;">  </th>
+                <td mat-cell style="width: 10%;text-align-last: center;" *matCellDef="let element">
+                 <button [matMenuTriggerFor]="menu" [disabled]="element.InvoiceAmount ==0 || element.InvoiceAmount==element.PaidAmount || SelectedPaymentData.length > 0" [ngStyle]="{'background-color':(element.InvoiceAmount ==0 ||  element.InvoiceAmount==element.PaidAmount )?'rgb(185 191 185)':'rgb(38, 180, 38)'}" mat-raised-button  style="color:white;">Payment</button>
+                 <!-- [disabled]="element.InvoiceAmount ==0 || element.InvoiceAmount==element.PaidAmount || isPayButton " -->
+                 <mat-menu #menu="matMenu" yPosition="below">
+                  <button mat-menu-item >Make Payment</button>
+                  <button mat-menu-item (click)="openPaymentdialog(element)">Record Payment</button>
+                </mat-menu>
+                </td>
+              </ng-container>
+             
+              <tr mat-header-row *matHeaderRowDef="InvoiceDisplayedColumns;"></tr>
+              <tr mat-row *matRowDef="let row; columns: InvoiceDisplayedColumns;let even=even">
+              </tr>
+            </table>
+      
+                <mat-paginator [pageSizeOptions]="[7, 10, 20, 50, 75, 100]" showFirstLastButtons>
+                </mat-paginator>
+             
+          </div>
+
+      
+
+        </div>
+      
+      </mat-card>
+    </div>
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="IsProgressBarVisibile">
+    </div>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<div class="dialog-content-wrapper">
+  <mat-toolbar class="toolBg m-0">
+    <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+      <span class="title dialog-title">Information</span>
+      <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+        <mat-icon svgIcon="closeIcon"></mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+    <!-- <p>{{message}}</p> -->
+    <form name="ASNDispatchForm" autocomplete="off" [formGroup]="ASNDispatchFormGroup" novalidate>
+      <mat-form-field class="px-12" style="width: 95%;">
+        <input matInput placeholder="Goods dispatched On" [matDatepicker]="picker30" [max]="toDay" formControlName="DispatchedOn">
+        <mat-datepicker-toggle matSuffix [for]="picker30">
+          <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker30></mat-datepicker>
+        <mat-error *ngIf="ASNDispatchFormGroup.get('DispatchedOn').touched && 
+        ASNDispatchFormGroup.get('DispatchedOn').hasError('required')">
+          *
+        </mat-error>
+      </mat-form-field>
+      <!-- <div fxFlex>
+        <mat-form-field>
+          <input matInput placeholder="Dispatched On" [matDatepicker]="picker1" formControlName="DispatchedOn">
+          <mat-datepicker-toggle matSuffix [for]="picker1">
+            <img matDatepickerToggleIcon class="calendarImg" src="assets/images/calendar.png">
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+      </div> -->
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions class="m-0 p-16" fxLayoutAlign="space-between center" align="end">
+    <button mat-button type="button" (click)="CloseClicked()">No</button>
+    <button mat-button type="button" class="btnBg" (click)="YesClicked()">Yes</button>
+  </mat-dialog-actions>
+</div>

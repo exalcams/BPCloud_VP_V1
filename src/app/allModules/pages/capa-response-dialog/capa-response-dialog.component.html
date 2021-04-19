@@ -1,0 +1,79 @@
+<div class="Dialog" fxLayout="column">
+  <div fxLayoutAlign="space-between center" class="header">
+    <span class="headerName">Response</span>
+    <div fxLayoutAlign="end">
+      <button mat-icon-button (click)="closeDialog()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+  <form autocomplete="off" fxLayout="column" fxLayoutAlign="start stretch" name="form" novalidate
+    [formGroup]="ResponseFormGroup" style="padding: 20px;"  fxLayoutGap="20px">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <div fxFlex="40">
+        <mat-form-field style="width: 100%;">
+          <mat-select placeholder="Status" formControlName="Status" (openedChange)="SelectToggled()" (selectionChange)="selectChange($event)">
+            <mat-option *ngFor="let req of ResponseStatus" [value]="req">
+              <span>{{req}}</span>
+            </mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="ResponseFormGroup.get('Status').touched && ResponseFormGroup.get('Status').hasError('required')">
+            Status is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxFlex="40" *ngIf="IsDueDateRequried" >
+        <mat-form-field style="width: 100%;">
+          <input matInput placeholder="DueDate" [matDatepicker]="picker1" formControlName="DueDate">
+          <mat-datepicker-toggle matSuffix [for]="picker1">
+            <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+          <mat-error
+            *ngIf="ResponseFormGroup.get('DueDate').touched && ResponseFormGroup.get('DueDate').hasError('required')">
+            DueDate is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div>
+      <mat-form-field class="TextArea" style="width: 100% !important;" appearance="outline">
+        <!-- <input matInput placeholder="Text" formControlName="Text"> -->
+        <textarea matInput matTextareaAutosize [matAutosizeMinRows]="TextAreaMinRow"
+          [matAutosizeMaxRows]="TextAreaMaxRow" formControlName="Text" placeholder="Text"></textarea>
+        <mat-error *ngIf="ResponseFormGroup.get('Text').touched && ResponseFormGroup.get('Text').hasError('required')">
+          Text is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+
+  <div fxLayout="column" fxLayoutGap="20px">
+    <div fxLayoutAlign="center" fxLayout="row">
+      <img class="addBlueIcon" src="assets/images/addBlue.png" (click)="fileInput1.click()">
+      <span class="attachClass" (click)="fileInput1.click()">
+        Add Attachment
+      </span>
+      <input hidden type="file" #fileInput1 (change)="handleFileInput($event)"
+        accept="image/x-png,image/gif,image/jpeg,image/jpg,application/pdf" />
+    </div>
+    <div *ngIf="Fileslist?.length > 0" style="cursor: pointer !important;" fxLayoutAlign="center"
+      (click)="OpenAttachmentDialog()">
+      <span>{{Fileslist[0].name}}</span>
+    </div>
+  </div>
+
+  <!-- <div fxLayout="column" fxLayoutAlign="end" fxFlex style="margin-bottom: 10px;">
+    <div fxLayout="row" fxLayoutAlign="space-between center" class="ml-20 mr-20">
+      <button mat-flat-button color="accent" (click)="Response('Resolved')"
+        *ngIf="Item.ActionStatus != 'View'">Resolved</button>
+      <button mat-flat-button color="accent" (click)="Response('Differed')"
+        *ngIf="Item.ActionStatus != 'View'">Differed</button>
+    </div>
+  </div> -->
+  <div fxLayout="column" fxLayoutAlign="end center" fxFlex style="margin-bottom: 10px;">
+    <button mat-flat-button color="accent" (click)="Response()"
+      *ngIf="Item.ActionStatus != 'View'">Response</button>
+  </div>
+</div>

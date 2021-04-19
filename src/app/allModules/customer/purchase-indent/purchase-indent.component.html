@@ -1,0 +1,392 @@
+<div id="purind" class="page-layout carded fullwidth">
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Purchase Indent</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div fxLayout class="content-card1">
+      <!-- <div fxFlex="23" class="side-bar" style="background-color: #f5f5f5">
+        <div class="sidenav-header">
+          <mat-toolbar>
+            <mat-toolbar-row fxLayout="row" class="px-8" fxLayoutAlign="space-between center">
+              <div class="search-wrapper" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                  <input [(ngModel)]="searchText" type="text" placeholder="Search" fxFlex>
+                  <mat-icon class="s-16">search</mat-icon>
+                </div>
+              </div>
+            </mat-toolbar-row>
+          </mat-toolbar>
+        </div>
+        <div class="sidenav-content" fusePerfectScrollbar fxFlex>
+          <div *ngFor="let usr of AllPurchaseIndentHeaders | filter: searchText">
+            <div>
+              <div class="mx-8 mb-8 mt-0 p-8 leftCard" (click)="LoadSelectedPurchaseIndent(usr)"
+                [style.border-left-color]="SelectedPurchaseIndentNumber==usr.PurchaseIndentNumber?'#efb577':'#cccccc'">
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex><strong>{{usr.PurchaseIndentNumber}}</strong></div>
+                  <div fxFlex align="end">{{usr.CreatedOn | date :'dd/MM/yyyy'}}</div>
+                </div>
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex><strong>PO : </strong>{{usr.DocNumber}}</div>
+                </div>
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex><strong>AWB : </strong>{{usr.ReferenceDoc}}</div>
+                </div>
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex>{{usr.VessleNumber}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="(AllPurchaseIndentHeaders | filter: searchText)?.length === 0" class="no-results-message">
+            <span class="pl-12"> No results..</span>
+          </div>
+        </div>
+        <div class="borderRight1"></div>
+      </div> -->
+      <mat-card fxFlex="100" class="side-bar p-0">
+        <div class="sidenav-content" fxFlex fxLayout="column">
+          <div fxFlex fxLayout class="p-0 pt-8">
+            <div fxFlex class="px-12 mt-4">
+              <form autocomplete="off" class="normal" fxLayout="column" fxLayoutAlign="start" name="form" novalidate
+                [formGroup]="PurchaseIndentFormGroup">
+                <div fxFlex fxLayout="row wrap">
+                  <div fxFlex="50" class="px-12" *ngIf="SelectedPIRNumber">
+                    <!-- *ngIf="SelectedPIRNumber"  -->
+                    <mat-form-field style="width: 100%;">
+                      <input matInput placeholder="Order" formControlName="PIRNumber">
+                      <mat-error
+                        *ngIf="PurchaseIndentFormGroup.get('PIRNumber').touched && PurchaseIndentFormGroup.get('PIRNumber').hasError('required')">
+                        PIRNumber is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="50" class="px-12">
+                    <mat-form-field style="width: 100%;">
+                      <input matInput placeholder="Order Date" [matDatepicker]="picker0" formControlName="Date">
+                      <mat-datepicker-toggle matSuffix [for]="picker0">
+                        <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon" class="mb-12"></mat-icon>
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #picker0></mat-datepicker>
+                      <mat-error
+                        *ngIf="PurchaseIndentFormGroup.get('Date').touched && PurchaseIndentFormGroup.get('Date').hasError('required')">
+                        Doc Date is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="50" class="px-12">
+                    <mat-form-field style="width: 100%;">
+                      <input matInput placeholder="Reference Doc" formControlName="ReferenceDoc">
+                      <mat-error
+                        *ngIf="PurchaseIndentFormGroup.get('ReferenceDoc').touched && PurchaseIndentFormGroup.get('ReferenceDoc').hasError('required')">
+                        Reference Doc is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="50" class="px-12" *ngIf="SelectedPIRNumber">
+
+                    <mat-form-field style="width: 100%;">
+                      <input matInput placeholder="Status" formControlName="Status">
+                      <mat-error
+                        *ngIf="PurchaseIndentFormGroup.get('Status').touched && PurchaseIndentFormGroup.get('Status').hasError('required')">
+                        Status is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+
+
+                </div>
+              </form>
+            </div>
+            <div fxFlex class="borderleft mb-40 pt-40" [class.pt-60]="SelectedPurchaseIndentHeader?.PIRNumber">
+              <div fxLayout class="mx-40">
+                <div fxFlex="30">Draft</div>
+                <!-- <div fxFlex="30">Shipped</div> -->
+                <div fxFlex="30">Submitted</div>
+                <div
+                  *ngIf="SelectedPurchaseIndentHeader?.Status =='submitted' || SelectedPurchaseIndentHeader?.Status =='saved' || SelectedPIRNumber==null "
+                  fxFlex="30">Created/Cancelled</div>
+                <!-- <div *ngIf="SelectedPIRNumber==null" fxFlex="30" >Created/Cancelled</div> -->
+                <div *ngIf="SelectedPurchaseIndentHeader?.Status =='created'" fxFlex="30">Created</div>
+                <div *ngIf="SelectedPurchaseIndentHeader?.Status =='cancelled'" fxFlex="10">cancelled</div>
+              </div>
+              <div fxLayout class="mx-40 my-8">
+                <div fxFlex="30" fxLayout>
+                  <div class="round" [style.border-color]="getStatusColor('saved')"></div>
+                  <!-- [style.border-color]="SelectedPurchaseIndentHeader.Status==='Open'?'#efb577':'#34ad65'" -->
+                  <div style="width: 10px;margin-left: -1px !important" [class]="getTimeline('saved')"></div>
+                  <!-- [class]="SelectedPurchaseIndentHeader.Status==='Open'?'orange-timeline':'green-timeline'" -->
+                  <div [class]="getRestTimeline('saved')" fxFlex>
+                    <!-- [class]="SelectedPurchaseIndentHeader.Status==='Open'?'white-timeline':'green-timeline'" -->
+                  </div>
+                </div>
+                <!-- <div fxFlex="30" fxLayout>
+                  <div style="width: 10px;margin-right: -1px !important" [class]="getTimeline('Shipped')"></div>
+                  <div class="round" [style.border-color]="getStatusColor('Shipped')"></div>
+                  <div style="width: 10px; margin-left: -1px !important" [class]="getTimeline('Shipped')"></div>
+                  <div [class]="getRestTimeline('Shipped')" fxFlex></div>
+                </div> -->
+                <!-- chng -->
+                <div fxFlex="30" fxLayout>
+                  <div style="width: 10px;margin-right: -1px !important" [class]="getTimeline('submitted')"></div>
+                  <div class="round" [style.border-color]="getStatusColor('submitted')"></div>
+                  <div style="width: 10px; margin-left: -1px !important" [class]="getTimeline('submitted')"></div>
+                  <div [class]="getRestTimeline('submitted')" fxFlex></div>
+                </div>
+                <!-- chng -->
+                <div *ngIf="SelectedPurchaseIndentHeader?.Status!='cancelled'" fxFlex="30" fxLayout>
+                  <div *ngIf="SelectedPurchaseIndentHeader?.Status!='cancelled'"
+                    style="width: 10px;margin-right: -1px !important" [class]="getTimeline('created')"></div>
+                  <div *ngIf="SelectedPurchaseIndentHeader?.Status!='cancelled'" class="round"
+                    [style.border-color]="getStatusColor('created')"></div>
+                  <!-- <div  *ngIf="SelectedPurchaseIndentHeader?.Status!='created' && SelectedPurchaseIndentHeader?.Status!='cancelled'" style="width: 10px;margin-left: -1px !important" [class]="getTimeline('created')"></div>
+                  <div *ngIf="SelectedPurchaseIndentHeader?.Status!='created' && SelectedPurchaseIndentHeader?.Status!='cancelled'"  [class]="getRestTimeline('created')" fxFlex></div> -->
+                </div>
+                <div *ngIf="SelectedPurchaseIndentHeader?.Status=='cancelled'" fxFlex="10" fxLayout>
+                  <div *ngIf="SelectedPurchaseIndentHeader?.Status=='cancelled'"
+                    style="width: 10px;margin-right: -1px !important" [class]="getTimeline('cancelled')"></div>
+                  <div *ngIf="SelectedPurchaseIndentHeader?.Status=='cancelled'" class="round"
+                    [style.border-color]="getStatusColor('cancelled')"></div>
+                </div>
+              </div>
+              <!-- <div fxLayout class="mx-40">
+                <div fxFlex="30"> {{getStatusDate('SO')}} </div>
+                <div fxFlex="30"> {{getStatusDate('Shipped')}}</div>
+                <div fxFlex="30"> {{getStatusDate('Invoiced')}}</div>
+                <div fxFlex="10"> {{getStatusDate('Receipt')}}</div>
+              </div> -->
+            </div>
+          </div>
+
+          <div class="px-12 mt-20">
+            <div>
+              <span class="Shipment-Proposal">Item</span>
+            </div>
+            <div>
+              <form autocomplete="off" class="normal" fxLayout="row" fxLayoutAlign="start" name="form" novalidate
+                [formGroup]="PurchaseIndentItemFormGroup">
+                <div fxFlex="15">
+                  <mat-form-field class="px-12" style="width: 100%;">
+                    <input matInput placeholder="Item" formControlName="Item">
+                    <mat-error
+                      *ngIf="PurchaseIndentItemFormGroup.get('Item').touched && PurchaseIndentItemFormGroup.get('Item').hasError('required')">
+                      Item is required
+                    </mat-error>
+                  </mat-form-field>
+
+                </div>
+                <div fxFlex="15">
+                  <mat-form-field class="px-12" style="width: 100%;">
+                    <mat-select placeholder="Material" formControlName="Material" (selectionChange)="selectionChange($event)" >
+                      <!-- (selectionChange)="Material(value)" -->
+                      <!-- (selectionChange)="CountryOfOriginSelected($event)" -->
+                      <!-- ProductID: string; -->
+                      <mat-option *ngFor="let Prod of AllProducts" [value]="Prod.ProductID">{{Prod.ProductID}}
+                      </mat-option>
+                      
+                    </mat-select>
+                    <mat-error
+                    *ngIf="PurchaseIndentItemFormGroup.get('Material').touched && PurchaseIndentItemFormGroup.get('Material').hasError('required')">
+                    Material is required
+                  </mat-error>
+                    <!-- <input matInput placeholder="Material" formControlName="Material">
+                    <mat-error
+                      *ngIf="PurchaseIndentItemFormGroup.get('Material').touched && PurchaseIndentItemFormGroup.get('Material').hasError('required')">
+                      Material is required
+                    </mat-error> -->
+                  </mat-form-field>
+                </div>
+                <div fxFlex="15">
+                  <mat-form-field class="px-12" style="width: 100%;">
+                    <input matInput placeholder="Material Text" formControlName="MaterialText" [(ngModel)]="Material_Text" >
+                    <mat-error
+                      *ngIf="PurchaseIndentItemFormGroup.get('MaterialText').touched && PurchaseIndentItemFormGroup.get('MaterialText').hasError('required')">
+                      MaterialText is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <!-- <div fxFlex="15">
+                  <mat-form-field class="px-12" style="width: 100%;">
+                    <mat-select (selectionChange)="ProductSelected($event)" placeholder="Prodcut ID"
+                      formControlName="ProdcutID">
+                      <mat-option *ngFor="let count of AllProducts" [value]="count.ProductID">
+                        {{count.ProductID}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error
+                      *ngIf="PurchaseIndentItemFormGroup.get('ProdcutID').touched && PurchaseIndentItemFormGroup.get('ProdcutID').hasError('required')">
+                      Prodcut ID is required
+                    </mat-error>
+                  </mat-form-field>
+                </div> -->
+                <!-- <div fxFlex="15">
+                  <mat-form-field class="px-12" style="width: 100%;">
+                    <input matInput placeholder="HSN" formControlName="HSN">
+                    <mat-error
+                      *ngIf="PurchaseIndentItemFormGroup.get('HSN').touched && PurchaseIndentItemFormGroup.get('HSN').hasError('required')">
+                      HSN is required
+                    </mat-error>
+                  </mat-form-field>
+                </div> -->
+                <div fxFlex="15">
+                  <mat-form-field class="px-12" style="width: 100%;">
+                    <input matInput placeholder="HSN" formControlName="HSN">
+                    <mat-error
+                      *ngIf="PurchaseIndentItemFormGroup.get('HSN').touched && PurchaseIndentItemFormGroup.get('HSN').hasError('required')">
+                      HSN is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="15">
+                  <mat-form-field class="px-12" style="width: 100%;">
+                    <input matInput placeholder="Order Qty" formControlName="OrderQty">
+                    <mat-error
+                      *ngIf="PurchaseIndentItemFormGroup.get('OrderQty').touched && PurchaseIndentItemFormGroup.get('OrderQty').hasError('required')">
+                      Order Qty is required
+                    </mat-error>
+                    <mat-error *ngIf="PurchaseIndentItemFormGroup.get('OrderQty').touched && !PurchaseIndentItemFormGroup.get('OrderQty').hasError('required')
+                    &&PurchaseIndentItemFormGroup.get('OrderQty').hasError('pattern')">
+                      Enter valid Quantity
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <!-- <div fxFlex="15">
+                  <mat-form-field class="px-12" style="width: 100%;">
+                  
+                    <mat-select formControlName="UOM">
+                      <mat-option value="KG">KG</mat-option>
+                      <mat-option value="ML">ML</mat-option>
+                      <mat-option value="OUNCE">OUNCE</mat-option>
+                      <mat-option value="OUNCE">EA</mat-option>
+                    </mat-select>
+                    <mat-error
+                      *ngIf="PurchaseIndentItemFormGroup.get('UOM').touched && PurchaseIndentItemFormGroup.get('UOM').hasError('required')">
+                      UOM is required
+                    </mat-error>
+                  </mat-form-field>
+                </div> -->
+                <div fxFlex="15">
+                  <mat-form-field class="px-12" style="width: 100%;">
+                    <!-- <input matInput placeholder="Delivery Date" formControlName="DeliveryDate"> -->
+                    <input matInput placeholder="Delivery Date" [matDatepicker]="picker1"
+                      formControlName="DeliveryDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker1">
+                      <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon" class="mb-12"></mat-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                    <mat-error
+                      *ngIf="PurchaseIndentItemFormGroup.get('DeliveryDate').touched && PurchaseIndentItemFormGroup.get('DeliveryDate').hasError('required')">
+                      Delivery Date is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div  fxFlex="10"  *ngIf="status_show!='submitted'" fxLayoutAlign="center start">
+                  <img class="addIcon" (click)="AddPurchaseIndentItemToTable()"
+                    src="assets/images/logos/add-button.png">
+                  <!-- <button class="SaveBtn" mat-raised-button (click)="AddDocumentCenterToTable()">Add</button> -->
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div fxFlex fxLayout="column" class="table mx-20 my-12">
+            <table *ngIf="AllPurchaseIndentItems?.length" mat-table [dataSource]="PurchaseIndentItemDataSource" matSort>
+              <ng-container matColumnDef="Item">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Item </th>
+                <td mat-cell style="width: 15%;" *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+                  <div fxLayout>
+                    <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                    <div fxFlex class="pl-4">{{element.Item}} </div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="Material">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Material </th>
+                <td mat-cell style="width: 15%;" *matCellDef="let element">
+                  {{element.Material}} </td>
+              </ng-container>
+              <ng-container matColumnDef="MaterialText">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> MaterialText </th>
+                <td mat-cell style="width: 15%;" *matCellDef="let element">
+                  {{element.MaterialText}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="HSN">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> HSN </th>
+                <td mat-cell style="width: 15%;" *matCellDef="let element">
+                  {{element.HSN}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="OrderQty">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Order Qty </th>
+                <td mat-cell style="width: 15%;" *matCellDef="let element">
+                  {{element.OrderQty}} </td>
+              </ng-container>
+
+              <!-- <ng-container matColumnDef="UOM">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> UOM </th>
+                <td mat-cell style="width: 15%;" *matCellDef="let element">
+                  {{element.UOM}} </td>
+              </ng-container> -->
+
+              <ng-container matColumnDef="DeliveryDate">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Delivery Date </th>
+                <td mat-cell style="width: 15%;" *matCellDef="let element">
+                  {{element.DeliveryDate | date :'dd/MM/yyyy'}} </td>
+              </ng-container>
+
+              <ng-container  matColumnDef="Action">
+                <th mat-header-cell [hidden]="show"  *matHeaderCellDef mat-sort-header style="width: 10%"> </th>
+                <td mat-cell [hidden]="show" *matCellDef="let element" style="text-align: center;width: 10%">
+                  <img class="removeIcon" src="assets/images/remove-button.png"
+                    (click)="RemovePurchaseIndentItemFromTable(element)">
+                </td>
+              </ng-container>
+
+              <tr mat-header-row  *matHeaderRowDef="PurchaseIndentItemDisplayedColumns;sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: PurchaseIndentItemDisplayedColumns;let even=even">
+              </tr>
+            </table>
+            <!-- <div flex *ngIf="AllDocumentCenters?.length">
+                <mat-paginator [pageSizeOptions]="[10, 20, 30, 50, 75, 100]" showFirstLastButtons>
+                </mat-paginator>
+              </div> -->
+          </div>
+        </div>
+        <!-- <div fxLayout id="footerCard">
+          <div fxLayout fxFlex class="my-8 px-12" fxLayoutAlign="end">
+            <button mat-stroked-button class="SaveBtn" (click)="SaveClicked()">Save</button>
+          </div>
+        </div> -->
+        <mat-card-actions class="m-0 pl-12 pr-16 cardActions">
+          <div fxLayout fxLayoutAlign="space-between center">
+            <div fxFlex>
+              <button *ngIf="SelectedPurchaseIndentHeader?.PIRNumber && SelectedPurchaseIndentHeader?.Status=='saved'"
+                mat-stroked-button class="DeleteBtn mr-4 mb-4" (click)="DeleteClicked()">Delete</button>
+              <!-- *ngIf="SelectedPurchaseIndentHeader?.PIRNumber" -->
+            </div>
+            <div fxFlex align="end">
+              <!-- *ngIf="!SelectedPurchaseIndentHeader?.PIRNumber" -->
+              <button  *ngIf="SelectedPurchaseIndentHeader?.Status!='submitted'" mat-stroked-button class="SaveBtn mb-4" (click)="SaveClicked()"
+               >Save
+              </button>
+              <button    *ngIf="SelectedPurchaseIndentHeader?.Status!='submitted'" mat-raised-button class="SubmitBtn mb-4" (click)="SubmitClicked()">Submit</button>
+            </div>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="IsProgressBarVisibile">
+    </div>
+  </div>
+</div>

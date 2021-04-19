@@ -1,0 +1,632 @@
+<div id="rfqcreation" class="page-layout carded fullwidth">
+  <div class="center" fxLayout="column" fxLayoutGap="10px">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>RFQ Creation</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <!-- <div fxLayout class="content-card1">
+    </div> -->
+    <div fxFlex fxLayout="column" fxLayoutGap="20px">
+      <div>
+        <span class="title">Header Details</span>
+      </div>
+      <form autocomplete="off" fxFlex="1 0 auto" style="padding-left: 30px;padding-right: 50px;"
+        [formGroup]="RFxFormGroup">
+        <div fxFlex fxLayout="row wrap" fxLayoutAlign="start">
+          <div fxFlex="50">
+            <mat-form-field class="form_class pl-32">
+              <input matInput placeholder="Plant" class="input_class" formControlName="Plant">
+            </mat-form-field>
+          </div>
+          <div fxFlex="50" fxLayout>
+            <div fxFlex="50">
+              <mat-form-field class="form_class pl-32">
+                <mat-label>Validity Start Date</mat-label>
+                <input matInput [matDatepicker]="picker" class="input_class" formControlName="ValidityStartDate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div fxFlex="50">
+              <mat-form-field class="form_class pl-32">
+                <mat-label>Validity End Date</mat-label>
+                <input matInput [matDatepicker]="picker1" class="input_class" formControlName="ValidityEndDate">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxFlex="50" fxLayout>
+            <div fxFlex="50">
+              <mat-form-field class="form_class pl-32">
+                <mat-label>RFQ Type</mat-label>
+                <mat-select matInput class="input_class" formControlName="RFxType">
+                  <mat-option value="FN">FN</mat-option>
+                  <mat-option value="AN">AN</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="50">
+              <mat-form-field class="form_class pl-32">
+                <mat-label>RFQ Group</mat-label>
+                <mat-select matInput class="input_class" formControlName="RFxGroup">
+                  <mat-option value="Service">Service</mat-option>
+                  <mat-option value="Employee">Employee</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxFlex="50" fxLayout>
+            <div fxFlex="50">
+              <mat-form-field class="form_class pl-32">
+                <mat-label>Response Start Date</mat-label>
+                <input matInput [matDatepicker]="picker2" class="input_class" formControlName="ResponseStartDate">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div fxFlex="50">
+              <mat-form-field class="form_class pl-32">
+                <mat-label>Response End Date</mat-label>
+                <input matInput [matDatepicker]="picker3" class="input_class" formControlName="ResponseEndDate">
+                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                <mat-datepicker #picker3></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+          </div>
+          <div fxFlex="50">
+            <mat-form-field class="form_class pl-32">
+              <input matInput placeholder="RFQ Title" class="input_class">
+            </mat-form-field>
+          </div>
+          <div fxFlex="50">
+            <mat-form-field class="form_class pl-32" style="width: 50%;">
+              <mat-label>Currency</mat-label>
+              <mat-select matInput class="input_class">
+                <mat-option value="INR">INR</mat-option>
+                <mat-option value="EUR">EUR</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div fxFlex fxLayout="column" fxLayoutGap="20px" class="Gap_class">
+      <div fxFlex>
+        <span class="title"><strong>Overall Evaluation Criteria </strong></span>
+      </div>
+
+      <div fxFlex>
+        <form autocomplete="off" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="50px" fxFlex="1 0 auto"
+          style="padding-left: 90px;" [formGroup]="RFxHCDetailsFormGroup">
+          <div fxFlex="48">
+            <mat-form-field class="form_class">
+              <mat-select matInput placeholder="Criteria" class="input_class" formControlName="CriteriaID">
+                <mat-option value="INR">INR</mat-option>
+                <mat-option value="EUR">EUR</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxFlex="48">
+            <mat-form-field class="form_class">
+              <input matInput placeholder="Description" class="input_class" formControlName="Text">
+            </mat-form-field>
+          </div>
+          <div fxFlex="4" fxLayoutAlign="end">
+            <img class="addIcon" src="assets/images/add.png" (click)="AddRFxHCToTable()">
+          </div>
+        </form>
+      </div>
+      <div fxFlex>
+        <div style="overflow-x: auto;" class="table-responsive ">
+          <table class="table " mat-table [dataSource]="RFxHCDataSource">
+
+            <ng-container matColumnDef="CriteriaID">
+              <th mat-header-cell *matHeaderCellDef style="width: 47%;border-right: 1px solid #d6d6d6;">
+                Criteria </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.CriteriaID}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Text">
+              <th mat-header-cell *matHeaderCellDef style="width: 47%;border-right: 1px solid #d6d6d6;">
+                Description </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.Text}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Action" style="width: 3%;border-right: 1px solid #d6d6d6;">
+              <th mat-header-cell *matHeaderCellDef> </th>
+              <td mat-cell *matCellDef="let element">
+                <img class="m-8" src="assets/images/delete.png" (click)="RemoveRFxHCFromTable(element)"> </td>
+            </ng-container>
+
+            <tr mat-header-row style="height: 40px;" *matHeaderRowDef="RFxHCDisplayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: RFxHCDisplayedColumns;">
+            </tr>
+          </table>
+        </div>
+
+      </div>
+    </div>
+    <div fxFlex fxLayout="column" fxLayoutGap="20px" class="Gap_class">
+      <div fxFlex>
+        <span class="title"><strong>Item Details </strong></span>
+      </div>
+      <div fxFlex>
+        <form autocomplete="off" fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto"
+          style="padding-left: 20px;width: 100%;" [formGroup]="RFxItemFormGroup">
+
+          <div fxFlex="10">
+            <mat-form-field class="form_class pr-12">
+              <input matInput placeholder="Item" class="input_class" formControlName="Item">
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="15">
+            <mat-form-field class="form_class pr-12">
+              <input matInput placeholder="Material" class="input_class" formControlName="Material">
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="30">
+            <mat-form-field class="form_class pr-12">
+              <input matInput placeholder="Material Text" class="input_class" formControlName="MaterialText">
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="10">
+            <mat-form-field class="form_class pr-12">
+              <input matInput placeholder="Total Quantity" class="input_class" formControlName="TotalQty">
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="10">
+            <mat-form-field class="form_class pr-12">
+              <input matInput placeholder="Per Schedule Qty." class="input_class" formControlName="PerScheduleQty">
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="10">
+            <mat-form-field class="form_class pr-12">
+              <input matInput placeholder="No.  of Schedules" class="input_class" formControlName="TotalSchedules">
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="10">
+            <mat-form-field class="form_class pr-12">
+              <input matInput placeholder="Bidding Price Low" class="input_class" formControlName="BiddingPriceLow">
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="5" fxLayoutAlign="end">
+            <img class="addIcon" src="assets/images/add.png" (click)="AddRFxItemToTable()">
+          </div>
+
+        </form>
+      </div>
+      <div fxFlex>
+        <div style="overflow-x: auto;" class="table-responsive">
+          <table class="table" mat-table [dataSource]="RFxItemDataSource">
+            <ng-container matColumnDef="Item">
+              <th mat-header-cell *matHeaderCellDef style="width: 10%;border-right: 1px solid #d6d6d6;">
+                Item </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.Item}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Material">
+              <th mat-header-cell *matHeaderCellDef style="width: 15%;border-right: 1px solid #d6d6d6;">
+                Material </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.Material}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="MaterialText">
+              <th mat-header-cell *matHeaderCellDef style="width: 30%;border-right: 1px solid #d6d6d6;">
+                Material Text </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;">
+                {{element.MaterialText}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="TotalQty">
+              <th mat-header-cell *matHeaderCellDef style="width: 10%;border-right: 1px solid #d6d6d6;">
+                Tot. Qty. </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.TotalQty}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="PerScheduleQty">
+              <th mat-header-cell *matHeaderCellDef style="width: 10%;border-right: 1px solid #d6d6d6;">
+                Per Schedule Qty. </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;">
+                {{element.PerScheduleQty}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="TotalSchedules">
+              <th mat-header-cell *matHeaderCellDef style="width: 10%;border-right: 1px solid #d6d6d6;">
+                No. of Schedules </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;">
+                {{element.TotalSchedules}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="BiddingPriceLow">
+              <th mat-header-cell *matHeaderCellDef style="width: 10%;border-right: 1px solid #d6d6d6;">
+                Bidding Price Low </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;">
+                {{element.BiddingPriceLow}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Action" style="width: 5%;border-right: 1px solid #d6d6d6;">
+              <th mat-header-cell *matHeaderCellDef> </th>
+              <td mat-cell *matCellDef="let element">
+                <img class="m-8" src="assets/images/delete.png" (click)="RemoveRFxItemFromTable(element)"> </td>
+            </ng-container>
+
+            <tr mat-header-row style="height: 40px;" *matHeaderRowDef="RFxItemDisplayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: RFxItemDisplayedColumns;">
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div fxFlex fxLayout="column" fxLayoutGap="20px" class="Gap_class">
+      <div fxFlex>
+        <span class="title"><strong>5Q Rating </strong></span>
+      </div>
+
+      <div fxFlex>
+        <form autocomplete="off" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="50px" fxFlex="1 0 auto"
+          style="padding-left: 90px;" [formGroup]="RFxICFormGroup">
+          <div fxFlex="48">
+            <mat-form-field class="form_class">
+              <input matInput placeholder="Criteria" class="input_class" formControlName="Criteria">
+            </mat-form-field>
+          </div>
+          <div fxFlex="48">
+            <mat-form-field class="form_class">
+              <input matInput placeholder="Description" class="input_class" formControlName="Text">
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="4" fxLayoutAlign="end">
+            <img class="addIcon" src="assets/images/add.png" (click)="AddRFxICToTable()">
+          </div>
+        </form>
+      </div>
+      <div fxFlex>
+        <div style="overflow-x: auto;" class="table-responsive ">
+          <table class="table " mat-table [dataSource]="RFxICDataSource">
+
+            <ng-container matColumnDef="Criteria">
+              <th mat-header-cell *matHeaderCellDef style="width: 47%;border-right: 1px solid #d6d6d6;">
+                Criteria </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.Criteria}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Text">
+              <th mat-header-cell *matHeaderCellDef style="width: 47%;border-right: 1px solid #d6d6d6;">
+                Description </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.Text}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Action" style="width: 3%;border-right: 1px solid #d6d6d6;">
+              <th mat-header-cell *matHeaderCellDef> </th>
+              <td mat-cell *matCellDef="let element">
+                <img class="m-8" src="assets/images/delete.png" (click)="RemoveRFxICFromTable(element)"> </td>
+            </ng-container>
+
+            <tr mat-header-row style="height: 40px;" *matHeaderRowDef="RFxICDisplayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: RFxICDisplayedColumns;">
+            </tr>
+          </table>
+        </div>
+
+      </div>
+    </div>
+    <div fxFlex fxLayout="column" fxLayoutGap="20px" class="Gap_class">
+      <div fxFlex>
+        <span class="title"><strong>Partners </strong></span>
+      </div>
+
+      <div fxFlex>
+        <form autocomplete="off" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="50px" fxFlex="1 0 auto"
+          style="padding-left: 90px;" [formGroup]="RFxPartnerFormGroup">
+          <div fxFlex="48">
+            <mat-form-field class="form_class">
+              <mat-select matInput placeholder="Type" class="input_class" formControlName="Type">
+                <mat-option value="Technical">Technical</mat-option>
+                <mat-option value="Develpoer">Develpoer</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxFlex="48">
+            <mat-form-field class="form_class">
+              <input matInput placeholder="User Tables" class="input_class" formControlName="User">
+            </mat-form-field>
+          </div>
+          <div fxFlex="4" fxLayoutAlign="end">
+            <img class="addIcon" src="assets/images/add.png" (click)="AddRFxPartnerToTable()">
+          </div>
+        </form>
+      </div>
+      <div fxFlex>
+        <div style="overflow-x: auto;" class="table-responsive ">
+          <table class="table " mat-table [dataSource]="RFxPartnerDataSource">
+            
+            <ng-container matColumnDef="Type">
+              <th mat-header-cell *matHeaderCellDef style="width: 47%;border-right: 1px solid #d6d6d6;">
+                Type </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.Type}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="User">
+              <th mat-header-cell *matHeaderCellDef style="width: 47%;border-right: 1px solid #d6d6d6;">
+                User Table </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.User}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Action" style="width: 3%;border-right: 1px solid #d6d6d6;">
+              <th mat-header-cell *matHeaderCellDef> </th>
+              <td mat-cell *matCellDef="let element">
+                <img class="m-8" src="assets/images/delete.png" (click)="RemoveRFxPartnerFromTable(element)"> </td>
+            </ng-container>
+            <tr mat-header-row style="height: 40px;" *matHeaderRowDef="RFxPartnerDisplayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: RFxPartnerDisplayedColumns;">
+            </tr>
+          </table>
+        </div>
+
+      </div>
+    </div>
+    <div fxFlex fxLayout="column" fxLayoutGap="20px" class="Gap_class">
+      <div fxFlex="row" fxLayoutAlign="space-between start" style="padding-right: 30px;">
+        <span class="title"><strong>Add Vendors </strong></span>
+        <button mat-button class="select_button">select</button>
+      </div>
+
+      <div fxFlex>
+        <form autocomplete="off" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="50px" fxFlex="1 0 auto"
+          style="padding-left: 90px;" [formGroup]="RFxVendorFormGroup">
+          <div fxFlex="24">
+            <mat-form-field class="form_class">
+              <input matInput placeholder="Type" class="input_class" formControlName="Type">
+            </mat-form-field>
+          </div>
+          <div fxFlex="24">
+            <mat-form-field class="form_class">
+              <input matInput placeholder="Vendor Name" class="input_class" formControlName="VendorName">
+            </mat-form-field>
+          </div>
+          <div fxFlex="24">
+            <mat-form-field class="form_class">
+              <input matInput placeholder="GST Number" class="input_class" formControlName="GSTNumber">
+            </mat-form-field>
+          </div>
+          <div fxFlex="24">
+            <mat-form-field class="form_class">
+              <input matInput placeholder="City" class="input_class" formControlName="City">
+            </mat-form-field>
+          </div>
+          <div fxFlex="4" fxLayoutAlign="end">
+            <img class="addIcon" src="assets/images/add.png" (click)="AddRFxVendorToTable()">
+          </div>
+        </form>
+      </div>
+      <div fxFlex>
+        <div style="overflow-x: auto;" class="table-responsive ">
+          <table class="table " mat-table [dataSource]="RFxVendorDataSource">
+
+            <ng-container matColumnDef="Type">
+              <th mat-header-cell *matHeaderCellDef style="width: 24%;border-right: 1px solid #d6d6d6;">
+                Type </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.Type}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="VendorName">
+              <th mat-header-cell *matHeaderCellDef style="width: 24%;border-right: 1px solid #d6d6d6;">
+                Vendor Name </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.VendorName}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="GSTNumber">
+              <th mat-header-cell *matHeaderCellDef style="width: 24%;border-right: 1px solid #d6d6d6;">
+                GST Number </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.GSTNumber}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="City">
+              <th mat-header-cell *matHeaderCellDef style="width: 22%;border-right: 1px solid #d6d6d6;">
+                City </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.City}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Action" style="width: 3%;border-right: 1px solid #d6d6d6;">
+              <th mat-header-cell *matHeaderCellDef> </th>
+              <td mat-cell *matCellDef="let element">
+                <img class="m-8" style="height: 20px;" src="assets/images/delete.png" (click)="RemoveRFxVendorFromTable(element)"> </td>
+            </ng-container>
+
+            <tr mat-header-row style="height: 40px;" *matHeaderRowDef="RFxVendorDisplayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: RFxVendorDisplayedColumns;">
+            </tr>
+          </table>
+        </div>
+
+      </div>
+    </div>
+    <div fxFlex fxLayout="column" fxLayoutGap="20px" class="Gap_class">
+      <div fxFlex>
+        <span class="title"><strong>Other Details </strong></span>
+      </div>
+
+      <div fxFlex>
+        <form autocomplete="off" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="50px" fxFlex="1 0 auto"
+          style="padding-left: 90px;" [formGroup]="RFxODFormGroup">
+          <div fxFlex="48">
+            <mat-form-field class="form_class">
+              <input matInput placeholder="Question" class="input_class" formControlName="Question">
+            </mat-form-field>
+          </div>
+          <div fxFlex="48">
+            <mat-form-field class="form_class">
+              <mat-select matInput placeholder="Answer Type" class="input_class" formControlName="AnswerType">
+                <mat-option value="Technical">Technical</mat-option>
+                <mat-option value="Develpoer">Develpoer</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxFlex="4" fxLayoutAlign="end">
+            <img class="addIcon" src="assets/images/add.png" (click)="AddRFxODToTable()">
+          </div>
+        </form>
+      </div>
+      <div fxFlex>
+        <div style="overflow-x: auto;" class="table-responsive ">
+          <table class="table " mat-table [dataSource]="RFxODDataSource">
+
+            <ng-container matColumnDef="Question">
+              <th mat-header-cell *matHeaderCellDef style="width: 47%;border-right: 1px solid #d6d6d6;">
+                Question </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.Question}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="AnswerType">
+              <th mat-header-cell *matHeaderCellDef style="width: 47%;border-right: 1px solid #d6d6d6;">
+                Answer Type </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.AnswerType}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Action" style="width: 3%;border-right: 1px solid #d6d6d6;">
+              <th mat-header-cell *matHeaderCellDef> </th>
+              <td mat-cell *matCellDef="let element">
+                <img class="m-8" style="height: 20px;" src="assets/images/delete.png" (click)="RemoveRFxODFromTable(element)"> </td>
+            </ng-container>
+
+            <tr mat-header-row style="height: 40px;" *matHeaderRowDef="RFxODDisplayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: RFxODDisplayedColumns;">
+            </tr>
+          </table>
+        </div>
+
+      </div>
+    </div>
+    <div fxFlex fxLayout="column" fxLayoutGap="20px" class="Gap_class">
+      <div fxFlex>
+        <span class="title"><strong>Attachments </strong></span>
+      </div>
+
+      <div fxFlex>
+        <form autocomplete="off" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="50px" fxFlex="1 0 auto"
+          style="padding-left: 90px;">
+          <div fxFlex="48">
+            <mat-form-field class="form_class">
+              <input matInput placeholder="Document Title" class="input_class">
+            </mat-form-field>
+          </div>
+          <div fxFlex="48">
+            <mat-form-field class="form_class">
+              <mat-select matInput placeholder="Remarks" class="input_class">
+                <mat-option>Technical</mat-option>
+                <mat-option>Develpoer</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxFlex="4" fxLayoutAlign="end">
+            <img class="addIcon" src="assets/images/add.png">
+          </div>
+        </form>
+      </div>
+      <div fxFlex>
+        <div style="overflow-x: auto;" class="table-responsive ">
+          <!-- <table class="table " mat-table [dataSource]="AttachedDataSource">
+            <ng-container matColumnDef="select">
+              <th mat-header-cell *matHeaderCellDef style="width: 3%;">
+
+              </th>
+              <td mat-cell *matCellDef="let row">
+
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="document">
+              <th mat-header-cell *matHeaderCellDef style="width: 47%;border-right: 1px solid #d6d6d6;">
+                Document Title </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.Document}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="remarks">
+              <th mat-header-cell *matHeaderCellDef style="width: 47%;border-right: 1px solid #d6d6d6;">
+                Remarks </th>
+              <td mat-cell *matCellDef="let element" style="border-right: 1px solid #d6d6d6;"> {{element.Remarks}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Action" style="width: 3%;border-right: 1px solid #d6d6d6;">
+              <th mat-header-cell *matHeaderCellDef> </th>
+              <td mat-cell *matCellDef="let element">
+                <img class="m-8" src="assets/images/delete.png"> </td>
+            </ng-container>
+            <tr mat-header-row style="height: 40px;" *matHeaderRowDef="displayedAttachedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedAttachedColumns;">
+            </tr>
+          </table> -->
+        </div>
+
+      </div>
+    </div>
+    <div fxFlex fxLayout="column" fxLayoutGap="20px" class="Gap_class">
+      <div fxFlex>
+        <span class="title_remark"><strong>Remarks </strong></span>
+      </div>
+      <div fxLayout="column" class="Remarks_box">
+        <div fxFlex="100">
+          <mat-form-field class="Remarks_style">
+            <input class="Input_remarks" matInput placeholder="Enter your Remarks here">
+          </mat-form-field>
+        </div>
+        <br>
+        <div fxLayoutAlign="end">
+          <img class="sendIcon" src="assets/images/send.png">
+        </div>
+      </div>
+
+    </div>
+    <div fxLayout="row" fxLayoutGap="20px" class="confirm_box">
+      <div fxFlex="50">
+        <div fxFlex="50">
+          <button class="Delete_button" mat-button>Delete</button>
+        </div>
+        <div fxFlex="50">
+          <button class="Cancel_button" mat-button>Cancel</button>
+        </div>
+      </div>
+      <div fxFlex="50" fxLayoutAlign="end">
+        <div fxFlex="50" fxLayoutAlign="end">
+          <button class="save_button" mat-button>Save</button>
+        </div>
+        <div fxFlex="50" fxLayoutAlign="end">
+          <button class="release_button" mat-button>Release</button>
+        </div>
+      </div>
+
+    </div>
+    <!-- <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="isProgressBarVisibile">
+    </div> -->
+  </div>

@@ -1,0 +1,187 @@
+<div id="support-desk-master" class="page-layout carded fullwidth">
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Support</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div fxLayout class="content-card1">
+      <div fxFlex="23" class="side-bar" style="background-color: #f5f5f5">
+        <div class="sidenav-header">
+          <mat-toolbar>
+            <mat-toolbar-row fxLayout="row" class="px-8" fxLayoutAlign="space-between center">
+              <div class="search-wrapper" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                  <input [(ngModel)]="searchText" type="text" placeholder="Search" fxFlex>
+                  <mat-icon class="s-16">search</mat-icon>
+                </div>
+              </div>
+            </mat-toolbar-row>
+          </mat-toolbar>
+        </div>
+        <div class="sidenav-content" fusePerfectScrollbar fxFlex>
+          <div *ngFor="let supportMaster of SupportMasters | filter: searchText">
+            <div>
+              <div class="mx-8 mb-8 mt-0 p-8 leftCard" (click)="LoadSelectedSupportMaster(supportMaster)"
+                [style.border-left-color]="SelectedReasonCode==supportMaster.ReasonCode?'#efb577':'#cccccc'">
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex><strong>{{supportMaster.ReasonCode}}</strong></div>
+                  <div fxFlex align="end">{{supportMaster.CreatedOn | date :'dd/MM/yyyy'}}</div>
+                </div>
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex>{{supportMaster.ReasonText}}</div>
+                </div>
+                <!-- <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex><strong>AWB : </strong>{{supportMaster.PatnerID}}</div>
+                </div>
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex>{{supportMaster.Client}}</div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+          <div *ngIf="(SupportMasters | filter: searchText)?.length === 0" class="no-results-message">
+            <span class="pl-12"> No results..</span>
+          </div>
+        </div>
+        <div class="borderRight1"></div>
+      </div>
+      <mat-card fxFlex="77" class="side-bar p-0">
+        <div class="sidenav-content" fxFlex fxLayout="column">
+          <div fxFlex fxLayout="column" class="p-0 pt-8">
+            <div fxFlex class="px-12 mt-4">
+              <form autocomplete="off" class="normal" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="start"
+                name="form" novalidate [formGroup]="SupportMasterFormGroup">
+
+                <div fxFlex fxLayout="row" fxLayoutGap="40px">
+
+                  <div fxFlex="50">
+                    <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                      <input matInput placeholder="Reason Code" formControlName="ReasonCode">
+                      <mat-error
+                        *ngIf="SupportMasterFormGroup.get('ReasonCode').touched && SupportMasterFormGroup.get('ReasonCode').hasError('required')">
+                        Reason Code is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="50">
+                    <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                      <input matInput placeholder="Reason Text" formControlName="ReasonText">
+                      <mat-error
+                        *ngIf="SupportMasterFormGroup.get('ReasonText').touched && SupportMasterFormGroup.get('ReasonText').hasError('required')">
+                        Reason Text is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- <div fxFlex="50">
+                    <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                      <mat-select (selectionChange)="ReasonSelected($event)" placeholder="Reason"
+                        formControlName="ReasonCode">
+                        <mat-option *ngFor="let reason of Reasons" [value]="reason.ReasonCode">
+                          {{reason.ReasonText}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error
+                        *ngIf="SupportMasterFormGroup.get('ReasonCode').touched && SupportMasterFormGroup.get('ReasonCode').hasError('required')">
+                        Reason is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div> -->
+
+                </div>
+
+                <div fxFlex fxLayout="row" fxLayoutGap="40px">
+
+                  <div fxFlex="50">
+                    <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                      <input matInput placeholder="Client" formControlName="Client">
+                      <mat-error
+                        *ngIf="SupportMasterFormGroup.get('Client').touched && SupportMasterFormGroup.get('Client').hasError('required')">
+                        Client is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- <div fxFlex="50">
+                    <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                      <input matInput placeholder="Patner ID" formControlName="PatnerID">
+                      <mat-error
+                        *ngIf="SupportMasterFormGroup.get('PatnerID').touched && SupportMasterFormGroup.get('PatnerID').hasError('required')">
+                        Patner ID is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div> -->
+
+
+                </div>
+
+                <!-- <div fxFlex fxLayout="row" fxLayoutGap="40px">
+
+                  <div fxFlex="50">
+                    <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                      <mat-select (selectionChange)="Developer1Selected($event)" placeholder="Developer 1"
+                        formControlName="Person1">
+                        <mat-option *ngFor="let supportDeskUser of SupportDeskUsers" [value]="supportDeskUser.UserName">
+                          {{supportDeskUser.UserName}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error
+                        *ngIf="SupportMasterFormGroup.get('Person1').touched && SupportMasterFormGroup.get('Person1').hasError('required')">
+                        Developer is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  
+                  <div fxFlex="50">
+                    <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                      <mat-select (selectionChange)="Developer2Selected($event)" placeholder="Developer 2"
+                        formControlName="Person2">
+                        <mat-option *ngFor="let supportDeskUser of SupportDeskUsers" [value]="supportDeskUser.UserName">
+                          {{supportDeskUser.UserName}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error
+                        *ngIf="SupportMasterFormGroup.get('Person2').touched && SupportMasterFormGroup.get('Person2').hasError('required')">
+                        Developer is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                </div> -->
+
+              </form>
+              <div fxLayout>
+                <div fxFlex fxLayoutAlign="end">
+                  <button class="floatBtn" mat-fab style="background-color: #f6b570" (click)="ResetControl()">
+                    <mat-icon style="color: white;">add</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <mat-card-actions class="m-0 pl-12 pr-16 cardActions">
+          <div fxLayout fxFlex fxLayoutAlign="end">
+            <button *ngIf="SelectedSupportMaster?.CreatedOn" mat-stroked-button class="DeleteBtn mr-4 mb-8"
+              (click)="DeleteClicked()">Delete</button>
+            <button *ngIf="!SelectedSupportMaster?.CreatedOn" mat-raised-button class="SaveBtn"
+              (click)="SaveClicked()">Save</button>
+            <button *ngIf="SelectedSupportMaster?.CreatedOn" mat-raised-button class="SaveBtn"
+              (click)="UpdateClicked()">Update</button>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="IsProgressBarVisibile">
+    </div>
+  </div>
+</div>

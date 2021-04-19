@@ -1,0 +1,94 @@
+<div id="cusord" class="page-layout carded" fusePerfectScrollbar>
+  <div class="center" fxLayout="column" fxLayoutGap="10px">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Return List</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="../../../../assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+  
+   
+    <div class="px-20 pb-20">
+      <table class="abnormal" mat-table [dataSource]="ReturnDataSource" matSort>
+
+        <ng-container matColumnDef="RequestID">
+          <th mat-header-cell *matHeaderCellDef> Request ID </th>
+          <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+            <div fxLayout>
+              <div class="tableCellBorder"  [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+              <div fxFlex class="pl-4">
+                <span class="cursorPointer" (click)="Gotocreate(element.RetReqID)"> {{element.RetReqID}}</span>
+             
+              </div>
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="Date">
+          <th mat-header-cell *matHeaderCellDef>Order Date </th>
+          <td mat-cell *matCellDef="let element">
+            <span>{{element.Date | date :'dd/MM/yyyy'}}</span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="InvoiceReference">
+          <th mat-header-cell *matHeaderCellDef>Invoice Reference</th>
+          <td mat-cell *matCellDef="let element">
+            <span>{{element.InvoiceDoc}}</span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="SONumber">
+          <th mat-header-cell *matHeaderCellDef>SO Number</th>
+          <td mat-cell *matCellDef="let element">
+            <span>{{element.DocumentNumber}}</span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="CreditNote">
+          <th mat-header-cell *matHeaderCellDef>Credit Note</th>
+          <td mat-cell *matCellDef="let element">
+            <span>{{element.CreditNote}}</span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="AWBNumber">
+          <th mat-header-cell *matHeaderCellDef>AWB Number</th>
+          <td mat-cell *matCellDef="let element">
+            <span>{{element.AWBNumber}}</span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="Transporter">
+          <th mat-header-cell *matHeaderCellDef>Transporter</th>
+          <td mat-cell *matCellDef="let element">
+            <span>{{element.Transporter}}</span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="TruckNumber">
+          <th mat-header-cell *matHeaderCellDef>Truck Number</th>
+          <td mat-cell *matCellDef="let element">
+            <span>{{element.TruckNumber}}</span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="Status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let element">
+            <span *ngIf="element.Status=='10'">Draft</span>
+            <span *ngIf="element.Status=='20'">Submitted</span>
+            <span *ngIf="element.Status=='30'">Accepted</span>
+
+          </td>
+        </ng-container>
+        
+        <tr mat-header-row *matHeaderRowDef="ReturnListDisplayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: ReturnListDisplayedColumns;">
+        </tr>
+
+      </table>
+      <div>
+        <mat-paginator [pageSizeOptions]="[10,50,100,250,500,1000]"></mat-paginator>
+      </div>
+    </div>
+    
+
+
+  </div>
+</div>

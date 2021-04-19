@@ -1,0 +1,260 @@
+<div id="accStat" class="page-layout carded" fusePerfectScrollbar>
+  <div class="center" fxLayout="column" fxLayoutGap="10px">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Account Statement</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <!-- <div fxFlex fxLayout *ngIf="!isExpanded" [@animate]="{value:'*',params:{x:'100%'}}"> -->
+    <div fxFlex fxLayout *ngIf="!isExpanded" @expandCollapse>
+      <!-- <div class="tile mx-20" fxFlex="25">
+        <div fxLayout fxLayoutAlign="start center" class="pt-8">
+          <span class="boldClass   pl-8 headerMargin"> Opening / Closing Balance</span>
+          <span [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="underline"></span>
+
+          <div fxFlex fxLayoutAlign="end center" class="pt-8 pr-12">
+            <img src="assets/images/money.png" />
+          </div>
+        </div>
+        <div fxLayout fxLayoutAlign="center" class="pt-8 mb-20">
+          <div fxFlex fxLayout="column" fxLayoutAlign="center">
+            <div fxFlex fxLayoutAlign="center" class="pt-20 boldClass">99,900.00</div>
+            <div fxFlex fxLayoutAlign="center" class="py-20">Opening Balance</div>
+          </div>
+          <div fxFlex fxLayoutAlign="center" class="tableLeftBorder">
+            <div fxFlex fxLayout="column" fxLayoutAlign="center">
+              <div fxFlex fxLayoutAlign="center" class="pt-20 boldClass">4,415,743.71</div>
+              <div fxFlex fxLayoutAlign="center" class="py-20">Closing Balance</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tile mx-20" fxFlex="25">
+        <div fxLayout fxLayoutAlign="start center" class="pt-8">
+          <span class="boldClass  pl-8 headerMargin"> Credit/ Debit</span>
+          <span align="start" [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="underline2"></span>
+          <div fxFlex fxLayoutAlign="end center" class="pt-8 pr-12">
+            <img src="assets/images/pay-card.png" />
+          </div>
+        </div>
+        <div fxLayout fxLayoutAlign="center" class="pt-8 mb-20">
+          <div fxFlex fxLayout="column" fxLayoutAlign="center">
+            <div fxFlex fxLayoutAlign="center" class="pt-20 boldClass">8,753,812.60</div>
+            <div fxFlex fxLayoutAlign="center" class="py-20">Total Credit</div>
+          </div>
+          <div fxFlex fxLayoutAlign="center" class="tableLeftBorder">
+            <div fxFlex fxLayout="column" fxLayoutAlign="center">
+              <div fxFlex fxLayoutAlign="center" class="pt-20 boldClass">4,344,349.89</div>
+              <div fxFlex fxLayoutAlign="center" class="pt-20">Total Debit</div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+      <div class="ml-20 mr-20" fxFlex="100">
+        <form autocomplete="off" name="form" novalidate [formGroup]="SearchFormGroup">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-form-field appearance="outline" fxFlex="20" class="mr-8">
+              <!-- <mat-icon class="mr-12" matPrefix>search</mat-icon> -->
+              <input matInput placeholder="Document" formControlName="DocumentID">
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="20" class="mr-8">
+              <!-- <mat-icon class="mr-12" matPrefix>search</mat-icon> -->
+              <input matInput placeholder="Profit Center" formControlName="ProfitCenter">
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="25" class="mr-8">
+              <input matInput placeholder="From Date" [matDatepicker]="picker1" formControlName="FromDate"
+                (dateChange)="DateSelected()">
+              <mat-datepicker-toggle matSuffix [for]="picker1">
+                <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+            <div fxFlex="25">
+              <mat-form-field appearance="outline" class="ml-8" style="width: 96%;">
+                <input matInput placeholder="To Date" [matDatepicker]="picker2" formControlName="ToDate"
+                  (dateChange)="DateSelected()">
+                <mat-datepicker-toggle matSuffix [for]="picker2">
+                  <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+              </mat-form-field>
+              <div *ngIf="isDateError" class="DateError mb-12 ml-12">
+                To date should not be less than from date
+              </div>
+            </div>
+          </div>
+          <!-- <div fxLayout="row" fxLayoutAlign="start center" class="mb-12">
+            <div fxFlex class="hrLine mx-4"></div>
+            <div class="smallRound"></div>
+            <div fxFlex class="hrLine mx-4"></div>
+          </div> -->
+          <div fxLayout="row" fxLayoutAlign="start start">
+            <!-- <mat-form-field appearance="outline" fxFlex class="mr-8">
+              <input matInput placeholder="From Date" [matDatepicker]="picker1" formControlName="FromDate"
+                (dateChange)="DateSelected()">
+              <mat-datepicker-toggle matSuffix [for]="picker1">
+                <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field> -->
+            <!-- <div fxFlex>
+              <mat-form-field appearance="outline" class="ml-8" style="width: 96%;">
+                <input matInput placeholder="To Date" [matDatepicker]="picker2" formControlName="ToDate"
+                  (dateChange)="DateSelected()">
+                <mat-datepicker-toggle matSuffix [for]="picker2">
+                  <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+              </mat-form-field>
+              <div *ngIf="isDateError" class="DateError mb-12 ml-12">
+                To date should not be less than from date
+              </div>
+            </div> -->
+          </div>
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <div fxFlex align="end">
+              <button mat-raised-button class="SaveBtn" (click)="SearchClicked('Search')"
+                [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">Search</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="px-20 pb-20">
+      <div fxLayout="row" class="mt-20" fxLayoutAlign="start center">
+        <mat-form-field appearance="outline" fxFlex="50">
+          <mat-icon class="mr-12" matPrefix>search</mat-icon>
+          <input [(ngModel)]="searchText" matInput placeholder="Search" (keyup)="applyFilter($event)">
+        </mat-form-field>
+        <div fxFlex fxLayoutAlign="end center">
+          <mat-form-field appearance="outline" style="min-width: 100px;">
+            <mat-select [(ngModel)]="SelectValue">
+              <mat-option value="All">All</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button (click)="exportAsXLSX()" class="excelBtn mx-24" mat-stroked-button>
+            <img class="excelImg" src="assets/images/excel.png">
+          </button>
+          <img class="expandImg" src="assets/images/expand.png" (click)="expandClicked()">
+        </div>
+      </div>
+
+      <table class="table" mat-table [dataSource]="tableDataSource" matSort>
+        <ng-container matColumnDef="DocumentNumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Document </th>
+          <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+            <div fxLayout>
+              <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+              <div fxFlex class="pl-8">
+                <span class="pdfLinkClass"> {{element.DocumentNumber}} </span>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="DocumentDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Document Date </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.DocumentDate | date :'dd/MM/yyyy'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="ProfitCenter">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Profit Center</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.ProfitCenter}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="InvoiceNumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Invoice Number </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.InvoiceNumber}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="InvoiceDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Invoice Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.InvoiceDate | date :'dd/MM/yyyy'}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="InvoiceAmount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Invoice Amount </th>
+          <td mat-cell *matCellDef="let element" class="QtyClass">
+            {{element.InvoiceAmount}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="PaidAmount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Paid Amount </th>
+          <td mat-cell *matCellDef="let element;let i= index;" class="QtyClass">
+            {{element.PaidAmount}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Reference">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Reference </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.Reference}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Balance">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Balance </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.BalanceAmount}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="Action">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Action </th>
+          <td mat-cell *matCellDef="let element">
+            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+              <button *ngIf="element.PaidAmount" mat-flat-button (click)="handle_accept(element)" [disabled]="element.Status==='Accepted'">Accept</button>
+              <button mat-flat-button (click)="handle_getsolved(element)">Get Solved</button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="tableDisplayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: tableDisplayedColumns;">
+      </tr>
+      </table>
+      <div>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25,50,100,250,500,1000]"></mat-paginator>
+      </div>
+    </div>
+
+
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="IsProgressBarVisibile"></div>
+  </div>
+  <!-- <div class="px-20 pb-20" style="position: absolute;width: 100%;
+      bottom: 6rem;" fxLayout fxLayoutAlign="start center" fxLayoutGap="2.5rem">
+    <mat-checkbox [(ngModel)]="isAccepted"></mat-checkbox>
+    <span style="height: 3rem;border-right:2px solid grey;width: 1px;"></span>
+    <div style="width: 100%;">
+      <label style="font-size: 15px;">I acknowledge the balance shown here matches with our book of account</label>
+    </div>
+  </div>
+  <div class="footer px-20 pb-20" fxLayout="row" fxLayoutAlign="space-between center" *ngIf="render">
+    <button (click)="handle_getsolved()" mat-raised-button class="SaveBtn"
+      [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">Get Solved</button>
+    <button [disabled]="!isAccepted" (click)="handle_accept()" mat-raised-button class="SaveBtn"
+      [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">Accept & Complete</button>
+  </div> -->
+</div>

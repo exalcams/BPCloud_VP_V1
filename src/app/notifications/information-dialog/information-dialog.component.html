@@ -1,0 +1,18 @@
+<div class="dialog-content-wrapper">
+  <mat-toolbar class="toolBg m-0">
+      <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+          <span class="title dialog-title">Information</span>
+          <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+            <mat-icon svgIcon="closeIcon"></mat-icon>
+        </button>
+      </mat-toolbar-row>
+  </mat-toolbar>
+
+  <mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+      <p class="ErrorMessage">{{message}}</p>
+  </mat-dialog-content>
+  <mat-dialog-actions class="m-0 p-16" fxLayoutAlign="end center" align="end">
+      <!-- <button mat-button type="button" (click)="CloseClicked()">Close</button> -->
+      <button mat-button type="button" class="btnBg" (click)="YesClicked()">OK</button>
+  </mat-dialog-actions>
+</div>

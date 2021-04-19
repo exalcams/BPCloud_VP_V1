@@ -1,0 +1,839 @@
+@import "src/@fuse/scss/fuse";
+#pod {
+  background-color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    padding: 0px;
+    margin: 0px;
+  }
+  .outer {
+    border-bottom: 1px solid rgba(255, 85, 0, 0.1);
+    position: relative;
+    z-index: 1;
+    .bg {
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-image: url("assets/images/header_2.png");
+      opacity: 0.1;
+      background-repeat: no-repeat;
+    }
+    width: 100%;
+    object-fit: contain;
+    line-height: 50px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .topbarClass {
+    background: url("/assets/images/backgrounds/header 2.png") no-repeat;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .progressBarPostion {
+    position: absolute !important;
+    top: 350px;
+    z-index: 1;
+    left: 55%;
+  }
+  .center {
+    padding: 0px !important;
+    max-width: 2000px;
+    margin: 0 auto;
+
+    @include media-breakpoint-down(md) {
+      padding: 0 !important;
+    }
+    #headerCard {
+      position: fixed;
+      height: 50px;
+      box-shadow: 0 -5px 10px 0 rgba(0, 0, 0, 0.16);
+      background-color: #ffffff;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      margin-bottom: 0px;
+      z-index: 100;
+    }
+    .content-pos {
+      margin-top: -27px !important;
+    }
+    .cl_norec{
+      font-weight: 500;
+    text-align-last: center;
+    }
+    .content-card1 {
+      display: flex;
+      flex: 1;
+      position: relative;
+      border-radius: 10px;
+
+      //   .mat-sidenav-container {
+      //     display: flex;
+      //     flex: 1;
+      //     width: 100%;
+
+      //     > .mat-sidenav-content,
+      //     > .mat-drawer-content {
+      //       display: flex;
+      //       flex: 1 1 auto;
+      //       min-height: 100%;
+      //       height: auto;
+      //     }
+
+      //     > .mat-drawer-content {
+      //       max-width: 100%;
+      //     }
+
+      //     mat-sidenav {
+      //       display: flex;
+      //       flex-direction: column;
+      //       width: 400px;
+      //       max-width: 90%;
+      //       box-shadow: 0 0 1px rgba(0, 0, 0, 0.37);
+      //       overflow: hidden;
+      //     }
+      //   }
+    }
+  }
+  .search {
+    height: 36px;
+    line-height: 36px;
+    padding: 8px;
+    font-size: 13px;
+    // border-radius: 18px;
+    border: 1px solid;
+    overflow: hidden;
+    background-color: #ffffff;
+    border-color: #ffffff;
+    // border-color: rgba(0, 0, 0, 0.12);
+    @include mat-elevation(1);
+
+    mat-icon.s-16 {
+      color: rgba(0, 0, 0, 0.54) !important;
+    }
+
+    .icon {
+      margin: 0;
+      color: rgba(0, 0, 0, 0.54);
+    }
+
+    input {
+      padding: 0 12px 0 8px;
+      background-color: #ffffff;
+      height: 36px;
+      border: none;
+    }
+  }
+  .side-bar {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    .sidenav-content {
+      overflow: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+  .side-bar-items {
+    text-decoration: none !important;
+    display: flex;
+    align-items: center;
+    height: 50px;
+    padding: 0 24px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 0 25px 25px 0;
+    margin-right: 7px;
+  }
+  .Advanced-Shipment-Notification {
+    font-size: 20px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 0.6;
+    letter-spacing: 0.64px;
+    text-align: left;
+    color: #3e3e3e;
+  }
+  .SubmitBtn {
+    background-color: #efb577;
+    color: white;
+  }
+  .SaveBtn {
+    background-color: white;
+    color: #efb577;
+  }
+  .DeleteBtn {
+    background-color: white;
+    color: #e03b3b;
+  }
+  .Rectangle-721 {
+    // height: 115px;
+    // border-radius: 7px;
+    border: solid 2px #e0e0e0;
+    background-color: #ffffff;
+    border-left: solid 8px #3380d7;
+  }
+  .PO-No {
+    // width: 90px;
+    // height: 33px;
+    // font-family: SegoeUI;
+    font-size: 16px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 0.77;
+    letter-spacing: 0.5px;
+    text-align: left;
+    color: #3e3e3e;
+    // padding: 20px;
+  }
+  .Date {
+    // width: 59px;
+    // height: 33px;
+    //font-family: SegoeUI;
+    font-size: 16px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 0.77;
+    letter-spacing: 0.5px;
+    text-align: left;
+    color: #3e3e3e;
+    // padding: 20px;
+  }
+  .calendarImg {
+    height: 20px;
+    margin-bottom: 12px;
+  }
+  .alert {
+    width: 31.5px;
+    height: 27.4px;
+    object-fit: contain;
+  }
+  .No-Invoice-Created-for-this-PO {
+    // width: 349px;
+    // height: 33px;
+    //font-family: SegoeUI;
+    font-size: 16px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 0.77;
+    letter-spacing: 0.5px;
+    text-align: left;
+    color: #3e3e3e;
+  }
+  .Shipment-Proposal {
+    font-size: 20px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 0.6;
+    letter-spacing: 0.64px;
+    text-align: left;
+    color: #3e3e3e;
+    margin-bottom: 10px;
+    // text-decoration-color: #efb577;
+    // text-decoration-line: underline;
+    // text-decoration-style: solid;
+    border-bottom: 2px solid #efb577;
+  }
+  .Rectangle-708 {
+    padding-top: 12px;
+    width: 105px;
+    height: 42px;
+    border-radius: 5px;
+    background-color: #d8f0ff;
+  }
+  .Batch-2 {
+    width: 65px;
+    height: 26px;
+    // font-size: 19px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 0.84;
+    letter-spacing: 0.19px;
+    text-align: left;
+    color: #3e3e3e;
+  }
+  .Rectangle {
+    width: 300px;
+    min-height: 50px;
+    border-radius: 9px;
+    border: solid 1px #cccccc;
+    border-left: solid 8px #abf7b9 !important;
+    background-color: #ffffff;
+    cursor: pointer !important;
+  }
+  .Rectangle-106 {
+    width: 36px;
+    height: 33px;
+    opacity: 0.2;
+    border-radius: 2px;
+    background-color: #f9d2a8;
+  }
+  .Rectangle-199 {
+    //width: 230px;
+    font-weight: 600;
+    height: 50px;
+    border-radius: 5px;
+    border: solid 3px #f4cda4;
+    background-color: #ffffff;
+    cursor: pointer !important;
+  }
+  .addAttachmentClass {
+    padding-left: 70px;
+    font-weight: 600;
+    cursor: pointer !important;
+    color: #74a2f9;
+  }
+  .addIcon {
+    height: 26px;
+    margin-top: 25px;
+    padding-left: 8px;
+    cursor: pointer !important;
+  }
+  .cardHeader {
+    background-color: #fffdf9;
+    height: 45px;
+  }
+  .boldClass {
+    font-weight: bold;
+  }
+  .boldItalicClass {
+    @extend .boldClass;
+    font-style: italic;
+  }
+  .semiBoldClass {
+    font-weight: 500;
+  }
+  .leftCard {
+    @include mat-elevation(2);
+    background: white;
+    border-left: 5px solid #efb577;
+    margin-left: 20px;
+    cursor: pointer !important;
+  }
+  .subTitle {
+    @extend .semiBoldClass;
+    font-size: 12px;
+    color: #d87060;
+  }
+  .addIcon {
+    height: 20px;
+    margin-top: 16px;
+    padding-left: 4px;
+    cursor: pointer !important;
+  }
+  .addAttachmentClass {
+    margin-top: 25px;
+    color: #4784f7;
+    cursor: pointer !important;
+  }
+  .addBlueIcon {
+    @extend .addIcon;
+    margin-top: 0px;
+    height: 15px;
+  }
+  .attachClass {
+    // margin-top: 25px;
+    padding-left: 8px;
+    cursor: pointer !important;
+    color: #4784f7;
+  }
+  .removeIcon {
+    height: 20px;
+    padding-right: 16px;
+    cursor: pointer !important;
+  }
+  .mat-input-element:disabled {
+    color: rgba(0, 0, 0, 0.87) !important;
+    // background: whitesmoke !important;
+    // cursor: not-allowed !important;
+  }
+  // .tableData {
+  //   overflow: auto;
+  //   height: 60vh !important;
+  //   min-height: 60vh !important;
+  //   // max-height: 33vh !important;
+  //   .table {
+  //     width: 150vw;
+  //     max-width: 100%;
+  //     overflow: auto;
+  //     margin-bottom: 10px;
+  //     display: table;
+  //     border-collapse: collapse;
+  //     margin: 0px;
+  //     // background-color: rgb(238, 238, 238);
+  //   }
+  //   .row,
+  //   .header-row {
+  //     display: table-row;
+  //     min-height: 36px !important;
+  //   }
+  //   .mat-row:hover {
+  //     background-color: lightgrey;
+  //   }
+  //   .cell,
+  //   .header-cell {
+  //     word-wrap: initial;
+  //     display: table-cell;
+  //     padding: 0px 5px;
+  //     line-break: unset;
+  //     width: fit-content;
+  //     white-space: nowrap;
+  //     overflow: hidden;
+  //     vertical-align: middle;
+  //     text-align: center;
+  //   }
+  //   .header-row,
+  //   .header-cell {
+  //     margin: 0 auto;
+  //     min-height: 100px !important;
+  //     text-align: center;
+  //     vertical-align: middle;
+  //     align-self: center;
+  //   }
+  //   .mat-card {
+  //     min-width: max-content;
+  //     max-width: max-content;
+  //   }
+  //   .sort-header {
+  //     display: flex;
+  //     align-content: center;
+  //     text-align: center;
+  //     justify-content: center;
+  //     font-size: 12pt;
+  //   }
+  //   .header-cell {
+  //     font-weight: bold;
+  //   }
+  // }
+
+  @mixin TableBorderRight($color) {
+    border-right: 1px solid $color;
+  }
+
+  .TableCommon {
+    padding: 5px;
+    font-size: 14px;
+    min-width: 50px !important;
+    white-space: nowrap;
+  }
+
+  table {
+    width: 100%;
+
+    th {
+      @include TableBorderRight(gray);
+      @extend .TableCommon;
+      // min-width: max-content !important;
+      color: white;
+      background-color: #121214;
+    }
+
+    td {
+      @include TableBorderRight(rgba(0, 0, 0, 0.12));
+      @extend .TableCommon;
+      // min-width: max-content !important;
+      &.QtyClass {
+        text-align: right;
+      }
+      .mat-form-field-underline {
+        display: none;
+      }
+    }
+
+    tr {
+      height: 40px;
+    }
+
+    .mat-sort-header-container {
+      display: flex;
+      justify-content: center;
+    }
+  }
+  .abnormal {
+    .mat-form-field-flex > .mat-form-field-infix {
+      padding: 0.3em 0px !important;
+    }
+    .mat-form-field-label-wrapper {
+      top: -1.5em;
+    }
+    .mat-form-field-wrapper {
+      margin: 0 !important;
+      padding-bottom: 4px !important;
+      padding-top: 4px !important;
+    }
+    .mat-form-field-appearance-outline .mat-form-field-flex {
+      padding: 0 0.4em 0 0.4em;
+    }
+    .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+      transform: translateY(-1.1em) scale(0.75);
+      width: 133.33333%;
+    }
+    .mat-form-field-outline-start,
+    .mat-form-field-outline-end {
+      border-radius: 0 !important;
+    }
+  }
+  // td.mat-cell {
+  //   /* row padding */
+  //   padding: 16px 0;
+  //   /* row border */
+  //   border-bottom: 1px solid #ffa600;
+  //   border-top: 1px solid #ffa600;
+  //  }
+
+  //  td.mat-cell:first-child {
+  //    /* row border */
+  //    border-left: 1px solid #ffa600;
+  //  }
+
+  //  td.mat-cell:last-child {
+  //    /* row border */
+  //    border-right: 1px solid #ffa600;
+  //  }
+
+  //  table {
+  //    /* row spacing / margin */
+  //    border-spacing: 0 8px !important;
+  //  }
+  .whiteBg {
+    background-color: white !important;
+  }
+  .btnBg {
+    background-color: #efb577 !important;
+    color: white;
+  }
+  .tile {
+    @include mat-elevation(2);
+    min-height: 60px !important;
+    max-height: 250px !important;
+    img {
+      height: 36px;
+    }
+    cursor: pointer;
+  }
+  .redBorderBottom {
+    border-bottom: 2px solid #f3705a;
+  }
+  .orangeBorderBottom {
+    border-bottom: 2px solid #ffd15c;
+  }
+  .rightCard {
+    min-height: 300px !important;
+    background-color: #f5f5f5;
+  }
+  .topLeftBorderRadius {
+    border-top-left-radius: 20px;
+  }
+  .ticketTile {
+    background-color: white;
+    border-left: 5px solid #cccccc;
+  }
+  .italicClass {
+    font-style: italic;
+  }
+  .avatar1 {
+    height: 40px !important;
+    width: 40px !important;
+    margin: 0 8px 0 0;
+    border-radius: 50%;
+    font-size: 17px;
+    font-weight: 500;
+    text-align: center;
+  }
+  .intervalclass {
+    @extend .italicClass;
+    @extend .semiBoldClass;
+    font-size: small;
+  }
+  .subHeader {
+    font-weight: 500;
+  }
+  .outer-circle {
+    height: 100px;
+    width: 100px;
+    border: 3px dashed red;
+    border-radius: 50%;
+    position: relative;
+  }
+  .inner-circle {
+    // height: 75px;
+    // width: 75px;
+    // border: 1px solid #f3705a;
+    // border-radius: 50%;
+    // background-color: white;
+    position: absolute;
+    top: 11%;
+    left: 11%;
+  }
+  .chart-legend .legend-labels {
+    width: 100px;
+  }
+  .search {
+    height: 36px;
+    line-height: 36px;
+    padding: 8px;
+    font-size: 13px;
+    // border-radius: 18px;
+    border: 1px solid;
+    overflow: hidden;
+    background-color: #ffffff;
+    border-color: #ffffff;
+    // border-color: rgba(0, 0, 0, 0.12);
+    @include mat-elevation(1);
+    border: 1px solid #c3c3c3;
+    mat-icon.s-16 {
+      color: rgba(0, 0, 0, 0.54) !important;
+    }
+
+    .icon {
+      margin: 0;
+      color: rgba(0, 0, 0, 0.54);
+    }
+
+    input {
+      padding: 0 12px 0 8px;
+      background-color: #ffffff;
+      height: 36px;
+      border: none;
+    }
+  }
+  .doughnutChartPosition {
+    margin-bottom: 8px;
+    position: relative;
+    left: 54%;
+  }
+  #doughnutChart {
+    canvas {
+      // width: 200px !important;
+      height: 140px !important;
+    }
+  }
+  #barChart {
+    canvas {
+      // width: 200px !important;
+      height: 170px !important;
+    }
+  }
+
+  // .mat-form-field-appearance-outline {
+  //   .mat-form-field-outline {
+  //     color: rgba(0, 0, 0, 0.5) !important;
+  //   }
+  // }
+  // .mat-form-field-appearance-outline.ng-invalid.ng-touched {
+  //     .mat-form-field-outline {
+  //         color: red !important;
+  //     }
+  // }
+
+  // .mat-form-field-appearance-outline.ng-valid {
+  //     .mat-form-field-outline {
+  //         color: rgba(0, 0, 0, 0.5) !important;
+  //     }
+  // }
+
+  // .mat-form-field-appearance-outline .mat-form-field-outline {
+  //   top: 0.4em !important;
+  // }
+  // .mat-form-field-flex > .mat-form-field-infix {
+  //   padding: 0.002em 0px !important;
+  // }
+  // .normal .mat-form-field-flex > .mat-form-field-infix {
+  //   padding: 0.4375em 0 !important;
+  // }
+  // .mat-form-field-label-wrapper {
+  //   top: -1em;
+  // }
+
+  // .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  //   transform: translateY(-0.5em) scale(0.75);
+  // }
+
+  // .mat-form-field-suffix .mat-icon-button {
+  //   width: 2.5em;
+  //   height: 1.5em !important;
+  // }
+
+  // .mat-form-field-appearance-outline .mat-form-field-outline-start {
+  //   border-radius: 0px 0 0 0px !important;
+  // }
+  // .mat-form-field-appearance-outline .mat-form-field-outline-end {
+  //   border-radius: 0px 0 0 0px !important;
+  // }
+
+  // .mat-form-field-outline-gap {
+  //   border: 1px solid #1b56ca;
+  //   border-radius: 1e-6px;
+  // }
+  // .mat-form-field-wrapper {
+  //   padding-bottom: 0.7em !important;
+  // }
+  .tableLeftBorder {
+    border-left: 1px solid rgba(0, 0, 0, 0.12);
+  }
+
+  .roundCommon {
+    height: 20px;
+    width: 20px;
+    border-radius: 20px;
+    border-width: 3px;
+    border-style: solid;
+  }
+
+  .round {
+    @extend .roundCommon;
+    background-color: white;
+    border-color: gray;
+  }
+  // .round1 {
+  //   @extend .roundCommon;
+  //   background-color: white;
+  //   border-color: #34ad65;
+  // }
+  .hor-timeline {
+    height: 8px;
+    margin-top: 5px;
+    //border-radius: 4px;
+  }
+  .green-timeline {
+    @extend .hor-timeline;
+    background-color: #34ad65;
+  }
+  .orange-timeline {
+    @extend .hor-timeline;
+    background-color: #efb577;
+  }
+  .white-timeline {
+    @extend .hor-timeline;
+    background-color: white;
+    border-top: 2px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+  }
+  .Rectangle {
+    // width: 152px;
+    min-height: 50px;
+    border-radius: 9px;
+    border: solid 1px #cccccc;
+    background-color: #ffffff;
+    cursor: pointer !important;
+  }
+  .Rectangle-106 {
+    width: 36px;
+    height: 33px;
+    opacity: 0.2;
+    border-radius: 2px;
+    background-color: #f9d2a8;
+  }
+  .tableCellBorder {
+    height: 20px;
+    vertical-align: middle;
+    width: 10px;
+    background-color: #d87e39;
+    opacity: 0.7;
+  }
+  .next {
+    background-color: #e8ffeb;
+    padding: 4px 2px;
+  }
+
+  .mat-form-field-flex > .mat-form-field-infix {
+    padding: 0.3em 0px !important;
+  }
+  .mat-form-field-label-wrapper {
+    top: -1.5em;
+  }
+  .mat-form-field-wrapper {
+    margin: 1em 0 0 0;
+    padding-bottom: 1em;
+  }
+
+  .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+    transform: translateY(-1.1em) scale(0.75);
+    width: 133.33333%;
+  }
+
+  .progress__svg {
+    transform: rotate(-90deg);
+  }
+
+  .progress__meter,
+  .progress__value {
+    fill: none;
+  }
+
+  // .progress__meter {
+  //   stroke: #ccc;
+  //   stroke-dasharray: 2;
+  // }
+
+  // .progress__value {
+  //   stroke: green;
+  //   stroke-dasharray: 2;
+  //   transition: all;
+  // }
+  .progress__meter {
+    stroke: #f3705a;
+  }
+
+  .progress__value {
+    stroke: #efefef;
+    opacity: 0.9;
+    transition: all 100ms;
+  }
+  .progressSubtitle {
+    fill: #f3705a !important;
+  }
+  .pdfLinkClass {
+    color: #1e8bed;
+    cursor: pointer;
+  }
+  #footerCard {
+    position: fixed;
+    height: 50px;
+    box-shadow: 0 -5px 10px 0 rgba(0, 0, 0, 0.16);
+    background-color: #ffffff;
+    bottom: 40px;
+    left: 0px;
+    right: 0px;
+    margin-bottom: 0px;
+    z-index: 100;
+  }
+  .cardActions {
+    box-shadow: 0 -5px 10px 0 rgba(0, 0, 0, 0.16);
+  }
+  .WeightError {
+    color: #f44336;
+    font-size: 12px;
+    margin-top: -16px;
+    // margin-left: 32px;
+  }
+  .AttError {
+    color: #f44336;
+    font-size: 12px;
+  }
+  .mat-input-element:disabled {
+    color: gray !important;
+    background: whitesmoke !important;
+    cursor: not-allowed !important;
+  }
+  .cursorPointer {
+    color: #0000ee;
+    cursor: pointer;
+  }
+}

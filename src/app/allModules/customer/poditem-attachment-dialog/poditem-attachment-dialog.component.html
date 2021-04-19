@@ -1,0 +1,33 @@
+<div class="dialog-content-wrapper normal">
+  <mat-toolbar class="toolBg m-0">
+    <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+      <span class="title dialog-title">Attachment</span>
+      <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+    <div fxLayout style="padding: 10px;">
+      <div fxFlex="90">
+        <span style="cursor: pointer; color: #1e8bed;" (click)="attachmentClicked()">{{file?.name}}</span>
+        <div *ngIf="!file?.name" class="no-results-message">
+          <span class="pl-12"> No attachments..</span>
+        </div>
+      </div>
+      <div fxFlex="10">
+        <mat-icon *ngIf="file?.name" style="cursor: pointer;" (click)="fileInput2.click()">replay</mat-icon>
+        <img *ngIf="!file?.name" class="add-attachment-icon" src="assets/images/logos/add-button.png"
+          (click)="fileInput2.click()">
+        <input hidden type="file" #fileInput2 id="file" (change)="handleFileInput($event)"
+          accept="image/x-png,image/gif,image/jpeg,image/jpg,application/pdf" />
+      </div>
+    </div>
+  </div>
+
+  <mat-dialog-actions class="m-0 p-16" fxLayoutAlign="space-between center">
+    <button mat-button type="button" (click)="CloseClicked()">Cancel</button>
+    <button mat-button type="button" class="btnBg" (click)="YesClicked()">Yes</button>
+  </mat-dialog-actions>
+</div>

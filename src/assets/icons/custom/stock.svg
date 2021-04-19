@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="31" height="38.154" viewBox="0 0 31 38.154">
+    <defs>
+        <style>
+            .prefix__cls-1{fill:#fff}
+        </style>
+    </defs>
+    <g id="prefix__Stock" transform="translate(-85 -40)">
+        <path id="prefix__Path_576" d="M141.647 212.881l1.18.51V211H140v2.391l1.168-.51a.589.589 0 0 1 .479 0z" class="prefix__cls-1" data-name="Path 576" transform="translate(-50.142 -155.897)"/>
+        <path id="prefix__Path_577" d="M85 211v10.157h12.63V211h-3.71v3.331a.617.617 0 0 1-.861.568l-1.8-.777-1.8.777a.6.6 0 0 1-.573-.051.608.608 0 0 1-.267-.517V211z" class="prefix__cls-1" data-name="Path 577" transform="translate(0 -155.897)"/>
+        <path id="prefix__Path_578" d="M344.839 212.872l1.429.556V211H343v2.428l1.411-.556a.567.567 0 0 1 .428 0z" class="prefix__cls-1" data-name="Path 578" transform="translate(-235.214 -155.897)"/>
+        <path id="prefix__Path_579" d="M296.45 214.331a.614.614 0 0 1-.837.576l-2.05-.8-2.05.8a.58.58 0 0 1-.554-.066.6.6 0 0 1-.25-.51V211H287v10.157h13.16V211h-3.71z" class="prefix__cls-1" data-name="Path 579" transform="translate(-184.16 -155.897)"/>
+        <path id="prefix__Path_580" d="M182 40v10.157h13.071V40h-3.709v3.276a.6.6 0 0 1-.249.511.586.586 0 0 1-.558.065l-2.023-.795-2.024.795a.574.574 0 0 1-.552-.065.6.6 0 0 1-.248-.511V40z" class="prefix__cls-1" data-name="Path 580" transform="translate(-88.433)"/>
+        <path id="prefix__Path_581" d="M239.794 41.817l1.385.552V40H238v2.369l1.375-.552a.537.537 0 0 1 .42 0z" class="prefix__cls-1" data-name="Path 581" transform="translate(-139.487)"/>
+        <path id="prefix__Path_582" d="M131.2 387.1a.618.618 0 0 1-1.236 0V384h-5.652v3.1a.618.618 0 0 1-1.236 0V384h-5.652v3.1a.618.618 0 0 1-1.236 0V384h-5.652v3.1a.618.618 0 0 1-1.236 0V384H107v7.772h5.652V388.7a.618.618 0 0 1 1.236 0v3.075h5.652V388.7a.618.618 0 0 1 1.236 0v3.075h5.652V388.7a.618.618 0 0 1 1.236 0v3.075h5.652V384H131.2z" class="prefix__cls-1" data-name="Path 582" transform="translate(-20.057 -313.618)"/>
+    </g>
+</svg>

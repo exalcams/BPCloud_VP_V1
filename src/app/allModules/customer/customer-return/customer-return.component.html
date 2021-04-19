@@ -1,0 +1,405 @@
+<div id="ret" class="page-layout carded fullwidth">
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Return</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div fxLayout class="content-card1">
+
+      <mat-card fxFlex="100" class="side-bar p-0">
+        <div class="sidenav-content" fxFlex fxLayout="column">
+          <div fxFlex fxLayout class="p-0 pt-8">
+            <div fxFlex class="px-12 mt-4">
+              <form autocomplete="off" class="normal" fxLayout="column" fxLayoutAlign="start" name="form" novalidate
+                [formGroup]="ReturnFormGroup">
+                <div fxFlex fxLayout="row wrap">
+                  <div *ngIf="SelectedPIRNumber" fxFlex="33" class="px-12">
+                    <mat-form-field style="width: 100%;">
+                      <input matInput placeholder="Ret Req ID" formControlName="RequestID">
+                      <mat-error
+                        *ngIf="ReturnFormGroup.get('RequestID').touched && ReturnFormGroup.get('RequestID').hasError('required')">
+                        RequestID is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="33" class="px-12">
+                    <mat-form-field style="width: 100%;">
+                      <input matInput placeholder="Date" [matDatepicker]="picker0" formControlName="Date">
+                      <mat-datepicker-toggle matSuffix [for]="picker0">
+                        <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon" class="mb-12"></mat-icon>
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #picker0></mat-datepicker>
+                      <mat-error
+                        *ngIf="ReturnFormGroup.get('Date').touched && ReturnFormGroup.get('Date').hasError('required')">
+                        Date is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33" class="px-12">
+                    <mat-form-field style="width: 100%;">
+                      <!-- <input matInput placeholder="InvoiceReference" formControlName="InvoiceReference"> -->
+                      <mat-select placeholder="Invoice Reference" formControlName="InvoiceReference"
+                        (selectionChange)="InvoiceSelected($event)">
+                        <mat-option *ngFor="let count of  InvoiceData" [value]="count.InvoiceNo">
+                          {{count.InvoiceNo}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error
+                        *ngIf="ReturnFormGroup.get('InvoiceReference').touched && ReturnFormGroup.get('InvoiceReference').hasError('required')">
+                        InvoiceReference is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33" class="px-12">
+                    <mat-form-field style="width: 100%;">
+                      <input matInput placeholder="SO Number" formControlName="SONumber">
+                      <mat-error
+                        *ngIf="ReturnFormGroup.get('SONumber').touched && ReturnFormGroup.get('SONumber').hasError('required')">
+                        SONumber is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33" class="px-12">
+                    <mat-form-field style="width: 100%;">
+                      <input matInput placeholder="Credit Note" formControlName="CreditNote">
+                      <mat-error
+                        *ngIf="ReturnFormGroup.get('CreditNote').touched && ReturnFormGroup.get('CreditNote').hasError('required')">
+                        CreditNote is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33" class="px-12">
+                    <mat-form-field style="width: 100%;">
+                      <input matInput placeholder="AWB Number" formControlName="AWBNumber">
+                      <mat-error
+                        *ngIf="ReturnFormGroup.get('AWBNumber').touched && ReturnFormGroup.get('AWBNumber').hasError('required')">
+                        AWBNumber is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33" class="px-12">
+                    <mat-form-field style="width: 100%;">
+                      <input matInput placeholder="Transporter" formControlName="Transporter">
+                      <mat-error
+                        *ngIf="ReturnFormGroup.get('Transporter').touched && ReturnFormGroup.get('Transporter').hasError('required')">
+                        Transporter is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33" class="px-12">
+                    <mat-form-field style="width: 100%;">
+                      <input matInput placeholder="Truck Number" formControlName="TruckNumber">
+                      <mat-error
+                        *ngIf="ReturnFormGroup.get('TruckNumber').touched && ReturnFormGroup.get('TruckNumber').hasError('required')">
+                        TruckNumber is required
+                      </mat-error>
+                      <mat-error *ngIf="ReturnFormGroup.get('TruckNumber').touched && !ReturnFormGroup.get('TruckNumber').hasError('required')
+                      && ReturnFormGroup.get('TruckNumber').hasError('pattern')">
+                        Enter valid Truck Number
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33" class="px-12" *ngIf="SelectedPIRNumber">
+                    <mat-form-field style="width: 100%;">
+                      <input matInput placeholder="Status" formControlName="Status">
+                      <mat-error
+                        *ngIf="ReturnFormGroup.get('Status').touched && ReturnFormGroup.get('Status').hasError('required')">
+                        Status is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                </div>
+
+              </form>
+            </div>
+
+            <div fxFlex class="borderleft mb-40 pt-40" [class.pt-60]="SelectedReturnHeader?.RetReqID">
+              <div fxLayout class="mx-40">
+                <div fxFlex="30">Draft</div>
+                <div fxFlex="30">Submitted</div>
+                <div fxFlex="30">Accepted</div>
+                <!-- <div fxFlex="10">Receipt</div> -->
+              </div>
+              <div fxLayout class="mx-40 my-8">
+                <div fxFlex="30" fxLayout>
+                  <div class="round" [style.border-color]="getStatusColor('Draft')">
+                  </div>
+                  <div style="width: 10px;margin-left: -1px !important" [class]="getTimeline('Draft')"></div>
+                  <div [class]="getRestTimeline('Draft')" fxFlex>
+                    <!-- [class]="SelectedReturnHeader.Status==='Open'?'white-timeline':'green-timeline'" -->
+                  </div>
+                </div>
+                <div fxFlex="30" fxLayout>
+                  <div style="width: 10px;margin-right: -1px !important" [class]="getTimeline('Submitted')"></div>
+                  <div class="round" [style.border-color]="getStatusColor('Submitted')"></div>
+                  <div style="width: 10px; margin-left: -1px !important" [class]="getTimeline('Submitted')"></div>
+                  <div [class]="getRestTimeline('Submitted')" fxFlex></div>
+                </div>
+                <!-- <div fxFlex="30" fxLayout>
+                  <div style="width: 10px;margin-right: -1px !important" [class]="getTimeline('Accepted')"></div>
+                  <div class="round" [style.border-color]="getStatusColor('Accepted')"></div>
+                  <div style="width: 10px;margin-left: -1px !important" [class]="getTimeline('Accepted')"></div>
+                  <div [class]="getRestTimeline('Accepted')" fxFlex></div>
+                </div> -->
+                <div fxFlex="10" fxLayout>
+                  <div style="width: 10px;margin-right: -1px !important" [class]="getTimeline('Accepted')"></div>
+                  <div class="round" [style.border-color]="getStatusColor('Accepted')"></div>
+                </div>
+              </div>
+
+            </div>
+
+
+          </div>
+
+          <div class="px-12 mt-20">
+            <div>
+              <span class="Shipment-Proposal">Item</span>
+            </div>
+            <div>
+              <form autocomplete="off" class="normal" fxLayout="row" fxLayoutAlign="start" name="form" novalidate
+                [formGroup]="ReturnItemFormGroup">
+                <div fxFlex="15">
+                  <mat-form-field class="px-12" style="width: 100%;">
+                    <input matInput placeholder="Item" formControlName="Item">
+                    <mat-error
+                      *ngIf="ReturnItemFormGroup.get('Item').touched && ReturnItemFormGroup.get('Item').hasError('required')">
+                      Item is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="15">
+                  <mat-form-field class="px-12" style="width: 100%;">
+                    <mat-select placeholder="Material" formControlName="Material">
+                      <!-- (selectionChange)="Material(value)" -->
+                      <!-- (selectionChange)="CountryOfOriginSelected($event)" -->
+                      <!-- ProductID: string; -->
+                      <mat-option *ngFor="let Prod of AllProducts" [value]="Prod.ProductID">{{Prod.ProductID}}
+                      </mat-option>
+
+                    </mat-select>
+                    <!-- <input matInput placeholder="Material" formControlName="Material"> -->
+                    <mat-error
+                      *ngIf="ReturnItemFormGroup.get('Material').touched && ReturnItemFormGroup.get('Material').hasError('required')">
+                      Material is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <!-- <div fxFlex="10">
+                  <mat-form-field class="px-12" style="width: 100%;">
+                    <mat-select (selectionChange)="ProductSelected($event)" placeholder="Prodcut ID"
+                      formControlName="ProdcutID">
+                      <mat-option *ngFor="let count of AllProducts" [value]="count.ProductID">
+                        {{count.ProductID}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error
+                      *ngIf="ReturnItemFormGroup.get('ProdcutID').touched && ReturnItemFormGroup.get('ProdcutID').hasError('required')">
+                      Prodcut ID is required
+                    </mat-error>
+                  </mat-form-field>
+                </div> -->
+                <div fxFlex="15">
+                  <mat-form-field class="px-12" style="width: 100%;">
+                    <input matInput placeholder="Order Qty" formControlName="OrderQty" (keyup)="QtySelected()">
+                    <mat-error
+                      *ngIf="ReturnItemFormGroup.get('OrderQty').touched && ReturnItemFormGroup.get('OrderQty').hasError('required')">
+                      Order Qty is required
+                    </mat-error>
+                    <mat-error *ngIf="ReturnItemFormGroup.get('OrderQty').touched && !ReturnItemFormGroup.get('OrderQty').hasError('required')
+                    &&ReturnItemFormGroup.get('OrderQty').hasError('pattern')">
+                      Enter valid Quantity
+                    </mat-error>
+                    <!-- <mat-error> -->
+                    <!-- <mat-error *ngIf="ReturnItemFormGroup.get('OrderQty').touched && !ReturnItemFormGroup.get('OrderQty').hasError('required')
+                    && !ReturnItemFormGroup.get('OrderQty').hasError('pattern')&&!isValid">
+                      Input not valid.
+                    </mat-error> -->
+                  </mat-form-field>
+                </div>
+                <div fxFlex="15">
+                  <mat-form-field class="px-12" style="width: 100%;">
+                    <input matInput placeholder="Ret Qty" formControlName="RetQty" (keyup)="QtySelected()">
+                    <!-- (input)="onSearchChange($event.target.value)" -->
+                    <mat-error
+                      *ngIf="ReturnItemFormGroup.get('RetQty').touched && ReturnItemFormGroup.get('RetQty').hasError('required')">
+                      RetQty is required
+                    </mat-error>
+                    <mat-error *ngIf="ReturnItemFormGroup.get('RetQty').touched && !ReturnItemFormGroup.get('RetQty').hasError('required')
+                    && ReturnItemFormGroup.get('RetQty').hasError('pattern')">
+                      Enter valid Quantity
+                    </mat-error>
+                    <mat-error *ngIf="ReturnItemFormGroup.get('RetQty').hasError('qty1')">
+                      Return Qty should be less than Order Qty
+                    </mat-error>
+                  </mat-form-field>
+
+                </div>
+
+                <div fxFlex="15">
+                  <mat-form-field class="px-12" style="width: 100%;">
+                    <!-- <input matInput placeholder="Invoice" formControlName="Invoice" (keyup)="truck_func()"> -->
+                    <input matInput placeholder="Invoice" formControlName="Invoice">
+                    <mat-error
+                      *ngIf="ReturnItemFormGroup.get('Invoice').touched && ReturnItemFormGroup.get('Invoice').hasError('required')">
+                      Invoice is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <!-- <div fxFlex="20" fxLayoutAlign="start center" class="mt-16">
+                  <img class="addBlueIcon" src="assets/images/addBlue.png" (click)="fileInput1.click()">
+                  <span class="attachClass" (click)="fileInput1.click()">
+                    Add Attachment
+                  </span>
+                  <input hidden type="file" #fileInput1 (change)="handleFileInput($event)"
+                    accept="image/x-png,image/gif,image/jpeg,image/jpg,application/pdf" />
+                </div> -->
+                <div *ngIf="status_show!='submitted'" fxFlex="10" fxLayoutAlign="center start">
+                  <img class="addIcon" src="assets/images/logos/add-button.png" (click)="AddReturnItemToTable()">
+                  <!-- <button class="SaveBtn" mat-raised-button (click)="AddDocumentCenterToTable()">Add</button> -->
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- <div fxLayout *ngIf="ReturnItemFormGroup.get('FileName')?.value"
+            style="margin-top: -12px;padding-left: 8px;">
+            <div fxFlex="70"></div>
+            <div fxFlex="30">
+              {{ReturnItemFormGroup.get('FileName')?.value}}
+            </div>
+          </div> -->
+
+          <div fxFlex fxLayout="column" class="table mx-20 my-12">
+            <table *ngIf="AllReturnItems?.length" mat-table [dataSource]="ReturnItemDataSource" matSort>
+              <ng-container matColumnDef="Item">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Item </th>
+                <td mat-cell style="width: 15%;" *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+                  <div fxLayout>
+                    <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                    <div fxFlex class="pl-4">{{element.Item}} </div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="Material">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Material </th>
+                <td mat-cell style="width: 15%;" *matCellDef="let element">
+                  {{element.Material}} </td>
+              </ng-container>
+
+
+              <ng-container matColumnDef="OrderQty">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Order Qty </th>
+                <td mat-cell style="width: 15%;" *matCellDef="let element">
+                  {{element.OrderQty}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="RetQty">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Ret Qty </th>
+                <td mat-cell style="width: 15%;" *matCellDef="let element">
+                  {{element.RetQty}} </td>
+              </ng-container>
+
+              <!-- <ng-container matColumnDef="UOM">
+                <th mat-header-cell *matHeaderCellDef style="width: 20%;"> UOM </th>
+                <td mat-cell style="width: 20%;" *matCellDef="let element">
+                  {{element.UOM}} </td>
+              </ng-container> -->
+
+              <!-- <ng-container matColumnDef="DeliveryDate">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Delivery Date </th>
+                <td mat-cell style="width: 15%;" *matCellDef="let element">
+                  {{element.DeliveryDate | date :'dd/MM/yyyy'}} </td>
+              </ng-container> -->
+
+              <ng-container matColumnDef="Invoice">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Invoice </th>
+                <td mat-cell style="width: 15%;" *matCellDef="let element">
+                  {{element.InvoiceNumber}} </td>
+              </ng-container>
+              <ng-container matColumnDef="Batch">
+                <th mat-header-cell *matHeaderCellDef style="width: 12%;"> Batch </th>
+                <td mat-cell style="width: 12%;text-align-last: center;" *matCellDef="let element">
+                  <button mat-raised-button class="SubmitBtn mb-4" (click)="BatchOpen(element)">
+                    Batch {{BatchListNo?'('+BatchListNo +')':''}}</button>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="Serial">
+                <th mat-header-cell *matHeaderCellDef style="width: 13%;"> Serial </th>
+                <td mat-cell style="width: 13%;text-align-last: center;" *matCellDef="let element">
+                  <button mat-raised-button class="SubmitBtn mb-4" (click)="SerialOpen(element)">Serial
+                    {{SerialListNo?'('+SerialListNo +')':''}} </button>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="Action">
+                <th mat-header-cell [hidden]="show" *matHeaderCellDef mat-sort-header style="width: 13%"> </th>
+                <td mat-cell [hidden]="show" *matCellDef="let element" class="mb-4" style="width: 13%">
+                  <img class="removeIcon" src="assets/images/remove-button.png"
+                    (click)="RemovePurchaseIndentItemFromTable(element)">
+                </td>
+              </ng-container>
+
+              <!-- <ng-container matColumnDef="FileName">
+                <th mat-header-cell *matHeaderCellDef style="width: 20%;"> FileName </th>
+                <td mat-cell style="width: 20%;" *matCellDef="let element">
+                  <span class="pdfLinkClass" (click)="GetReturnItemAttachment(element.FileName)">
+                    {{element.FileName}}
+                  </span>
+                </td>
+              </ng-container> -->
+
+              <!-- <ng-container matColumnDef="Action">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%"> </th>
+                <td mat-cell *matCellDef="let element" style="text-align: center;width: 10%">
+                  <img class="removeIcon" src="assets/images/remove-button.png"
+                    (click)="RemoveReturnItemFromTable(element)">
+                </td>
+              </ng-container> -->
+
+              <tr mat-header-row *matHeaderRowDef="ReturnItemDisplayedColumns;sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: ReturnItemDisplayedColumns;let even=even">
+              </tr>
+            </table>
+            <!-- <div flex *ngIf="AllDocumentCenters?.length">
+                <mat-paginator [pageSizeOptions]="[10, 20, 30, 50, 75, 100]" showFirstLastButtons>
+                </mat-paginator>
+              </div> -->
+          </div>
+        </div>
+        <!-- <div fxLayout id="footerCard">
+          <div fxLayout fxFlex class="my-8 px-12" fxLayoutAlign="end">
+            <button mat-stroked-button class="SaveBtn" (click)="SaveClicked()">Save</button>
+          </div>
+        </div> -->
+        <mat-card-actions class="m-0 pl-12 pr-16 cardActions">
+          <div fxLayout fxLayoutAlign="space-between center">
+            <div fxFlex>
+              <button *ngIf=" SelectedReturnHeader?.RetReqID  && SelectedReturnHeader?.Status=='saved'"
+                mat-stroked-button class="DeleteBtn mr-4 mb-4" (click)="DeleteClicked()">Delete</button>
+              <!-- SelectedReturnHeader?.RetReqID && -->
+            </div>
+            <!-- <div *ngIf="!SelectedReturnHeader?.PIRNumber" fxFlex align="end"> -->
+            <div fxFlex align="end">
+              <button *ngIf="SelectedReturnHeader?.Status!='submitted'" mat-stroked-button class="SaveBtn mb-4"
+                (click)="SaveClicked()">Save
+              </button>
+              <button *ngIf="SelectedReturnHeader?.Status!='submitted'" mat-raised-button class="SubmitBtn mb-4"
+                (click)="SubmitClicked()">Submit</button>
+            </div>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="IsProgressBarVisibile">
+    </div>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<div id="scocmsg" class="page-layout carded fullwidth">
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>SCOC Message</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div fxLayout class="content-card1">
+      <mat-card class="mat_card p-0" style="height: 100% !important;width: 100% !important;">
+        <mat-card-content style="height: 88% !important;" class="richtext">
+          <form name="notesForm" [formGroup]="notesForm" novalidate fxLayout="column" fxFlex>
+            <div fxLayout fxLayoutAlign="center" class="p-8">
+              <ck-editor style="width: 100% !important;" name="editor1" formControlName="Notes" skin="moono-lisa" language="en" [fullPage]="true">
+              </ck-editor>
+            </div>
+          </form>
+        </mat-card-content>
+        <mat-card-actions class="m-0 px-12 cardActions">
+          <div fxLayout fxLayoutAlign="end center">
+            <div fxFlex align="end">
+              <button mat-raised-button type="button" class="btnBg mr-4" (click)="Releaselicked()">Release</button>
+              <button mat-stroked-button type="button" class="saveBtn" (click)="SaveClicked()">Save</button>
+            </div>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="IsProgressBarVisibile">
+    </div>
+  </div>
+</div>
+

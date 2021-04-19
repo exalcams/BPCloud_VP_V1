@@ -1,0 +1,608 @@
+<div id="dashboard" class="page-layout carded fullwidth" (mouseenter)="mouseEnter()" >
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Dashboard</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div fxLayout="column" class="content-card1">
+      <!-- <div fxLayout="row" fxLayout.xs="row">
+
+        <mat-card fxFlex.lg="100" fxFlex.lt-xl="100" fxFlex.sm="100" fxFlex.gt-sm="100" class="coe_card p-0 px-12">
+
+          <div fxFlex="80">
+
+            <div class="coe_message">Welcome Message !</div>
+            <div fxLayout fxLayoutAlign="start start">
+              <div fxFlex="5" class="colon">“</div>
+              <div fxFlex [innerHtml]="selectedCEOMessage?.CEOMessage"></div>
+              <div fxFlex="10" align="end" class="colon1 pt-16">”</div>
+            </div>
+
+
+          </div>
+          <div fxFlex="20" fxLayoutAlign="start center">
+
+            <div fxFlex="50" fxLayoutAlign="start" class="cl_colon">
+
+           
+
+            </div> 
+
+
+            <div fxFlex="100" align="end">
+
+              <div class="cl_cardflex">
+                <img src="assets/images/image.png" class="man_image"></div>
+
+              <div class="div_tim">
+                <p class="cl_tim">Tim John</p>
+                <p class="cl_ceo">CEO</p>
+              </div>
+            </div>
+
+
+          </div>
+        </mat-card>
+      </div> -->
+      <!-- <div fxLayout="row" fxLayout.xs="column" class="cl_outermost" fxLayoutGap="13px">
+
+        <div fxFlex="20" fxFlex.lg="18" fxFlex.gt-sm="18" fxFlex.xl="18" fxFlex.xs="18">
+          <mat-card class="cl_card matshadow">
+            <mat-card-title>
+              <p class="overall">Overall Score</p>
+              <p [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="underline1"></p>
+            </mat-card-title>
+            <mat-card-content>
+              <div fxLayout="row" fxLayoutAlign="center center" fxFlex="110" fxFlex.lg="60" fxFlex.gt-sm="40"
+                fxFlex.xl="100" fxFlex.xs="50">
+
+                <canvas baseChart id="doughnut4" fxLayoutAlign="center center">
+
+
+                </canvas>
+
+                <svg height="100" width="100" class="cl_svg">
+                  <circle cx="50" cy="50" r="35" class="svg_innner" stroke="#ebebed" stroke-width="3"
+                    class="innercircle" fill="white" />
+
+                </svg>
+                <p class="cl_75">75%</p>
+              </div>
+
+              <div fxFlex="80" fxFlex.lg="50" fxFlex.gt-sm="70" fxFlex.xl="80" fxFlex.xs="20" class="cl_divflex">
+
+                <div class="cl_divheight" fxLayoutAlign="center center" fxFlex="5" fxFlex.lg="5" fxFlex.gt-sm="5"
+                  fxFlex.xl="5" fxFlex.xs="5">
+                  <mat-divider [vertical]="true" class="divider_inner"></mat-divider>
+                </div>
+                <div class="div_average" fxLayout="column" fxFlex="100" fxFlex.lg="100" fxFlex.gt-sm="100"
+                  fxFlex.xl="100" fxFlex.xs="20" fxLayoutAlign="center center">
+                  <p class="cl_round"></p>
+                  <p class="cl_avg">Average</p>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div fxFlex="20" fxFlex.lg="18" fxFlex.gt-sm="18" fxFlex.xl="18" fxFlex.xs="18">
+          <mat-card class="cl_card matshadow">
+            <mat-card-title>
+              <p class="Quality">Quality Index (PPM)</p>
+              <p [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="underline2"></p>
+
+            </mat-card-title>
+            <mat-card-content>
+              <div fxLayout="row" fxLayoutAlign="center center" fxFlex="110" fxFlex.lg="60" fxFlex.gt-sm="40"
+                fxFlex.xl="100" fxFlex.xs="50">
+
+                <canvas baseChart id="doughnut3" fxLayoutAlign="center center">
+
+
+                </canvas>
+
+                <svg height="100" width="100" class="cl_svg">
+                  <circle cx="50" cy="50" r="35" class="svg_innner" stroke="#ebebed" stroke-width="3"
+                    class="innercircle" fill="white" />
+
+                </svg>
+                <p class="cl_75">90%</p>
+              </div>
+
+              <div fxFlex="80" fxFlex.lg="50" fxFlex.gt-sm="70" fxFlex.xl="80" fxFlex.xs="20" class="cl_divflex">
+
+                <div class="cl_divheight" fxLayoutAlign="center center" fxFlex="5" fxFlex.lg="5" fxFlex.gt-sm="5"
+                  fxFlex.xl="5" fxFlex.xs="5">
+                  <mat-divider [vertical]="true" class="divider_inner"></mat-divider>
+                </div>
+                <div class="div_average" fxLayout="column" fxFlex="100" fxFlex.lg="100" fxFlex.gt-sm="100"
+                  fxFlex.xl="100" fxFlex.xs="20" fxLayoutAlign="center center">
+                  <p class="cl_round2"></p>
+                  <p class="cl_avg">Excellent</p>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div fxFlex="24" fxFlex.lg="24" fxFlex.gt-sm="20" fxFlex.xl="20" fxFlex.xs="20">
+          <mat-card class="cl_card matshadow">
+            <mat-card-title>
+              <p class="overall">On Time In Full (OTIF)</p>
+              <p [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="underline3"></p>
+
+            </mat-card-title>
+            <mat-card-content>
+              <div fxLayout="row" fxLayoutAlign="center center" fxFlex="110" fxFlex.lg="60" fxFlex.gt-sm="40"
+                fxFlex.xl="100" fxFlex.xs="50">
+
+                <canvas baseChart id="doughnut5" fxLayoutAlign="center center">
+
+
+                </canvas>
+
+
+                <svg height="100" width="100" class="cl_svg">
+                  <circle cx="50" cy="50" r="35" class="svg_innner" stroke="#ebebed" stroke-width="3"
+                    class="innercircle" fill="white" />
+
+                </svg>
+
+                <p class="cl_73">73%</p>
+
+                <p class="cl_efficiny">Efficiency</p>
+
+
+
+
+              </div>
+              <div fxFlex="80" fxFlex.lg="50" fxFlex.gt-sm="70" fxFlex.xl="80" fxFlex.xs="20">
+
+                <div class="div_outerheight" fxLayoutAlign="center center" fxFlex="5" fxFlex.lg="5" fxFlex.gt-sm="5"
+                  fxFlex.xl="5" fxFlex.xs="5">
+                  <mat-divider [vertical]="true" class="divider_inner"></mat-divider>
+                </div>
+                <div class="div_average" fxLayout="column" fxFlex="100" fxFlex.lg="100" fxFlex.gt-sm="100"
+                  fxFlex.xl="100" fxFlex.xs="20" fxLayoutAlign="center center">
+                  <p class="cl_round2"></p>
+                  <p class="cl_avg">Good</p>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <div fxFlex="20" fxFlex.lg="18" fxFlex.gt-sm="18" fxFlex.xl="18" fxFlex.xs="18">
+          <mat-card class="cl_card matshadow">
+            <mat-card-title>
+              <p class="overall">Price Variation</p>
+              <p [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="underline4"></p>
+
+            </mat-card-title>
+
+            <mat-card-content>
+              <div fxLayout="row" fxLayoutAlign="center center" fxFlex="110" fxFlex.lg="60" fxFlex.gt-sm="40"
+                fxFlex.xl="100" fxFlex.xs="50">
+
+                <canvas baseChart id="doughnut2" fxLayoutAlign="center center">
+
+
+                </canvas>
+
+                <svg height="100" width="100" class="cl_svg">
+                  <circle cx="50" cy="50" r="35" class="svg_innner" stroke="#ebebed" stroke-width="3"
+                    class="innercircle" fill="white" />
+
+                </svg>
+                <p class="cl_75">90%</p>
+              </div>
+
+
+              <div fxFlex="80" fxFlex.lg="50" fxFlex.gt-sm="70" fxFlex.xl="80" fxFlex.xs="20" class="cl_divflex">
+
+                <div class="cl_divheight" fxLayoutAlign="center center" fxFlex="5" fxFlex.lg="5" fxFlex.gt-sm="5"
+                  fxFlex.xl="5" fxFlex.xs="5">
+                  <mat-divider [vertical]="true" class="divider_inner"></mat-divider>
+                </div>
+                <div class="div_average" fxLayout="column" fxFlex="100" fxFlex.lg="100" fxFlex.gt-sm="100"
+                  fxFlex.xl="100" fxFlex.xs="20" fxLayoutAlign="center center">
+                  <p class="cl_round2"></p>
+                  <p class="cl_avg">Excellent</p>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div fxFlex="20" fxFlex.lg="18" fxFlex.gt-sm="18" fxFlex.xl="18" fxFlex.xs="18">
+          <mat-card class="cl_card matshadow">
+            <mat-card-title>
+              <p class="overall">Responsiveness</p>
+              <p [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="underline5"></p>
+
+            </mat-card-title>
+            <mat-card-content>
+              <div fxLayout="row" fxLayoutAlign="center center" fxFlex="110" fxFlex.lg="60" fxFlex.gt-sm="40"
+                fxFlex.xl="100" fxFlex.xs="50">
+
+                <canvas baseChart id="doughnut1" fxLayoutAlign="center center">
+
+                </canvas>
+
+                <svg height="100" width="100" class="cl_svg">
+                  <circle cx="50" cy="50" r="35" class="svg_innner" stroke="#ebebed" stroke-width="3"
+                    class="innercircle" fill="white" />
+
+                </svg>
+                <p class="cl_75">75%</p>
+              </div>
+              <div fxFlex="80" fxFlex.lg="50" fxFlex.gt-sm="70" fxFlex.xl="80" fxFlex.xs="20" class="cl_divflex">
+
+                <div class="div_outerheight" fxLayoutAlign="center center" fxFlex="5" fxFlex.lg="5" fxFlex.gt-sm="5"
+                  fxFlex.xl="5" fxFlex.xs="5">
+                  <mat-divider [vertical]="true" class="divider_inner"></mat-divider>
+                </div>
+                <div class="div_average" fxLayout="column" fxFlex="100" fxFlex.lg="100" fxFlex.gt-sm="100"
+                  fxFlex.xl="100" fxFlex.xs="20" fxLayoutAlign="center center">
+                  <p class="cl_round"></p>
+                  <p class="cl_avg">Average</p>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div> -->
+      
+      <div fxLayout="row" fxLayoutAlign="space-between center" fxLayout.xs="column" fxLayoutGap="15px" style="margin-left: 23px;margin-right: 31px;margin-top: 20px;">
+        <div fxFlex="20" class="GuageChartTitle" style="padding: 10px ;">
+          <div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+            <div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+              <span>Overall Score</span>
+              <span class="Underline1"></span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+              <div fxLayout="column" fxLayoutAlign="center center">
+                <div>
+                  <apx-chart [series]="GuagechartOptionsOS.guageseries" [chart]="GuagechartOptionsOS.chart"
+                    [plotOptions]="GuagechartOptionsOS.plotOptions" [labels]="GuagechartOptionsOS.labels"
+                    [fill]="GuagechartOptionsOS.fill"  [responsive]="GuagechartOptionsOS.responsive"></apx-chart>
+                </div>
+                <span class="ChartCircle2"></span>
+              </div>
+              <span class="GuageChartSpacer"></span>
+              <div fxLayout="column" fxLayoutAlign="space-between center">
+                <span class="Circle" style="background-color: #34ad65;"></span>
+                <span style="margin-top: 5px;font-weight: 500;">Good</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div fxFlex="20" class="GuageChartTitle" style="padding: 10px ;">
+          <div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+            <div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+              <span>Quality Index (PPM)</span>
+              <span class="Underline2"></span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+              <div fxLayout="column" fxLayoutAlign="center center">
+                <div>
+                  <apx-chart [series]="GuagechartOptionsQI.guageseries" [chart]="GuagechartOptionsQI.chart"
+                    [plotOptions]="GuagechartOptionsQI.plotOptions" [labels]="GuagechartOptionsQI.labels"
+                    [fill]="GuagechartOptionsQI.fill" [stroke]="GuagechartOptionsQI.stroke" [responsive]="GuagechartOptionsOS.responsive"></apx-chart>
+                </div>
+                <span class="ChartCircle2"></span>
+              </div>
+              <span class="GuageChartSpacer"></span>
+              <div fxLayout="column" fxLayoutAlign="space-between center">
+                <span class="Circle" style="background-color: #34ad65;"></span>
+                <span style="margin-top: 5px;font-weight: 500;">Good</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div fxFlex="20" class="GuageChartTitle" style="padding: 10px ;">
+          <div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+            <div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+              <span>On Time In Full (OTIF)</span>
+              <span class="Underline3"></span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+              <div fxLayout="column" fxLayoutAlign="center center">
+                <div>
+                  <apx-chart [series]="GuagechartOptionsOTIF.guageseries" [chart]="GuagechartOptionsOTIF.chart"
+                    [plotOptions]="GuagechartOptionsOTIF.plotOptions" [labels]="GuagechartOptionsOTIF.labels"
+                    [fill]="GuagechartOptionsOTIF.fill" [stroke]="GuagechartOptionsOTIF.stroke" [responsive]="GuagechartOptionsOTIF.responsive"></apx-chart>
+                </div>
+                <span class="ChartCircle2"></span>
+              </div>
+              <span class="GuageChartSpacer"></span>
+              <div fxLayout="column" fxLayoutAlign="space-between center">
+                <span class="Circle" style="background-color: #34ad65;"></span>
+                <span style="margin-top: 5px;font-weight: 500;">Good</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div fxFlex="20" class="GuageChartTitle" style="padding: 10px ;">
+          <div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+            <div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+              <span>Price Variation</span>
+              <span class="Underline4"></span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+              <div fxLayout="column" fxLayoutAlign="center center">
+                <div>
+                  <apx-chart [series]="GuagechartOptionsPV.guageseries" [chart]="GuagechartOptionsPV.chart"
+                    [plotOptions]="GuagechartOptionsPV.plotOptions" [labels]="GuagechartOptionsPV.labels"
+                    [fill]="GuagechartOptionsPV.fill" [stroke]="GuagechartOptionsPV.stroke" [responsive]="GuagechartOptionsPV.responsive"></apx-chart>
+                </div>
+                <span class="ChartCircle2"></span>
+              </div>
+              <span class="GuageChartSpacer"></span>
+              <div fxLayout="column" fxLayoutAlign="space-between center">
+                <span class="Circle" style="background-color: #34ad65;"></span>
+                <span style="margin-top: 5px;font-weight: 500;">Good</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div fxFlex="20" class="GuageChartTitle" style="padding: 10px ;">
+          <div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+            <div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+              <span>Responsiveness</span>
+              <span class="Underline5"></span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+              <div fxLayout="column" fxLayoutAlign="center center">
+                <div>
+                  <apx-chart [series]="GuagechartOptionsRES.guageseries" [chart]="GuagechartOptionsRES.chart"
+                    [plotOptions]="GuagechartOptionsRES.plotOptions" [labels]="GuagechartOptionsRES.labels"
+                    [fill]="GuagechartOptionsRES.fill" [stroke]="GuagechartOptionsRES.stroke" [responsive]="GuagechartOptionsRES.responsive"></apx-chart>
+                </div>
+                <span class="ChartCircle2"></span>
+              </div>
+              <span class="GuageChartSpacer"></span>
+              <div fxLayout="column" fxLayoutAlign="space-between center">
+                <span class="Circle" style="background-color: #34ad65;"></span>
+                <span style="margin-top: 5px;font-weight: 500;">Good</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ************LowerTile************* -->
+      <div fxLayout="row" fxLayoutAlign="space-around stretch" fxLayoutGap="18px" style="margin-left: 23px;margin-right: 25px;margin-top: 20px;margin-bottom: 20px;">
+        <div fxLayout="column" fxFlex="39.3" class="lineChartTiles" fxLayoutGap="27px">
+          <div fxLayout="row" fxLayoutAlign="space-around center" class="lineChart1">
+            <div>
+              <apx-chart [series]="LineChartChartOptions1.series" [chart]="LineChartChartOptions1.chart"
+                [xaxis]="LineChartChartOptions1.xaxis" [dataLabels]="LineChartChartOptions1.dataLabels"
+                [grid]="LineChartChartOptions1.grid" [stroke]="LineChartChartOptions1.stroke"
+                [markers]="LineChartChartOptions1.markers" [colors]="LineChartChartOptions1.colors"
+                [legend]="LineChartChartOptions1.legend"></apx-chart>
+            </div>
+            <div fxLayout="column" fxLayoutAlign="space-around center">
+              <div fxLayout="row" fxLayoutAlign="space-around center">
+                <p class="Line2circle1"></p>
+                <span style="margin-left: 12px;" class="LineChartLable">Deviation 1</span>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-around center">
+                <p class="Line2circle2"></p>
+                <span style="margin-left: 12px;">Deviation 2</span>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-around center">
+                <p class="Line2circle3"></p>
+                <span style="margin-left: 12px;">Deviation 3</span>
+              </div>
+            </div>
+          </div>
+          <div fxLayout="row">
+            <span class="example-spacer"></span>
+            <span class="SeperatorLineChart"></span>
+            <span class="example-spacer"></span>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="space-around center" style="padding: 10px;">
+            <div>
+              <apx-chart [series]="LineChartChartOptions2.series" [chart]="LineChartChartOptions2.chart"
+                [xaxis]="LineChartChartOptions2.xaxis" [dataLabels]="LineChartChartOptions2.dataLabels"
+                [grid]="LineChartChartOptions2.grid" [stroke]="LineChartChartOptions2.stroke"
+                [markers]="LineChartChartOptions2.markers" [colors]="LineChartChartOptions2.colors"></apx-chart>
+            </div>
+            <div fxLayout="column" fxLayoutAlign="space-around center">
+              <div fxLayout="row" fxLayoutAlign="space-around center">
+                <p class="circle" style="background-color: #fb863a;"></p>
+                <span style="margin-left: 12px;">Q4 - 2019</span>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-around center">
+                <p class="circle" style="background-color: #40a8e2;"></p>
+                <span style="margin-left: 12px;">Q1 - 2020</span>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-around center">
+                <p class="circle" style="background-color: #485865;"></p>
+                <span style="margin-left: 12px;">Q2 - 2020</span>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-around center">
+                <p class="circle" style="background-color: #40ed9a;"></p>
+                <span style="margin-left: 12px;">Q3 - 2020</span>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-around center">
+                <p class="circle" style="background-color: #ffd15c;"></p>
+                <span style="margin-left: 12px;">Q4 - 2020</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="barchart" fxFlex="60.2" class="BarChartTile">
+          <div fxLayout="column">
+            <div fxLayout="row" fxLayoutAlign="space-between stretch">
+              <span class="BarchartTitle">Sales Overview</span>
+              <select #select class="selectInput" (change)="FilterBarchart(select.value)">
+                <option>All</option>
+                <option>Deliveries</option>
+                <option>Bounces</option>
+                <option>Supressions</option>
+                <option>Posts via Route</option>
+              </select>
+            </div>
+            <div style="width: auto !important;position: relative;">
+              <apx-chart [series]="BarchartOptions.series" [chart]="BarchartOptions.chart"
+                [dataLabels]="BarchartOptions.dataLabels" [plotOptions]="BarchartOptions.plotOptions"
+                [yaxis]="BarchartOptions.yaxis" [legend]="BarchartOptions.legend" [fill]="BarchartOptions.fill"
+                [stroke]="BarchartOptions.stroke" [tooltip]="BarchartOptions.tooltip" [xaxis]="BarchartOptions.xaxis"
+                [grid]="BarchartOptions.grid" [responsive]="BarchartOptions.responsive"></apx-chart>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-around center">
+              <div fxLayout="row" fxLayoutAlign="space-around center">
+                <p class="circle" style="background-color: #60c0ea;"></p>
+                <span style="margin-left: 12px;">Deliveries</span>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-around center">
+                <p class="circle" style="background-color: #485865;"></p>
+                <span style="margin-left: 12px;">Bounces</span>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-around center">
+                <p class="circle" style="background-color: #9bc4ca;"></p>
+                <span style="margin-left: 12px;">Supressions</span>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-around center">
+                <p class="circle" style="background-color: #71a8ef;"></p>
+                <span style="margin-left: 12px;">Posts via Route</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="15px"
+        style="margin-left: 23px;margin-right: 31px;margin-bottom: 20px;">
+        <div fxFlex="20" class="GuageChartTitle" style="padding: 10px;">
+          <div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+            <div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+              <span>Overall Score</span>
+              <span class="Underline1"></span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+              <div fxLayout="column" fxLayoutAlign="center center">
+
+                <div>
+                  <apx-chart [series]="GuagechartOptionsOS.guageseries" [chart]="GuagechartOptionsOS.chart"
+                    [plotOptions]="GuagechartOptionsOS.plotOptions" [labels]="GuagechartOptionsOS.labels"
+                    [fill]="GuagechartOptionsOS.fill" [stroke]="GuagechartOptionsOS.stroke"></apx-chart>
+                </div>
+                <span class="ChartCircle"></span>
+
+              </div>
+              <span class="GuageChartSpacer"></span>
+              <div fxLayout="column" fxLayoutAlign="space-between center">
+                <span class="Circle" style="background-color: #ffd15c;"></span>
+                <span style="margin-top: 5px;">Average</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div fxFlex="20" class="GuageChartTitle" style="padding: 10px;">
+          <div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+            <div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+              <span>Quality Index (PPM)</span>
+              <span class="Underline2"></span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+              <div fxLayout="column" fxLayoutAlign="center center">
+
+                <div>
+                  <apx-chart [series]="GuagechartOptionsQI.guageseries" [chart]="GuagechartOptionsQI.chart"
+                    [plotOptions]="GuagechartOptionsQI.plotOptions" [labels]="GuagechartOptionsQI.labels"
+                    [fill]="GuagechartOptionsQI.fill" [stroke]="GuagechartOptionsQI.stroke"></apx-chart>
+                </div>
+                <span class="ChartCircle"></span>
+              </div>
+              <span class="GuageChartSpacer"></span>
+              <div fxLayout="column" fxLayoutAlign="space-between center">
+                <span class="Circle" style="background-color: #34ad65;"></span>
+                <span style="margin-top: 5px;">Excellent</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div fxFlex="20" class="GuageChartTitle" style="padding: 10px !important;">
+          <div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+            <div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+              <span>On Time In Full (OTIF)</span>
+              <span class="Underline3"></span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+              <div fxLayout="column" fxLayoutAlign="center center">
+                <div>
+                  <apx-chart [series]="GuagechartOptionsOTIF.guageseries" [chart]="GuagechartOptionsOTIF.chart"
+                    [plotOptions]="GuagechartOptionsOTIF.plotOptions" [labels]="GuagechartOptionsOTIF.labels"
+                    [fill]="GuagechartOptionsOTIF.fill" [stroke]="GuagechartOptionsOTIF.stroke"></apx-chart>
+                </div>
+                <span class="ChartCircle2"></span>
+
+              </div>
+              <span class="GuageChartSpacer"></span>
+              <div fxLayout="column" fxLayoutAlign="space-between center">
+                <span class="Circle" style="background-color: #34ad65;"></span>
+                <span style="margin-top: 5px;">Good</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div fxFlex="20" class="GuageChartTitle" style="padding: 10px;">
+          <div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+            <div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+              <span>Price Variation</span>
+              <span class="Underline4"></span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+              <div fxLayout="column" fxLayoutAlign="center center">
+                <div>
+                  <apx-chart [series]="GuagechartOptionsPV.guageseries" [chart]="GuagechartOptionsPV.chart"
+                    [plotOptions]="GuagechartOptionsPV.plotOptions" [labels]="GuagechartOptionsPV.labels"
+                    [fill]="GuagechartOptionsPV.fill" [stroke]="GuagechartOptionsPV.stroke"></apx-chart>
+                </div>
+                <span class="ChartCircle"></span>
+              </div>
+              <span class="GuageChartSpacer"></span>
+              <div fxLayout="column" fxLayoutAlign="space-between center">
+                <span class="Circle" style="background-color: #34ad65;"></span>
+                <span style="margin-top: 5px;">Excellent</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div fxFlex="20" class="GuageChartTitle" style="padding: 10px;">
+          <div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+            <div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+              <span>Responsiveness</span>
+              <span class="Underline5"></span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+              <div fxLayout="column" fxLayoutAlign="center center">
+                <div>
+                  <apx-chart [series]="GuagechartOptionsRES.guageseries" [chart]="GuagechartOptionsRES.chart"
+                    [plotOptions]="GuagechartOptionsRES.plotOptions" [labels]="GuagechartOptionsRES.labels"
+                    [fill]="GuagechartOptionsRES.fill" [stroke]="GuagechartOptionsRES.stroke"></apx-chart>
+                </div>
+                <span class="ChartCircle"></span>
+              </div>
+              <span class="GuageChartSpacer"></span>
+              <div fxLayout="column" fxLayoutAlign="space-between center">
+                <span class="Circle" style="background-color: #ffd15c;"></span>
+                <span style="margin-top: 5px;">Average</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+    <!-- <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="isProgressBarVisibile">
+    </div> -->
+  </div>
+  <!-- <chat-config [(theme)]="theme"></chat-config>
+  <chat-widget [theme]="theme"></chat-widget> -->
+  <!-- <chat-widget [theme]="theme"></chat-widget> -->
+</div>

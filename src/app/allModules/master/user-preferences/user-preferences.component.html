@@ -1,0 +1,67 @@
+<div id="user-master" class="page-layout carded fullwidth">
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>User Preference</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div fxLayout class="content-card1">
+      <div id="chat" class=" page-layout carded fullwidth" fusePerfectScrollbar>
+        <!-- <div class="top-bg" [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground"></div> -->
+        <div class="center" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="10">
+          <form class="center mat-card m-24" autocomplete="off" fxLayout="column"
+            fxLayoutAlign="start" fxFlex="1 0 auto" name="form" [formGroup]="userPreferenceFormGroup">
+            <div fxFlex fxLayout>
+              <div fxFlex fxLayout="column" class="borderRightClass">
+                <div class="px-24" fxLayout="row wrap" fxLayoutAlign="start">
+                  <h3 class="m-16">Primary Color</h3>
+                  <fuse-material-color-picker class="mb-16" formControlName="navbarPrimaryBackground">
+                  </fuse-material-color-picker>
+                </div>
+                <div class="px-24" fxLayout="row wrap" fxLayoutAlign="start">
+                  <h3 class="m-16">Secondary Color</h3>
+                  <fuse-material-color-picker class="mb-16" formControlName="navbarSecondaryBackground">
+                  </fuse-material-color-picker>
+                </div>
+                <div class="px-24" fxLayout="row wrap" fxLayoutAlign="start">
+                  <h3 class="m-16">Tool Color</h3>
+                  <fuse-material-color-picker class="mb-16" formControlName="toolbarBackground">
+                  </fuse-material-color-picker>
+                </div>
+                <div class="px-24 pb-24 pt-16" fxLayout="row wrap" fxLayoutAlign="start">
+                  <button mat-raised-button type="button" (click)="ResetControl()" *ngIf="!userPreference.ID"
+                    style="margin-right:10px">
+                    Clear
+                  </button>
+                  <!-- <button mat-raised-button color="warn" type="button" (click)="DeleteClicked()"
+                    *ngIf="userPreference.ID" style="margin-right:10px">
+                    Delete
+                  </button> -->
+                  <button mat-raised-button color="accent" type="button" [ngClass]="BGClassName?.layout?.toolbar?.background" (click)="SaveClicked()">
+                    {{userPreference.ID?'Update':'Create'}}
+                  </button>
+                </div>
+              </div>
+              <div fxFlex class="p-24" fxHide.xs fxHide.sm>
+                <!-- <img class="img-style" src="assets/images/Wallpaper.jpg"> -->
+              </div>
+            </div>
+          </form>
+          <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="ProgressBarPostion" color="accent"
+            mode="indeterminate">
+          </mat-progress-spinner>
+          <div id="overlay" *ngIf="IsProgressBarVisibile"></div>
+        </div>
+      </div>
+    </div>
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent"
+      mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="IsProgressBarVisibile">
+    </div>
+  </div>
+</div>

@@ -1,0 +1,71 @@
+<div class="dialog-content-wrapper">
+  <mat-toolbar class="toolBg m-0">
+    <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+      <span class="title dialog-title">Attachments</span>
+      <div>
+        <button mat-icon-button (click)="close()" aria-label="Close dialog">
+          <mat-icon svgIcon="closeIcon"></mat-icon>
+        </button>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <!-- <mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+    <p> Are you sure you want to {{dialogData.Actiontype}} the {{dialogData.Catagory}} ?</p>
+</mat-dialog-content> -->
+
+  <div mat-dialog-content>
+    <!-- <div fxLayout style="padding: 10px;">
+      <div fxFlex>
+        <div fxFlex="90">
+          <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
+            <div *ngIf="ofAttachments?.length > 0 ">
+              <ul *ngFor="let attachment of ofAttachments">
+                <li style="cursor: pointer; color: #1e8bed;" (click)="attachmentClicked(attachment,invoiceAttachment)">
+                  {{attachment.AttachmentName}}</li>
+              </ul>
+            </div>
+            <div *ngIf="ofAttachments?.length === 0" class="no-results-message">
+              <span class="pl-12"> No attachments..</span>
+            </div>
+          </div>
+        </div>
+        <div fxFlex="10">
+          <img class="add-attachment-icon" src="assets/images/logos/add-button.png" (click)="fileInput2.click()">
+          <input hidden type="file" #fileInput2 id="file" (change)="addAttachmentClicked($event)"
+            accept="image/x-png,image/gif,image/jpeg,image/jpg,application/pdf" />
+        </div>
+      </div>
+    </div> -->
+    <div fxLayout fxLayoutAlign="center" class="p-8">
+      <div fxFlex *ngIf="attachmentDetails" class="no-results-message">
+        <span class="pl-12 pt-4"> No attachments..</span>
+      </div>
+
+      <span style="cursor: pointer !important; color: #1e8bed;"
+        (click)="openAttachmentDialog(attachmentDetails.FileName,attachmentDetails.blob)">
+        {{attachmentDetails.FileName}}</span>
+      <div fxFlex align="end">
+        <div *ngIf="file">
+          <span>{{file.name}}</span>
+        </div>
+        <button class="btnBg" mat-raised-button (click)="fileInput2.click()">Select file</button>
+        <input hidden type="file" #fileInput2 id="file"
+          accept="image/x-png,image/gif,image/jpeg,image/jpg,application/pdf"
+          (change)="handleFileInputCertificate($event)" />
+      </div>
+    </div>
+  </div>
+
+  <mat-dialog-actions class="m-0 p-8">
+    <div fxLayout fxLayoutAlign="space-between center" style="width: 100%;">
+      <div fxFlex>
+        <button mat-stroked-button class="btnBg" style="margin-left: 15px;" (click)="Save()">Save</button> </div>
+      <div fxFlex align="end">
+        <button mat-stroked-button type="button" (click)="close()" class="btclose">Close</button> </div>
+    </div>
+  </mat-dialog-actions>
+  <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+  </mat-progress-spinner>
+  <div id="overlay" *ngIf="isProgressBarVisibile"></div>
+
+</div>

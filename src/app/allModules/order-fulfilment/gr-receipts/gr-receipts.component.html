@@ -1,0 +1,198 @@
+<div id="grreceipts" class="page-layout carded" fusePerfectScrollbar>
+  <div class="center" fxLayout="column" fxLayoutGap="10px">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Goods Receipts</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+
+    <!-- <div fxFlex="100" fxLayout="row" *ngIf="!isExpanded" @expandCollapse> -->
+    <!-- <div class="tile mx-20" fxFlex="40" fxLayout="column" fxLayoutAlign="start">
+        <div fxLayoutAlign="start" class="pt-8">
+          <span class="boldClass  pl-8">GRN Count</span>
+        </div>
+        <span [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="orangeBorderBottom"></span>
+        <div fxLayout="row" fxLayoutAlign="center center">
+          <div>
+            <canvas class="leftsideCanvas" id="leftsidechart" baseChart [datasets]="DoughnutChartData2"
+              [options]="DoughnutChartOptions2" [chartType]="ChartType"
+              [colors]="doughnutChartColors1">
+            </canvas>
+          </div>
+          <div class="Chart_Circle">
+            <div fxLayout="column" class="circle_content">
+              <span class="cl_materialValue">957</span>
+              <span class="cl_materialCount">GRN Count</span>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    <!-- <div class="tile mx-20" fxFlex="35" fxLayout="column" fxLayoutAlign="start">
+        <div fxLayoutAlign="start center" class="pt-8">
+          <span class="boldClass  pl-8">OnTime/Delayed</span>
+        </div>
+        <span [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="orangeBorderBottom1"></span>
+        <div *ngIf="labels.length" id="barChart" fxFlex fxLayoutAlign="start" class="pt-8 pl-8 pr-4">
+          <canvas baseChart [chartType]="'bar'" [datasets]="chartData" [labels]="labels" [options]="chartOptions"
+            [legend]="false" [colors]="colors">
+          </canvas>
+        </div>
+      </div> -->
+    <!-- <div class="ml-10 mr-20" fxFlex="100" fxLayoutAlign="start"> -->
+    <form autocomplete="off" name="form" novalidate [formGroup]="searchFormGroup" *ngIf="!isExpanded" @expandCollapse
+     fxLayout="row wrap" fxLayoutAlign="space-around" fxFlex="100">
+      <!-- <div > -->
+      <div fxFlex="20">
+        <mat-form-field appearance="outline" style="width: 100% !important;">
+          <!-- <mat-icon class="mr-12" matPrefix>search</mat-icon> -->
+          <input matInput placeholder="GRN Number" formControlName="GRNNo">
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="20">
+        <mat-form-field appearance="outline" style="width: 100% !important;">
+          <!-- <mat-icon class="mr-12" matPrefix>search</mat-icon> -->
+          <input matInput placeholder="Material" formControlName="Material">
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="20">
+        <mat-form-field appearance="outline" style="width: 100% !important;">
+          <input matInput type="text" placeholder="GRN From Date" [matDatepicker]="picker" formControlName="GRNDatefrom"
+            (dateChange)="fromAndToDateChanged()">
+          <mat-datepicker #picker>
+          </mat-datepicker>
+          <img src="assets/images/calendar.png" width="15px" height="15px" (click)="picker.open()" class="inp_Img_date">
+          <mat-error *ngIf="isDateError">
+            To date should not be less than from date
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="20">
+        <mat-form-field appearance="outline" style="width: 100% !important;">
+          <input matInput type="text" placeholder="GRN To Date" [matDatepicker]="picker1" formControlName="GRNDateto"
+            (dateChange)="fromAndToDateChanged()">
+          <mat-datepicker #picker1>
+          </mat-datepicker>
+          <img src="assets/images/calendar.png" width="15px" height="15px" (click)="picker1.open()"
+            class="inp_Img_date">
+          <mat-error *ngIf="isDateError">
+            To date should not be less than from date
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <button mat-raised-button class="SaveBtn" (click)="SearchBtnClicked()"
+          [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">Search</button>
+      </div>
+    </form>
+    <!-- </div> -->
+    <!-- </div> -->
+
+    <div class="px-20 pb-20">
+      <div fxLayout="row" class="mt-20" fxLayoutAlign="start center">
+        <mat-form-field appearance="outline" fxFlex="50">
+          <mat-icon class="mr-12" matPrefix>search</mat-icon>
+          <input [(ngModel)]="searchText" matInput placeholder="Search" (keyup)="applyFilter($event)">
+        </mat-form-field>
+        <div fxFlex fxLayoutAlign="end center">
+          <mat-form-field appearance="outline" style="min-width: 100px;">
+            <mat-select [(ngModel)]="selectValue">
+              <mat-option value="All">All</mat-option>
+              <mat-option value="All">Material</mat-option>
+              <mat-option value="All">PO</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button (click)="exportAsXLSX()" class="excelBtn mx-24" mat-stroked-button>
+            <img class="excelImg" src="assets/images/excel.png">
+          </button>
+          <img class="expandImg" src="assets/images/expand.png" (click)="expandClicked()">
+        </div>
+      </div>
+      <!-- <div [ngClass]="grReceiptsReportDataSource.data.length >0 ? 'visible': 'hidden'"> -->
+      <table class="table" mat-table [dataSource]="grReceiptsReportDataSource" matSort>
+
+        <ng-container matColumnDef="GRGIDoc">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;"
+            [ngClass]="BGClassName?.layout?.toolbar?.background"> GRN </th>
+          <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+            <div fxLayout>
+              <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+              <div fxFlex class="pl-8">{{element.GRGIDoc}} </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="GRIDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            GRN Date </th>
+          <td mat-cell *matCellDef="let element;">
+            {{element.GRIDate | date :'dd/MM/yyyy'}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Item">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Item</th>
+          <td mat-cell *matCellDef="let element;let i= index;">
+            {{element.Item | removeLeadingZero}}
+          </td>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="InvoiceDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Invoice Date </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.InvoiceDate  | date :'dd/MM/yyyy'}}
+          </td>
+        </ng-container> -->
+
+        <ng-container matColumnDef="Material">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Material </th>
+          <td mat-cell *matCellDef="let element;let i= index;">
+            {{element.Material}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Description">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Description </th>
+          <td mat-cell *matCellDef="let element;let i= index;">
+            {{element.MaterialText}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="GRGIQty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background"> GR
+            Qty </th>
+          <td mat-cell *matCellDef="let element;let i= index;" class="QtyClass">
+            {{element.GRGIQty}}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="grReceiptsReportDisplayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: grReceiptsReportDisplayedColumns;">
+        </tr>
+      </table>
+      <!-- <div *ngIf="grReceiptsReportDataSource.length === 0">No data</div> -->
+      <!-- </div> -->
+
+      <!-- <div [ngClass]="grReceiptsReportDataSource.data.length >0 ? 'visible': 'visible'">
+       No results found.
+      </div> -->
+      <div>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100, 200, 500, 1000]"></mat-paginator>
+      </div>
+    </div>
+
+    <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="isProgressBarVisibile"></div>
+  </div>
+</div>

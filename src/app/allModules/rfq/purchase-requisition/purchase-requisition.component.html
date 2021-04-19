@@ -1,0 +1,121 @@
+<div id="pr" class="page-layout carded fullwidth">
+  <div class="center" fxLayout="column" fxLayoutGap="10px">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Purchase Requisition</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <!-- <div fxLayout class="content-card1">
+    </div> -->
+    <div fxFlex fxLayout="row" fxLayoutAlign="start" class="Layout_style">
+      <div fxFlex="75">
+        <img src="assets/image/search.png" width="17px" height="17px" class="searchImg">
+        <input type="text" placeholder="Search" class="search-input">
+
+      </div>
+      <div fxFlex="25" fxLayoutAlign="end">
+
+        <!-- <mat-form-field appearance="outline" style="height: 35px;margin-top: -7px;">
+            <mat-label style="    margin-top: -10px !important;">Select an option</mat-label>
+            <mat-select style="    margin-top: -10px !important;" >
+              <mat-option>None</mat-option>
+              <mat-option value="option1">Yet to convert RFq</mat-option>
+             
+              <mat-option    value="option2">All</mat-option>
+              <mat-option    value="option3">Null</mat-option>
+            </mat-select>
+          </mat-form-field> -->
+
+        <select class="selectInput">
+          <option>All</option>
+          <option>None</option>
+        </select>
+
+      </div>
+    </div>
+    <div style="overflow-x:auto;margin-left: 12px;">
+      <table class="table" mat-table [dataSource]="RFQDataSource" matSort>
+        <ng-container matColumnDef="Type">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 5%;text-align: center;"> Type </th>
+          <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+            <div fxLayout>
+              <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+              <div fxFlex class="pl-4">{{element.Type}} </div>
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="RFQID">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%;text-align: center;"> RFQ ID </th>
+          <td mat-cell *matCellDef="let element" style="font-weight: 600;">
+            {{element.RFQID}} </td>
+        </ng-container>
+        <ng-container matColumnDef="Date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 4%;text-align:left;padding-left: 22px;">
+            Date </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.Date}} </td>
+        </ng-container>
+        <ng-container matColumnDef="Expiry">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 4%;text-align: left;padding-left: 22px;">
+            Expiry </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.Expiry}} </td>
+        </ng-container>
+        <ng-container matColumnDef="full">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;text-align: center;"> Fulfilment </th>
+          <td mat-cell *matCellDef="let element">
+
+            <div class="progress">
+              <ul>
+                <li>
+
+                  <p class="fa"></p>
+                  <p>Invited</p>
+                </li>
+                <li>
+
+                  <p class="fa"></p>
+                  <p>Responded</p>
+                </li>
+                <li>
+
+                  <p class="fa"></p>
+                  <p style="opacity: 0.4;">Evaluated</p>
+                </li>
+                <li>
+
+                  <p class="fa"></p>
+                  <p style="opacity: 0.4;">Awarded</p>
+                </li>
+              </ul>
+            </div>
+
+
+
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Next">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%;text-align: center;"> Next Participant
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <button class="Rectangle-708" mat-button>Acknowledgement</button> </td>
+        </ng-container>
+
+        <tr mat-header-row style="height: 50px;" *matHeaderRowDef="RFQDisplayedColumns"></tr>
+        <tr style="cursor: pointer;" mat-row *matRowDef="let row; columns: RFQDisplayedColumns;">
+        </tr>
+
+      </table>
+    </div>
+
+    <!-- <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="isProgressBarVisibile">
+    </div> -->
+  </div>
+</div>

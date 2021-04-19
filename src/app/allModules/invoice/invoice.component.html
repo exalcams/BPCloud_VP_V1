@@ -1,0 +1,199 @@
+<div id="invoice" class="page-layout carded" fusePerfectScrollbar>
+  <div class="center" fxLayout="column" fxLayoutGap="10px">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Invoice</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+
+    <div class="px-20">
+      <div fxLayout="row" fxFlex="100%" fxLayoutAlign="space-around center">
+        <div fxFlex="100%">
+          <div class="SectionTitle">
+            <strong>Invoice</strong>
+           
+          </div>
+          <div [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" style="width: 70px;height: 2px;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="px-20 py-20">
+      <div class="content" *ngIf="!isExpanded" @expandCollapse>
+        <form autocomplete="off" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" novalidate
+          [formGroup]="SearchFormGroup">
+          <div fxFlex fxLayout>
+            <div fxFlex="20">
+              <mat-form-field style="width: 100%;" appearance="outline">
+                <input matInput placeholder="Invoice From Dt" [matDatepicker]="picker1" formControlName="FromDate"
+                  (dateChange)="DateSelected()">
+                <mat-datepicker-toggle matSuffix [for]="picker1">
+                  <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+                <mat-error
+                  *ngIf="SearchFormGroup.get('FromDate').touched && SearchFormGroup.get('FromDate').hasError('required')">
+                  From Date is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="20">
+              <mat-form-field class="pl-32" appearance="outline" style="width: 100%;">
+                <input matInput placeholder="To Dt" [matDatepicker]="picker2" formControlName="ToDate"
+                  (dateChange)="DateSelected()">
+                <mat-datepicker-toggle matSuffix [for]="picker2">
+                  <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+                <mat-error
+                  *ngIf="SearchFormGroup.get('ToDate').touched && SearchFormGroup.get('ToDate').hasError('required')">
+                  To Date is required
+                </mat-error>
+              </mat-form-field>
+              <div *ngIf="isDateError" class="DateError">
+                To date should not be less than from date
+              </div>
+            </div>
+            <!-- <div fxFlex="60" class="ml-180">
+              <mat-form-field class="pr-8" appearance="outline" style="width: 100%;">
+                <input matInput placeholder="PO Number" formControlName="PONumber">
+                <mat-error
+                  *ngIf="SearchFormGroup.get('PONumber').touched && SearchFormGroup.get('PONumber').hasError('required')">
+                  PO Number is required
+                </mat-error>
+              </mat-form-field>
+            </div> -->
+          </div>
+          <div fxFlex fxLayout>
+            <div fxFlex="40">
+              <mat-form-field style="width: 100%;" appearance="outline">
+                <input matInput placeholder="Invoice Number" formControlName="InvoiceNumber">
+                <mat-error
+                  *ngIf="SearchFormGroup.get('InvoiceNumber').touched && SearchFormGroup.get('InvoiceNumber').hasError('required')">
+                  Invoice Number is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="60" class="ml-180 pr-8" fxLayout>
+              <!-- <mat-form-field class="px-32" style="width: 100%;"> -->
+              <div class="mr-8 mt-8">Status</div>
+              <div fxLayout fxLayoutAlign="center" fxFlex class="mt-8">
+                <mat-radio-group placeholder="Status" formControlName="Status">
+                  <mat-radio-button value="All">All</mat-radio-button>
+                  <mat-radio-button value="Open" class="ml-40">Open</mat-radio-button>
+                  <mat-radio-button value="Closed" class="ml-40">Closed</mat-radio-button>
+                </mat-radio-group>
+                <div fxFlex fxLayoutAlign="end center" class="ml-8">
+                  <button mat-raised-button class="SaveBtn" (click)="SearchClicked()" [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">Search</button>
+                </div>
+              </div>
+              <!-- </mat-form-field> -->
+            </div>
+          </div>
+        </form>
+      </div>
+      <div fxLayout="row" class="mt-20" fxLayoutAlign="start center">
+        <mat-form-field appearance="outline" fxFlex="50">
+          <mat-icon class="mr-12" matPrefix>search</mat-icon>
+          <input [(ngModel)]="searchText" matInput placeholder="Search" (keyup)="applyFilter($event)">
+        </mat-form-field>
+        <div fxFlex fxLayoutAlign="end center">
+          <mat-form-field appearance="outline" style="min-width: 100px;">
+            <mat-select [(ngModel)]="SelectValue">
+              <mat-option value="All">All</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button (click)="exportAsXLSX()" class="excelBtn mx-24" mat-stroked-button>
+            <img class="excelImg" src="assets/images/excel.png">
+          </button>
+          <img class="expandImg" src="assets/images/expand.png" (click)="expandClicked()">
+        </div>
+      </div>
+      <table class="table" mat-table [dataSource]="InvoiceDataSource" matSort>
+        <ng-container matColumnDef="InvoiceNo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+          [ngClass]="BGClassName?.layout?.toolbar?.background"
+          > 	Invoice Number </th>
+          <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+            <div fxLayout>
+              <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+              <div fxFlex class="pl-12">{{element.InvoiceNo}} </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="InvoiceDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+          [ngClass]="BGClassName?.layout?.toolbar?.background"
+          > 	Invoice Date</th>
+          <td mat-cell *matCellDef="let element"> {{element.InvoiceDate | date :'dd/MM/yyyy'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="PostingDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+          [ngClass]="BGClassName?.layout?.toolbar?.background"
+          > 	Posting Date </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.PostingDate  | date : 'dd/MM/yyyy'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="InvoiceAmount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+          [ngClass]="BGClassName?.layout?.toolbar?.background"
+          > 	Amount </th>
+          <td mat-cell class="AmountClass" *matCellDef="let element">
+            {{element.InvoiceAmount}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Currency">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+          [ngClass]="BGClassName?.layout?.toolbar?.background"
+          > 	Currency </th>
+          <td mat-cell class="AmountClass" *matCellDef="let element">
+            {{element.Currency}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="ASN">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+          [ngClass]="BGClassName?.layout?.toolbar?.background"
+          > 	ASN </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.	ASN}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="ASNDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+          [ngClass]="BGClassName?.layout?.toolbar?.background"
+          > 	ASN Date </th>
+          <td mat-cell *matCellDef="let element">
+            <span class="p-4" [style.background-color]="getBackGroundColor(element.Status)">
+              {{element.ASNDate | date : 'dd/MM/yyyy'}}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="AttID">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+          [ngClass]="BGClassName?.layout?.toolbar?.background"
+          > Document </th>
+          <td mat-cell *matCellDef="let element">
+            <span class="linkClass">{{element.AttID}}
+            </span>
+          </td>
+        </ng-container> -->
+        <tr mat-header-row *matHeaderRowDef="InvoiceDisplayedColumns;sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: InvoiceDisplayedColumns;let even=even">
+        </tr>
+      </table>
+      <div>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+      </div>
+    </div>
+  </div>
+  <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+  </mat-progress-spinner>
+  <div id="overlay" *ngIf="IsProgressBarVisibile"></div>
+</div>

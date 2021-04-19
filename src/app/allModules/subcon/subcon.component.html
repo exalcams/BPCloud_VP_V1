@@ -1,0 +1,383 @@
+<div id="purind" class="page-layout carded fullwidth">
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Production Logbook</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div fxLayout class="content-card1">
+      <!-- <div fxFlex="23" class="side-bar" style="background-color: #f5f5f5">
+        <div class="sidenav-header">
+          <mat-toolbar>
+            <mat-toolbar-row fxLayout="row" class="px-8" fxLayoutAlign="space-between center">
+              <div class="search-wrapper" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                  <input [(ngModel)]="searchText" type="text" placeholder="Search" fxFlex>
+                  <mat-icon class="s-16">search</mat-icon>
+                </div>
+              </div>
+            </mat-toolbar-row>
+          </mat-toolbar>
+        </div>
+        <div class="sidenav-content" fusePerfectScrollbar fxFlex>
+          <div *ngFor="let usr of AllPurchaseIndentHeaders | filter: searchText">
+            <div>
+              <div class="mx-8 mb-8 mt-0 p-8 leftCard" (click)="LoadSelectedPurchaseIndent(usr)"
+                [style.border-left-color]="SelectedPurchaseIndentNumber==usr.PurchaseIndentNumber?'#efb577':'#cccccc'">
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex><strong>{{usr.PurchaseIndentNumber}}</strong></div>
+                  <div fxFlex align="end">{{usr.CreatedOn | date :'dd/MM/yyyy'}}</div>
+                </div>
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex><strong>PO : </strong>{{usr.DocNumber}}</div>
+                </div>
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex><strong>AWB : </strong>{{usr.ReferenceDoc}}</div>
+                </div>
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex>{{usr.VessleNumber}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="(AllPurchaseIndentHeaders | filter: searchText)?.length === 0" class="no-results-message">
+            <span class="pl-12"> No results..</span>
+          </div>
+        </div>
+        <div class="borderRight1"></div>
+      </div> -->
+      <mat-card fxFlex="100" class="side-bar p-0">
+        <div fxLayout class="p-0 grayBorderBottom" fxLayoutAlign="start center">
+          <div fxFlex="20" fxLayout="column" class="px-12 my-24">
+            <div fxLayout fxLayoutAlign="center" fxLayoutGap="2px">
+              <div fxFlex="40" fxLayoutAlign="end center">
+                PO No : 
+              </div>
+              <div fxFlex="60" fxLayoutAlign="start center">
+                <span class="boldClass">{{SelectedPO?.DocNumber}}</span>
+              </div>
+            </div>
+            <div class="mt-12">
+              <div fxLayout fxLayoutAlign="center" fxLayoutGap="2px">
+                <div fxFlex="40" fxLayoutAlign="end center">
+                  PO Date : 
+                </div>
+                <div fxFlex="60" fxLayoutAlign="start center">
+                  <span class="boldClass">{{SelectedPO?.DocDate | date : 'dd/MM/yyyy'}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div fxFlex="20" fxLayout="column" class="borderleft px-12 my-24">
+            <div fxLayout fxLayoutAlign="center" fxLayoutGap="2px">
+              <div fxFlex="40" fxLayoutAlign="end center">
+                Currency : 
+              </div>
+              <div fxFlex="60" fxLayoutAlign="start center">
+                <span class="boldClass">{{SelectedPO?.Currency}}</span>
+              </div>
+            </div>
+            <div class="mt-12">
+              <div fxLayout fxLayoutAlign="center" fxLayoutGap="2px">
+                <div fxFlex="40" fxLayoutAlign="end center">
+                  Version : 
+                </div>
+                <div fxFlex="60" fxLayoutAlign="start center">
+                  <span class="boldClass">{{SelectedPO?.DocVersion}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div fxFlex="1" class="borderleft my-24">
+
+          </div> -->
+          <!-- <div fxFlex="20" fxLayoutAlign="end center" class="borderleft px-12 my-24">
+            <div fxLayout="column">
+              <div style="text-align: right;">
+                Currency : <span class="boldClass">{{SelectedPO?.Currency}}</span>
+              </div>
+              <div class="mt-12">
+                <div fxLayout fxLayoutAlign="center" fxLayoutGap="2px">
+                  <div fxFlex="40" fxLayoutAlign="end center">
+                    Version :  
+                  </div>
+                  <div fxFlex="60" fxLayoutAlign="start center">
+                    <span class="boldClass">{{SelectedPO?.DocVersion}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+          <div fxFlex="auto" class="borderleft pb-40 pt-12" *ngIf="SelectedPO">
+            <div fxLayout class="mx-40">
+              <div fxFlex="30">ACK</div>
+              <div fxFlex="30">ASN</div>
+              <div fxFlex="30">Gate</div>
+              <div fxFlex="10">GRN</div>
+            </div>
+            <div fxLayout class="mx-40 my-8">
+              <div fxFlex="30" fxLayout>
+                <div class="round" [style.border-color]="SelectedPO.Status==='Open'?'#efb577':'#34ad65'"></div>
+                <div style="width: 10px;margin-left: -1px;"
+                  [class]="SelectedPO.Status==='Open'?'orange-timeline':'green-timeline'"></div>
+                <div [class]="SelectedPO.Status==='Open'?'white-timeline':'green-timeline'" fxFlex></div>
+              </div>
+              <div fxFlex="30" fxLayout>
+                <div style="width: 10px;margin-right: -1px;" [class]="getTimeline('ASN')"></div>
+                <div class="round" [style.border-color]="getStatusColor('ASN')"></div>
+                <div style="width: 10px;margin-left: -1px;" [class]="getTimeline('ASN')"></div>
+                <div [class]="getRestTimeline('ASN')" fxFlex></div>
+              </div>
+              <div fxFlex="30" fxLayout>
+                <div style="width: 10px;margin-right: -1px;" [class]="getTimeline('Gate')"></div>
+                <div class="round" [style.border-color]="getStatusColor('Gate')"></div>
+                <div style="width: 10px;margin-left: -1px;" [class]="getTimeline('Gate')"></div>
+                <div [class]="getRestTimeline('Gate')" fxFlex></div>
+              </div>
+              <div fxFlex="10" fxLayout>
+                <div style="width: 10px;margin-right: -1px;" [class]="getTimeline('GRN')"></div>
+                <div class="round" [style.border-color]="getStatusColor('GRN')"></div>
+              </div>
+            </div>
+            <!-- <div fxLayout class="mx-40">
+                <div fxFlex="30"> {{getStatusDate('SO')}} </div>
+                <div fxFlex="30"> {{getStatusDate('Shipped')}}</div>
+                <div fxFlex="30"> {{getStatusDate('Invoiced')}}</div>
+                <div fxFlex="10"> {{getStatusDate('Receipt')}}</div>
+              </div> -->
+          </div>
+        </div>
+
+        <div fxLayout class="content-card1">
+          <div fxFlex="23" class="side-bar" style="background-color: #f5f5f5">
+            <div class="sidenav-header">
+              <mat-toolbar>
+                <mat-toolbar-row fxLayout="row" class="px-8" fxLayoutAlign="space-between center">
+                  <div class="search-wrapper" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                      <input [(ngModel)]="searchText" type="text" placeholder="Search" fxFlex>
+                      <mat-icon class="s-16">search</mat-icon>
+                    </div>
+                  </div>
+                </mat-toolbar-row>
+              </mat-toolbar>
+            </div>
+            <div class="sidenav-content" fusePerfectScrollbar fxFlex>
+              <div *ngFor="let usr of POScheduleLines | filter: searchText">
+                <div>
+                  <div class="mx-8 mb-8 mt-0 p-8 leftCard" (click)="LoadSelectedSL(usr)"
+                    [class.highlightCard]="SelectedSlLine===usr.SlLine && SelectedItem===usr.Item">
+                    <div fxLayout class="py-4" fxLayoutAlign="space-between center">
+                      <div fxFlex><strong>{{usr.SlLine +' . '}}{{usr.MaterialText}}</strong></div>
+                      <div fxFlex align="end">#{{usr.Material}}</div>
+                    </div>
+                    <div fxLayout class="py-4" fxLayoutAlign="space-between center">
+                      <div fxFlex>
+                        <img class="pendingImg" src="assets/images/pending.png">
+                        <span> {{usr.DeliveryDate | date:'dd/MM/yyyy'}}</span>
+                      </div>
+                      <div fxFlex align="end">Qty: {{usr.OrderedQty}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="(POScheduleLines | filter: searchText)?.length === 0" class="no-results-message">
+                <span class="pl-12"> No results..</span>
+              </div>
+            </div>
+            <div class="borderRight1"></div>
+          </div>
+          <mat-card fxFlex="77" class="side-bar p-0">
+            <div *ngIf="SelectedScheduleLineView" class="sidenav-content" fxFlex fxLayout="column">
+              <div fxLayout fxLayoutAlign="space-between center" class="p-20 titleBorder">
+                <div fxFlex class="titleClass">
+                  {{SelectedScheduleLineView?.MaterialText}} (#{{SelectedScheduleLineView?.Material}})
+                </div>
+                <div fxFlex fxLayout align="end">
+                  <div fxFlex>
+                    <!-- <mat-icon class="mr-4">av_timer</mat-icon> -->
+                    <img class="pendingImg" src="assets/images/pending.png">
+                    <span class="boldClass"> {{SelectedScheduleLineView?.DeliveryDate | date:'dd/MM/yyyy'}}</span>
+                  </div>
+                  <div fxFlex align="end">Qty: <span class="boldClass">{{SelectedScheduleLineView?.OrderedQty}}</span></div>
+                </div>
+              </div>
+              <div fxLayout fxLayoutAlign="center" class="p-20 QtyCard mx-20 mt-16">
+                <div fxFlex="30" fxLayout fxLayoutAlign="start center">
+                  Produced : <span class="boldClass ml-20">{{ProducedQty}}</span>
+                  <div class="ml-40">
+                    <img class="doubleArrowClass" src="assets/images/doubleArrow.png" />
+                  </div>
+                </div>
+
+                <div fxFlex="30" fxLayout fxLayoutAlign="start center">
+                  Shipped : <span class="boldClass ml-20">0</span>
+                  <div class="ml-40">
+                    <img class="doubleArrowClass" src="assets/images/doubleArrow.png" />
+                  </div>
+                </div>
+              
+                <div fxFlex="40" fxLayoutAlign="start center">
+                  Ready to be Shipped : <span class="boldClass ml-20">{{ReadyToBeShippedQty}}</span>
+                </div>
+              </div>
+              <div class="px-12 mt-20">
+                <div>
+                  <form autocomplete="off" class="normal" fxLayout="row" fxLayoutAlign="start" name="form" novalidate
+                    [formGroup]="SubconItemFormGroup">
+                    <div fxFlex="15">
+                      <mat-form-field class="px-12" style="width: 100%;">
+                        <input matInput placeholder="Date" [max]="maxDate" [matDatepicker]="picker1" formControlName="Date">
+                        <mat-datepicker-toggle matSuffix [for]="picker1">
+                          <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon" class="mb-12"></mat-icon>
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                        <mat-error
+                          *ngIf="SubconItemFormGroup.get('Date').touched && SubconItemFormGroup.get('Date').hasError('required')">
+                          Date is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="15">
+                      <mat-form-field class="px-12" style="width: 100%;">
+                        <input matInput placeholder="Order Qty" formControlName="OrderedQty">
+                        <mat-error
+                          *ngIf="SubconItemFormGroup.get('OrderedQty').touched && SubconItemFormGroup.get('OrderedQty').hasError('required')">
+                          Order Qty is required
+                        </mat-error>
+                        <mat-error *ngIf="SubconItemFormGroup.get('OrderedQty').touched && !SubconItemFormGroup.get('OrderedQty').hasError('required')
+                        &&SubconItemFormGroup.get('OrderedQty').hasError('pattern')">
+                          Enter valid Quantity
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="15">
+                      <mat-form-field class="px-12" style="width: 100%;">
+                        <input matInput placeholder="Batch" formControlName="Batch">
+                        <mat-error
+                          *ngIf="SubconItemFormGroup.get('Batch').touched && SubconItemFormGroup.get('Batch').hasError('required')">
+                          Batch is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="30">
+                      <mat-form-field class="px-12" style="width: 100%;">
+                        <input matInput placeholder="Remarks" formControlName="Remarks">
+                        <mat-error
+                          *ngIf="SubconItemFormGroup.get('Remarks').touched && SubconItemFormGroup.get('Remarks').hasError('required')">
+                          Remarks is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="15">
+                      <mat-form-field class="px-12" style="width: 100%;">
+                        <mat-select placeholder="Status" formControlName="Status">
+                          <!-- <mat-option value="Packed">Packed</mat-option> -->
+                          <!-- <mat-option value="Shipped">Shipped</mat-option> -->
+                          <mat-option value="FullProduction">Full Production</mat-option>
+                          <mat-option value="PartialProduction">Partial Production</mat-option>
+                          <mat-option value="NoProduction">No Production</mat-option>
+                        </mat-select>
+                        <mat-error
+                          *ngIf="SubconItemFormGroup.get('Status').touched && SubconItemFormGroup.get('Status').hasError('required')">
+                          Status is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="10" fxLayoutAlign="center start">
+                      <img class="addIcon" src="assets/images/logos/add-button.png" (click)="AddSubconItemToTable()">
+                      <!-- <button class="SaveBtn" mat-raised-button (click)="AddDocumentCenterToTable()">Add</button> -->
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <div fxFlex fxLayout="column" class="table mx-20 my-12">
+                <table *ngIf="AllSubconItems?.length" mat-table [dataSource]="SubconItemDataSource" matSort>
+                  <ng-container matColumnDef="Date">
+                    <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Date </th>
+                    <td mat-cell style="width: 15%;" *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+                      <div fxLayout>
+                        <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                        <div fxFlex class="pl-4">{{element.Date | date :'dd/MM/yyyy'}} </div>
+                      </div>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="OrderedQty">
+                    <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Ordered Qty </th>
+                    <td mat-cell style="width: 15%;" *matCellDef="let element" class="QtyClass">
+                      {{element.OrderedQty}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Batch">
+                    <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Batch </th>
+                    <td mat-cell style="width: 15%;" *matCellDef="let element">
+                      {{element.Batch}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Remarks">
+                    <th mat-header-cell *matHeaderCellDef style="width: 30%;"> Remarks </th>
+                    <td mat-cell style="width: 30%;" *matCellDef="let element">
+                      {{element.Remarks}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Status">
+                    <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Status </th>
+                    <td mat-cell style="width: 15%;" *matCellDef="let element">
+                      {{element.Status}} </td>
+                  </ng-container>
+
+
+                  <ng-container matColumnDef="Action">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%"> </th>
+                    <td mat-cell *matCellDef="let element" style="text-align: center;width: 10%">
+                      <img class="removeIcon" src="assets/images/remove-button.png"
+                        (click)="RemoveSubconItemFromTable(element)">
+                    </td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="SubconItemDisplayedColumns;sticky: true"></tr>
+                  <tr mat-row *matRowDef="let row; columns: SubconItemDisplayedColumns;let even=even">
+                  </tr>
+                </table>
+                <!-- <div flex *ngIf="AllDocumentCenters?.length">
+                    <mat-paginator [pageSizeOptions]="[10, 20, 30, 50, 75, 100]" showFirstLastButtons>
+                    </mat-paginator>
+                  </div> -->
+              </div>
+
+
+            </div>
+            <mat-card-actions *ngIf="SelectedScheduleLineView && AllSubconItems?.length"
+              class="m-0 pl-12 pr-16 cardActions">
+              <div fxLayout fxLayoutAlign="space-between center">
+                <div fxFlex *ngIf="IsDeleteRequired">
+                  <button mat-stroked-button class="DeleteBtn mr-4 mb-4" (click)="DeleteClicked()">Delete</button>
+                </div>
+                <div fxFlex align="end">
+                  <button mat-stroked-button class="SaveBtn mb-4" (click)="SaveClicked()">Save
+                  </button>
+                  <button mat-raised-button class="SubmitBtn mb-4" (click)="SubmitClicked()">Submit</button>
+                </div>
+              </div>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </mat-card>
+    </div>
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="IsProgressBarVisibile">
+    </div>
+  </div>
+</div>

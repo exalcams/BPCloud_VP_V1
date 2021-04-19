@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="87.226" height="57.29" viewBox="0 0 87.226 57.29">
+    <g id="prefix__logo_2" data-name="logo 2" transform="translate(-.17)">
+        <path id="prefix__Path_1" d="M368.591 79.5s5.219-15.56 19.6-14.969S406.506 76.747 407 80.489s.667 3.225.667 3.225 14.432.9 12.787 13.834-12.413 11.142-12.413 11.142l-39.448.114v-4.423h39.448s8.081.713 8.369-6.833-4.083-9.387-8.743-9.79-4.429-4.044-4.429-4.044-1.006-14.8-15.047-15.013-16.906 15.49-16.906 15.49z" data-name="Path 1" transform="translate(-333.187 -64.519)" style="fill:#4279e5"/>
+        <text id="prefix__Cloud" transform="translate(17.17 36.29)" style="letter-spacing:.03em;fill:#ff3967;font-size:18px;font-family:Baloo-Regular,Baloo">
+            <tspan x="0" y="0">Cloud</tspan>
+        </text>
+        <text id="prefix__By_Exalca" data-name="By Exalca" transform="translate(46.17 55.29)" style="font-size:8px;font-family:Montserrat-SemiBold,Montserrat;font-weight:600;opacity:.4">
+            <tspan x="0" y="0">By Exalca</tspan>
+        </text>
+        <text id="prefix__BP" transform="translate(.17 24.29)" style="fill:#464646;font-size:17px;font-family:Orbitron-Black,Orbitron;font-weight:800;letter-spacing:.03em">
+            <tspan x="0" y="0">BP</tspan>
+        </text>
+    </g>
+</svg>

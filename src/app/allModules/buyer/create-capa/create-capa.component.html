@@ -1,0 +1,414 @@
+<div id="CAPA-Create" class="page-layout carded" fusePerfectScrollbar>
+  <div class="center" fxLayout="column" fxLayoutGap="10px">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Create-CAPA</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="../../../../assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <mat-tab-group (selectedIndexChange)="TabSelected($event)" [selectedIndex]="NextTabIndex" style="margin-bottom: 50px !important;">
+
+      <!-- CAPA -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <p>CAPA</p>
+        </ng-template>
+        <div style="margin-top: 20px !important;" fxLayout="column">
+
+          <!-- Headers -->
+          <div fxLayout="column" fxLayoutAlign="center stretch">
+            <h3 style="padding-left: 20px;"><b>Headers</b></h3>
+            <form autocomplete="off" fxLayout="row wrap" fxLayoutGap="50px" name="form" novalidate
+              [formGroup]="HeaderFormGroup" style="margin-left: 20px !important;margin-top: 20px;">
+              <div fxFlex="20" >
+                <mat-form-field style="width: 100%;">
+                  <input matInput placeholder="Start Date" [matDatepicker]="picker2" (dateInput)="StartDateChange($event)"
+                    formControlName="StartDate" [min]="minDate" [max]="maxDate">
+                  <mat-datepicker-toggle matSuffix [for]="picker2">
+                    <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #picker2></mat-datepicker>
+                  <mat-error
+                    *ngIf="HeaderFormGroup.get('StartDate').touched && HeaderFormGroup.get('StartDate').hasError('required')">
+                    StartDate is required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div fxFlex="20" >
+                <mat-form-field style="width: 100%;">
+                  <input matInput placeholder="Text" formControlName="Text">
+                  <mat-error
+                    *ngIf="HeaderFormGroup.get('Text').touched && HeaderFormGroup.get('Text').hasError('required')">
+                    Text is required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div fxFlex="20" >
+                <mat-form-field style="width: 100%;">
+                  <input matInput placeholder="Due Date" [matDatepicker]="picker1" (dateInput)="DueDateChange($event)"
+                    formControlName="DueDate" [min]="DueMinDate" [max]="maxDate">
+                  <mat-datepicker-toggle matSuffix [for]="picker1">
+                    <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                  <mat-error
+                    *ngIf="HeaderFormGroup.get('DueDate').touched && HeaderFormGroup.get('DueDate').hasError('required')">
+                    DueDate is required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div fxFlex="20" >
+                <mat-form-field style="width: 100%;">
+                  <mat-select matInput matNativeControl placeholder="Recurring" formControlName="Recurring" (selectionChange)="RecurringChanged($event)">
+                    <mat-option *ngFor="let Recur of Recurring" [value]="Recur">
+                      <span>{{Recur}}</span>
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="HeaderFormGroup.get('Recurring').touched && HeaderFormGroup.get('Recurring').hasError('required')">
+                    Recurring is required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div fxFlex="20" *ngIf="IsRecurring == 'Yes'" style="margin-top: 20px !important;">
+                <mat-form-field style="width: 100%;">
+                  <input matInput placeholder="Interval in days" formControlName="Interval">
+                  <mat-error
+                    *ngIf="HeaderFormGroup.get('Interval').touched && HeaderFormGroup.get('Interval').hasError('required')">
+                    Interval is required
+                  </mat-error>
+                  <mat-error
+                    *ngIf="HeaderFormGroup.get('Interval').touched && HeaderFormGroup.get('Interval').hasError('pattern')">
+                    Interval not in days
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div fxFlex="20" *ngIf="IsRecurring == 'Yes'" style="margin-top: 20px !important;">
+                <mat-form-field style="width: 100%;">
+                  <input matInput placeholder="Ocurrence" formControlName="Ocurrence">
+                  <mat-error
+                    *ngIf="HeaderFormGroup.get('Ocurrence').touched && HeaderFormGroup.get('Ocurrence').hasError('required')">
+                    Ocurrence is required
+                  </mat-error>
+                  <mat-error
+                    *ngIf="HeaderFormGroup.get('Ocurrence').touched && HeaderFormGroup.get('Ocurrence').hasError('pattern')">
+                    Ocurrence not in days
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </form>
+          </div>
+
+          <!-- Items -->
+          <div fxLayout="column" fxLayoutAlign="center stretch" style="margin-top: 20px;">
+            <h3 style="padding-left: 20px;"><b>Items</b></h3>
+            <div style="margin: 20px !important;" fxLayout="column">
+              <!-- RadioBtn -->
+              <div fxLayout="row" style="margin-top: 10px;">
+                <mat-radio-group fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-around center"
+                  (change)="RadioBtnChanged($event)">
+                  <mat-radio-button value="Dialog" checked>Dialog</mat-radio-button>
+                  <mat-radio-button value="CheckList">CheckList</mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+              <!-- Dialog Content -->
+              <div *ngIf="RadioBtnValue ==='Dialog'" fxFlex="100" style="margin-top: 20px;">
+                <mat-form-field class="TextArea" style="width: 100% !important;" appearance="outline">
+                  <!-- <mat-label>Address</mat-label> -->
+                  <textarea matInput matTextareaAutosize [matAutosizeMinRows]="TextAreaMinRow"
+                    [matAutosizeMaxRows]="TextAreaMaxRow" [(ngModel)]="TextAreaValue"></textarea>
+                </mat-form-field>
+              </div>
+
+              <!-- CheckList Content -->
+              <div *ngIf="RadioBtnValue ==='CheckList'" style="margin-top: 20px;">
+                <div fxFlex fxLayout="column">
+                  <!-- Form -->
+                  <div fxFlex>
+                    <form autocomplete="off" fxLayout="row wrap" fxLayoutAlign="space-between center" fxLayoutGap="10px"
+                      name="form" novalidate [formGroup]="CheckListFormGroup">
+                      <div fxFlex="20">
+                        <mat-form-field style="width: 100%;">
+                          <input matInput placeholder="Text" formControlName="Text">
+                          <mat-error
+                            *ngIf="CheckListFormGroup.get('Text').touched && CheckListFormGroup.get('Text').hasError('required')">
+                            Text is required
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div fxFlex="20">
+                        <mat-form-field style="width: 100%;">
+                          <input matInput placeholder="Due Date" [matDatepicker]="picker1" formControlName="DueDate">
+                          <mat-datepicker-toggle matSuffix [for]="picker1">
+                            <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
+                          </mat-datepicker-toggle>
+                          <mat-datepicker #picker1></mat-datepicker>
+                          <mat-error
+                            *ngIf="CheckListFormGroup.get('DueDate').touched && CheckListFormGroup.get('DueDate').hasError('required')">
+                            Due Date is required
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <!-- <div fxFlex="20">
+                      <mat-form-field style="width: 100%;">
+                        <input matInput placeholder="Priority" formControlName="Priority">
+                        <mat-error
+                          *ngIf="CheckListFormGroup.get('Priority').touched && CheckListFormGroup.get('Priority').hasError('required')">
+                          Priority is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div> -->
+                      <div fxFlex="20">
+                        <mat-form-field style="width: 100%;">
+                          <mat-select matInput matNativeControl placeholder="Priority" formControlName="Priority">
+                            <mat-option *ngFor="let Priority of Priorities" [value]="Priority">
+                              <span>{{Priority}}</span>
+                            </mat-option>
+                          </mat-select>
+                          <mat-error
+                            *ngIf="CheckListFormGroup.get('Priority').touched && CheckListFormGroup.get('Priority').hasError('required')">
+                            Type is required
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <!-- <div fxFlex="20">
+                      <mat-form-field style="width: 100%;">
+                        <input matInput placeholder="Impact" formControlName="Impact">
+                        <mat-error
+                          *ngIf="CheckListFormGroup.get('Impact').touched && CheckListFormGroup.get('Impact').hasError('required')">
+                          Impact is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div> -->
+                      <div fxFlex="20">
+                        <mat-form-field style="width: 100%;">
+                          <mat-select matInput matNativeControl placeholder="Impact" formControlName="Impact">
+                            <mat-option *ngFor="let Impact of Impacts" [value]="Impact">
+                              <span>{{Impact}}</span>
+                            </mat-option>
+                          </mat-select>
+                          <mat-error
+                            *ngIf="CheckListFormGroup.get('Impact').touched && CheckListFormGroup.get('Impact').hasError('required')">
+                            Type is required
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div fxFlex="20">
+                        <mat-form-field style="width: 100%;">
+                          <input matInput placeholder="Department" formControlName="Department">
+                          <mat-error
+                            *ngIf="CheckListFormGroup.get('Department').touched && CheckListFormGroup.get('Department').hasError('required')">
+                            Department is required
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div fxFlex="20">
+                        <mat-form-field style="width: 100%;">
+                          <mat-select placeholder="Type" formControlName="Type">
+                            <mat-option *ngFor="let type of Types" [value]="type">
+                              <span>{{type}}</span>
+                            </mat-option>
+                          </mat-select>
+                          <mat-error
+                            *ngIf="CheckListFormGroup.get('Type').touched && CheckListFormGroup.get('Type').hasError('required')">
+                            Type is required
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div fxFlex="20">
+                        <mat-form-field style="width: 100%;">
+                          <mat-select placeholder="Document Required" formControlName="IsDocumentRequired">
+                            <mat-option *ngFor="let req of IsDocumentRequireds" [value]="req">
+                              <span>{{req}}</span>
+                            </mat-option>
+                          </mat-select>
+                          <mat-error
+                            *ngIf="CheckListFormGroup.get('IsDocumentRequired').touched && CheckListFormGroup.get('IsDocumentRequired').hasError('required')">
+                            DocumentRequired is required
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div fxFlex="20" fxLayoutAlign="end">
+                        <img class="addIcon" src="assets/images/logos/add-button.png" (click)="AddToCheckListTable()">
+                      </div>
+                    </form>
+                  </div>
+                  <!-- Table -->
+                  <div style="overflow:auto !important;" fxLayout="column">
+                    <table class="table" mat-table [dataSource]="CheckListDataSource" matSort fxFlex>
+                      <ng-container matColumnDef="Text">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                          [ngClass]="BGClassName?.layout?.toolbar?.background"> Text </th>
+                        <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+                          <div fxLayout>
+                            <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                            <div fxFlex class="pl-4">{{element.Text}} </div>
+                          </div>
+                        </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="DueDate">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                          [ngClass]="BGClassName?.layout?.toolbar?.background"> Due Date </th>
+                        <td class="QtyClass" mat-cell *matCellDef="let element">
+                          {{element.DueDate | date : 'dd-MM-yyyy'}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="Priority">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                          [ngClass]="BGClassName?.layout?.toolbar?.background"> Priority </th>
+                        <td mat-cell *matCellDef="let element">
+                          {{element.Priority}} </td>
+                      </ng-container>
+
+
+                      <ng-container matColumnDef="Impact">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                          [ngClass]="BGClassName?.layout?.toolbar?.background"> Impact </th>
+                        <td mat-cell *matCellDef="let element">
+                          {{element.Impact}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="Department">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                          [ngClass]="BGClassName?.layout?.toolbar?.background"> Department </th>
+                        <td mat-cell *matCellDef="let element">
+                          {{element.Department}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="Type">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                          [ngClass]="BGClassName?.layout?.toolbar?.background"> Type </th>
+                        <td mat-cell *matCellDef="let element">
+                          {{element.CType}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="IsDocumentRequired">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                          [ngClass]="BGClassName?.layout?.toolbar?.background"> IsDocument Required </th>
+                        <td mat-cell *matCellDef="let element">
+                          {{element.IsDocumentRequired}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="Action">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header
+                          [ngClass]="BGClassName?.layout?.toolbar?.background"> Action </th>
+                        <td mat-cell *matCellDef="let element;let i = index">
+                          <button (click)="clearBankTable(i)">
+                            <img src="./assets/images/delete.png" class="deleteImg">
+                          </button>
+                        </td>
+                      </ng-container>
+                      <tr mat-header-row *matHeaderRowDef="CheckListDisplayColumns;sticky: true"></tr>
+                      <tr mat-row *matRowDef="let row; columns: CheckListDisplayColumns;let i=index,let even=even"
+                        style=" cursor: pointer;" (click)="TextTableClicked(i,row)">
+                      </tr>
+                    </table>
+                    <div flex fxLayoutAlign="center center" class="TableFooter" style="margin-top: 20px;"
+                      *ngIf="!CheckListItems?.length">
+                      <mat-icon svgIcon="infoIcon" style="color: #1b56ca;">
+                      </mat-icon>
+                      <span style="margin-left: 10px;">The table does not contain any records</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div fxLayoutAlign="end" fxFlex style="margin-right: 20px !important;margin-bottom: 20px !important;">
+            <button mat-flat-button color="primary" (click)="NextTab(NextTabIndex)">Next</button>
+            <!-- <button mat-fab color="primary" (click)="NextTab(NextTabIndex)">
+              <mat-icon>arrow_forward</mat-icon>
+            </button> -->
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Vendor -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <p>Add Vendor</p>
+        </ng-template>
+        <div style="padding: 20px !important;">
+          <div align="end">
+            <img class="addIcon" src="assets/images/logos/add-button.png" (click)="openVendorDialog()">
+          </div><br>
+          <div style="overflow-x:auto;">
+            <table class="table" mat-table [dataSource]="VendorDataSource" matSort>
+              <ng-container matColumnDef="S.No">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No</th>
+                <td mat-cell *matCellDef="let row;let odd=odd;let i=index;" class="tableLeftBorder pl-0">
+                  <div fxLayout>
+                    <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                    <div fxFlex class="pl-8">{{i + 1}} </div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="Vendor">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Vendor </th>
+                <td mat-cell *matCellDef="let row"> {{row.PatnerID }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="VendorName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Vendor Name </th>
+                <td mat-cell *matCellDef="let row"> {{row.LegalName }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="GSTNumber">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> GST Number </th>
+                <td mat-cell *matCellDef="let row"> {{row.GSTNumber}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="City">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> City </th>
+                <td mat-cell *matCellDef="let row"> {{row.City}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="Action">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                  [ngClass]="BGClassName?.layout?.toolbar?.background">
+                  Action </th>
+                <td mat-cell *matCellDef="let element;let i = index">
+                  <button (click)="clearVendorTable(i)">
+                    <img src="./assets/images/delete.png" class="deleteImg">
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="VendorTableDisplayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: VendorTableDisplayedColumns;">
+              </tr>
+            </table>
+            <div flex fxLayoutAlign="center center" class="TableFooter" *ngIf="!Selectedvendors?.length">
+              <mat-icon svgIcon="infoIcon" style="color: #1b56ca;">
+              </mat-icon>
+              <span style="margin-left: 10px;">The table does not contain any records</span>
+            </div>
+          </div>
+          <div>
+            <mat-paginator [pageSizeOptions]="[5]"></mat-paginator>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+    <div fxLayout id="footerCard" fxLayoutAlign="end center" fxLayoutGap="20px" *ngIf="!IsFooterDisable">
+      <div>
+        <button (click)="SaveClicked('Save')" [ngClass]="BGClassName?.layout?.navbar?.primaryBackground" class="SaveBtn"
+          mat-flat-button>
+          Save</button>
+      </div>
+      <button class="mr-20" style="color: #efb577;background-color: white;" mat-stroked-button
+        (click)="SaveClicked('Open')">Submit</button>
+    </div>
+    <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="isProgressBarVisibile"></div>
+  </div>
+</div>

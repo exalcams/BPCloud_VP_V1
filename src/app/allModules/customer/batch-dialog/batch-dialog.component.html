@@ -1,0 +1,83 @@
+<div>
+  <mat-toolbar >
+    <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center" >
+      <span class="title dialog-title">Batch Details</span>
+      <button mat-icon-button (click)="CloseClicked()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+<mat-dialog-content class="m-4" fusePerfectScrollbar>
+
+
+
+  <form name="BatchFormGroup" autocomplete="off" [formGroup]="BatchFormGroup" novalidate>
+    <div fxLayout>
+      <mat-form-field fxFlex class="px-12">
+        <input matInput placeholder="Batch" formControlName="Batch">
+         <mat-error *ngIf="BatchFormGroup.get('Batch').touched && 
+        BatchFormGroup.get('Batch').hasError('required')">
+        Batch is required
+        </mat-error> 
+      </mat-form-field>
+      <mat-form-field fxFlex class="px-12">
+        <input matInput placeholder="Qty" formControlName="RetQty" (keydown)="decimalOnly($event)">
+      <mat-error *ngIf="BatchFormGroup.get('RetQty').touched && 
+        BatchFormGroup.get('RetQty').hasError('required')">
+           Qty is required
+        </mat-error> 
+      </mat-form-field>
+      <div  *ngIf="status_show!='submitted'" fxFlex="10" fxLayoutAlign="center start">
+        <img class="addIcon" src="assets/images/logos/add-button.png" (click)="AddBatchToTable()">
+      </div>
+    </div>
+      </form>
+      
+  <div *ngIf="AllReturnItems.length" class="table px-12">
+    <table  mat-table [dataSource]="BatchDataSource">
+      <ng-container matColumnDef="Batch">
+        <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Batch</th>
+        <td mat-cell style="width: 10%;" *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+          <div fxLayout>
+            <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+            <div fxFlex class="pl-4">{{element.Batch}}</div>
+          </div>
+        </td>
+      </ng-container>
+
+      
+
+      <ng-container matColumnDef="RetQty">
+        <th mat-header-cell *matHeaderCellDef style="width: 15%;"> RetQty</th>
+        <td mat-cell style="width: 15%;" *matCellDef="let element">
+       <span >  {{ element.RetQty}} </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Remove">
+        <th  mat-header-cell [hidden]="show" *matHeaderCellDef style="width: 15%;"> Remove</th>
+        <td mat-cell [hidden]="show"  style="width: 15%;" *matCellDef="let element">
+          <img class="removeIcon" src="assets/images/remove-button.png"
+          (click)="RemoveReturnBatchItemFromTable(element)">
+        </td>
+      </ng-container>
+     
+      <tr mat-header-row *matHeaderRowDef="BatchDisplayedColumns;"></tr>
+      <tr mat-row *matRowDef="let row; columns: BatchDisplayedColumns;let even=even">
+      </tr>
+    </table>
+<!-- 
+        <mat-paginator [pageSizeOptions]="[5, 10]" showFirstLastButtons>
+        </mat-paginator> -->
+     </div>
+
+  
+</mat-dialog-content>
+
+<mat-dialog-actions class="m-0 p-16" fxLayoutAlign="center" align="end">
+  <button mat-button type="button" (click)="CloseClicked()" >No</button>
+  <div fxFlex align="end">
+    <button mat-button type="button" class="btnBg" (click)="YesClicked()" align="end">Yes</button>
+  </div>
+</mat-dialog-actions>
+</div>

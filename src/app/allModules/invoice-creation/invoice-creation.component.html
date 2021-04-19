@@ -1,0 +1,595 @@
+<div id="inv-creation" class="page-layout carded fullwidth">
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Flip</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="../../../../assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div fxLayout class="content-card1">
+      <div fxFlex="23" class="side-bar" style="background-color: #f5f5f5">
+        <div class="sidenav-header">
+          <mat-toolbar>
+            <mat-toolbar-row fxLayout="row" class="px-8" fxLayoutAlign="space-between center">
+              <div class="search-wrapper" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                  <input [(ngModel)]="searchText" type="text" placeholder="Search" fxFlex>
+                  <mat-icon class="s-16">search</mat-icon>
+                </div>
+              </div>
+            </mat-toolbar-row>
+          </mat-toolbar>
+        </div>
+        <div class="sidenav-content" fusePerfectScrollbar fxFlex>
+          <div *ngFor="let flip of flips | filter: searchText">
+            <div>
+              <div class="mx-8 mb-16 mt-0 p-8 leftCard" (click)="loadSelectedFlip(flip)"
+                [style.border-left-color]="selectedFLIPID==flip.FLIPID?'#efb577':'#cccccc'">
+                <div fxLayout class="py-4" fxLayoutAlign="space-between center">
+                  <div fxFlex><strong>{{flip.FLIPID}}</strong></div>
+                  <div fxFlex align="end">{{flip.CreatedOn | date :'dd/MM/yyyy'}}</div>
+                </div>
+                <div fxLayout class="py-4" fxLayoutAlign="space-between center">
+                  <div fxFlex><strong>PO : </strong>{{flip.DocNumber}}</div>
+                </div>
+                <div fxLayout class="py-4" fxLayoutAlign="space-between center">
+                  <div fxFlex><strong>Invoice No : </strong>{{flip.InvoiceNumber}}</div>
+                </div>
+                <!-- <div fxLayout class="py-4" fxLayoutAlign="space-between center">
+                  <div fxFlex>{{flip.InvoiceAmount}}</div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+          <div *ngIf="(flips | filter: searchText)?.length === 0" class="no-results-message">
+            <span class="pl-12"> No results..</span>
+          </div>
+        </div>
+        <div class="borderRight1"></div>
+      </div>
+      <mat-card fxFlex="77" class="side-bar p-0">
+        <div class="sidenav-content" fxFlex fxLayout="column">
+          <div fxFlex fxLayout="column" class="p-0 pt-8">
+            <div fxFlex fxLayout class="px-12 mt-4">
+              <div fxFlex="100" fxLayout="column" class="flip-rectangle-card">
+                <div fxFlex>
+                  <div fxLayout="row" class="doc-number px-20 py-12">
+                    <div fxFlex='40'>
+                      <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="2px">
+                        <div fxFlex="20" fxLayoutAlign="end center"> <span> PO NO : </span></div>
+                        <div fxFlex="80" fxLayoutAlign="start center"> <span> {{selectedFlip?.DocNumber}}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div fxFlex='60' *ngIf="!selectedFlip?.FLIPID" fxLayout fxLayoutGap="10px"
+                      class="no-flip-created-for-this-po">
+                      <div fxFlex fxLayoutAlign="end center" align="end">
+                        <img src="assets/images/asn/alert.png" class="alert">
+                        <span style="margin-left: 5px;">No Flip Created for this PO</span>
+                      </div>
+                    </div>
+                    <div fxFlex='60' *ngIf="selectedFlip?.FLIPID" fxLayoutAlign="end">
+                      <span>FLIP : <strong>{{selectedFlip?.FLIPID}}</strong></span>
+                    </div>
+                  </div>
+                </div>
+                <div fxFlex class="doc-date px-20 pb-12">
+                  <div fxLayout="row" fxLayoutGap="2px">
+                    <div fxFlex='40'>
+                      <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="2px">
+                        <div fxFlex="20" fxLayoutAlign="end center"> <span> Date : </span></div>
+                        <div fxFlex="80" fxLayoutAlign="start center"> <span>
+                            {{selectedDocDate | date :'dd/MM/yyyy'}}</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div fxFlex class="px-12 mt-4">
+              <form autocomplete="off" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="10px" fxFlex="1 0 auto"
+                name="form" novalidate [formGroup]="flipFormGroup">
+                <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="50px">
+                  <div fxFlex="33.33">
+                    <mat-form-field style="width: 100%;">
+                      <input matInput placeholder="Invoice No (16 Char)" formControlName="InvoiceNumber">
+                      <mat-error
+                        *ngIf="flipFormGroup.get('InvoiceNumber').touched && flipFormGroup.get('InvoiceNumber').hasError('required')">
+                        Invoice Number is required
+                      </mat-error>
+                      <mat-error *ngIf="flipFormGroup.get('InvoiceNumber').touched && !flipFormGroup.get('InvoiceNumber').hasError('required')
+                      &&flipFormGroup.get('InvoiceNumber').hasError('pattern')">
+                        Please enter valid Invoice Number
+                      </mat-error>
+                      <mat-error *ngIf="flipFormGroup.get('InvoiceNumber').touched && !flipFormGroup.get('InvoiceNumber').hasError('required')
+                    &&(flipFormGroup.get('InvoiceNumber').hasError('minlength'))">
+                        Minimum allowed character is 10
+                      </mat-error>
+                      <mat-error *ngIf="flipFormGroup.get('InvoiceNumber').touched && !flipFormGroup.get('InvoiceNumber').hasError('required')
+                      &&(flipFormGroup.get('InvoiceNumber').hasError('maxlength'))">
+                        Maximum allowed character is 16
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33.33">
+                    <mat-form-field style="width: 100%;">
+                      <input matInput placeholder="Date" [matDatepicker]="picker1" formControlName="InvoiceDate"
+                        [max]="maxDate">
+                      <mat-datepicker-toggle matSuffix [for]="picker1">
+                        <img matDatepickerToggleIcon class="calendarImg" src="assets/images/calendar.png">
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #picker1></mat-datepicker>
+                      <mat-error
+                        *ngIf="flipFormGroup.get('InvoiceDate').touched && flipFormGroup.get('InvoiceDate').hasError('required')">
+                        Date is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33.33" fxLayoutGap="30px">
+                    <div fxFlex="65">
+                      <mat-form-field style="width: 100%;">
+                        <input matInput placeholder="Invoice Amount" formControlName="InvoiceAmount"
+                          (keydown)="decimalOnly($event)">
+                        <mat-error
+                          *ngIf="flipFormGroup.get('InvoiceAmount').touched && flipFormGroup.get('InvoiceAmount').hasError('required')">
+                          Invoice Amount is required
+                        </mat-error>
+                        <mat-error *ngIf="flipFormGroup.get('InvoiceAmount').touched && !flipFormGroup.get('InvoiceAmount').hasError('required')
+                        &&flipFormGroup.get('InvoiceAmount').hasError('pattern')">
+                          Enter a valid amount
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="35">
+                      <mat-form-field style="width: 100%;">
+                        <mat-select (selectionChange)="invoiceCurrencySelected($event)" placeholder="Cur"
+                          formControlName="InvoiceCurrency">
+                          <mat-option *ngFor="let currency of currencies" [value]="currency.CurrencyCode">
+                            {{currency.CurrencyCode}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error
+                          *ngIf="flipFormGroup.get('InvoiceCurrency').touched && flipFormGroup.get('InvoiceCurrency').hasError('required')">
+                          Currency is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="50px">
+                  <div fxFlex="33.33">
+                    <mat-form-field style="width: 100%;">
+                      <mat-select placeholder="Invoice Type" (selectionChange)="invoiceTypeSelected($event)"
+                        formControlName="InvoiceType">
+                        <mat-option *ngFor="let invoiceType of invoiceTypes" [value]="invoiceType">{{invoiceType}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error
+                        *ngIf="flipFormGroup.get('InvoiceType').touched && flipFormGroup.get('InvoiceType').hasError('required')">
+                        Invoice Type is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33.33" fxLayout="row" fxLayoutAlign="start center">
+                    <img class="addBlueIcon" src="assets/images/addBlue.png" (click)="fileInput1.click()">
+                    <span class="attachClass" (click)="fileInput1.click()">
+                      Add Attachment
+                    </span>
+                    <input hidden type="file" #fileInput1 id="file" (change)="handleFileInput($event)"
+                      accept="image/x-png,image/gif,image/jpeg,image/jpg,application/pdf" />
+                    <div fxFlex class="m-8" fxLayout="column" *ngIf="fileToUpload">
+                      <div fxFlex style="font-size: 10px; color: #1e8bed;
+                      cursor: pointer;">{{fileToUpload?.name}}</div>
+                      <div fxFlex style="font-size: 10px;">{{fileToUpload?.size}} KB</div>
+                    </div>
+                  </div>
+                  <!-- <div fxFlex="40">
+                    <div fxFlex *ngIf="!invAttach?.AttachmentName"
+                      (click)="GetInvoiceAttachment(invoiceAttachment?.name,invoiceAttachment)" class="pdfLinkClass pl-8">
+                      {{invoiceAttachment?.name}}</div>
+                    <div fxFlex *ngIf="invAttach?.AttachmentName"
+                      (click)="GetInvoiceAttachment(invAttach?.AttachmentName)" class="pdfLinkClass pl-8">
+                      {{invAttach?.AttachmentName}}
+                    </div>
+                  </div> -->
+                  <div fxFlex="33.33" fxLayoutAlign="start center">
+                    <mat-radio-group style="width: 100%;" formControlName="IsInvoiceOrCertified">
+                      <mat-radio-button value="Credit Note">Credit Note</mat-radio-button>
+                      <mat-radio-button value="Debit Note" style="margin-left: 10px;">Debit Note</mat-radio-button>
+                      <mat-error
+                        *ngIf="flipFormGroup.get('IsInvoiceOrCertified').touched && flipFormGroup.get('IsInvoiceOrCertified').hasError('required')">
+                        Invoice CR/DB is required
+                      </mat-error>
+                    </mat-radio-group>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div fxFlex fxLayout="column" fxLayoutGap="20px" class="px-12 mt-12">
+              <div fxFlex>
+                <span class="title"><strong>Other Cost</strong></span>
+                <p [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="underline"></p>
+              </div>
+              <div fxFlex>
+                <form autocomplete="off" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="50px" fxFlex="1 0 auto"
+                  name="form" novalidate [formGroup]="flipCostFormGroup">
+                  <div fxFlex="32">
+                    <mat-form-field style="width: 100%;">
+                      <mat-select placeholder="Expense Type" formControlName="ExpenceType">
+                        <mat-option *ngFor="let expenseType of expenseTypes" [value]="expenseType.ExpenseType">
+                          {{expenseType.ExpenseType}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error
+                        *ngIf="flipCostFormGroup.get('ExpenceType').touched && flipCostFormGroup.get('ExpenceType').hasError('required')">
+                        Expense Type is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="32">
+                    <mat-form-field style="width: 100%;">
+                      <input matInput placeholder="Amount" formControlName="Amount" (keydown)="decimalOnly($event)">
+                      <mat-error
+                        *ngIf="flipCostFormGroup.get('Amount').touched && flipCostFormGroup.get('Amount').hasError('required')">
+                        Amount is required
+                      </mat-error>
+                      <mat-error *ngIf="flipCostFormGroup.get('Amount').touched && !flipCostFormGroup.get('Amount').hasError('required')
+                      &&flipCostFormGroup.get('Amount').hasError('pattern')">
+                        Enter a valid amount
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="32">
+                    <mat-form-field style="width: 100%;">
+                      <input matInput placeholder="Remarks" formControlName="Remarks">
+                      <mat-error
+                        *ngIf="flipCostFormGroup.get('Remarks').touched && flipCostFormGroup.get('Remarks').hasError('required')">
+                        Remarks is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="4" fxLayoutAlign="end">
+                    <img class="addIcon" src="assets/images/logos/add-button.png" (click)="addFlipCostToTable()">
+                  </div>
+                </form>
+              </div>
+              <div fxFlex>
+                <div style="overflow-x:auto;">
+                  <table *ngIf="flipCosts?.length" class="table" mat-table [dataSource]="flipCostDataSource" matSort>
+
+                    <ng-container matColumnDef="ExpenceType">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 25%;" [ngClass]="BGClassName?.layout?.toolbar?.background"> Type </th>
+                      <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+                        <div fxLayout>
+                          <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                          <div fxFlex class="pl-4">{{element.ExpenceType}} </div>
+                        </div>
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Amount">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 25%;" [ngClass]="BGClassName?.layout?.toolbar?.background"> Amount </th>
+                      <td class="QtyClass" mat-cell *matCellDef="let element">
+                        {{element.Amount}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Remark">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 39%;" [ngClass]="BGClassName?.layout?.toolbar?.background"> Remark </th>
+                      <td mat-cell *matCellDef="let element">
+                        {{element.Remarks}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Action">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background"> ... </th>
+                      <td mat-cell *matCellDef="let element">
+                        <img class="m-8" style="height: 20px;" src="assets/images/line.png"
+                          (click)="removeFlipCostFromTable(element)"> </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="flipCostDisplayedColumns;sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: flipCostDisplayedColumns;let even=even"
+                      style=" cursor: pointer;">
+                    </tr>
+                  </table>
+                </div>
+                <!-- <div flex *ngIf="flipCosts?.length">
+                  <mat-paginator [pageSizeOptions]="[10, 20, 30, 50, 75, 100]" showFirstLastButtons>
+                  </mat-paginator>
+                </div> -->
+              </div>
+            </div>
+            <div fxFlex fxLayout="column" fxLayoutGap="20px" class="px-12 mt-12">
+              <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex fxLayout="row" fxLayoutAlign="start center">
+                </div>
+                <div fxFlex align="end">
+                  <button class="Btn" (click)="addFlipItemAfterCalculationToTable()" mat-stroked-button>Full
+                    Filp</button>
+                </div>
+              </div>
+              <!-- <div fxFlex>
+                <div style="overflow-x:auto;">
+                  <table *ngIf="PODetails?.length" class="table" mat-table [dataSource]="poDetailsDataSource" matSort>
+
+                    <ng-container matColumnDef="PO">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> PO </th>
+                      <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+                        <div fxLayout>
+                          <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                          <div fxFlex class="pl-4">{{element.PO}} </div>
+                        </div>
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="MaterialTxt">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> MaterialTxt </th>
+                      <td mat-cell *matCellDef="let element">
+                        {{element.MaterialTxt}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="HSN">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> HSN </th>
+                      <td mat-cell *matCellDef="let element">
+                        {{element.HSN}} </td>
+                    </ng-container>
+
+
+                    <ng-container matColumnDef="OpenQty">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> OpenQty </th>
+                      <td class="QtyClass" mat-cell *matCellDef="let element">
+                        {{element.OpenQty}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="InvoiceQty">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> InvoiceQty </th>
+                      <td class="QtyClass" mat-cell *matCellDef="let element">
+                        {{element.InvoiceQty}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Price">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
+                      <td class="QtyClass" mat-cell *matCellDef="let element">
+                        {{element.Price}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Tax">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Tax </th>
+                      <td mat-cell *matCellDef="let element">
+                        <span style="color:#ef8377">{{element.Tax}}</span> <img class="mt-4 ml-4" style="height: 7px;"
+                          src="assets/images/play-button-arrowhead.png"> </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Amount">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
+                      <td class="QtyClass" mat-cell *matCellDef="let element">
+                        {{element.Amount}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Action">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> ... </th>
+                      <td mat-cell *matCellDef="let element">
+                        <img class="m-8" style="height: 20px;" src="assets/images/line.png"> </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="poDetailsDisplayedColumns;sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: poDetailsDisplayedColumns;let even=even" matRipple
+                      style=" cursor: pointer;">
+                    </tr>
+                  </table>
+                </div>
+              </div> -->
+
+              <div fxFlex fxLayout="column">
+                <form autocomplete="off" class="abnormal" fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto"
+                  name="form" novalidate [formGroup]="flipItemFormGroup">
+                  <div style="overflow-x:auto;"
+                    *ngIf="(poItems && poItems.length)|| (selectedFlipView?.FLIPItems && selectedFlipView?.FLIPItems?.length)">
+                    <!-- *ngIf="(poItems && poItems.length)|| (selectedFlipView?.FlipItems && selectedFlipView?.FlipItems?.length)" -->
+                    <table class="table" mat-table [dataSource]="flipItemDataSource" formArrayName="flipItems">
+                      <ng-container matColumnDef="Item">
+                        <th mat-header-cell *matHeaderCellDef [ngClass]="BGClassName?.layout?.toolbar?.background"> Item </th>
+                        <td mat-cell *matCellDef="let element;let odd=odd;let index=index" [formGroupName]="index"
+                          class="tableLeftBorder pl-0">
+                          <div fxLayout>
+                            <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                            <div fxFlex class="pl-4"> <input matInput formControlName="Item"></div>
+                          </div>
+                        </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="MaterialText">
+                        <th mat-header-cell *matHeaderCellDef [ngClass]="BGClassName?.layout?.toolbar?.background"> Material Text </th>
+                        <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index">
+                          <input matInput formControlName="MaterialText"> </td>
+                      </ng-container>
+
+                      <!-- {{flipItemFormGroup.get('flipItems')?.controls[index]?.get('DeliveryDate')?.value | date : 'dd/MM/yyyy'}} -->
+                      <!-- <ng-container matColumnDef="DeliveryDate">
+                        <th mat-header-cell *matHeaderCellDef> Delivery Date </th>
+                        <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index">
+                          <input matInput formControlName="DeliveryDate">
+                        </td>
+                      </ng-container> -->
+
+                      <ng-container matColumnDef="OrderedQty">
+                        <th mat-header-cell *matHeaderCellDef [ngClass]="BGClassName?.layout?.toolbar?.background"> Order Qty </th>
+                        <td mat-cell class="QtyClass" *matCellDef="let element; let index = index"
+                          [formGroupName]="index">
+                          <input matInput formControlName="OrderedQty"> </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="OpenQty">
+                        <th mat-header-cell *matHeaderCellDef [ngClass]="BGClassName?.layout?.toolbar?.background"> Open Qty</th>
+                        <td mat-cell class="QtyClass" *matCellDef="let element; let index = index"
+                          [formGroupName]="index">
+                          <input matInput formControlName="OpenQty"> </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="HSN">
+                        <th mat-header-cell *matHeaderCellDef [ngClass]="BGClassName?.layout?.toolbar?.background"> HSN </th>
+                        <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index">
+                          <input matInput formControlName="HSN"> </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="InvoiceQty">
+                        <th mat-header-cell *matHeaderCellDef style="width: 120px;" [ngClass]="BGClassName?.layout?.toolbar?.background">Invoice Qty</th>
+                        <td mat-cell class="QtyClass editable" *matCellDef="let element; let index = index"
+                          [formGroupName]="index" style="width: 120px;">
+                          <mat-form-field class="pl-8 pr-12" appearance="outline" style="width: 100px;">
+                            <input matInput formControlName="InvoiceQty">
+                            <mat-error
+                              *ngIf="flipItemFormGroup.get('flipItems').controls[index]?.get('InvoiceQty').touched && 
+                            flipItemFormGroup.get('flipItems').controls[index]?.get('InvoiceQty').hasError('required')">
+                              *
+                            </mat-error>
+                          </mat-form-field>
+                      </ng-container>
+
+                      <!-- (blur)="GetLocationByPincode($event)" -->
+
+                      <ng-container matColumnDef="Price">
+                        <th mat-header-cell *matHeaderCellDef style="width: 120px;" [ngClass]="BGClassName?.layout?.toolbar?.background">Price</th>
+                        <td mat-cell class="QtyClass editable" *matCellDef="let element; let index = index"
+                          [formGroupName]="index" style="width: 120px;">
+                          <mat-form-field class="pl-8 pr-12" appearance="outline" style="width: 100px;">
+                            <input matInput formControlName="Price" (keyup.enter)="onKey(index)">
+                            <mat-error *ngIf="flipItemFormGroup.get('flipItems').controls[index]?.get('Price').touched && 
+                            flipItemFormGroup.get('flipItems').controls[index]?.get('Price').hasError('required')">
+                              *
+                            </mat-error>
+                          </mat-form-field>
+                      </ng-container>
+
+                      <ng-container matColumnDef="Tax">
+                        <th mat-header-cell *matHeaderCellDef [ngClass]="BGClassName?.layout?.toolbar?.background">Tax</th>
+                        <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index">
+                          <input matInput formControlName="Tax">
+                          <!-- style="color:#ef8377" -->
+                          <!-- <img class="mt-4" style="height: 8px;margin-left: -52px;"
+                            src="assets/images/play-button-arrowhead.png"> -->
+                        </td>
+                      </ng-container>
+
+                      <!-- <ng-container matColumnDef="Tax">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Tax </th>
+                        <td mat-cell *matCellDef="let element">
+                          <span style="color:#ef8377">{{element.Tax}}</span> <img class="mt-4 ml-4" style="height: 7px;"
+                            src="assets/images/play-button-arrowhead.png"> </td>
+                      </ng-container> -->
+
+                      <ng-container matColumnDef="Amount">
+                        <th mat-header-cell *matHeaderCellDef style="width: 120px;" [ngClass]="BGClassName?.layout?.toolbar?.background">Amount</th>
+                        <td mat-cell class="QtyClass editable" *matCellDef="let element; let index = index"
+                          [formGroupName]="index" style="width: 120px;">
+                          <mat-form-field class="pl-8 pr-12" appearance="outline" style="width: 100px;">
+                            <input matInput formControlName="Amount">
+                            <mat-error *ngIf="flipItemFormGroup.get('flipItems').controls[index]?.get('Amount').touched && 
+                            flipItemFormGroup.get('flipItems').controls[index]?.get('Amount').hasError('required')">
+                              *
+                            </mat-error>
+                          </mat-form-field>
+                      </ng-container>
+
+                      <!-- <ng-container matColumnDef="Batch">
+                        <th mat-header-cell *matHeaderCellDef style="width: 150px;"> Batch</th>
+                        <td mat-cell *matCellDef="let element; let index = index" style="width: 150px;"
+                          [formGroupName]="index" class="editable">
+                          <mat-form-field class="pl-8 pr-12" appearance="outline" style="width: 120px;">
+                            <input matInput formControlName="Batch">
+                            <mat-error *ngIf="flipItemFormGroup.get('flipItems').controls[index]?.get('Batch').touched && 
+                            flipItemFormGroup.get('flipItems').controls[index]?.get('Batch').hasError('required')">
+                              *
+                            </mat-error>
+                          </mat-form-field>
+                        </td>
+                      </ng-container> -->
+
+                      <!-- <ng-container matColumnDef="ManufactureDate">
+                        <th mat-header-cell *matHeaderCellDef style="width: 180px;"> Manufacture Date</th>
+                        <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index"
+                          class="editable" style="width: 180px;">
+                          <mat-form-field class="pl-8 pr-12" appearance="outline" style="width: 150px;">
+                            <input matInput [matDatepicker]="picker30" [max]="maxDate"
+                              formControlName="ManufactureDate">
+                            <mat-datepicker-toggle matSuffix [for]="picker30">
+                              <img matDatepickerToggleIcon class="calendarImg" src="assets/images/calendar.png">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #picker30></mat-datepicker>
+                            <mat-error
+                              *ngIf="flipItemFormGroup.get('flipItems').controls[index]?.get('ManufactureDate').touched && 
+                              flipItemFormGroup.get('flipItems').controls[index]?.get('ManufactureDate').hasError('required')">
+                              *
+                            </mat-error>
+                          </mat-form-field>
+                        </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="ExpiryDate">
+                        <th mat-header-cell *matHeaderCellDef style="width: 180px;"> Expiry Date</th>
+                        <td mat-cell *matCellDef="let element; let index = index" style="width: 180px;"
+                          [formGroupName]="index">
+                          <mat-form-field class="pl-8 pr-12" appearance="outline" style="width: 150px;">
+                            <input matInput [matDatepicker]="picker31" [min]="minDate" formControlName="ExpiryDate">
+                            <mat-datepicker-toggle matSuffix [for]="picker31">
+                              <img matDatepickerToggleIcon class="calendarImg" src="assets/images/calendar.png">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #picker31></mat-datepicker>
+                            <mat-error
+                              *ngIf="flipItemFormGroup.get('flipItems').controls[index]?.get('ExpiryDate').touched && 
+                              flipItemFormGroup.get('flipItems').controls[index]?.get('ExpiryDate').hasError('required')">
+                              *
+                            </mat-error>
+                          </mat-form-field>
+                        </td>
+                      </ng-container> -->
+
+                      <tr mat-header-row *matHeaderRowDef="flipItemDisplayedColumns;sticky: true"></tr>
+                      <tr mat-row *matRowDef="let row; columns: flipItemDisplayedColumns;let even=even">
+                      </tr>
+                    </table>
+                  </div>
+                </form>
+                <!-- <div flex
+                  *ngIf="(poItems && poItems.length)|| (selectedFlipView?.flipItems && selectedFlipView?.flipItems?.length)">
+                  <mat-paginator [pageSizeOptions]="[10, 20, 30, 50, 75, 100]" showFirstLastButtons>
+                  </mat-paginator>
+                </div> -->
+              </div>
+            </div>
+            <div fxFlex fxLayout="column" class="mx-20 my-12">
+              <div fxLayoutAlign="center">
+                <button class="Btn1" mat-button [ngClass]="BGClassName?.layout?.navbar?.primaryBackground" >Preview and Download</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div fxLayout id="footerCard">
+          <div fxLayout fxFlex class="my-8 px-12" fxLayoutAlign="end">
+            <button (click)="saveClicked()" *ngIf="!selectedFlip?.FLIPID" class="SaveBtn" mat-stroked-button>
+              Save</button>
+            <button (click)="saveClicked()" *ngIf="selectedFlip?.FLIPID" class="SaveBtn" mat-raised-button>
+              Update</button>
+          </div>
+        </div> -->
+        <mat-card-actions class="m-0 pl-12 pr-16 card-actions">
+          <div fxLayout fxFlex fxLayoutAlign="end">
+            <button (click)="saveClicked()" *ngIf="!selectedFlip?.FLIPID" class="SaveBtn" mat-stroked-button>
+              Save</button>
+            <button (click)="deleteClicked()" *ngIf="selectedFlip?.FLIPID" mat-stroked-button
+              class="DeleteBtn mr-4 mb-8" mat-raised-button>
+              Delete</button>
+            <button (click)="saveClicked()" *ngIf="selectedFlip?.FLIPID" class="SaveBtn" mat-raised-button [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">
+              Update</button>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="isProgressBarVisibile">
+    </div>
+  </div>
+</div>

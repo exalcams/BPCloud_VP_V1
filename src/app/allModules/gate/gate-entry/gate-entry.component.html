@@ -1,0 +1,206 @@
+<div id="gateentry" class="page-layout carded fullwidth">
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Gate Entry</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div fxLayout="column" class="content-card1">
+      <mat-toolbar [ngStyle]="{'margin-top':'25px','background-color':'white'}">
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayout.xs="column" fxLayoutGap="270px">
+          <div fxFlex.xs="grow">
+            <mat-form-field floatLabel="never">
+              <img src="assets/images/scan.png" class="cl_scan">
+              <mat-label class="cl_qr_code">QR Code</mat-label>
+              <input matInput>
+              <img src="assets/images/right-arrow.png" class="cl_arrow2">
+            </mat-form-field>
+          </div>
+          <div fxFlex.xs="grow" class="cl_divider">
+            <mat-divider vertical class="cl_upper_line"></mat-divider>
+            <div class="cl_circle"></div>
+            <mat-divider vertical class="cl_lower_line"></mat-divider>
+          </div>
+          <div fxFlex.xs="grow">
+            <mat-form-field floatLabel="never">
+              <img src="assets/images/license.png" class="cl_license">
+              <mat-label class="cl_qr_code2">Truck Number</mat-label>
+              <input matInput>
+              <img src="assets/images/right-arrow.png" class="cl_arrow">
+            </mat-form-field>
+          </div>
+          <div fxFlex.xs="grow" class="cl_divider2">
+            <mat-divider vertical class="cl_upper_line"></mat-divider>
+            <div class="cl_circle"></div>
+            <mat-divider vertical class="cl_lower_line"></mat-divider>
+          </div>
+          <div fxFlex.xs="grow">
+            <mat-form-field floatLabel="never">
+              <img src="assets/images/bank2.png" class="cl_bank">
+              <mat-label class="cl_qr_code2">AWB No.</mat-label>
+              <input matInput>
+              <img src="assets/images/right-arrow.png" class="cl_arrow">
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-toolbar>
+      <mat-card class="cl_card">
+        <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayout.xs="column" class="cl_header_div">
+          <div fxFlex.xs="grow" class="cl_abc_div">
+            <label class="ABC-Industries-Pvt-Ltd">ABC Industries Pvt Ltd</label>
+            <p class="cl_abc_p">124, 2nd Cross, Sector 2,
+              BDA Layout, HSR Layout,
+              Bengaluru. Karnataka</p>
+          </div>
+          <mat-divider vertical style="height:80px"></mat-divider>
+          <div fxFlex.xs="grow" class="cl_asn_div">
+            <p class="cl_asn_label">ASN No: <b class="cl_asn_number">221234</b></p>
+            <span class="cl_span">
+              <img src="assets/images/calendar.png" width='15px' class="cl_calender">
+              <p class="cl_date">07/06/2020</p><br>
+              <img src="assets/images/pending.png" width='15px' class="cl_pending">
+              <p class="cl_days">4 days</p>
+            </span>
+          </div>
+          <mat-divider vertical style="height:80px"></mat-divider>
+          <div fxFlex.xs="grow" class="cl_poNo_div">
+            <p class="cl_po_label">PO No:<b class="cl_po_number"> 123456</b></p>
+            <img src="assets/images/calendar.png" width='15px'>
+            <p class="cl_date">07/06/2020</p><br>
+            <img src="assets/images/pending.png" width='15px' class="cl_pending">
+            <p class="cl_days">4 days</p>
+          </div>
+          <mat-divider vertical class="cl_large_divider"></mat-divider>
+          <div fxFlex.xs="grow">
+            <button mat-raised-button class="cl_post_btn"  [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">
+              <img src="assets/images/send-mail.png"  class="cl_post_mail"> Post</button><br>
+            <button mat-raised-button class="cl_return_btn" >Return
+            </button>
+          </div>
+        </div>
+
+        <mat-tab-group mat-align-tabs="start" class="cl_mat-tab-group">
+          <mat-tab class="cl_attachment">
+            <ng-template mat-tab-label>
+              <div class="cl_outerCircle">
+                <div class="cl_innerCircle">
+                  <img src="assets/images/shopping_cart.png" class="cl_item_img">
+                </div>
+              </div>
+              <p class="cl_item">Item</p>
+              <mat-divider vertical class="cl-tab_divider"></mat-divider>
+            </ng-template>
+            <mat-table [dataSource]="dataSource" class="cl_mat-table" matSort>
+              <ng-container matColumnDef="Item">
+                <mat-header-cell *matHeaderCellDef mat-sort-header  [ngClass]="BGClassName?.layout?.toolbar?.background"><span class="cl_table_itemLabel"> Item</span>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element ;index as i">
+                  <p class="cl_box" [ngStyle]="{'background-color': i%2==0 ? '#d87e39':'#6f52ed'}"></p>
+                  <b
+                    [ngStyle]="{'font-size':'11px','font-family': 'Segoe UI','width': '96px','position': 'absolute','letter-spacing': '0.2px'}">{{element.item}}</b>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="MaterialText">
+                <mat-header-cell *matHeaderCellDef style="width: 10%;" [ngClass]="BGClassName?.layout?.toolbar?.background"><span class="cl_material_text"> Material Text</span>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element"> <span
+                    [ngStyle]="{'font-size':'12px','font-family': 'Segoe UI','letter-spacing': '0.5px'}">{{element.material_text}}</span>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="DeliveryDate">
+                <mat-header-cell *matHeaderCellDef class="cl_delivery_date" [ngClass]="BGClassName?.layout?.toolbar?.background"><span class="cl_material_text"> Delivery
+                    Date</span>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element"><b
+                    [ngStyle]="{'font-size':'11px','font-family': 'Segoe UI'}">{{element.date}} </b>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="OrderQty">
+                <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background"> <span class="cl_material_text">Order Qty</span>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="cl_qty"><b
+                    [ngStyle]="{'font-size':'11px','font-family': 'Segoe UI','margin-left': '28px'}">
+                    {{element.order_qty}}</b>
+                </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="GRQty">
+                <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background"><span class="cl_material_text"> GR Qty </span>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="cl_gr_qty"> <span
+                    [ngStyle]="{'font-size':'12px','font-family': 'Segoe UI','margin-left': '25px'}">{{element.gr_qty}}</span>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="PipelineQty">
+                <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background"><span class="cl_material_text"> Pipeline Qty</span>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="cl_pip_qty"> <span
+                    [ngStyle]="{'font-size':'12px','font-family': 'Segoe UI','margin-left': '47px'}">{{element.pipeline_qty}}
+                  </span></mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="OpenQty">
+                <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background"><span class="cl_material_text"> Open Qty </span>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element"><span
+                    [ngStyle]="{'font-size':'12px','font-family': 'Segoe UI','margin-left': '34px'}">{{element.open_qty}}
+                  </span></mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="UOM">
+                <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background"><span class="cl_material_text"> UOM</span>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element"><span
+                    [ngStyle]="{'font-size':'12px','font-family': 'Segoe UI' }">{{element.uom}}
+                  </span></mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <div class="cl_attachemnt_outerCircle">
+                <div class="cl_attachemnt_innerCircle">
+                  <img src="assets/images/attachment1.png" class="cl_attachment_img">
+                </div>
+              </div>
+              <p class="cl_attachment">Attachment</p>
+              <mat-divider vertical class="cl-tab_divider"></mat-divider>
+            </ng-template>Content 2
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <div class="cl_invoice_outerCircle">
+                <div class="cl_invoice_innerCircle">
+                  <img src="assets/images/file.png" class="cl_Invoice_image"><br>
+                </div>
+              </div>
+              <p class="cl_Invoice">Invoice</p>
+              <mat-divider vertical class="cl-tab_divider"></mat-divider>
+            </ng-template>Content 3
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <div class="cl_stock_outerCircle">
+                <div class="cl_stock_innerCircle">
+                  <img src="assets/images/Stock2.png" class="cl_stock_image"><br>
+                </div>
+              </div>
+              <p class="cl_stock">Stock</p>
+            </ng-template>Content 3
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card>
+    </div>
+    <!-- <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="isProgressBarVisibile">
+    </div> -->
+  </div>
+</div>

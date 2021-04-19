@@ -1,0 +1,774 @@
+<div id="cusfact" class="page-layout carded fullwidth">
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Fact details</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div fxLayout class="content-card1">
+      <div fxFlex class="side-bar">
+        <div class="sidenav-content" fxFlex fxLayout="column">
+          <mat-card fxFlex fxLayout="column" class="mb-32">
+            <form autocomplete="off" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" novalidate
+              [formGroup]="FactFormGroup">
+              <div fxLayout>
+                <div fxFlex fxLayout="column">
+                  <div fxLayout="row wrap" fxLayoutAlign="start">
+                    <div fxFlex="100">
+                      <div class="SectionTitle mb-8">
+                        <strong>Basic Details</strong>
+                      </div>
+                    </div>
+                    <div fxFlex="66">
+                      <mat-form-field class="pl-8 pr-80" style="width: 100%;">
+                        <input matInput placeholder="Client" formControlName="Client">
+                        <mat-error
+                          *ngIf="FactFormGroup.get('Client').touched && FactFormGroup.get('Client').hasError('required')">
+                          Client is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="33">
+                      <mat-form-field class="pl-8 pr-80" style="width: 100%;">
+                        <input matInput placeholder="Company" formControlName="Company">
+                        <mat-error
+                          *ngIf="FactFormGroup.get('Company').touched && FactFormGroup.get('Company').hasError('required')">
+                          Company is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="100">
+                      <mat-form-field class="pl-8 pr-80" style="width: 100%;">
+                        <input matInput placeholder="Legal Name" formControlName="LegalName">
+                        <mat-error
+                          *ngIf="FactFormGroup.get('LegalName').touched && FactFormGroup.get('LegalName').hasError('required')">
+                          Legal Name is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+
+                    <!-- <div fxFlex="50">
+                      <mat-form-field class="pl-8 pr-80" style="width: 100%;">
+                        <input matInput placeholder="Type" formControlName="Type">
+                        <mat-select matInput placeholder="Type" formControlName="Type">
+                          <mat-option *ngFor="let type of AllTypes" [value]="type">{{type}}</mat-option>
+                        </mat-select>
+                        <mat-error
+                          *ngIf="FactFormGroup.get('Type').touched && FactFormGroup.get('Type').hasError('required')">
+                          Type is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div> -->
+
+                    <div fxFlex="100">
+                      <div class="SectionTitle mb-8">
+                        <strong>Contact Person Info.</strong>
+                      </div>
+                    </div>
+
+                    <div fxFlex="50" fxLayout>
+                      <div fxFlex>
+                        <mat-form-field class="pl-8 pr-40" style="width: 100%;">
+                          <div matPrefix class="pr-4 mr-4 borderRightClass">+91</div>
+                          <input matInput placeholder="Phone1" formControlName="Phone1">
+                          <mat-error
+                            *ngIf="FactFormGroup.get('Phone1').touched && FactFormGroup.get('Phone1').hasError('required')">
+                            Phone1 is required
+                          </mat-error>
+                          <mat-error *ngIf="FactFormGroup.get('Phone1').touched && !FactFormGroup.get('Phone1').hasError('required') &&
+                        FactFormGroup.get('Phone1').hasError('pattern')">
+                            Please enter a valid phone number
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div fxFlex="50" fxLayout>
+                      <div fxFlex>
+                        <mat-form-field class="pl-8 pr-80" style="width: 100%;">
+                          <div matPrefix class="pr-4 mr-4 borderRightClass">+91</div>
+                          <input matInput placeholder="Phone2" formControlName="Phone2">
+                          <mat-error
+                            *ngIf="FactFormGroup.get('Phone2').touched && FactFormGroup.get('Phone2').hasError('required')">
+                            Phone2 is required
+                          </mat-error>
+                          <mat-error *ngIf="FactFormGroup.get('Phone2').touched && !FactFormGroup.get('Phone2').hasError('required') &&
+                        FactFormGroup.get('Phone2').hasError('pattern')">
+                            Please enter a valid phone number
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div fxFlex="100">
+                      <mat-form-field class="pl-8 pr-80" style="width: 100%;">
+                        <input matInput placeholder="Email1" formControlName="Email1">
+                        <mat-error
+                          *ngIf="FactFormGroup.get('Email1').touched && FactFormGroup.get('Email1').hasError('required')">
+                          Email1 is required
+                        </mat-error>
+                        <mat-error *ngIf="FactFormGroup.get('Email1').touched && !FactFormGroup.get('Email1').hasError('required') &&
+                        FactFormGroup.get('Email1').hasError('email')">
+                          Please enter a valid email address
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="100">
+                      <mat-form-field class="pl-8 pr-80" style="width: 100%;">
+                        <input matInput placeholder="Email2" formControlName="Email2">
+                        <mat-error
+                          *ngIf="FactFormGroup.get('Email2').touched && FactFormGroup.get('Email2').hasError('required')">
+                          Email2 is required
+                        </mat-error>
+                        <mat-error *ngIf="FactFormGroup.get('Email2').touched && !FactFormGroup.get('Email2').hasError('required') &&
+                        FactFormGroup.get('Email2').hasError('email')">
+                          Please enter a valid email address
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div fxFlex fxLayout="column">
+                  <div fxLayout="row wrap" fxLayoutAlign="start">
+                    <div fxFlex="100">
+                      <div class="SectionTitle mb-8">
+                        <strong>Address</strong>
+                      </div>
+                    </div>
+                    <div fxFlex="50">
+                      <mat-form-field class="pl-8 pr-40" style="width: 100%;">
+                        <input matInput placeholder="Country" formControlName="Country">
+                        <!-- <mat-select matInput placeholder="Country" formControlName="Country">
+                          <mat-option *ngFor="let country of AllCountries" [value]="country">{{country}}</mat-option>
+                        </mat-select> -->
+                        <mat-error
+                          *ngIf="FactFormGroup.get('Country').touched && FactFormGroup.get('Country').hasError('required')">
+                          Country is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="50">
+                      <mat-form-field class="pl-8 pr-40" style="width: 100%;">
+                        <input matInput placeholder="Pin Code" formControlName="PinCode">
+                        <mat-error
+                          *ngIf="FactFormGroup.get('PinCode').touched && FactFormGroup.get('PinCode').hasError('required')">
+                          Pin Code is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="100">
+                      <mat-form-field class="pl-8 pr-40" style="width: 100%;">
+                        <input matInput placeholder="City" formControlName="City">
+                        <mat-error
+                          *ngIf="FactFormGroup.get('City').touched && FactFormGroup.get('City').hasError('required')">
+                          City is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="100">
+                      <mat-form-field class="pl-8 pr-40" style="width: 100%;">
+                        <input matInput placeholder="State" formControlName="State">
+                        <!-- <mat-select matInput placeholder="State" formControlName="State">
+                          <mat-option *ngFor="let sta of AllStates" [value]="sta">{{sta}}</mat-option>
+                        </mat-select> -->
+                        <mat-error
+                          *ngIf="FactFormGroup.get('State').touched && FactFormGroup.get('State').hasError('required')">
+                          State is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="100">
+                      <mat-form-field class="pl-8 pr-40" style="width: 100%;">
+                        <input matInput placeholder="Address Line1" formControlName="AddressLine1">
+                        <mat-error
+                          *ngIf="FactFormGroup.get('AddressLine1').touched && FactFormGroup.get('AddressLine1').hasError('required')">
+                          Address Line1 is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="100">
+                      <mat-form-field class="pl-8 pr-40" style="width: 100%;">
+                        <input matInput placeholder="Address Line2" formControlName="AddressLine2">
+                        <mat-error
+                          *ngIf="FactFormGroup.get('AddressLine2').touched && FactFormGroup.get('AddressLine2').hasError('required')">
+                          Address Line2 is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div fxLayout="row wrap" fxLayoutAlign="start">
+
+              </div>
+            </form>
+
+            <div fxFlex fxLayout="column" *ngIf="ContactPersonsByPartnerID?.length">
+              <div style="margin-left: 7px">
+                <div class="SectionTitle">
+                  <strong>Contact Person Table</strong>
+                </div>
+              </div>
+              <div class="mt-8">
+                <!-- <form autocomplete="off" fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" novalidate
+                  [formGroup]="ContactPersonFormGroup">
+                  <div fxFlex="20">
+                    <mat-form-field class="px-28" style="width: 100%;">
+                      <input matInput placeholder="Name" formControlName="Name"
+                        (keyup.enter)="keytab('ContactPersonID')">
+                      <mat-error
+                        *ngIf="ContactPersonFormGroup.get('Name').touched && ContactPersonFormGroup.get('Name').hasError('required')">
+                        Name is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="20">
+                    <mat-form-field class="px-28" style="width: 100%;">
+                      <input matInput placeholder="ContactPersonID" formControlName="ContactPersonID"
+                        (keyup.enter)="keytab('title')" #ContactPersonID>
+                      <mat-error
+                        *ngIf="ContactPersonFormGroup.get('ContactPersonID').touched && ContactPersonFormGroup.get('ContactPersonID').hasError('required')">
+                        ContactPersonID is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="15">
+                    <mat-form-field class="px-28" style="width: 100%;">
+                      <input matInput placeholder="ContactNumber" formControlName="ContactNumber"
+                        (keyup.enter)="keytab('email')" #ContactNumber>
+                      <mat-error
+                        *ngIf="ContactPersonFormGroup.get('ContactNumber').touched && ContactPersonFormGroup.get('ContactNumber').hasError('required')">
+                        ContactNumber is required
+                      </mat-error>
+                      <mat-error *ngIf="ContactPersonFormGroup.get('ContactNumber').touched && !ContactPersonFormGroup.get('ContactNumber').hasError('required') &&
+                      ContactPersonFormGroup.get('ContactNumber').hasError('pattern')">
+                        Please enter a valid ContactNumber Number
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="20">
+                    <mat-form-field class="px-28" style="width: 100%;">
+                      <input matInput placeholder="Email" formControlName="Email"
+                        (keydown.enter)="ContactPersonEnterKeyDown()" #email>
+                      <mat-error
+                        *ngIf="ContactPersonFormGroup.get('Email').touched && ContactPersonFormGroup.get('Email').hasError('required')">
+                        Email is required
+                      </mat-error>
+                      <mat-error *ngIf="ContactPersonFormGroup.get('Email').touched && !ContactPersonFormGroup.get('Email').hasError('required') &&
+                      ContactPersonFormGroup.get('Email').hasError('email')">
+                        Please enter a valid email address
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="5" fxLayoutAlign="center">
+                    <img class="addIcon" src="assets/images/logos/add-button.png" (click)="AddContactPersonToTable()">
+                  </div>
+                </form> -->
+              </div>
+              <div style="margin-left: 8px;margin-top: 10px;">
+                <table *ngIf="ContactPersonsByPartnerID?.length" class="table" mat-table
+                  [dataSource]="ContactPersonDataSource" matSort>
+
+                  <ng-container matColumnDef="Name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Name </th>
+                    <td mat-cell *matCellDef="let element" style="width: 20%;" class="tableLeftBorder">
+                      {{element.Name}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="ContactPersonID">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Contact Person ID </th>
+                    <td mat-cell *matCellDef="let element" style="width: 20%;"> {{element.ContactPersonID}} </td>
+                  </ng-container>
+
+                  <!-- <ng-container matColumnDef="Title">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Title </th>
+                    <td mat-cell *matCellDef="let element" style="width: 20%;"> {{element.Title}} </td>
+                  </ng-container> -->
+
+                  <ng-container matColumnDef="ContactNumber">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 15%;"> Contact Number </th>
+                    <td mat-cell *matCellDef="let element" style="width: 15%;"> {{element.ContactNumber}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Email">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Email </th>
+                    <td mat-cell *matCellDef="let element" style="width: 20%;"> {{element.Email}} </td>
+                  </ng-container>
+
+                  <!-- <ng-container matColumnDef="Action">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 5%;"> </th>
+                    <td mat-cell *matCellDef="let element" style="width: 5%;text-align: center;">
+                      <img class="removeIcon" src="assets/images/remove-button.png"
+                        (click)="RemoveContactPersonFromTable(element)">
+                    </td>
+                  </ng-container> -->
+
+                  <tr mat-header-row *matHeaderRowDef="ContactPersonDisplayedColumns;sticky: true"></tr>
+                  <tr mat-row *matRowDef="let row; columns: ContactPersonDisplayedColumns;">
+                  </tr>
+                </table>
+                <!-- <div flex *ngIf="ContactPersonsByPartnerID?.length">
+                  <mat-paginator [pageSizeOptions]="[10, 20, 30, 50, 75, 100]" showFirstLastButtons>
+                  </mat-paginator>
+                </div> -->
+              </div>
+            </div>
+
+            <div fxFlex fxLayout="column" class="mt-24" *ngIf="BanksByPartnerID?.length">
+              <div style="margin-left: 7px">
+                <div class="SectionTitle">
+                  <strong>Bank Table</strong>
+                </div>
+              </div>
+              <div class="mt-8">
+                <!-- <form autocomplete="off" fxLayout="column" name="form" novalidate [formGroup]="bankDetailsFormGroup">
+                  <div fxFlex fxLayout="row">
+                    <div fxFlex="10">
+                      <mat-form-field class="pl-20 pr-16" style="width: 100%;">
+                        <input matInput placeholder="AccountName" formControlName="AccountName" #AccountName
+                          (keyup.enter)="keytab('AccountNumber')">
+                        <mat-error
+                          *ngIf="bankDetailsFormGroup.get('AccountName').touched && bankDetailsFormGroup.get('AccountName').hasError('required')">
+                          AccountName is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="15">
+                      <mat-form-field class="pr-16" style="width: 100%;">
+                        <input matInput placeholder="Acc No" formControlName="AccountNumber" #AccountNumber
+                          (keyup.enter)="keytab('accHolderName')">
+                        <mat-error
+                          *ngIf="bankDetailsFormGroup.get('AccountNumber').touched && bankDetailsFormGroup.get('AccountNumber').hasError('required')">
+                          Account No is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="15">
+                      <mat-form-field class="pr-16" style="width: 100%;">
+                        <input matInput placeholder="Bank Name" formControlName="BankName" #bankName
+                          (keyup.enter)="keytab('bankCity')">
+                        <mat-error
+                          *ngIf="bankDetailsFormGroup.get('BankName').touched && bankDetailsFormGroup.get('BankName').hasError('required')">
+                          Bank Name is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="15">
+                      <mat-form-field class="pr-16" style="width: 100%;">
+                        <input matInput placeholder="BankID" formControlName="BankID" #BankID
+                          (keydown.enter)="BankEnterKeyDown()">
+                        <mat-error
+                          *ngIf="bankDetailsFormGroup.get('BankID').touched && bankDetailsFormGroup.get('BankID').hasError('required')">
+                          BankID is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="10" fxLayoutAlign="start center">
+                      <img class="addBlueIcon" src="assets/images/addBlue.png" (click)="fileInput2.click()">
+                      <span class="attachClass" (click)="fileInput2.click()">
+                        Add Attachment
+                      </span>
+                      <input hidden type="file" #fileInput2 id="file1" (change)="handleFileInput($event)" />
+                    </div>
+                    <div fxFlex="5" fxLayoutAlign="center">
+                      <img class="addIcon" src="assets/images/logos/add-button.png" (click)="AddBankToTable()">
+                    </div>
+                  </div>
+                </form> -->
+              </div>
+              <div style="margin-left: 8px;margin-top: 10px;">
+                <div style="overflow-x:auto;">
+                  <table *ngIf="BanksByPartnerID?.length" class="table" mat-table [dataSource]="bankDetailsDataSource"
+                    matSort>
+
+                    <ng-container matColumnDef="AccountName">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;"> Account Name </th>
+                      <td mat-cell *matCellDef="let element" class="tableLeftBorder" style="width: 10%;">
+                        {{element.AccountName}} </td>
+                    </ng-container>
+
+
+                    <ng-container matColumnDef="AccountNumber">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 15%;"> Account Number </th>
+                      <td mat-cell *matCellDef="let element" style="width: 15%;">
+                        {{element.AccountNumber}} </td>
+                    </ng-container>
+
+                    <!-- <ng-container matColumnDef="Name">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Acc Holders name </th>
+                      <td mat-cell *matCellDef="let element" style="width: 20%;"> {{element.Name}} </td>
+                    </ng-container> -->
+
+
+                    <ng-container matColumnDef="BankName">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 15%;"> Bank Name </th>
+                      <td mat-cell *matCellDef="let element" style="width: 15%;"> {{element.BankName}} </td>
+                    </ng-container>
+
+
+                    <!-- <ng-container matColumnDef="City">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;"> City </th>
+                      <td mat-cell *matCellDef="let element" style="width: 10%;"> {{element.City}} </td>
+                    </ng-container> -->
+
+                    <ng-container matColumnDef="BankID">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 15%;"> Bank ID </th>
+                      <td mat-cell *matCellDef="let element" style="width: 15%;"> {{element.BankID}} </td>
+                    </ng-container>
+
+
+                    <!-- <ng-container matColumnDef="Attachment">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;"> Attachment </th>
+                      <td mat-cell *matCellDef="let element" style="width: 10%;">
+                        <mat-icon *ngIf="element.AttachmentName">attach_file</mat-icon>
+                      </td>
+                    </ng-container> -->
+
+                    <!-- <ng-container matColumnDef="Action">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
+                      <td mat-cell *matCellDef="let element" style="text-align: center;">
+                        <img class="removeIcon" src="assets/images/remove-button.png"
+                          (click)="RemoveBankFromTable(element)">
+                      </td>
+                    </ng-container> -->
+
+                    <tr mat-header-row *matHeaderRowDef="bankDetailsDisplayedColumns;sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: bankDetailsDisplayedColumns;">
+                    </tr>
+                  </table>
+                </div>
+                <!-- <div flex *ngIf="BanksByPartnerID?.length">
+                  <mat-paginator [pageSizeOptions]="[10, 20, 30, 50, 75, 100]" showFirstLastButtons>
+                  </mat-paginator>
+                </div> -->
+                <!-- </div> -->
+              </div>
+            </div>
+
+            <div fxFlex fxLayout="column" class="mt-24" *ngIf="KRAsByPartnerID?.length">
+              <div style="margin-left: 7px">
+                <div class="SectionTitle">
+                  <strong>KRA Table</strong>
+                </div>
+              </div>
+              <div class="mt-8">
+                <!-- <form autocomplete="off" fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" novalidate
+                  [formGroup]="KRAFormGroup">
+                  <div fxFlex="25">
+                    <mat-form-field class="px-40" style="width: 100%;">
+                      <input matInput placeholder="Type" formControlName="Type" (keyup.enter)="keytab('iDNumber')">
+                      <mat-error
+                        *ngIf="KRAFormGroup.get('Type').touched && KRAFormGroup.get('Type').hasError('required')">
+                        Type is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="25">
+                    <mat-form-field class="px-40" style="width: 100%;">
+                      <input matInput placeholder="KRA Text" formControlName="KRAText"
+                        (keyup.enter)="keytab('EvalDate')" #iDNumber>
+                      <mat-error
+                        *ngIf="KRAFormGroup.get('KRAText').touched && KRAFormGroup.get('KRAText').hasError('required')">
+                        KRA Text is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="25">
+                    <mat-form-field class="px-40" style="width: 100%;">
+                      <input matInput placeholder="Valid Until" [matDatepicker]="picker1" formControlName="EvalDate"
+                        #EvalDate (keydown.enter)="KRAEnterKeyDown()">
+                      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                      <mat-datepicker #picker1></mat-datepicker>
+                      <mat-error
+                        *ngIf="KRAFormGroup.get('EvalDate').touched && KRAFormGroup.get('EvalDate').hasError('required')">
+                        Valid Until is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="20" fxLayoutAlign="start center">
+                    <img class="addBlueIcon" src="assets/images/addBlue.png" (click)="fileInput1.click()">
+                    <span class="attachClass" (click)="fileInput1.click()">
+                      Add Attachment
+                    </span>
+                    <input hidden type="file" #fileInput1 id="file" (change)="handleFileInput($event)" />
+                  </div>
+                  <div fxFlex="5" fxLayoutAlign="center">
+                    <img class="addIcon" src="assets/images/logos/add-button.png" (click)="AddKRAToTable()">
+                  </div>
+                </form> -->
+              </div>
+              <div style="margin-left: 8px;margin-top: 10px;">
+                <table *ngIf="KRAsByPartnerID?.length" class="table" mat-table [dataSource]="KRADataSource" matSort>
+
+                  <ng-container matColumnDef="KRA">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 25%;"> KRA </th>
+                    <td mat-cell *matCellDef="let element" style="width: 25%;" class="tableLeftBorder">
+                      {{element.KRA}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="KRAText">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 25%;"> Text </th>
+                    <td mat-cell *matCellDef="let element" style="width: 25%;"> {{element.KRAText}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="KRAValue">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 25%;"> Value </th>
+                    <td mat-cell *matCellDef="let element" style="width: 25%;"> {{element.KRAValue}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="EvalDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 25%;"> Eval Date </th>
+                    <td mat-cell *matCellDef="let element" style="width: 25%;"> {{element.EvalDate | date : 'dd/MM/yyyy'}} </td>
+                  </ng-container>
+
+                  <!-- <ng-container matColumnDef="Attachment">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Attachment </th>
+                    <td mat-cell *matCellDef="let element" style="width: 20%;">
+                      <mat-icon *ngIf="element.AttachmentName">attach_file</mat-icon>
+                    </td>
+                  </ng-container> -->
+
+                  <!-- <ng-container matColumnDef="Action">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 5%;"> </th>
+                    <td mat-cell *matCellDef="let element" style="width: 5%;text-align: center;">
+                      <img class="removeIcon" src="assets/images/remove-button.png"
+                        (click)="RemoveKRAFromTable(element)">
+                    </td>
+                  </ng-container> -->
+
+                  <tr mat-header-row *matHeaderRowDef="KRADisplayedColumns;sticky: true"></tr>
+                  <tr mat-row *matRowDef="let row; columns: KRADisplayedColumns;">
+                  </tr>
+                </table>
+                <!-- <div flex *ngIf="KRAsByPartnerID?.length">
+                  <mat-paginator [pageSizeOptions]="[10, 20, 30, 50, 75, 100]" showFirstLastButtons>
+                  </mat-paginator>
+                </div> -->
+              </div>
+            </div>
+
+            <div fxFlex fxLayout="column" class="mt-24" *ngIf="AIACTsByPartnerID?.length">
+              <!-- <div style="margin-left: 7px">
+                <div class="SectionTitle">
+                  <strong>Activity Table</strong>
+                </div>
+              </div> -->
+              <div class="mt-8">
+                <!-- <form autocomplete="off" fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" novalidate
+                  [formGroup]="AIACTFormGroup">
+                  <div fxFlex="25">
+                    <mat-form-field class="px-32" style="width: 100%;">
+                      <input matInput placeholder="Seq No" formControlName="SeqNo"
+                        (keyup.enter)="keytab('activityDate')">
+                      <mat-error
+                        *ngIf="AIACTFormGroup.get('SeqNo').touched && AIACTFormGroup.get('SeqNo').hasError('required')">
+                        Seq No is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="25">
+                    <mat-form-field class="px-32" style="width: 100%;">
+                      <input matInput placeholder="Date" [matDatepicker]="picker2" formControlName="Date" #activityDate
+                        (keyup.enter)="keytab('activityTime')">
+                      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                      <mat-datepicker #picker2></mat-datepicker>
+                      <mat-error
+                        *ngIf="AIACTFormGroup.get('Date').touched && AIACTFormGroup.get('Date').hasError('required')">
+                        Date is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="20">
+                    <mat-form-field class="px-32" style="width: 100%;">
+                      <input matInput placeholder="Time" [ngxTimepicker]="picker" formControlName="Time"
+                        (keyup.enter)="keytab('activityText')">
+                      <ngx-material-timepicker #picker></ngx-material-timepicker>
+                      <mat-error
+                        *ngIf="AIACTFormGroup.get('Time').touched && AIACTFormGroup.get('Time').hasError('required')">
+                        Time is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="25">
+                    <mat-form-field class="px-32" style="width: 100%;">
+                      <input matInput placeholder="Action Text" formControlName="ActionText"
+                        (keydown.enter)="AIACTEnterKeyDown()" #activityText>
+                      <mat-error
+                        *ngIf="AIACTFormGroup.get('ActionText').touched && AIACTFormGroup.get('ActionText').hasError('required')">
+                        Action Text is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="5" fxLayoutAlign="center">
+                    <img class="addIcon" src="assets/images/logos/add-button.png" (click)="AddAIACTToTable()">
+                  </div>
+                </form> -->
+              </div>
+              <div style="margin-left: 8px;margin-top: 10px;">
+                <!-- <table *ngIf="AIACTsByPartnerID?.length" class="table" mat-table [dataSource]="AIACTDataSource" matSort>
+
+                  <ng-container matColumnDef="Activity">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 25%;"> Activity </th>
+                    <td mat-cell *matCellDef="let element" style="width: 25%;" class="tableLeftBorder">
+                      {{element.Activity}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Date">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 25%;"> Date </th>
+                    <td mat-cell *matCellDef="let element" style="width: 25%;"> {{element.Date | date}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Time">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Time </th>
+                    <td mat-cell *matCellDef="let element" style="width: 20%;"> {{element.Time}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Text">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 25%;"> Text </th>
+                    <td mat-cell *matCellDef="let element" style="width: 25%;"> {{element.Text}} </td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="AIACTDisplayedColumns;sticky: true"></tr>
+                  <tr mat-row *matRowDef="let row; columns: AIACTDisplayedColumns;">
+                  </tr>
+                </table> -->
+                <!-- <div flex *ngIf="AIACTsByPartnerID?.length">
+                  <mat-paginator [pageSizeOptions]="[10, 20, 30, 50, 75, 100]" showFirstLastButtons>
+                  </mat-paginator>
+                </div> -->
+              </div>
+            </div>
+            <div fxFlex fxLayout="column" class="mt-24" *ngIf="CertificatesByPartnerID?.length">
+              <div style="margin-left: 7px">
+                <div class="SectionTitle">
+                  <strong>Certificate Table</strong>
+                </div>
+              </div>
+              <div class="mt-8">
+                <!-- <form autocomplete="off" fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" novalidate
+                  [formGroup]="AIACTFormGroup">
+                  <div fxFlex="25">
+                    <mat-form-field class="px-32" style="width: 100%;">
+                      <input matInput placeholder="Seq No" formControlName="SeqNo"
+                        (keyup.enter)="keytab('activityDate')">
+                      <mat-error
+                        *ngIf="AIACTFormGroup.get('SeqNo').touched && AIACTFormGroup.get('SeqNo').hasError('required')">
+                        Seq No is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="25">
+                    <mat-form-field class="px-32" style="width: 100%;">
+                      <input matInput placeholder="Date" [matDatepicker]="picker2" formControlName="Date" #activityDate
+                        (keyup.enter)="keytab('activityTime')">
+                      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                      <mat-datepicker #picker2></mat-datepicker>
+                      <mat-error
+                        *ngIf="AIACTFormGroup.get('Date').touched && AIACTFormGroup.get('Date').hasError('required')">
+                        Date is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="20">
+                    <mat-form-field class="px-32" style="width: 100%;">
+                      <input matInput placeholder="Time" [ngxTimepicker]="picker" formControlName="Time"
+                        (keyup.enter)="keytab('activityText')">
+                      <ngx-material-timepicker #picker></ngx-material-timepicker>
+                      <mat-error
+                        *ngIf="AIACTFormGroup.get('Time').touched && AIACTFormGroup.get('Time').hasError('required')">
+                        Time is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="25">
+                    <mat-form-field class="px-32" style="width: 100%;">
+                      <input matInput placeholder="Action Text" formControlName="ActionText"
+                        (keydown.enter)="AIACTEnterKeyDown()" #activityText>
+                      <mat-error
+                        *ngIf="AIACTFormGroup.get('ActionText').touched && AIACTFormGroup.get('ActionText').hasError('required')">
+                        Action Text is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="5" fxLayoutAlign="center">
+                    <img class="addIcon" src="assets/images/logos/add-button.png" (click)="AddAIACTToTable()">
+                  </div>
+                </form> -->
+              </div>
+              <div style="margin-left: 8px;margin-top: 10px;">
+                <table *ngIf="CertificatesByPartnerID?.length" class="table" mat-table [dataSource]="CertificateDataSource" matSort>
+
+                  <ng-container matColumnDef="CertificateType">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 25%;"> Certificate Type </th>
+                    <td mat-cell *matCellDef="let element" style="width: 25%;" class="tableLeftBorder">
+                      {{element.CertificateType}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="CertificateName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 25%;"> Certificate Name </th>
+                    <td mat-cell *matCellDef="let element" style="width: 25%;"> {{element.CertificateName}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Validity">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Validity </th>
+                    <td mat-cell *matCellDef="let element" style="width: 20%;"> {{element.Validity | date :'dd/MM/yyyy'}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Attachment">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 25%;"> Attachment </th>
+                    <td mat-cell *matCellDef="let element" style="width: 25%;">
+                      <span class="linkClass">{{element.Attachment}}
+                      </span>
+                    </td>
+                  </ng-container>
+
+                  <!-- <ng-container matColumnDef="Action">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 5%;"> </th>
+                    <td mat-cell *matCellDef="let element" style="width: 5%;text-align: center;">
+                      <img class="removeIcon" src="assets/images/remove-button.png"
+                        (click)="RemoveAIACTFromTable(element)">
+                    </td>
+                  </ng-container> -->
+
+                  <tr mat-header-row *matHeaderRowDef="CertificateDisplayedColumns;sticky: true"></tr>
+                  <tr mat-row *matRowDef="let row; columns: CertificateDisplayedColumns;">
+                  </tr>
+                </table>
+                <!-- <div flex *ngIf="AIACTsByPartnerID?.length">
+                  <mat-paginator [pageSizeOptions]="[10, 20, 30, 50, 75, 100]" showFirstLastButtons>
+                  </mat-paginator>
+                </div> -->
+              </div>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+    <div fxLayout id="footerCard">
+      <div fxLayout fxFlex class="my-8 px-24" fxLayoutAlign="end">
+        <!-- <button (click)="SaveClicked()" class="SaveAsDraftBtn mr-8" mat-stroked-button>
+          Save as Draft</button> -->
+        <button (click)="SaveClicked()" class="SaveBtn" mat-raised-button>
+          Save</button>
+      </div>
+    </div>
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="IsProgressBarVisibile"></div>
+  </div>
+</div>

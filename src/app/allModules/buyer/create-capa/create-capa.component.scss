@@ -1,0 +1,200 @@
+@import "src/@fuse/scss/fuse";
+#CAPA-Create {
+    background-color: white;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        padding: 0px;
+        margin: 0px;
+    }
+    .progressBarPostion {
+        position: absolute !important;
+        top: 350px;
+        z-index: 1;
+        left: 55%;
+    }
+    .outer {
+        border-bottom: 1px solid rgba(255, 85, 0, 0.1);
+        position: relative;
+        z-index: 1;
+        .bg {
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-image: url("assets/images/header_2.png");
+            opacity: 0.1;
+            background-repeat: no-repeat;
+        }
+        width: 100%;
+        object-fit: contain;
+        line-height: 50px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    @mixin TableBorderRight($color) {
+        border-right: 1px solid $color;
+    }
+    .TableCommon {
+        padding: 5px 10px;
+        font-size: 14px;
+        min-width: 50px !important;
+        white-space: nowrap;
+    }
+    table {
+        width: 100%;
+        // padding: 20px;
+        th {
+            @include TableBorderRight(gray);
+            @extend .TableCommon;
+            // min-width: max-content !important;
+            color: white;
+            background-color: #121214;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
+            font-size: 13px;
+        }
+
+        td {
+            @include TableBorderRight(rgba(0, 0, 0, 0.12));
+            @extend .TableCommon;
+            // min-width: max-content !important;
+            &.QtyClass {
+                text-align: right;
+            }
+            .mat-form-field-underline {
+                display: none;
+            }
+        }
+
+        tr {
+            height: 40px;
+        }
+
+        .mat-sort-header-container {
+            display: flex;
+            justify-content: flex-start;
+        }
+    }
+    .tableLeftBorder {
+        border-left: 1px solid rgba(0, 0, 0, 0.12);
+    }
+    .tableCellBorder {
+        height: 20px;
+        vertical-align: middle;
+        width: 10px;
+        background-color: #d87e39;
+        opacity: 0.7;
+    }
+    .mat-tab-labels {
+        display: flex;
+        // place-content: space-between !important;
+        padding: 10px !important;
+    }
+    .mat-tab-label-active {
+        background-color: #10b1e8;
+        opacity: 1 !important;
+        color: #ffffff !important;
+    }
+    .mat-tab-group.mat-primary .mat-ink-bar,
+    .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+        background-color: inherit !important;
+    }
+    .mat-tab-header {
+        border-bottom: 0px !important;
+    }
+    .mat-tab-group {
+      
+        margin-bottom: 50px !important;
+    }
+    
+    
+    .TextArea .mat-form-field-underline {
+        display: none;
+    }
+    .mat-form-field-flex > .mat-form-field-infix {
+        padding: 0em 0px 0.6em !important;
+    }
+    .mat-form-field-appearance-outline {
+        .mat-form-field-suffix,
+        .mat-form-field-prefix {
+            top: 0.5em;
+            .mat-icon-button {
+                width: 1.5em;
+                height: 1.5em;
+            }
+        }
+    }
+    .mat-form-field-infix {
+        width: auto;
+    }
+    .mat-form-field-label-wrapper {
+        top: -1.5em;
+    }
+    .mat-form-field-wrapper {
+        margin: 0 0 0 0;
+        padding-bottom: 1em;
+    }
+
+    .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+        transform: translateY(-1.1em) scale(0.75);
+        width: 133.33333%;
+    }
+    .mat-form-field-outline-start,
+    .mat-form-field-outline-end {
+        border-radius: 0 !important;
+    }
+    .addIcon {
+        height: 20px;
+        // margin-top: 25px;
+        // padding-left: 4px;
+        cursor: pointer !important;
+    }
+    .TableFooter {
+        margin-top: 0px !important;
+        border: 1px solid #e3dbdb;
+        height: 47px;
+        border-top: 0px;
+    }
+    // .TableFooter2 {
+    //     margin-top: -20px !important;
+    //     border: 1px solid #e3dbdb;
+    //     height: 47px;
+    //     border-top: 0px;
+    // }
+    .ItemContent {
+        // border: 1px solid #e4dbdb;
+        // margin: 20px;
+        // padding: 20px;
+        // overflow-x: auto !important;
+    }
+    .deleteImg {
+        width: 24px;
+        margin-top: 5px;
+        cursor: pointer !important;
+    }
+    #footerCard {
+        position: fixed;
+        height: 50px;
+        box-shadow: 0 -5px 10px 0 rgba(0, 0, 0, 0.16);
+        background-color: #ffffff;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        margin-bottom: 0px;
+        z-index: 100;
+    }
+    .SaveBtn {
+        background-color: #efb577;
+        color: white;
+    }
+    .mat-tab-body-content {
+        height: 100%;
+        overflow: none !important;
+    }
+}

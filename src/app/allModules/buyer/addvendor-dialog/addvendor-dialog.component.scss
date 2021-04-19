@@ -1,0 +1,86 @@
+.Dialog {
+    width: 600px !important;
+    min-height: 500px !important;
+}
+.mat-form-field-flex > .mat-form-field-infix {
+    padding: 0em 0px 0.6em !important;
+}
+.mat-form-field-appearance-outline {
+    .mat-form-field-suffix,
+    .mat-form-field-prefix {
+        top: 0.5em;
+        .mat-icon-button {
+            width: 1.5em;
+            height: 1.5em;
+        }
+    }
+}
+.mat-form-field-infix {
+    width: auto;
+}
+.mat-form-field-label-wrapper {
+    top: -1.5em;
+}
+.mat-form-field-wrapper {
+    margin: 0 0 0 0;
+    padding-bottom: 1em;
+}
+
+.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+    transform: translateY(-1.1em) scale(0.75);
+    width: 133.33333%;
+}
+.mat-form-field-outline-start,
+.mat-form-field-outline-end {
+    border-radius: 0 !important;
+}
+.mat-selection-list .mat-list-item,
+.mat-selection-list .mat-list-option {
+    height: 80px !important;
+    border: 1px solid #efefef !important;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.1) !important;
+    background-color: #ffffff !important;
+}
+.header {
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.1) !important;
+    height: 55px !important;
+}
+.headerName {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin-left: 15px;
+}
+.SelectedVendorCount {
+    padding: 5px;
+    background-color: #10b1e8;
+    color: white;
+    font-size: 13px;
+    border-radius: 4px;
+    text-align: center;
+    margin-left: -55px;
+}
+#footerCard {
+    position: fixed;
+    height: 50px;
+    box-shadow: 0 -5px 10px 0 rgba(0, 0, 0, 0.16);
+    background-color: #ffffff;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    margin-bottom: 0px;
+    z-index: 100;
+}
+.Dialog span {
+    font-family: "Segoe UI";
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    font-weight: 400;
+}
+.example-spacer {
+    flex: 1 1 auto;
+}
+.transferBtn {
+    height: 34px !important;
+}

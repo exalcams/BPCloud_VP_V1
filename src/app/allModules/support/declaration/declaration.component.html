@@ -1,0 +1,278 @@
+<div id="declaration" class="page-layout carded fullwidth">
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Declaration</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+
+    <!-- fact -->
+    <div fxLayout class="content-card1">
+      <div fxFlex class="side-bar">
+        <div class="sidenav-content" fxFlex fxLayout="column">
+          <mat-card fxFlex fxLayout="column" class="mb-32">
+            <form name="form" [formGroup]="SupportDeclarationFormGroup">
+              <mat-card class="mat_card_msme">
+                <div fxLayout="column" style="width:100%;height:100%;margin-top: -23px;">
+                  <div fxFlex style="width:10%">
+                    <p class="msme_P">
+                      MSME</p>
+                    <p [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="borderbottom"></p>
+                  </div>
+                  <div fxFlex style="width:100%">
+                    <div fxFlex=16 style="margin-top: 21px;" class="lable_align">
+                      <mat-label class="msme">MSME Enrolled :</mat-label>
+                    </div>
+                    <div fxFlex style="margin-left: -36px;">
+                      <mat-slide-toggle [checked]="bool_msme" style="
+                margin-top: 25px;" id="slide_msme" (change)="setValue( $event )" required></mat-slide-toggle>
+                    </div>
+                  </div>
+                  <div fxLayout="row" fxFlex style="width:100%">
+                    <div fxFlex=16 style="margin-top: 21px;" class="lable_align">
+                      <mat-label class="msme">MSME Category :</mat-label>
+                    </div>
+                    <div fxFlex>
+                      <mat-form-field style="width: 28%;">
+
+
+                        <mat-select class="select" formControlName="MSMEType">
+                          <mat-option value="OTH">Not Applicable</mat-option>
+                          <mat-option value="MIC">Micro Enterprise</mat-option>
+                          <mat-option value="SML">Small Enterprise</mat-option>
+                          <mat-option value="MID">Medium Enterprise</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div fxFlex fxLayout="row" style="width:100%;margin-top: 21px;">
+
+                    <div fxFlex=16 class="lable_align">
+
+                      <mat-label class="msme">Upload Document :</mat-label>
+                    </div>
+
+                    <mat-card fxFlex=12 *ngIf="upload_msme_bool"
+                      style="padding: 0px !important;font-size: 5px !important;margin-right: 22px;">
+                      <div fxFlex=100 fxLayout="row" style="display: flex;width:100%">
+                        <div fxFlex=1 style="margin-right: 9px;">
+                          <p class="green"></p>
+                        </div>
+                        <div fxFlex=29 class="pink_flex">
+                          <p class="pink"></p>
+                          <img src="assets/images/screen.png" class="screen">
+                        </div>
+                        <div fxFlex=100 fxLayout="column" class="uploadfilename_flex">
+                          <div fxFlex=100 style="margin-bottom: -11px !important;    font-size: 9px;
+                         ">
+                            <p class="invoice">{{uploadfile_name}}</p>
+                          </div>
+                          <!-- <div fxFlex>
+                            <p class="kb">{{size_KB}}</p>
+                          </div> -->
+                        </div>
+                      </div>
+
+
+                    </mat-card>
+
+
+                    <div fxFlex style="align-self: center;">
+                      <button class="button1" [ngClass]="BGClassName?.layout?.navbar?.primaryBackground   "
+                        (click)="fileInput1.click()">Upload</button>
+                      <img src="assets/images/upload.png" class="upload_img">
+                      <input hidden type="file" #fileInput1 id="file_msme" (change)="handleFileInput($event)" />
+                    </div>
+                  </div>
+                </div>
+
+              </mat-card>
+
+              <mat-card class="mat_card_msme">
+                <div fxLayout="column" style="width:100%;height:100%;margin-top: -23px;">
+                  <div fxFlex style="width:10%">
+                    <p
+                      style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight:600;letter-spacing: 0.3px;font-size: 15px;">
+                      Related Party </p>
+                    <p [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="borderbottom_relatedParty">
+                    </p>
+                  </div>
+                  <div fxFlex style="width:100%">
+                    <div fxFlex=16 style="margin-top: 21px;" class="lable_align">
+                      <mat-label class="msme">Related Party :</mat-label>
+                    </div>
+                    <div fxFlex style="    margin-left: -36px;">
+                      <mat-slide-toggle [checked]="bool_RP" style="
+                margin-top: 25px;" id="slide_RelatedParty" (change)="setValue(  $event )" required>
+                      </mat-slide-toggle>
+                    </div>
+                  </div>
+                  <div fxLayout="row" fxFlex style="width:100%">
+                    <div fxFlex=16 style="margin-top: 21px;" class="lable_align">
+                      <mat-label class="msme">Related Party Name :</mat-label>
+                    </div>
+                    <div fxFlex>
+                      <mat-form-field style="width: 28%;">
+
+                        <input matInput formControlName="RelatedPartyName" class="relatedparty_input">
+
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div fxLayout="row" fxFlex style="width:100%; margin-top: 14px;">
+                    <div fxFlex=16 style="margin-top: 21px;   " class="lable_align">
+                      <mat-label class="msme">Related Party Type :</mat-label>
+                    </div>
+                    <div fxFlex>
+                      <mat-form-field style="width: 28%;">
+
+                        <input matInput formControlName="RelatedPartyType" class="relatedparty_input">
+
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div fxFlex fxLayout="row" style="width:100%;margin-top: 21px;">
+
+
+                    <div fxFlex=16 class="lable_align">
+                      <mat-label class="msme">Upload Document :</mat-label>
+                    </div>
+
+                    <mat-card fxFlex=12 *ngIf="upload_RealtedParty_bool"
+                      style="padding: 0px !important;font-size: 5px !important;margin-right: 22px;">
+                      <div fxFlex=100 fxLayout="row" style="display: flex;width:100%">
+                        <div fxFlex=1 style="margin-right: 9px;">
+                          <p class="green"></p>
+                        </div>
+                        <div fxFlex=29 class="pink_flex">
+                          <p class="pink"></p>
+                          <img src="assets/images/screen.png" class="screen">
+                        </div>
+                        <div fxFlex=100 fxLayout="column" class="uploadfilename_flex">
+                          <div fxFlex=100 style="margin-bottom: -11px !important;    font-size: 9px;
+                         ">
+                            <p class="invoice">{{uploadfile_RelatedParty}}</p>
+                          </div>
+                          <!-- <div fxFlex>
+                            <p class="kb">{{size_KB_RelatedParty}}</p>
+                          </div> -->
+                        </div>
+                      </div>
+
+
+                    </mat-card>
+
+                    <div fxFlex style="align-self: center;">
+                      <button class="button1" [ngClass]="BGClassName?.layout?.navbar?.primaryBackground   "
+                        (click)="fileInput2.click()">Upload</button>
+                      <img src="assets/images/upload.png" class="upload_img">
+                      <input hidden type="file" #fileInput2 id="file_relatedparty" (change)="handleFileInput($event)" />
+                    </div>
+                  </div>
+                </div>
+
+              </mat-card>
+
+              <mat-card class="mat_card_msme">
+                <div fxLayout="column" style="width:100%;height:100%;margin-top: -23px;">
+                  <div fxFlex style="width:10%">
+                    <p
+                      style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight:600;letter-spacing: 0.3px;font-size: 15px;">
+                      Lower TDS</p>
+                    <p [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="borderbottom_lowerTDS"></p>
+                  </div>
+                  <div fxFlex style="width:100%">
+                    <div fxFlex=16 style="margin-top: 21px;    text-align: -webkit-right;">
+                      <mat-label class="msme"> Lower Deduction Certificate :</mat-label>
+                    </div>
+                    <div fxFlex>
+                      <mat-slide-toggle [checked]="bool_TDSRate" style="
+                margin-top: 25px;" id="slide_LowerDedution" (change)="setValue( $event )" required>
+                      </mat-slide-toggle>
+                    </div>
+                  </div>
+                  <div fxLayout="row" fxFlex style="width:100%">
+                    <div fxFlex=16 style="margin-top: 21px;margin-right: 36px;
+                    align-self: center;
+                    text-align: -webkit-right;">
+                      <mat-label class="msme">TDS Rate :</mat-label>
+                    </div>
+                    <div fxFlex>
+                      <mat-form-field style="width: 28%;">
+
+                        <input matInput formControlName="TDSRate" class="relatedparty_input">
+                        <p matSuffix>%</p>
+                        <mat-error *ngIf=" SupportDeclarationFormGroup.get('TDSRate').hasError('pattern')">
+                          Invalid </mat-error>
+
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div fxFlex fxLayout="row" style="width:100%;margin-top: 21px;">
+                    <div>
+
+                    </div>
+                    <div fxFlex=16 style="margin-right: 36px;
+                    align-self: center;
+                    text-align: -webkit-right;">
+                      <mat-label class="msme">Upload Document :</mat-label>
+                    </div>
+                    <mat-card fxFlex=12 *ngIf="upload_TDS_bool"
+                      style="padding: 0px !important;font-size: 5px !important;margin-right: 22px;">
+                      <div fxFlex=100 fxLayout="row" style="display: flex;width:100%">
+                        <div fxFlex=1 style="margin-right: 9px;">
+                          <p class="green"></p>
+                        </div>
+                        <div fxFlex=29 class="pink_flex">
+                          <p class="pink"></p>
+                          <img src="assets/images/screen.png" class="screen">
+                        </div>
+                        <div fxFlex=100 fxLayout="column" class="uploadfilename_flex">
+                          <div fxFlex=100 style="margin-bottom: -11px !important;    font-size: 9px;
+                         ">
+                            <p class="invoice">{{uploadfile_TDS}}</p>
+                          </div>
+                          <!-- <div fxFlex>
+                            <p class="kb">{{size_KB_TDS}}</p>
+                          </div> -->
+                        </div>
+                      </div>
+                    </mat-card>
+                    <div fxFlex style="align-self: center;">
+                      <button class="button1" [ngClass]="BGClassName?.layout?.navbar?.primaryBackground   "
+                        (click)="fileInput3.click()">Upload</button>
+
+                      <img src="assets/images/upload.png" class="upload_img">
+                      <input hidden type="file" #fileInput3 id="file_TDS" (change)="handleFileInput($event)" />
+                    </div>
+                  </div>
+                </div>
+              </mat-card>
+
+            </form>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+
+    <div fxLayout id="footerCard">
+      <div fxLayout fxFlex class="my-8 px-24" fxLayoutAlign="end">
+        <button (click)="submitclicked()" [ngClass]="BGClassName?.layout?.navbar?.primaryBackground" class="SaveBtn"
+          mat-raised-button>
+          Save</button>
+      </div>
+    </div>
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile" color="accent" class="progressBarPostion" mode="indeterminate">
+
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="IsProgressBarVisibile">
+    </div>
+  </div>
+
+
+
+</div>

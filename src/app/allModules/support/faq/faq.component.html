@@ -1,0 +1,43 @@
+<div id="faq" class="page-layout carded fullwidth">
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Frequently Asked Questions</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div fxFlexFill fxLayout="column" class="content-card1">
+      <mat-card class="mat_card mb-12 p-0" fxFlex>
+        <!-- <form [formGroup]="uploadForm"> -->
+        <mat-card-content class="mat_card_content p-8" [style.height]="(currentUserRole | lowercase)==='administrator'?'84%':'90%'">
+          <div class="cl_div">
+            <ngx-dropzone *ngIf="!AttachmentData" accept=".pdf" (change)="onSelect($event)" class="dropzone">
+              <ngx-dropzone-label>Drop your file here!</ngx-dropzone-label>
+              <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+                <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+              </ngx-dropzone-preview>
+            </ngx-dropzone>
+            <iframe *ngIf="AttachmentData" [src]="AttachmentData" class="iframe"></iframe>
+          </div>
+        </mat-card-content>
+        <mat-card-actions class="m-0 px-12 cardActions" *ngIf="(currentUserRole | lowercase)==='administrator'">
+          <div fxLayout fxLayoutAlign="space-between center">
+            <input style="display: none;" type="file" name="profile" accept=".pdf" id="upload"
+              (change)="onFileSelect($event)" #fileinput>
+            <button type="button" mat-stroked-button (click)="fileinput.click()" class="DeleteBtn">Select
+              File</button>
+            <button type="button" mat-raised-button (click)="SaveFAQAttachment()" class="SaveBtn">Upload</button>
+          </div>
+        </mat-card-actions>
+        <!-- </form> -->
+      </mat-card>
+    </div>
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="IsProgressBarVisibile">
+    </div>
+  </div>
+</div>

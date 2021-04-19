@@ -1,0 +1,152 @@
+<div id="hoveringvehicles" class="page-layout carded fullwidth">
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Hovering Vehicles</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div fxLayout="column" class="content-card1">
+      <div fxLayout="row">
+        <div style="width:50%;margin-top: 45px;
+            margin-left: 25px;">
+          <img src="assets/images/search.png" width="17px" height="17px" class="searchImg">
+          <input type="text" placeholder="Search" class="search-input">
+        </div>
+        <span class="Spacer"></span>
+        <mat-select style="margin-top:50px !important;" fxFlex.ms="40" class="reports_overview_Select1">
+          <mat-option style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;" value="option1">All
+          </mat-option>
+          <mat-option style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;"
+            style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;letter-spacing: 0.2px;" value="option3">
+            Material</mat-option>
+        </mat-select>
+        <div style="margin-top:50px !important;" class="cl_excelDiv">
+          <img src="assets/images/excel.png" class="cl_ExcelImg">
+        </div>
+        <div style="margin-top:50px !important;">
+          <img src="assets/images/expand.png" class="cl_expandImg" style="cursor: pointer;">
+        </div>
+      </div>
+      <div class="table-responsive" style="overflow-x: auto;">
+        <table mat-table id="excel-table"
+          style="width:-webkit-fill-available;margin-top: -8px; box-shadow: none;border:1px solid grey;"
+          [dataSource]="DataReport" class="table  mat-elevation-z8">
+
+          <ng-container matColumnDef="EntryDate">
+            <th mat-header-cell *matHeaderCellDef align="center"
+              style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;font-size: 11px;border: none; color: white;"
+              [ngClass]="BGClassName?.layout?.toolbar?.background">
+
+              Date </th>
+            <td mat-cell style="border-right: none;font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;"
+              *matCellDef="let element;let odd=odd" class="pl-0">
+              <div fxLayout>
+                <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                <div fxFlex class="pl-8">{{element.EntryDate}} </div>
+              </div>
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="EntryTime">
+            <th mat-header-cell *matHeaderCellDef
+              style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;font-size: 11px;border: none;color: white;"
+              [ngClass]="BGClassName?.layout?.toolbar?.background">
+              Time </th>
+            <td mat-cell style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;border-right: none;"
+              *matCellDef="let element"> {{element.EntryTime}} </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="Truck">
+            <th mat-header-cell *matHeaderCellDef style="font-size: 11px;border: none;color: white;"
+            [ngClass]="BGClassName?.layout?.toolbar?.background"> Truck </th>
+            <td mat-cell style="border-right: none;" *matCellDef="let element"> {{element.Truck}} </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="Partner">
+            <th mat-header-cell *matHeaderCellDef
+              style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;font-size: 11px;border: none;color: white;"
+              [ngClass]="BGClassName?.layout?.toolbar?.background">
+              Partner </th>
+            <td mat-cell style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;border-right: none;"
+              *matCellDef="let element"> {{element.Partner}} </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="DocNo">
+            <th mat-header-cell *matHeaderCellDef
+              style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;font-size: 11px;border: none;color: white;"
+              [ngClass]="BGClassName?.layout?.toolbar?.background">
+              Doc No </th>
+            <td mat-cell style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;border-right: none;"
+              *matCellDef="let element"> {{element.DocNo}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Transporter">
+            <th mat-header-cell *matHeaderCellDef
+              style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;font-size: 11px; border: none;color: white;"
+              [ngClass]="BGClassName?.layout?.toolbar?.background">
+              Transporter </th>
+            <td mat-cell style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;border-right: none;"
+              *matCellDef="let element"> {{element.Transporter}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Gate">
+            <th mat-header-cell *matHeaderCellDef
+              style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;font-size: 11px; border: none;color: white;"
+              [ngClass]="BGClassName?.layout?.toolbar?.background">
+              Gate </th>
+            <td mat-cell style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;border-right: none;"
+              *matCellDef="let element"> {{element.Gate}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Plant">
+            <th mat-header-cell *matHeaderCellDef
+              style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;font-size: 11px; border: none;color: white;"
+              [ngClass]="BGClassName?.layout?.toolbar?.background">
+              Plant </th>
+            <td mat-cell style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;border-right: none;"
+              *matCellDef="let element"> {{element.Plant}} </td>
+          </ng-container>
+
+          <!-- <ng-container matColumnDef="ExitDt">
+            <th mat-header-cell *matHeaderCellDef style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;font-size: 11px; border: none;color: white;"> Exit Dt </th>
+            <td mat-cell style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;border-right: none;" *matCellDef="let element"> {{element.ExitDt}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="ExitTime">
+            <th mat-header-cell *matHeaderCellDef style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;font-size: 11px; border: none;color: white;"> Exit Time </th>
+            <td mat-cell style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;border-right: none;" *matCellDef="let element"> {{element.ExitTime}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="TATime">
+            <th mat-header-cell *matHeaderCellDef style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;font-size: 11px; border: none;color: white;"> TA Time </th>
+            <td mat-cell style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;border-right: none;" *matCellDef="let element"> {{element.TATime}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Exception">
+            <th mat-header-cell *matHeaderCellDef style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;font-size: 11px; border: none;color: white;"> Exception </th>
+            <td mat-cell style="font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;border-right: none;" *matCellDef="let element"> {{element.Exception}} </td>
+          </ng-container>
+                
+             -->
+          <tr mat-header-row style="background-color: #343436;border: none; height: 45px !important;"
+            *matHeaderRowDef="ReportColumn ; "></tr>
+          <tr mat-row style="height: 59px;" *matRowDef="let row; columns: ReportColumn;"></tr>
+
+        </table>
+      </div>
+    </div>
+    <!-- <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="isProgressBarVisibile">
+    </div> -->
+  </div>
+</div>
+

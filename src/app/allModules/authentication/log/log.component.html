@@ -1,0 +1,107 @@
+<div id="dataMigrationPage" class="page-layout carded" fusePerfectScrollbar>
+  <div class="center" fxLayout="column" fxLayoutGap="10px">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Log</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="../../../../assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+
+    <div *ngIf="!isExpanded" @expandCollapse >
+      <form autocomplete="off" name="form" novalidate [formGroup]="SearchFormGroup"  style="margin-left: 10px;margin-right: 10px;">
+        <!-- First Row -->
+        <div fxFlex="100" fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-around center">
+          <div fxFlex="30">
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <!-- <mat-icon class="mr-12" matPrefix>search</mat-icon> -->
+              <input type="text" matInput placeholder="UserName" formControlName="UserName">
+            </mat-form-field>
+          </div>
+          <div fxFlex="30">
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <!-- <mat-icon class="mr-12" matPrefix>search</mat-icon> -->
+              <input type="text" matInput placeholder="AppName" formControlName="AppName">
+            </mat-form-field>
+          </div>
+          <div fxFlex="20">
+            <mat-form-field style="width: 100%;" appearance="outline">
+              <input matInput placeholder="Used On" [matDatepicker]="picker1" formControlName="UsedOn">
+              <mat-datepicker-toggle matSuffix [for]="picker1">
+                <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div fxLayoutAlign="end">
+            <button mat-flat-button class="SearchBtn" (click)="SearchClicked()"
+              [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">Search</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div fxLayout="row" class="mt-20 ml-20 mr-20" fxLayoutAlign="start center">
+      <mat-form-field appearance="outline" fxFlex="50">
+        <mat-icon class="mr-12" matPrefix>search</mat-icon>
+        <input matInput placeholder="Search" (keyup)="applyFilter($event)">
+      </mat-form-field>
+      <div fxFlex fxLayoutAlign="end center">
+        <mat-form-field appearance="outline" style="min-width: 100px;">
+          <mat-select>
+            <mat-option value="All" (click)="ResetFilter()">All</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button (click)="exportAsXLSX()" class="excelBtn mx-24" mat-stroked-button>
+          <img class="excelImg" src="assets/images/excel.png">
+        </button>
+        <img class="expandImg" src="assets/images/expand.png" (click)="expandClicked()">
+      </div>
+    </div>
+
+
+    <table class="table" mat-table [dataSource]="tableDataSource" matSort>
+      <ng-container matColumnDef="UserName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> User Name </th>
+        <td mat-cell *matCellDef="let row;let odd=odd" class="tableLeftBorder pl-0">
+          <div fxLayout>
+            <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+            <div fxFlex class="pl-8">{{row.CreatedBy}} </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="AppName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> App Name </th>
+        <td mat-cell *matCellDef="let row"> {{row.AppName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+        <td mat-cell *matCellDef="let row"> {{row.Action }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="ActionText">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Action Text </th>
+        <td mat-cell *matCellDef="let row"> {{row.ActionText}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="UsedOn">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Used On </th>
+        <td mat-cell *matCellDef="let row"> {{row.UsedOn | date : 'dd-MM-yyyy hh:mm:ss a'}}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="tableDisplayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: tableDisplayedColumns;">
+      </tr>
+    </table>
+    <div>
+      <mat-paginator [pageSizeOptions]="[5,10,25,50,100]"></mat-paginator>
+    </div>
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="IsProgressBarVisibile"></div>
+  </div>
+</div>

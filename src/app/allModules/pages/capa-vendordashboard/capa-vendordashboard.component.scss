@@ -1,0 +1,166 @@
+@import "src/@fuse/scss/fuse";
+#CAPA-Dashboard {
+    background-color: white;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        padding: 0px;
+        margin: 0px;
+    }
+    .progressBarPostion {
+        position: absolute !important;
+        top: 350px;
+        z-index: 1;
+        left: 55%;
+    }
+    .outer {
+        border-bottom: 1px solid rgba(255, 85, 0, 0.1);
+        position: relative;
+        z-index: 1;
+        .bg {
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-image: url("assets/images/header_2.png");
+            opacity: 0.1;
+            background-repeat: no-repeat;
+        }
+        width: 100%;
+        object-fit: contain;
+        line-height: 50px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .example-card {
+        cursor: pointer !important;
+    }
+    .mat-card {
+        padding: 0px !important;
+    }
+    .FooterCard {
+        background-color: #4db151;
+        color: white;
+        font-size: 14px;
+        letter-spacing: 0.3px;
+    }
+    .HeaderCardCount {
+        font-size: 22px;
+        font-weight: 600;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin-top: 6px !important;
+    }
+
+    @mixin TableBorderRight($color) {
+        border-right: 1px solid $color;
+    }
+
+    .TableCommon {
+        padding: 5px;
+        font-size: 12px;
+        min-width: 100px !important;
+    }
+    table {
+        width: 100%;
+
+        th {
+            @include TableBorderRight(gray);
+            @extend .TableCommon;
+            text-align: left;
+            color: white;
+            background-color: #121214;
+        }
+
+        td {
+            @include TableBorderRight(rgba(0, 0, 0, 0.12));
+            @extend .TableCommon;
+            // font-size: 12px;
+            padding: 7px 5px !important;
+            &.AmountClass {
+                text-align: center;
+            }
+            &.Selectoption {
+                text-align: center;
+            }
+            min-width: max-content !important;
+        }
+
+        tr {
+            height: 40px;
+        }
+
+        .mat-sort-header-container {
+            padding-left: 5px;
+            display: flex;
+            justify-content: flex-start;
+        }
+    }
+    .tableLeftBorder {
+        border-left: 1px solid rgba(0, 0, 0, 0.12);
+    }
+    .TableSelect .mat-form-field-wrapper {
+        padding-bottom: 0px !important;
+    }
+    .tableCellBorder {
+        height: 20px;
+        vertical-align: middle;
+        width: 10px;
+        background-color: #d87e39;
+        opacity: 0.7;
+        margin-left: -5px;
+    }
+    .Dashboardicons {
+        color: #345a8a !important;
+        font-size: 30px;
+    }
+    .mat-form-field-flex > .mat-form-field-infix {
+        padding: 0em 0px 0.6em !important;
+    }
+    .mat-form-field-appearance-outline {
+        .mat-form-field-suffix,
+        .mat-form-field-prefix {
+            top: 0.5em;
+            .mat-icon-button {
+                width: 1.5em;
+                height: 1.5em;
+            }
+        }
+    }
+    .mat-form-field-infix {
+        width: auto;
+    }
+    .mat-form-field-label-wrapper {
+        top: -1.5em;
+    }
+    .mat-form-field-wrapper {
+        margin: 0 0 0 0;
+        padding-bottom: 1em;
+    }
+
+    .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+        transform: translateY(-1.1em) scale(0.75);
+        width: 133.33333%;
+    }
+    .mat-form-field-outline-start,
+    .mat-form-field-outline-end {
+        border-radius: 0 !important;
+    }
+    .Cl_TableName {
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .TableFooter {
+        margin-top: 0px !important;
+        border: 1px solid #e3dbdb;
+        height: 47px;
+        border-top: 0px;
+    }
+}

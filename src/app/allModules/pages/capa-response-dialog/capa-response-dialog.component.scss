@@ -1,0 +1,77 @@
+.Dialog {
+    width: 600px !important;
+    min-height: 500px !important;
+}
+.header {
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.1) !important;
+    height: 55px !important;
+}
+.headerName {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin-left: 15px;
+}
+
+.SelectedVendorCount {
+    padding: 5px;
+    background-color: #10b1e8;
+    color: white;
+    font-size: 13px;
+    border-radius: 4px;
+    text-align: center;
+    margin-left: -55px;
+}
+.attachClass {
+    padding-left: 8px;
+    cursor: pointer !important;
+    color: #4784f7;
+    margin-top: 17px;
+}
+.addBlueIcon {
+    @extend .addIcon;
+    margin-top: 0px;
+    height: 15px;
+}
+.addIcon {
+    height: 20px;
+    margin-top: 16px;
+    padding-left: 4px;
+    cursor: pointer !important;
+}
+.TextArea .mat-form-field-underline {
+    display: none;
+}
+.mat-form-field-flex > .mat-form-field-infix {
+    padding: 0em 0px 0.6em !important;
+}
+.mat-form-field-appearance-outline {
+    .mat-form-field-suffix,
+    .mat-form-field-prefix {
+        top: 0.5em;
+        .mat-icon-button {
+            width: 1.5em;
+            height: 1.5em;
+        }
+    }
+}
+.mat-form-field-infix {
+    width: auto;
+}
+.mat-form-field-label-wrapper {
+    top: -1.5em;
+}
+.mat-form-field-wrapper {
+    margin: 0 0 0 0;
+    padding-bottom: 1em;
+}
+
+.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+    transform: translateY(-1.1em) scale(0.75);
+    width: 133.33333%;
+}
+.mat-form-field-outline-start,
+.mat-form-field-outline-end {
+    border-radius: 0 !important;
+}

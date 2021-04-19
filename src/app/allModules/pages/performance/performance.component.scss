@@ -1,0 +1,156 @@
+@import "src/@fuse/scss/fuse";
+#performance-page {
+    background-color: white;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .outer {
+        border-bottom: 1px solid rgba(255, 85, 0, 0.1);
+        position: relative;
+        z-index: 1;
+        .bg {
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-image: url("assets/images/header_2.png");
+            opacity: 0.1;
+            background-repeat: no-repeat;
+        }
+        width: 100%;
+        object-fit: contain;
+        line-height: 50px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .content {
+        padding: 0px 30px 0px 30px;
+        background-color: white;
+    }
+
+    .next-button {
+        background-color: #efb577;
+        padding: 0px 40px;
+        color: white;
+    }
+
+    img {
+        max-width: 100%;
+    }
+
+    .container {
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .img-container {
+        position: absolute;
+        left: 0;
+        opacity: 0;
+        height: auto !important;
+        background-size: cover;
+        background-position: center;
+        will-change: opacity;
+        transition: opacity 0.3s;
+        cursor: pointer;
+    }
+
+    .slide-button:hover,
+    .slide-button-select {
+        width: 64px !important;
+        background-color: rgba(255, 255, 255, 1) !important;
+        pointer-events: none;
+        transition: background-color 0.4s, width 4s cubic-bezier(0.19, 1, 0.22, 1) !important;
+    }
+
+    .slide-button {
+        width: 30px;
+        height: 4px;
+        background-color: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        position: absolute;
+    }
+
+    .slider {
+        position: absolute;
+        top: 50%;
+        right: 80px;
+        opacity: 1;
+        min-width: 30px;
+    }
+
+    .slide-button-parent-container {
+        position: relative;
+        margin: 22px 0;
+        min-height: 4px;
+    }
+
+    .select-box {
+        min-height: 10px;
+    }
+
+    .text-container {
+        height: 100vh;
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .page-text {
+        min-height: 373px;
+        width: 50%;
+        height: 100%;
+        opacity: 0;
+        font-weight: 300;
+        font-size: 90px;
+        color: white;
+    }
+
+    .selected {
+        opacity: 1;
+        transition: 1s;
+    }
+    .image {
+        border-radius: 0px !important;
+    }
+    // .image {
+    //     padding: 54px;
+    // }
+    // .next {
+    //     background-color: #efb577;
+    //     color: white;
+    // }
+    // .prev {
+    //     background-color: #efb577;
+    //     color: white;
+    // }
+    // .caption {
+    //     height: 100px !important;
+    //     text-align: left !important;
+    //     background-image: linear-gradient(
+    //         to right,
+    //         rgb(255, 255, 255),
+    //         rgb(255, 255, 255),
+    //         rgb(255, 255, 255),
+    //         rgb(255, 255, 255),
+    //         rgb(255, 255, 255)
+    //     ) !important;
+    //     border-radius: 0;
+    //     color: #0f0d0d !important;
+    //     padding-left: 54px;
+    //     padding-top: 10px;
+    // }
+}

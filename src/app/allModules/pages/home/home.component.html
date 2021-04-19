@@ -1,0 +1,302 @@
+<div id="home" class="page-layout carded fullwidth">
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div fxLayout="row">
+        <h3 style="margin: 0px;padding-left: 10px;"><b>WELCOME</b></h3>
+        <h3 style="margin: 0px;padding-left: 10px;color:#d87060"><b>{{authenticationDetails?.DisplayName | uppercase}}</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div fxLayout="column" class="content-card1">
+      <div fxLayout="row" fxLayout.xs="row">
+
+        <mat-card fxFlex.lg="100" fxFlex.lt-xl="100" fxFlex.sm="100" fxFlex.gt-sm="100" class="coe_card p-0 px-12">
+
+          <div fxFlex>
+
+            <div class="coe_message">CEO Message !</div>
+            <div fxLayout fxLayoutAlign="start start">
+              <!-- <div  class="colon">“</div> -->
+              <div class="messagesty" [innerHtml]="selectedCEOMessage?.CEOMessage"></div>
+              <!-- <div class="colon1 pt-16">”</div> -->
+            </div>
+
+
+          </div>
+          <!-- <div fxFlex="20" fxLayoutAlign="space-evenly center">
+
+            <div fxFlex="100" fxLayout="column" fxLayoutAlign="space-between center">
+
+              <div class="cl_cardflex">
+                <img src="assets/images/image.png" class="man_image"></div>
+
+              <div class="div_tim" fxLayout="column" fxLayoutAlign="space-between center">
+                <p class="cl_tim">BALAMANIKANDAN SUBRAMANIAN</p>
+                <p class="cl_ceo">CEO</p>
+              </div>
+            </div>
+
+
+          </div> -->
+        </mat-card>
+      </div>
+      <!-- <div fxLayout="row" fxLayout.xs="column" class="cl_outermost" fxLayoutGap="13px">
+
+        <div fxFlex="20" fxFlex.lg="18" fxFlex.gt-sm="18" fxFlex.xl="18" fxFlex.xs="18">
+          <mat-card class="cl_card matshadow">
+            <mat-card-title>
+              <p class="overall">Overall Score</p>
+              <mat-divider class="cl_matdividerflex cl_divider1"></mat-divider> -->
+      <!-- <p [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="underline1"></p>
+            </mat-card-title>
+            <mat-card-content>
+              <div fxLayout="row" fxLayoutAlign="center center" fxFlex="110" fxFlex.lg="60" fxFlex.gt-sm="40"
+                fxFlex.xl="100" fxFlex.xs="50">
+
+                <canvas baseChart id="doughnut4" fxLayoutAlign="center center">
+
+
+                </canvas> -->
+
+      <!-- <svg height="100" width="100" class="cl_svg">
+                  <circle cx="50" cy="50" r="35" class="svg_innner" stroke="#ebebed" stroke-width="3"
+                    class="innercircle" fill="white" />
+
+                </svg>
+                <p class="cl_75">75%</p>
+              </div> -->
+
+      <!-- <div fxFlex="80" fxFlex.lg="50" fxFlex.gt-sm="70" fxFlex.xl="80" fxFlex.xs="20" class="cl_divflex">
+
+                <div class="cl_divheight" fxLayoutAlign="center center" fxFlex="5" fxFlex.lg="5" fxFlex.gt-sm="5"
+                  fxFlex.xl="5" fxFlex.xs="5">
+                  <mat-divider [vertical]="true" class="divider_inner"></mat-divider>
+                </div>
+                <div class="div_average" fxLayout="column" fxFlex="100" fxFlex.lg="100" fxFlex.gt-sm="100"
+                  fxFlex.xl="100" fxFlex.xs="20" fxLayoutAlign="center center">
+                  <p class="cl_round"></p>
+                  <p class="cl_avg">Average</p>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div> -->
+      <!-- <div fxFlex="20" fxFlex.lg="18" fxFlex.gt-sm="18" fxFlex.xl="18" fxFlex.xs="18">
+          <mat-card class="cl_card matshadow">
+            <mat-card-title>
+              <p class="Quality">Quality Index (PPM)</p>
+              <mat-divider class="cl_matdividerflex2  cl_divider6"></mat-divider> -->
+      <!-- <p [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="underline2"></p>
+
+            </mat-card-title>
+            <mat-card-content> -->
+      <!-- <div fxLayout="row" fxLayoutAlign="center center" fxFlex="110" fxFlex.lg="60" fxFlex.gt-sm="40"
+                fxFlex.xl="100" fxFlex.xs="50">
+
+                <canvas baseChart id="doughnut3" fxLayoutAlign="center center">
+
+
+                </canvas>
+
+                <svg height="100" width="100" class="cl_svg">
+                  <circle cx="50" cy="50" r="35" class="svg_innner" stroke="#ebebed" stroke-width="3"
+                    class="innercircle" fill="white" />
+
+                </svg>
+                <p class="cl_75">90%</p>
+              </div> -->
+
+      <!-- <div fxFlex="80" fxFlex.lg="50" fxFlex.gt-sm="70" fxFlex.xl="80" fxFlex.xs="20" class="cl_divflex">
+
+                <div class="cl_divheight" fxLayoutAlign="center center" fxFlex="5" fxFlex.lg="5" fxFlex.gt-sm="5"
+                  fxFlex.xl="5" fxFlex.xs="5">
+                  <mat-divider [vertical]="true" class="divider_inner"></mat-divider>
+                </div>
+                <div class="div_average" fxLayout="column" fxFlex="100" fxFlex.lg="100" fxFlex.gt-sm="100"
+                  fxFlex.xl="100" fxFlex.xs="20" fxLayoutAlign="center center">
+                  <p class="cl_round2"></p>
+                  <p class="cl_avg">Excellent</p>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div> -->
+      <!-- <div fxFlex="24" fxFlex.lg="24" fxFlex.gt-sm="20" fxFlex.xl="20" fxFlex.xs="20">
+          <mat-card class="cl_card matshadow">
+            <mat-card-title>
+              <p class="overall">On Time In Full (OTIF)</p>
+               <mat-divider class="cl_matdividerflex cl_divider2"></mat-divider> -->
+      <!-- <p [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="underline3"></p>
+
+            </mat-card-title> -->
+      <!-- <mat-card-content>
+              <div fxLayout="row" fxLayoutAlign="center center" fxFlex="110" fxFlex.lg="60" fxFlex.gt-sm="40"
+                fxFlex.xl="100" fxFlex.xs="50">
+
+                <canvas baseChart id="doughnut5" fxLayoutAlign="center center">
+
+
+                </canvas>
+
+
+                <svg height="100" width="100" class="cl_svg">
+                  <circle cx="50" cy="50" r="35" class="svg_innner" stroke="#ebebed" stroke-width="3"
+                    class="innercircle" fill="white" />
+
+                </svg>
+
+                <p class="cl_73">73%</p>
+
+                <p class="cl_efficiny">Efficiency</p>
+
+
+
+
+              </div> -->
+      <!-- <div fxFlex="80" fxFlex.lg="50" fxFlex.gt-sm="70" fxFlex.xl="80" fxFlex.xs="20">
+
+                <div class="div_outerheight" fxLayoutAlign="center center" fxFlex="5" fxFlex.lg="5" fxFlex.gt-sm="5"
+                  fxFlex.xl="5" fxFlex.xs="5">
+                  <mat-divider [vertical]="true" class="divider_inner"></mat-divider>
+                </div>
+                <div class="div_average" fxLayout="column" fxFlex="100" fxFlex.lg="100" fxFlex.gt-sm="100"
+                  fxFlex.xl="100" fxFlex.xs="20" fxLayoutAlign="center center">
+                  <p class="cl_round2"></p>
+                  <p class="cl_avg">Good</p>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div> -->
+
+      <!-- <div fxFlex="20" fxFlex.lg="18" fxFlex.gt-sm="18" fxFlex.xl="18" fxFlex.xs="18">
+          <mat-card class="cl_card matshadow">
+            <mat-card-title>
+              <p class="overall">Price Variation</p>
+               <mat-divider class="cl_matdividerflex2  cl_divider3"></mat-divider> -->
+      <!-- <p [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="underline4"></p>
+
+            </mat-card-title> -->
+
+      <!-- <mat-card-content>
+              <div fxLayout="row" fxLayoutAlign="center center" fxFlex="110" fxFlex.lg="60" fxFlex.gt-sm="40"
+                fxFlex.xl="100" fxFlex.xs="50">
+
+                <canvas baseChart id="doughnut2" fxLayoutAlign="center center">
+
+
+                </canvas>
+
+                <svg height="100" width="100" class="cl_svg">
+                  <circle cx="50" cy="50" r="35" class="svg_innner" stroke="#ebebed" stroke-width="3"
+                    class="innercircle" fill="white" />
+
+                </svg>
+                <p class="cl_75">90%</p>
+              </div> -->
+
+
+      <!-- <div fxFlex="80" fxFlex.lg="50" fxFlex.gt-sm="70" fxFlex.xl="80" fxFlex.xs="20" class="cl_divflex">
+
+                <div class="cl_divheight" fxLayoutAlign="center center" fxFlex="5" fxFlex.lg="5" fxFlex.gt-sm="5"
+                  fxFlex.xl="5" fxFlex.xs="5">
+                  <mat-divider [vertical]="true" class="divider_inner"></mat-divider>
+                </div>
+                <div class="div_average" fxLayout="column" fxFlex="100" fxFlex.lg="100" fxFlex.gt-sm="100"
+                  fxFlex.xl="100" fxFlex.xs="20" fxLayoutAlign="center center">
+                  <p class="cl_round2"></p>
+                  <p class="cl_avg">Excellent</p>
+                </div>
+              </div> -->
+      <!-- </mat-card-content>
+          </mat-card>
+        </div> -->
+      <!-- <div fxFlex="20" fxFlex.lg="18" fxFlex.gt-sm="18" fxFlex.xl="18" fxFlex.xs="18">
+          <mat-card class="cl_card matshadow">
+            <mat-card-title>
+              <p class="overall">Responsiveness</p>
+               <mat-divider class="cl_matdividerflex cl_divider4"></mat-divider> -->
+      <!-- <p [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="underline5"></p>  -->
+
+      <!-- </mat-card-title> -->
+      <!-- <mat-card-content>
+              <div fxLayout="row" fxLayoutAlign="center center" fxFlex="110" fxFlex.lg="60" fxFlex.gt-sm="40"
+                fxFlex.xl="100" fxFlex.xs="50">
+
+                <canvas baseChart id="doughnut1" fxLayoutAlign="center center">
+
+                </canvas>
+
+                <svg height="100" width="100" class="cl_svg">
+                  <circle cx="50" cy="50" r="35" class="svg_innner" stroke="#ebebed" stroke-width="3"
+                    class="innercircle" fill="white" />
+
+                </svg>
+                <p class="cl_75">75%</p>
+              </div> -->
+      <!-- <div fxFlex="80" fxFlex.lg="50" fxFlex.gt-sm="70" fxFlex.xl="80" fxFlex.xs="20" class="cl_divflex">
+
+                <div class="div_outerheight" fxLayoutAlign="center center" fxFlex="5" fxFlex.lg="5" fxFlex.gt-sm="5"
+                  fxFlex.xl="5" fxFlex.xs="5">
+                  <mat-divider [vertical]="true" class="divider_inner"></mat-divider>
+                </div>
+                <div class="div_average" fxLayout="column" fxFlex="100" fxFlex.lg="100" fxFlex.gt-sm="100"
+                  fxFlex.xl="100" fxFlex.xs="20" fxLayoutAlign="center center">
+                  <p class="cl_round"></p>
+                  <p class="cl_avg">Average</p>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div> -->
+
+      <div class="supplier mb-4">SCOC (Supplier’s Code of Conduct)</div>
+      <!-- <mat-divider class="divider_underline"></mat-divider> -->
+      <p [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="underline6"></p>
+      <mat-card fxFlex.lg="100" fxFlex.lt-xl="100" fxFlex.sm="100" fxFlex.gt-sm="100" class="mb-12 cl_mat_card">
+        <!-- <div fxLayout="row">
+          <div>
+            <p class="cl_1"> 1</p>
+        </div>
+        <div fxLayout="row">
+          <p class="cl_p1">
+            As a Supplier, you agree to abide by the terms of this Code and acknowledge that compliance with this Code is required to maintain your status as an SAP Supplier. 
+            You agree that all business conducted on behalf of SAP shall be accomplished in full compliance with applicable laws, rules, regulations,and policies. If local laws are less restrictive than the principles set forth in this Code, 
+            Suppliers are expected to, at a minimum, comply with the Code. If local laws are more restrictive than this Code, Suppliers are expected to, at a minimum,comply with applicable local laws.
+          </p>
+        </div>
+      </div>
+      <div fxLayout="row">
+        <div>
+          <p class="cl_1"> 2</p>
+      </div>
+      <div fxLayout="row">
+        <p class="cl_p1">
+          Suppliers are expected to comply with applicable insider trading and securities laws governing transactions in the securities of SAP.
+          Securities include common stocks, bonds, options, futures,and other financial instruments. Suppliers that possess or have access to material, non public in-formation gained 
+          through their work with SAP may not use that information to trade in SAP se-curities or the securities of another company to which the information pertains. Employees of such Suppliers may not engage in any other action to take advantage of, or pass on to others, 
+          material information gained through work with SAP until a reasonable time after full public disclosure has occurred. 
+        </p>
+      </div>
+    </div> -->
+        <div fxLayout fxLayoutAlign="start start">
+          <div class="messagesty" [innerHtml]="selectedSCOCMessage?.SCOCMessage"></div>
+        </div>
+      </mat-card>
+      <!-- <mat-card class="supplierconduct">
+
+      </mat-card> -->
+    </div>
+    <!-- <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="isProgressBarVisibile">
+    </div> -->
+  </div>
+  <!-- <chat-config [(theme)]="theme"></chat-config>
+  <chat-widget [theme]="theme"></chat-widget> -->
+  <!-- <chat-widget [theme]="theme"></chat-widget> -->
+</div>

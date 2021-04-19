@@ -1,0 +1,304 @@
+@import "src/@fuse/scss/fuse";
+#polist {
+    background-color: white;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        padding: 0px;
+        margin: 0px;
+    }
+    .outer {
+        border-bottom: 1px solid rgba(255, 85, 0, 0.1);
+        position: relative;
+        z-index: 1;
+        .bg {
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-image: url("assets/images/header_2.png");
+            opacity: 0.1;
+            background-repeat: no-repeat;
+        }
+        width: 100%;
+        object-fit: contain;
+        line-height: 50px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .topbarClass {
+        background: url("/assets/images/backgrounds/header 2.png") no-repeat;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .progressBarPostion {
+        position: absolute !important;
+        top: 350px;
+        z-index: 1;
+        left: 55%;
+    }
+    .center {
+        // padding: 5px !important;
+        background-color: white;
+    }
+    .cardHeader {
+        background-color: #fffdf9;
+        height: 45px;
+    }
+    .boldClass {
+        font-weight: bold;
+    }
+
+    .boldItalicClass {
+        @extend .boldClass;
+        font-style: italic;
+    }
+
+    .semiBoldClass {
+        font-weight: 500;
+    }
+
+    .subTitle {
+        @extend .semiBoldClass;
+        font-size: 12px;
+        color: #d87060;
+    }
+
+    @mixin TableBorderRight($color) {
+        border-right: 1px solid $color;
+    }
+
+    .TableCommon {
+        padding: 5px;
+        font-size: 12px;
+        min-width: 100px !important;
+    }
+
+    table {
+        width: 100%;
+
+        th {
+            @include TableBorderRight(gray);
+            @extend .TableCommon;
+            text-align: left;
+            color: white;
+            background-color: #121214;
+        }
+
+        td {
+            @include TableBorderRight(rgba(0, 0, 0, 0.12));
+            @extend .TableCommon;
+            // font-size: 12px;
+            padding: 16px 8px;
+            // text-align: center;
+            &.AmountClass {
+                text-align: right;
+            }
+            min-width: max-content !important;
+        }
+
+        tr {
+            height: 40px;
+        }
+
+        .mat-sort-header-container {
+            padding-left: 5px;
+            display: flex;
+            justify-content: flex-start;
+        }
+        // .StatusHeader {
+        //     .mat-sort-header-container {
+        //         padding-left: 5px;
+        //         display: flex;
+        //         justify-content: center;
+        //     }
+        // }
+    }
+
+    .whiteBg {
+        background-color: white !important;
+    }
+    .btnBg {
+        background-color: #efb577 !important;
+        color: white;
+    }
+    .tile {
+        @include mat-elevation(2);
+        min-height: 60px !important;
+        max-height: 250px !important;
+        img {
+            height: 36px;
+        }
+        cursor: pointer;
+    }
+    .redBorderBottom {
+        border-bottom: 2px solid #f3705a;
+    }
+    .orangeBorderBottom {
+        border-bottom: 2px solid #ffd15c;
+    }
+    .rightCard {
+        min-height: 300px !important;
+        background-color: #f5f5f5;
+    }
+    .topLeftBorderRadius {
+        border-top-left-radius: 20px;
+    }
+    .ticketTile {
+        background-color: white;
+        border-left: 5px solid #cccccc;
+    }
+    .italicClass {
+        font-style: italic;
+    }
+    .avatar1 {
+        height: 40px !important;
+        width: 40px !important;
+        margin: 0 8px 0 0;
+        border-radius: 50%;
+        font-size: 17px;
+        font-weight: 500;
+        text-align: center;
+    }
+    .intervalclass {
+        @extend .italicClass;
+        @extend .semiBoldClass;
+        font-size: small;
+    }
+    .subHeader {
+        font-weight: 500;
+    }
+
+    .tableLeftBorder {
+        border-left: 1px solid rgba(0, 0, 0, 0.12);
+    }
+
+    .tableCellBorder {
+        height: 20px;
+        vertical-align: middle;
+        width: 10px;
+        background-color: #d87e39;
+        opacity: 0.7;
+    }
+    .status {
+        background-color: #e8ffeb;
+        padding: 4px 2px;
+    }
+    .linkClass {
+        text-decoration: underline;
+        color: #6fa3e2;
+    }
+
+    .mat-form-field-flex > .mat-form-field-infix {
+        padding: 0em 0px 0.6em !important;
+    }
+    .mat-form-field-appearance-outline {
+        .mat-form-field-suffix,
+        .mat-form-field-prefix {
+            top: 0.5em;
+            .mat-icon-button {
+                width: 1.5em;
+                height: 1.5em;
+            }
+        }
+    }
+    .mat-form-field-infix {
+        width: auto;
+    }
+    .mat-form-field-label-wrapper {
+        top: -1.5em;
+    }
+    .mat-form-field-wrapper {
+        margin: 0 0 0 0;
+        padding-bottom: 1em;
+    }
+
+    .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+        transform: translateY(-1.1em) scale(0.75);
+        width: 133.33333%;
+    }
+    .mat-form-field-outline-start,
+    .mat-form-field-outline-end {
+        border-radius: 0 !important;
+    }
+
+    .SaveBtn {
+        background-color: #efb577;
+        height: 40px;
+        padding: 0px 32px;
+        color: white;
+        margin-top: -12px;
+    }
+    .SaveAsDraftBtn {
+        background-color: white;
+        color: #efb577;
+    }
+    .pdfLinkClass {
+        color: #1e8bed;
+        cursor: pointer;
+    }
+    .expandImg {
+        height: 36px;
+        margin-top: -16px;
+        cursor: pointer;
+    }
+    .excelBtn {
+        margin-top: -16px;
+        min-width: 0px;
+        background-color: white;
+        color: rgb(46, 125, 50);
+        &.mat-stroked-button {
+            // border-radius: 5px;
+            padding: 0px 8px;
+        }
+    }
+    .excelImg {
+        // margin: 4px 6px 4px 4px;
+        height: 24px;
+    }
+    .excelText {
+        color: black;
+    }
+    .SectionTitle {
+        display: inline-block;
+        position: relative;
+        font-size: 18px;
+    }
+
+    .SectionTitle strong:after {
+        content: "";
+        height: 3px;
+        width: 90%;
+        // background-color: #efb577;
+        position: absolute;
+        bottom: -0.2em;
+        left: 52%;
+        transform: translate(-50%);
+    }
+    .calendarImg {
+        height: 20px;
+        margin-bottom: 12px;
+    }
+    .mat-radio-outer-circle {
+        border-color: #44a200;
+    }
+    .mat-radio-inner-circle {
+        background-color: #44a200;
+    }
+    .DateError {
+        color: #f44336;
+        font-size: 12px;
+        margin-top: -16px;
+        margin-left: 32px;
+    }
+    // .mat-paginator-page-size {
+    //     margin-top: -26px;
+    // }
+}

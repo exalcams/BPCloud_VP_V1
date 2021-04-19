@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:#efb577}
+        </style>
+    </defs>
+    <g id="prefix__calendar" style="opacity:.662">
+        <g id="prefix__Group_957" data-name="Group 957">
+            <g id="prefix__Group_956" data-name="Group 956">
+                <path id="prefix__Path_615" d="M28.25 2.5h-1.5V0h-2.5v2.5H7.75V0h-2.5v2.5h-1.5A3.754 3.754 0 0 0 0 6.25v22A3.754 3.754 0 0 0 3.75 32h24.5A3.754 3.754 0 0 0 32 28.25v-22a3.754 3.754 0 0 0-3.75-3.75zm1.25 25.75a1.251 1.251 0 0 1-1.25 1.25H3.75a1.251 1.251 0 0 1-1.25-1.25v-16.5h27zm0-19h-27v-3A1.251 1.251 0 0 1 3.75 5h1.5v2.5h2.5V5h16.5v2.5h2.5V5h1.5a1.251 1.251 0 0 1 1.25 1.25z" class="prefix__cls-2" data-name="Path 615"/>
+            </g>
+        </g>
+        <g id="prefix__Group_959" data-name="Group 959" transform="translate(5 14)">
+            <g id="prefix__Group_958" data-name="Group 958">
+                <path id="prefix__Rectangle_730" d="M0 0H2V3H0z" class="prefix__cls-2" data-name="Rectangle 730"/>
+            </g>
+        </g>
+        <g id="prefix__Group_961" data-name="Group 961" transform="translate(10 14)">
+            <g id="prefix__Group_960" data-name="Group 960">
+                <path id="prefix__Rectangle_731" d="M0 0H2V3H0z" class="prefix__cls-2" data-name="Rectangle 731"/>
+            </g>
+        </g>
+        <g id="prefix__Group_963" data-name="Group 963" transform="translate(15 14)">
+            <g id="prefix__Group_962" data-name="Group 962">
+                <path id="prefix__Rectangle_732" d="M0 0H2V3H0z" class="prefix__cls-2" data-name="Rectangle 732"/>
+            </g>
+        </g>
+        <g id="prefix__Group_965" data-name="Group 965" transform="translate(20 14)">
+            <g id="prefix__Group_964" data-name="Group 964">
+                <path id="prefix__Rectangle_733" d="M0 0H2V3H0z" class="prefix__cls-2" data-name="Rectangle 733"/>
+            </g>
+        </g>
+        <g id="prefix__Group_967" data-name="Group 967" transform="translate(25 14)">
+            <g id="prefix__Group_966" data-name="Group 966">
+                <path id="prefix__Rectangle_734" d="M0 0H2V3H0z" class="prefix__cls-2" data-name="Rectangle 734"/>
+            </g>
+        </g>
+        <g id="prefix__Group_969" data-name="Group 969" transform="translate(5 19)">
+            <g id="prefix__Group_968" data-name="Group 968">
+                <path id="prefix__Rectangle_735" d="M0 0H2V3H0z" class="prefix__cls-2" data-name="Rectangle 735"/>
+            </g>
+        </g>
+        <g id="prefix__Group_971" data-name="Group 971" transform="translate(10 19)">
+            <g id="prefix__Group_970" data-name="Group 970">
+                <path id="prefix__Rectangle_736" d="M0 0H2V3H0z" class="prefix__cls-2" data-name="Rectangle 736"/>
+            </g>
+        </g>
+        <g id="prefix__Group_973" data-name="Group 973" transform="translate(15 19)">
+            <g id="prefix__Group_972" data-name="Group 972">
+                <path id="prefix__Rectangle_737" d="M0 0H2V3H0z" class="prefix__cls-2" data-name="Rectangle 737"/>
+            </g>
+        </g>
+        <g id="prefix__Group_975" data-name="Group 975" transform="translate(20 19)">
+            <g id="prefix__Group_974" data-name="Group 974">
+                <path id="prefix__Rectangle_738" d="M0 0H2V3H0z" class="prefix__cls-2" data-name="Rectangle 738"/>
+            </g>
+        </g>
+        <g id="prefix__Group_977" data-name="Group 977" transform="translate(5 24)">
+            <g id="prefix__Group_976" data-name="Group 976">
+                <path id="prefix__Rectangle_739" d="M0 0H2V3H0z" class="prefix__cls-2" data-name="Rectangle 739"/>
+            </g>
+        </g>
+        <g id="prefix__Group_979" data-name="Group 979" transform="translate(10 24)">
+            <g id="prefix__Group_978" data-name="Group 978">
+                <path id="prefix__Rectangle_740" d="M0 0H2V3H0z" class="prefix__cls-2" data-name="Rectangle 740"/>
+            </g>
+        </g>
+        <g id="prefix__Group_981" data-name="Group 981" transform="translate(15 24)">
+            <g id="prefix__Group_980" data-name="Group 980">
+                <path id="prefix__Rectangle_741" d="M0 0H2V3H0z" class="prefix__cls-2" data-name="Rectangle 741"/>
+            </g>
+        </g>
+        <g id="prefix__Group_983" data-name="Group 983" transform="translate(20 24)">
+            <g id="prefix__Group_982" data-name="Group 982">
+                <path id="prefix__Rectangle_742" d="M0 0H2V3H0z" class="prefix__cls-2" data-name="Rectangle 742"/>
+            </g>
+        </g>
+        <g id="prefix__Group_985" data-name="Group 985" transform="translate(25 19)">
+            <g id="prefix__Group_984" data-name="Group 984">
+                <path id="prefix__Rectangle_743" d="M0 0H2V3H0z" class="prefix__cls-2" data-name="Rectangle 743"/>
+            </g>
+        </g>
+    </g>
+</svg>
