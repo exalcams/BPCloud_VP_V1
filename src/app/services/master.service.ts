@@ -22,6 +22,7 @@ import {
     AppUsage,
     AppUsageView,
     UserPreference,
+    PO,
 } from "app/models/master";
 import { BPCDocumentCenterMaster } from "app/models/ASN";
 import { Guid } from "guid-typescript";
@@ -56,7 +57,39 @@ export class MasterService {
     errorHandler(error: HttpErrorResponse): Observable<string> {
         return throwError(error.error || error.message || "Server Error");
     }
-
+    CreatePO(Pos: PO): Observable<any> {
+        return this._httpClient
+            .post<any>(
+                `${this.baseAddress}authenticationapi/Master/CreatePO`,
+                Pos,
+                {
+                    headers: new HttpHeaders({
+                        "Content-Type": "application/json",
+                    }),
+                }
+            )
+            .pipe(catchError(this.errorHandler));
+    }
+    UpdatePO(Pos: PO): Observable<any> {
+        return this._httpClient
+            .post<any>(
+                `${this.baseAddress}authenticationapi/Master/UpdatePO`,
+                Pos,
+                {
+                    headers: new HttpHeaders({
+                        "Content-Type": "application/json",
+                    }),
+                }
+            )
+            .pipe(catchError(this.errorHandler));
+    }
+    GetPO(UserId:Guid): Observable<PO[] | string> {
+        return this._httpClient
+            .get<PO[]>(
+                `${this.baseAddress}authenticationapi/Master/GetPo?UserId=${UserId}`
+            )
+            .pipe(catchError(this.errorHandler));
+    }
     // App
     CreateMenuApp(menuApp: MenuApp): Observable<any> {
         return this._httpClient
