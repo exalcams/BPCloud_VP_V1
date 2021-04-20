@@ -143,9 +143,6 @@
           </mat-icon>
           <span style="margin-left: 10px;">The table does not contain any records</span>
         </div>
-        <div>
-          <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
-        </div>
       </div>
 
       <div *ngIf="SelectedCard ===3" style="overflow-x: auto !important; overflow-y: hidden;" fxLayout="column" >
@@ -229,9 +226,6 @@
           <mat-icon svgIcon="infoIcon" style="color: #1b56ca;">
           </mat-icon>
           <span style="margin-left: 10px;">The table does not contain any records</span>
-        </div>
-        <div>
-          <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
         </div>
       </div>
 
@@ -350,9 +344,6 @@
             </mat-icon>
             <span style="margin-left: 10px;">The table does not contain any records</span>
           </div>
-          <div>
-            <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
-          </div>
         </div>
       </div>
 
@@ -410,9 +401,10 @@
           </mat-icon>
           <span style="margin-left: 10px;">The table does not contain any records</span>
         </div>
-        <div>
-          <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
-        </div>
+        
+      </div>
+      <div>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
       </div>
     </div>
     <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">

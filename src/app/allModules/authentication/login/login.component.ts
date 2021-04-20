@@ -1434,6 +1434,13 @@ export class LoginComponent implements OnInit {
             type: "item",
             url: "/configuration/cardupdate",
         });
+        this.configSubChildren.push({
+            id: "PO",
+            title: "PO",
+            translate: "NAV.ADMIN.PO",
+            type: "item",
+            url: "/configuration/po",
+        });
         if (
             this.menuItems.indexOf("Doctype") >= 0 ||
             this.menuItems.indexOf("Session") >= 0 ||

@@ -1,0 +1,138 @@
+<div id="PO" class="page-layout carded" fusePerfectScrollbar>
+  <div class="center" fxLayout="column" fxLayoutGap="10px">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <!-- <div fxLayout="row" fxLayoutAlign="start none"> -->
+      <h3 style="margin: 0px;padding-left: 10px;"><b>PO</b></h3>
+      <!-- </div> -->
+      <div fxFlex align="end">
+        <span><img src="../../../../assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+  </div>
+  <div fxLayout class="content-card1">
+    <div fxFlex="23" class="side-bar" style="background-color: #f5f5f5">
+      <div class="sidenav-header">
+        <mat-toolbar>
+          <mat-toolbar-row fxLayout="row" class="px-8" fxLayoutAlign="space-between center">
+            <div class="search-wrapper" fxFlex fxLayout="row" fxLayoutAlign="start center">
+              <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                <input [(ngModel)]="searchText" type="text" placeholder="Search" fxFlex>
+                <mat-icon class="s-16">search</mat-icon>
+              </div>
+            </div>
+          </mat-toolbar-row>
+        </mat-toolbar>
+      </div>
+      <div class="sidenav-content" fusePerfectScrollbar fxFlex>
+        <div *ngFor="let PO  of AllPo">
+          <div>Star</div>
+        </div>
+      </div>
+      <div class="borderRight1"></div>
+    </div>
+    <!-- input section -->
+    <mat-card fxFlex="77" class="side-bar p-0">
+      <div class="sidenav-content p-20" fxFlex fxLayout="column" >
+        <form autocomplete="off" fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="25px" name="form"
+          novalidate [formGroup]="POFormGroup">
+
+          <div fxLayout="row" fxLayoutAlign="space-between  center">
+            <div fxFlex="25">
+              <mat-form-field style="width: 100%;">
+                <mat-select matInput matNativeControl placeholder="PO Type" formControlName="POType">
+                  <mat-option *ngFor="let POType of POTypes" [value]="POType">
+                    <span>{{POType}}</span>
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="POFormGroup.get('POType').touched && POFormGroup.get('POType').hasError('required')">
+                  POType is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="25">
+              <mat-form-field style="width: 100%;">
+                <mat-select matInput matNativeControl placeholder="Stage" formControlName="Stage" multiple="true">
+                  <mat-option *ngFor="let Stage of Stages" [value]="Stage">
+                    <span>{{Stage}}</span>
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="POFormGroup.get('Stage').touched && POFormGroup.get('Stage').hasError('required')">
+                  Stage is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="25">
+              <mat-form-field style="width: 100%;">
+                <mat-select matInput matNativeControl placeholder="Level" formControlName="Level">
+                  <mat-option *ngFor="let Level of Levels" [value]="Level">
+                    <span>{{Level}}</span>
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="POFormGroup.get('Level').touched && POFormGroup.get('Level').hasError('required')">
+                  Level is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="space-between  center">
+            <div fxFlex="25">
+              <mat-form-field style="width: 100%;">
+                <mat-select matInput matNativeControl placeholder="Before Event" formControlName="BeforeEvent" multiple="true">
+                  <mat-option *ngFor="let Notification of Notifications" [value]="Notification">
+                    <span>{{Notification}}</span>
+                  </mat-option>
+                </mat-select>
+                <mat-error
+                  *ngIf="POFormGroup.get('BeforeEvent').touched && POFormGroup.get('BeforeEvent').hasError('required')">
+                  Before Event is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="25">
+              <mat-form-field style="width: 100%;">
+                <mat-select matInput matNativeControl placeholder="After Event" formControlName="AfterEvent" multiple="true">
+                  <mat-option *ngFor="let Notification of Notifications" [value]="Notification">
+                    <span>{{Notification}}</span>
+                  </mat-option>
+                </mat-select>
+                <mat-error
+                  *ngIf="POFormGroup.get('AfterEvent').touched && POFormGroup.get('AfterEvent').hasError('required')">
+                  AfterEvent is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="25">
+              <mat-form-field style="width: 100%;">
+                <mat-select matInput matNativeControl placeholder="After Dunning1" formControlName="AfterDunning1" multiple="true">
+                  <mat-option *ngFor="let Notification of Notifications" [value]="Notification">
+                    <span>{{Notification}}</span>
+                  </mat-option>
+                </mat-select>
+                <mat-error
+                  *ngIf="POFormGroup.get('AfterDunning1').touched && POFormGroup.get('AfterDunning1').hasError('required')">
+                  After Dunning1After Dunning1 is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+      </div>
+      <mat-card-actions class="m-0 pl-12 pr-16 cardActions">
+        <div fxLayout fxFlex fxLayoutAlign="end">
+          <button mat-raised-button class="DeleteBtn mr-4 mb-8" >
+            Clear
+          </button>
+          <button class="SaveBtn" mat-raised-button (click)="Create()">
+            Create</button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+</div>
