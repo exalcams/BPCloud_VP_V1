@@ -25,111 +25,136 @@
         </mat-toolbar>
       </div>
       <div class="sidenav-content" fusePerfectScrollbar fxFlex>
-        <div *ngFor="let PO  of AllPo">
-          <div>Star</div>
+        <div *ngFor="let PO  of CreatedPo">
+          <div>
+            <div class="mx-8 mb-8 mt-0 p-8 leftCard" (click)="loadSelectedProduct(PO)"
+              [style.border-left-color]="selectID == PO.ID?'#efb577':'#cccccc'">
+              <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                <div fxFlex><strong>{{PO.POType}}</strong></div>
+                <div fxFlex align="end">{{PO.CreatedOn | date :'dd/MM/yyyy'}}</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="borderRight1"></div>
     </div>
     <!-- input section -->
     <mat-card fxFlex="77" class="side-bar p-0">
-      <div class="sidenav-content p-20" fxFlex fxLayout="column" >
-        <form autocomplete="off" fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="25px" name="form"
-          novalidate [formGroup]="POFormGroup">
+      <div class="sidenav-content p-20" fxFlex fxLayout="column">
+        <div fxFlex fxLayout="column" class="p-0 pt-8">
+          <div fxFlex class="px-12 mt-4">
 
-          <div fxLayout="row" fxLayoutAlign="space-between  center">
-            <div fxFlex="25">
-              <mat-form-field style="width: 100%;">
-                <mat-select matInput matNativeControl placeholder="PO Type" formControlName="POType">
-                  <mat-option *ngFor="let POType of POTypes" [value]="POType">
-                    <span>{{POType}}</span>
-                  </mat-option>
-                </mat-select>
-                <mat-error *ngIf="POFormGroup.get('POType').touched && POFormGroup.get('POType').hasError('required')">
-                  POType is required
-                </mat-error>
-              </mat-form-field>
-            </div>
+            <form autocomplete="off" fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="25px" name="form"
+              novalidate [formGroup]="POFormGroup">
 
-            <div fxFlex="25">
-              <mat-form-field style="width: 100%;">
-                <mat-select matInput matNativeControl placeholder="Stage" formControlName="Stage" multiple="true">
-                  <mat-option *ngFor="let Stage of Stages" [value]="Stage">
-                    <span>{{Stage}}</span>
-                  </mat-option>
-                </mat-select>
-                <mat-error *ngIf="POFormGroup.get('Stage').touched && POFormGroup.get('Stage').hasError('required')">
-                  Stage is required
-                </mat-error>
-              </mat-form-field>
-            </div>
+              <div fxLayout="row" fxLayoutAlign="space-between  center">
+                <div fxFlex="25">
+                  <mat-form-field style="width: 100%;">
+                    <mat-select matInput matNativeControl placeholder="PO Type" formControlName="POType">
+                      <mat-option *ngFor="let POType of POTypes" [value]="POType">
+                        <span>{{POType}}</span>
+                      </mat-option>
+                    </mat-select>
+                    <mat-error
+                      *ngIf="POFormGroup.get('POType').touched && POFormGroup.get('POType').hasError('required')">
+                      POType is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
 
-            <div fxFlex="25">
-              <mat-form-field style="width: 100%;">
-                <mat-select matInput matNativeControl placeholder="Level" formControlName="Level">
-                  <mat-option *ngFor="let Level of Levels" [value]="Level">
-                    <span>{{Level}}</span>
-                  </mat-option>
-                </mat-select>
-                <mat-error *ngIf="POFormGroup.get('Level').touched && POFormGroup.get('Level').hasError('required')">
-                  Level is required
-                </mat-error>
-              </mat-form-field>
+                <div fxFlex="25">
+                  <mat-form-field style="width: 100%;">
+                    <mat-select matInput matNativeControl placeholder="Stage" formControlName="Stage" multiple="true">
+                      <mat-option *ngFor="let Stage of Stages" [value]="Stage">
+                        <span>{{Stage}}</span>
+                      </mat-option>
+                    </mat-select>
+                    <mat-error
+                      *ngIf="POFormGroup.get('Stage').touched && POFormGroup.get('Stage').hasError('required')">
+                      Stage is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div fxFlex="25">
+                  <mat-form-field style="width: 100%;">
+                    <mat-select matInput matNativeControl placeholder="Level" formControlName="Level">
+                      <mat-option *ngFor="let Level of Levels" [value]="Level">
+                        <span>{{Level}}</span>
+                      </mat-option>
+                    </mat-select>
+                    <mat-error
+                      *ngIf="POFormGroup.get('Level').touched && POFormGroup.get('Level').hasError('required')">
+                      Level is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div fxLayout="row" fxLayoutAlign="space-between  center">
+                <div fxFlex="25">
+                  <mat-form-field style="width: 100%;">
+                    <mat-select matInput matNativeControl placeholder="Before Event" formControlName="BeforeEvent"
+                      multiple="true">
+                      <mat-option *ngFor="let Notification of Notifications" [value]="Notification">
+                        <span>{{Notification}}</span>
+                      </mat-option>
+                    </mat-select>
+                    <mat-error
+                      *ngIf="POFormGroup.get('BeforeEvent').touched && POFormGroup.get('BeforeEvent').hasError('required')">
+                      Before Event is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div fxFlex="25">
+                  <mat-form-field style="width: 100%;">
+                    <mat-select matInput matNativeControl placeholder="After Event" formControlName="AfterEvent"
+                      multiple="true">
+                      <mat-option *ngFor="let Notification of Notifications" [value]="Notification">
+                        <span>{{Notification}}</span>
+                      </mat-option>
+                    </mat-select>
+                    <mat-error
+                      *ngIf="POFormGroup.get('AfterEvent').touched && POFormGroup.get('AfterEvent').hasError('required')">
+                      AfterEvent is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div fxFlex="25">
+                  <mat-form-field style="width: 100%;">
+                    <mat-select matInput matNativeControl placeholder="After Dunning1" formControlName="AfterDunning1"
+                      multiple="true">
+                      <mat-option *ngFor="let Notification of Notifications" [value]="Notification">
+                        <span>{{Notification}}</span>
+                      </mat-option>
+                    </mat-select>
+                    <mat-error
+                      *ngIf="POFormGroup.get('AfterDunning1').touched && POFormGroup.get('AfterDunning1').hasError('required')">
+                      After Dunning1After Dunning1 is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div fxLayout>
+            <div fxFlex fxLayoutAlign="end">
+              <button class="floatBtn" mat-fab style="background-color: #f6b570;" (click)="ResetControl()">
+                <mat-icon style="color: white;">add</mat-icon>
+              </button>
             </div>
           </div>
-
-          <div fxLayout="row" fxLayoutAlign="space-between  center">
-            <div fxFlex="25">
-              <mat-form-field style="width: 100%;">
-                <mat-select matInput matNativeControl placeholder="Before Event" formControlName="BeforeEvent" multiple="true">
-                  <mat-option *ngFor="let Notification of Notifications" [value]="Notification">
-                    <span>{{Notification}}</span>
-                  </mat-option>
-                </mat-select>
-                <mat-error
-                  *ngIf="POFormGroup.get('BeforeEvent').touched && POFormGroup.get('BeforeEvent').hasError('required')">
-                  Before Event is required
-                </mat-error>
-              </mat-form-field>
-            </div>
-
-            <div fxFlex="25">
-              <mat-form-field style="width: 100%;">
-                <mat-select matInput matNativeControl placeholder="After Event" formControlName="AfterEvent" multiple="true">
-                  <mat-option *ngFor="let Notification of Notifications" [value]="Notification">
-                    <span>{{Notification}}</span>
-                  </mat-option>
-                </mat-select>
-                <mat-error
-                  *ngIf="POFormGroup.get('AfterEvent').touched && POFormGroup.get('AfterEvent').hasError('required')">
-                  AfterEvent is required
-                </mat-error>
-              </mat-form-field>
-            </div>
-
-            <div fxFlex="25">
-              <mat-form-field style="width: 100%;">
-                <mat-select matInput matNativeControl placeholder="After Dunning1" formControlName="AfterDunning1" multiple="true">
-                  <mat-option *ngFor="let Notification of Notifications" [value]="Notification">
-                    <span>{{Notification}}</span>
-                  </mat-option>
-                </mat-select>
-                <mat-error
-                  *ngIf="POFormGroup.get('AfterDunning1').touched && POFormGroup.get('AfterDunning1').hasError('required')">
-                  After Dunning1After Dunning1 is required
-                </mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-        </form>
+        </div>
       </div>
       <mat-card-actions class="m-0 pl-12 pr-16 cardActions">
         <div fxLayout fxFlex fxLayoutAlign="end">
-          <button mat-raised-button class="DeleteBtn mr-4 mb-8" >
+          <button mat-raised-button class="DeleteBtn mr-4 mb-8">
             Clear
           </button>
-          <button class="SaveBtn" mat-raised-button (click)="Create()">
-            Create</button>
+          <button class="SaveBtn" mat-raised-button (click)="SelectedPO.ID > 0?UpdatePO():CreatePO()">
+            {{SelectedPO.ID > 0 ?'Update':'Create'}}</button>
         </div>
       </mat-card-actions>
     </mat-card>

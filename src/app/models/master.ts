@@ -41,6 +41,20 @@ export class RoleWithApp {
     ModifiedOn?: Date;
     ModifiedBy: string;
 }
+export class PO {
+    ID: number;
+    UserId: Guid;
+    POType: string;
+    Stage: string[];
+    Level: string;
+    BeforeEvent: string[];
+    AfterEvent: string[];
+    AfterDunning1: string[];
+    CreatedOn: Date;
+    CreatedBy: string;
+    ModifiedOn?: Date;
+    ModifiedBy: string;
+}
 export class MenuApp {
     AppID: number;
     AppName: string;

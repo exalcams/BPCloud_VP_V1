@@ -137,4 +137,15 @@
         color: white;
         margin-bottom: 8px;
       }
+      .leftCard {
+        @include mat-elevation(2);
+        background: white;
+        border-left: 5px solid #efb577;
+        margin-left: 20px;
+        cursor: pointer !important;
+      }
+      .floatBtn {
+        position: fixed;
+        bottom: 80px !important;
+      }
 }
