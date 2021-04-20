@@ -22,6 +22,7 @@ import { DataMigrationComponent } from "./data-migration/data-migration.componen
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { ProductsComponent } from './products/products.component';
 import { CutomerWelcomeMessageComponent } from './cutomer-welcome-message/cutomer-welcome-message.component';
+import { POComponent } from './po/po.component';
 
 const menuRoutes: Routes = [
     {
@@ -64,6 +65,10 @@ const menuRoutes: Routes = [
         path: "welcomemsg",
         component: CutomerWelcomeMessageComponent,
     },
+    {
+        path: "po",
+        component: POComponent,
+    },
 ];
 @NgModule({
     declarations: [
@@ -76,7 +81,8 @@ const menuRoutes: Routes = [
         CardUpdateComponent,
         DataMigrationComponent,
         ProductsComponent,
-        CutomerWelcomeMessageComponent
+        CutomerWelcomeMessageComponent,
+        POComponent
     ],
     imports: [
         MatButtonModule,

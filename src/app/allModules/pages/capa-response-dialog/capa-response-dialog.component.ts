@@ -75,8 +75,10 @@ export class CapaResponseDialogComponent implements OnInit {
       this.IsAttachmentRequried = false;
     }
     if (this.Item.Status != null) {
-      this.ResponseStatus.push("Accept");
-      this.ResponseStatus.push("Reject");
+      if (this.Item.ActionStatus !== "Show") {
+        this.ResponseStatus.push("Accept");
+        this.ResponseStatus.push("Reject");
+      }
       // this.ResponseStatus.push("Open");
       //Item
       this.ResponseFormGroup.get('Text').patchValue(this.Item.Text);

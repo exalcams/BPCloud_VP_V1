@@ -70,7 +70,8 @@ export const locale = {
                 'SESSION': 'Session',
                 'SUPPORT': 'Support',
                 'LOGIN_HISTORY': 'Login History',
-                'PRODUCTS':'Products'
+                'PRODUCTS':'Products',
+                'PO':'PO'
             },
         },
         'DASHBOARD': {

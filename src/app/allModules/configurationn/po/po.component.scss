@@ -1,0 +1,140 @@
+@import "src/@fuse/scss/fuse";
+@import "src/@fuse/scss/fuse";
+#PO {
+    background-color: white;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        padding: 0px;
+        margin: 0px;
+    }
+    .progressBarPostion {
+        position: absolute !important;
+        top: 350px;
+        z-index: 1;
+        left: 55%;
+    }
+    .outer {
+        border-bottom: 1px solid rgba(255, 85, 0, 0.1);
+        position: relative;
+        z-index: 1;
+        .bg {
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-image: url("assets/images/header_2.png");
+            opacity: 0.1;
+            background-repeat: no-repeat;
+        }
+        width: 100%;
+        object-fit: contain;
+        line-height: 50px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .content-card1 {
+        display: flex;
+        flex: 1;
+        position: relative;
+        border-radius: 10px;
+    }
+    .side-bar {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        .sidenav-content {
+            overflow: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+    }
+    .side-bar-items {
+        text-decoration: none !important;
+        display: flex;
+        align-items: center;
+        height: 50px;
+        padding: 0 24px;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        border-radius: 0 25px 25px 0;
+        margin-right: 7px;
+    }
+    .search {
+        height: 36px;
+        line-height: 36px;
+        padding: 8px;
+        font-size: 13px;
+        // border-radius: 18px;
+        border: 1px solid;
+        overflow: hidden;
+        background-color: #ffffff;
+        border-color: #ffffff;
+        // border-color: rgba(0, 0, 0, 0.12);
+        @include mat-elevation(1);
+
+        mat-icon.s-16 {
+            color: rgba(0, 0, 0, 0.54) !important;
+        }
+
+        .icon {
+            margin: 0;
+            color: rgba(0, 0, 0, 0.54);
+        }
+
+        input {
+            padding: 0 12px 0 8px;
+            background-color: #ffffff;
+            height: 36px;
+            border: none;
+        }
+    }
+    .search {
+        height: 36px;
+        line-height: 36px;
+        padding: 8px;
+        font-size: 13px;
+        // border-radius: 18px;
+        border: 1px solid;
+        overflow: hidden;
+        background-color: #ffffff;
+        border-color: #ffffff;
+        // border-color: rgba(0, 0, 0, 0.12);
+        @include mat-elevation(1);
+        border: 1px solid #c3c3c3;
+        mat-icon.s-16 {
+            color: rgba(0, 0, 0, 0.54) !important;
+        }
+
+        .icon {
+            margin: 0;
+            color: rgba(0, 0, 0, 0.54);
+        }
+
+        input {
+            padding: 0 12px 0 8px;
+            background-color: #ffffff;
+            height: 36px;
+            border: none;
+        }
+    }
+    .cardActions {
+        box-shadow: 0 -5px 10px 0 rgba(0, 0, 0, 0.16);
+      }
+      .DeleteBtn {
+        background-color: white;
+        color: #efb577;
+      }
+      .SaveBtn {
+        background-color: #efb577;
+        color: white;
+        margin-bottom: 8px;
+      }
+}
