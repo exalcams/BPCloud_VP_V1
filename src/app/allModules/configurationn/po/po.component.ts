@@ -107,7 +107,7 @@ export class POComponent implements OnInit {
       (err)=>
       {
         this.notificationSnackBarComponent.openSnackBar(err,SnackBarStatus.danger);
-        console.log(err);
+        console.log(err); 
       }
     );
   }
