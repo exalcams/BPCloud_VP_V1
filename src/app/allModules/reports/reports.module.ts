@@ -58,12 +58,17 @@ import "chartjs-plugin-annotation";
 import { NgImageSliderModule } from "ng-image-slider";
 import { TranslateModule } from '@ngx-translate/core';
 import { ReportComponent } from './report/report.component';
+import { SupplierEvaluationComponent } from './supplier-evaluation/supplier-evaluation.component';
 // import 'chart.piecelabel.js';
 
 const routes = [
     {
         path: "report",
         component: ReportComponent,
+    },
+    {
+        path: "evaluation",
+        component: SupplierEvaluationComponent,
     },
     {
         path: "**",
@@ -143,6 +148,7 @@ const routes = [
     ],
     declarations: [
         ReportComponent,
+        SupplierEvaluationComponent,
     ],
     providers: [DecimalPipe],
     entryComponents: [],

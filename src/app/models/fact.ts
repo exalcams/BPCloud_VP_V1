@@ -228,3 +228,15 @@ export class BPCAttach {
     AttachmentID: number
     AttachmentName: string
 }
+export class BPCSE extends CommonClass {
+    Client: string;
+    Company: string;
+    Type: string;
+    PatnerID: string;
+    Period: Date | string;
+    ECriteria: string;
+    ECriteriaText: string;
+    ParentECriteria: string;
+    ParentECriteriaText: string;
+    Percentage: number;
+}

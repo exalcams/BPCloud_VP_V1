@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpEvent, HttpResponse } f
 import { AuthService } from './auth.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { BPCFactContactPerson, BPCFactBank, BPCKRA, BPCAIACT, BPCFactView, BPCFact, BPCCertificate, BPCFactXLSX, BPCFactBankXLSX, FactViewSupport, BPCCertificateAttachment, BPCAttachments, BPCAttach } from 'app/models/fact';
+import { BPCFactContactPerson, BPCFactBank, BPCKRA, BPCAIACT, BPCFactView, BPCFact, BPCCertificate, BPCFactXLSX, BPCFactBankXLSX, FactViewSupport, BPCCertificateAttachment, BPCAttachments, BPCAttach, BPCSE } from 'app/models/fact';
 import { AnimationKeyframesSequenceMetadata } from '@angular/animations';
 // import { BPCFactContactPerson, BPCFactBank, BPCKRA, BPCAIACT, BPCFactView, BPCFact, BPCFactBankXLSX, BPCFactXLSX } from 'app/models/fact';
 
@@ -53,35 +53,35 @@ export class FactService {
   }
   UpdateAttachment(Attachment: BPCAttachments[]): Observable<any> {
     const formData: FormData = new FormData();
-    Attachment.forEach(x=>{
+    Attachment.forEach(x => {
       if (x.AttachmentFile) {
-        formData.append(x.AttachmentFile.name, x.AttachmentFile,x.AttachmentFile.name);
-    }
+        formData.append(x.AttachmentFile.name, x.AttachmentFile, x.AttachmentFile.name);
+      }
 
-  
+
     });
     formData.append('Client', Attachment[0].Client);
     formData.append('Company', Attachment[0].Company)
-    formData.append('PatnerID',  Attachment[0].PatnerID);
-    formData.append('ReferenceNo',  Attachment[0].ReferenceNo);
+    formData.append('PatnerID', Attachment[0].PatnerID);
+    formData.append('ReferenceNo', Attachment[0].ReferenceNo);
     formData.append('Type', Attachment[0].Type);
-   
+
     return this._httpClient.post<any[]>(`${this.baseAddress}factapi/Fact/UpdateAttachment`,
-    formData,
+      formData,
       // {
       //   headers: new HttpHeaders({
       //     'Content-Type': 'application/json'
       //   })
       // }
-      ).pipe(catchError(this.errorHandler));
+    ).pipe(catchError(this.errorHandler));
   }
-//#region  GettAttchmentByAttId
+  //#region  GettAttchmentByAttId
 
-  GettAttchmentByAttId(AttachmentID: number): Observable<BPCAttachments |any> {
+  GettAttchmentByAttId(AttachmentID: number): Observable<BPCAttachments | any> {
     return this._httpClient.get<BPCAttachments>(`${this.baseAddress}factapi/Fact/GettAttchmentByAttId?AttachmentID=${AttachmentID}`)
       .pipe(catchError(this.errorHandler));
   }
-//#endregion
+  //#endregion
   CreateFact(Fact: BPCFactView): Observable<any> {
     return this._httpClient.post<any>(`${this.baseAddress}factapi/Fact/CreateFact`,
       Fact,
@@ -161,7 +161,7 @@ export class FactService {
   CreateKRAs(KRAs: BPCKRA[], PartnerID: string): Observable<BPCKRA[] | string> {
     console.log("KRA Data sent to api:", KRAs);
     return this._httpClient.post<any>(`${this.baseAddress}factapi/Fact/CreateKRAs?PartnerId=${PartnerID}`,
-    KRAs,
+      KRAs,
       {
         headers: new HttpHeaders({
           'Content-Type': 'application/json'
@@ -197,7 +197,7 @@ export class FactService {
 
   UpdateAIACTs(SeqNos: number[]): Observable<any> {
     return this._httpClient.post<any>(`${this.baseAddress}factapi/Fact/UpdateAIACTs`,
-    SeqNos,
+      SeqNos,
       {
         headers: new HttpHeaders({
           'Content-Type': 'application/json'
@@ -396,5 +396,53 @@ export class FactService {
         }),
         catchError(this.errorHandler)
       );
+  }
+
+  GetAllSEs(): Observable<BPCSE[] | string> {
+    return this._httpClient
+      .get<BPCSE[]>(
+        `${this.baseAddress}factapi/Fact/GetAllSEs`
+      )
+      .pipe(catchError(this.errorHandler));
+  }
+  GetSEsByPartnerID(PartnerID: string): Observable<BPCSE[] | string> {
+    return this._httpClient
+      .get<BPCSE[]>(
+        `${this.baseAddress}factapi/Fact/GetSEsByPartnerID?PartnerID=${PartnerID}`
+      )
+      .pipe(catchError(this.errorHandler));
+  }
+  CreateHSN(role: BPCSE): Observable<any> {
+    return this._httpClient.post<any>(
+      `${this.baseAddress}factapi/Fact/CreateSE`,
+      role,
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json",
+        }),
+      }
+    );
+  }
+  UpdateHSN(role: BPCSE): Observable<any> {
+    return this._httpClient.post<any>(
+      `${this.baseAddress}factapi/Fact/UpdateSE`,
+      role,
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json",
+        }),
+      }
+    );
+  }
+  DeleteHSN(role: BPCSE): Observable<any> {
+    return this._httpClient.post<any>(
+      `${this.baseAddress}factapi/Fact/DeleteSE`,
+      role,
+      {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json",
+        }),
+      }
+    );
   }
 }
