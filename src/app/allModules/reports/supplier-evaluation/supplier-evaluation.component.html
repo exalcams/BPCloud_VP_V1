@@ -54,16 +54,23 @@
           </div>
         </div>
       </div> -->
-      <!-- <div class="ml-20 mr-20" fxFlex="100">
+      <div class="ml-20 mr-20" fxFlex="100">
         <form autocomplete="off" name="form" novalidate [formGroup]="SearchFormGroup">
           <div fxLayout="row" fxLayoutAlign="start center">
-            <mat-form-field appearance="outline" fxFlex="20" class="mr-8">
-              <input matInput placeholder="Document" formControlName="DocumentID">
-            </mat-form-field>
-            <mat-form-field appearance="outline" fxFlex="20" class="mr-8">
-              <input matInput placeholder="Profit Center" formControlName="ProfitCenter">
+            <mat-form-field appearance="outline" fxFlex="25" class="mr-8">
+              <input matInput placeholder="Criteria" formControlName="Criteria">
             </mat-form-field>
             <mat-form-field appearance="outline" fxFlex="25" class="mr-8">
+              <input matInput placeholder="Parent Criteria" formControlName="ParentCriteria">
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="25" class="mr-8">
+              <input matInput placeholder="Percentage" formControlName="Percentage">
+            </mat-form-field>
+            <div fxFlex align="end">
+              <button mat-raised-button class="SaveBtn" (click)="SearchClicked('Search')"
+                [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">Search</button>
+            </div>
+            <!-- <mat-form-field appearance="outline" fxFlex="25" class="mr-8">
               <input matInput placeholder="From Date" [matDatepicker]="picker1" formControlName="FromDate"
                 (dateChange)="DateSelected()">
               <mat-datepicker-toggle matSuffix [for]="picker1">
@@ -83,18 +90,17 @@
               <div *ngIf="isDateError" class="DateError mb-12 ml-12">
                 To date should not be less than from date
               </div>
-            </div>
+            </div> -->
           </div>
-          <div fxLayout="row" fxLayoutAlign="start start">
-          </div>
-          <div fxLayout="row" fxLayoutAlign="start center">
+
+          <!-- <div fxLayout="row" fxLayoutAlign="start center">
             <div fxFlex align="end">
               <button mat-raised-button class="SaveBtn" (click)="SearchClicked('Search')"
                 [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">Search</button>
             </div>
-          </div>
+          </div> -->
         </form>
-      </div> -->
+      </div>
     </div>
     <div class="px-20 pb-20">
       <div fxLayout="row" class="mt-20" fxLayoutAlign="start center">
@@ -111,7 +117,7 @@
           <button (click)="exportAsXLSX()" class="excelBtn mx-24" mat-stroked-button>
             <img class="excelImg" src="assets/images/excel.png">
           </button>
-          <img style="display: none;" class="expandImg" src="assets/images/expand.png" (click)="expandClicked()">
+          <img class="expandImg" src="assets/images/expand.png" (click)="expandClicked()">
         </div>
       </div>
 
