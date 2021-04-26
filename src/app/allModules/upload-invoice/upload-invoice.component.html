@@ -81,10 +81,14 @@
                   <div fxFlex="33">
                     <mat-form-field style="width: 100%;">
                       <input matInput placeholder="Invoice No (16 Char)" formControlName="InvoiceNumber">
+                      <mat-error *ngIf="flipFormGroup.get('InvoiceNumber').hasError('qty1')">
+                        Please select a valid invoice document
+                      </mat-error>
                       <mat-error
                         *ngIf="flipFormGroup.get('InvoiceNumber').touched && flipFormGroup.get('InvoiceNumber').hasError('required')">
                         Invoice Number is required
                       </mat-error>
+
                       <mat-error *ngIf="flipFormGroup.get('InvoiceNumber').touched && !flipFormGroup.get('InvoiceNumber').hasError('required')
                       &&flipFormGroup.get('InvoiceNumber').hasError('pattern')">
                         Please enter valid Invoice Number
@@ -97,6 +101,7 @@
                       &&(flipFormGroup.get('InvoiceNumber').hasError('maxlength'))">
                         Maximum allowed character is 16
                       </mat-error>
+                     
                     </mat-form-field>
                   </div>
                   <div fxFlex="33">
@@ -164,7 +169,7 @@
                       Add Attachment
                     </span>
                     <input hidden type="file" #fileInput1 id="file" (change)="handleFileInput($event)"
-                      accept="image/x-png,image/gif,image/jpeg,image/jpg,application/pdf" />
+                      />
                     <div fxFlex class="m-8" fxLayout="column" *ngIf="fileToUpload" (click)="OpenAttachmentDialog()"
                       style="cursor: pointer !important;margin-left: 20px !important;">
                       <div fxFlex style="font-size: 10px; color: #1e8bed;

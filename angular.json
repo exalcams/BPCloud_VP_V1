@@ -35,7 +35,9 @@
             "scripts": [
               {
                 "input": "node_modules/document-register-element/build/document-register-element.js"
-              }
+              },
+              "src/assets/js/preview.js",
+              "node_modules/jquery/dist/jquery.min.js"
             ],
             "showCircularDependencies": false
           },
@@ -108,7 +110,10 @@
               },
               "styles.scss"
             ],
-            "scripts": [],
+            "scripts": [
+              "src/assets/js/preview.js",
+              "node_modules/jquery/dist/jquery.min.js"
+            ],
             "assets": [
               "src/favicon.ico",
               "src/assets"

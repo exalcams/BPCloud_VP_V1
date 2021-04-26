@@ -31,6 +31,11 @@ import { T } from '@angular/core/src/render3';
 // import { PdfReaderService } from 'app/services/pdf-reader.service';
 // import Tesseract from 'tesseract.js';
 // import { PDFExtract, PDFExtractOptions } from 'pdf.js-extract';
+declare function getTxtFrmPdf(url: any, invoicenum: any): any;
+declare function GetPdfImages(url: any): any;
+
+declare function foo(): any;
+
 
 @Component({
   selector: 'app-upload-invoice',
@@ -109,6 +114,10 @@ export class UploadInvoiceComponent implements OnInit {
   SelectFlipCostTableRow: BPCFLIPCost;
   ActionLog: any;
   ItemID: number = 0;
+  fileToUpload1: File = null;
+  ImageUrl: any;
+  x_unit8: Uint8Array;
+  Result = 'Recognizing...';
 
   constructor(
     private _fuseConfigService: FuseConfigService,
@@ -866,82 +875,180 @@ export class UploadInvoiceComponent implements OnInit {
 
   }
 
-  handleFileInput(evt): void {
-    if (evt.target.files && evt.target.files.length > 0) {
-      this.fileToUpload = evt.target.files[0];
-      // this.pdfReader.readPdf('./assets/SOC.pdf')
-      //   .then(text => {
-      //     alert('PDF parsed: ' + text);
-      //   }
-      //     , reason => {
-      //       console.error(reason);
-      //     });
-      // const pdfUtil = require('pdf-to-text');
-      // const pdf_path = "assets/SOC.pdf";
+  async handleFileInput(evt) {
 
-      // pdfUtil.info(pdf_path, function(err, info) {
-      //     if (err) throw(err);
-      //     console.log(info);
-      // });
-      // var path = require('path')
-      // var filePath = path.join(__dirname, 'test/data/multipage.pdf')
-      // var extract = require('pdf-text-extract');
-      // extract(filePath, function (err, pages) {
-      //   if (err) {
-      //     console.dir(err);
-      //     return;
-      //   }
-      //   console.dir(pages);
-      // });
-      // this.isProgressBarVisibile = true;
-      // const pdfExtract = new PDFExtract();
-      // const options: PDFExtractOptions = {}; /* see below */
-      // pdfExtract.extract('assets/SOC.pdf', options)
-      //   .then(data => {
-      //     this.isProgressBarVisibile = false;
-      //     console.log(data);
-      //   })
-      //   .catch(err => {
-      //     this.isProgressBarVisibile = false;
-      //     console.log(err);
-      //   });
+    //  FileList files
+    const invoicenum = this.flipFormGroup.get("InvoiceNumber").value;
 
-      // Tesseract.recognize(
-      //   this.fileToUpload
-      // ).then(result => {
-      //   this.isProgressBarVisibile = false;
-      //   // console.log(result);
-      //   if (result.data && result.data.text) {
-      //     const invNumber = this.flipFormGroup.get('InvoiceNumber').value;
-      //     if (!result.data.text.includes(invNumber)) {
-      //       this.notificationSnackBarComponent.openSnackBar('Please select a valid invoice copy', SnackBarStatus.danger);
-      //       this.fileToUpload = null;
-      //     }
-      //   } else {
-      //     this.notificationSnackBarComponent.openSnackBar('Please select a valid invoice copy', SnackBarStatus.danger);
-      //     this.fileToUpload = null;
-      //   }
-      // }).catch(err => {
-      //   this.isProgressBarVisibile = false;
-      //   console.error(err);
-      // });
 
-      // Tesseract.recognize('https://tesseract.projectnaptha.com/img/eng_bw.png')
-      //   // .progress(message => console.log(message))
-      //   .catch(err => console.error(err))
-      //   .then(result => console.log(result));
-      // .finally(resultOrError => console.log(resultOrError));
-      // Tesseract
-      //   .recognize(this.fileToUpload)
-      //   .progress(console.log)
-      //   .then((res: any) => {
-      //     console.log(res);
-      //   })
-      //   .catch(console.error);
-      // this.fileToUploadList.push(this.fileToUpload);
+    const files = evt.target.files;
+
+    // Create a Blog object for selected file & define MIME type
+    const blob = new Blob(evt.target.files, { type: evt.target.files[0].type });
+    // Create Blog URL 
+    var url = window.URL.createObjectURL(blob);
+
+    if (files.item(0).type == "application/pdf") {
+      getTxtFrmPdf(url, invoicenum).then((z) => {
+        console.log('textfromts:', z);
+        if (z < 1) {
+          this.fileToUpload = null;
+          this.flipFormGroup.get('InvoiceNumber').setErrors({ qty1: true })
+          this.flipFormGroup.get('InvoiceNumber').markAsTouched();
+
+
+        }
+
+        else {
+          this.fileToUpload = evt.target.files[0];
+
+          this.flipFormGroup.get('InvoiceNumber').valid;
+
+          this.flipFormGroup.get('InvoiceNumber').markAsUntouched();
+
+        }
+
+      });
     }
+    else {
+      this.isProgressBarVisibile = true;
+
+      const a = await this.Tesseract(url, invoicenum);
+      if (a < 1) {
+        this.isProgressBarVisibile = false;
+
+        this.fileToUpload = null;
+
+        this.flipFormGroup.get('InvoiceNumber').setErrors({ qty1: true })
+        this.flipFormGroup.get('InvoiceNumber').markAsTouched();
+
+
+      }
+
+      else {
+        this.isProgressBarVisibile = false;
+
+        this.fileToUpload = evt.target.files[0];
+
+        this.flipFormGroup.get('InvoiceNumber').valid;
+
+        this.flipFormGroup.get('InvoiceNumber').markAsUntouched();
+
+      }
+
+
+    }
+    // end
+
+    // this.pdfReader.readPdf('./assets/SOC.pdf')
+    //   .then(text => {
+    //     alert('PDF parsed: ' + text);
+    //   }
+    //     , reason => {
+    //       console.error(reason);
+    //     });
+    // const pdfUtil = require('pdf-to-text');
+    // const pdf_path = "assets/SOC.pdf";
+
+    // pdfUtil.info(pdf_path, function(err, info) {
+    //     if (err) throw(err);
+    //     console.log(info);
+    // });
+    // var path = require('path')
+    // var filePath = path.join(__dirname, 'test/data/multipage.pdf')
+    // var extract = require('pdf-text-extract');
+    // extract(filePath, function (err, pages) {
+    //   if (err) {
+    //     console.dir(err);
+    //     return;
+    //   }
+    //   console.dir(pages);
+    // });
+    // this.isProgressBarVisibile = true;
+    // const pdfExtract = new PDFExtract();
+    // const options: PDFExtractOptions = {}; /* see below */
+    // pdfExtract.extract('assets/SOC.pdf', options)
+    //   .then(data => {
+    //     this.isProgressBarVisibile = false;
+    //     console.log(data);
+    //   })
+    //   .catch(err => {
+    //     this.isProgressBarVisibile = false;
+    //     console.log(err);
+    //   });
+
+    // Tesseract.recognize(
+    //   this.fileToUpload
+    // ).then(result => {
+    //   this.isProgressBarVisibile = false;
+    //   // console.log(result);
+    //   if (result.data && result.data.text) {
+    //     const invNumber = this.flipFormGroup.get('InvoiceNumber').value;
+    //     if (!result.data.text.includes(invNumber)) {
+    //       this.notificationSnackBarComponent.openSnackBar('Please select a valid invoice copy', SnackBarStatus.danger);
+    //       this.fileToUpload = null;
+    //     }
+    //   } else {
+    //     this.notificationSnackBarComponent.openSnackBar('Please select a valid invoice copy', SnackBarStatus.danger);
+    //     this.fileToUpload = null;
+    //   }
+    // }).catch(err => {
+    //   this.isProgressBarVisibile = false;
+    //   console.error(err);
+    // });
+
+    // Tesseract.recognize('https://tesseract.projectnaptha.com/img/eng_bw.png')
+    //   // .progress(message => console.log(message))
+    //   .catch(err => console.error(err))
+    //   .then(result => console.log(result));
+    // .finally(resultOrError => console.log(resultOrError));
+    // Tesseract
+    //   .recognize(this.fileToUpload)
+    //   .progress(console.log)
+    //   .then((res: any) => {
+    //     console.log(res);
+    //   })
+    //   .catch(console.error);
+    // this.fileToUploadList.push(this.fileToUpload);
+    // }
   }
 
+  Tesseract(url, invoicenum) {
+    let x = 0;
+    let y = 0;
+    return Tesseract.recognize(url).then(function (result) {
+
+
+
+
+      const text = result.data.text;
+      const word = invoicenum;
+      console.log("text", text);
+
+
+      for (let i = 0; i < text.length; i++) {
+
+        if (text[i] == word[0]) {
+          for (let j = i; j < i + word.length; j++) {
+
+            if (text[j] == word[j - i]) {
+              y++;
+            }
+            if (y == word.length) {
+              x++;
+            }
+          }
+          y = 0;
+        }
+      }
+      console.log("y", y);
+      console.log("x", x);
+
+    }).then(() => {
+
+      return x;
+    })
+  }
   numberOnly(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
     if (charCode === 8 || charCode === 9 || charCode === 13 || charCode === 46
