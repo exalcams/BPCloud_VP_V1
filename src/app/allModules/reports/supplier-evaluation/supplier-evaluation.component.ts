@@ -132,10 +132,9 @@ export class SupplierEvaluationComponent implements OnInit {
 
   InitializeSearchForm(): void {
     this.SearchFormGroup = this.formBuilder.group({
-      DocumentID: [''],
-      ProfitCenter: [''],
-      FromDate: [this.DefaultFromDate],
-      ToDate: [this.DefaultToDate]
+      Criteria: [''],
+      ParentCriteria: [''],
+      Percentage: [''],
     });
   }
   ResetControl(): void {
@@ -181,37 +180,38 @@ export class SupplierEvaluationComponent implements OnInit {
       if (text != null) {
         this.CreateActionLogvalues(text);
       }
-      if (!this.isDateError) {
-        const FrDate = this.SearchFormGroup.get('FromDate').value;
-        let FromDate = '';
-        if (FrDate) {
-          FromDate = this._datePipe.transform(FrDate, 'yyyy-MM-dd');
-        }
-        const TDate = this.SearchFormGroup.get('ToDate').value;
-        let ToDate = '';
-        if (TDate) {
-          ToDate = this._datePipe.transform(TDate, 'yyyy-MM-dd');
-        }
-        const DocumentID = this.SearchFormGroup.get('DocumentID').value;
-        const ProfitCenter = this.SearchFormGroup.get('ProfitCenter').value;
-        this.IsProgressBarVisibile = true;
-        // this.paymentService.FilterSEByPartnerID(this.currentUserName, DocumentID,ProfitCenter, FromDate, ToDate).subscribe(
-        //   (data) => {
-        //     this.SEs = data as BPCSE[];
-        //     // this.BPCSE=this.SEs;
-        //     this.tableDataSource = new MatTableDataSource(this.SEs);
-        //     this.tableDataSource.paginator = this.tablePaginator;
-        //     this.tableDataSource.sort = this.tableSort;
-        //     this.render = true;
-        //     this.IsProgressBarVisibile = false;
+      // if (!this.isDateError) {
+      //   const FrDate = this.SearchFormGroup.get('FromDate').value;
+      //   let FromDate = '';
+      //   if (FrDate) {
+      //     FromDate = this._datePipe.transform(FrDate, 'yyyy-MM-dd');
+      //   }
+      //   const TDate = this.SearchFormGroup.get('ToDate').value;
+      //   let ToDate = '';
+      //   if (TDate) {
+      //     ToDate = this._datePipe.transform(TDate, 'yyyy-MM-dd');
+      //   }
+      const Criteria = this.SearchFormGroup.get('Criteria').value;
+      const ParentCriteria = this.SearchFormGroup.get('ParentCriteria').value;
+      const Percentage = this.SearchFormGroup.get('Percentage').value;
+      this.IsProgressBarVisibile = true;
+      this._factService.FilterSEs(Criteria, ParentCriteria, Percentage).subscribe(
+        (data) => {
+          this.SEs = data as BPCSE[];
+          // this.BPCSE=this.SEs;
+          this.tableDataSource = new MatTableDataSource(this.SEs);
+          this.tableDataSource.paginator = this.tablePaginator;
+          this.tableDataSource.sort = this.tableSort;
+          this.render = true;
+          this.IsProgressBarVisibile = false;
 
-        //   },
-        //   (err) => {
-        //     console.error(err);
-        //     this.IsProgressBarVisibile = false;
-        //   }
-        // );
-      }
+        },
+        (err) => {
+          console.error(err);
+          this.IsProgressBarVisibile = false;
+        }
+      );
+      // }
     } else {
       this.ShowValidationErrors(this.SearchFormGroup);
     }
@@ -310,11 +310,11 @@ export class SupplierEvaluationComponent implements OnInit {
     dialogRef.afterClosed().subscribe(
       result => {
         if (result) {
-          
+
         }
       });
   }
-  
+
   CreateActionLogvalues(text): void {
     this.ActionLog = new ActionLog();
     this.ActionLog.UserID = this.currentUserID;

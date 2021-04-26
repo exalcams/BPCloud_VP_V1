@@ -405,10 +405,24 @@ export class FactService {
       )
       .pipe(catchError(this.errorHandler));
   }
+  FilterSEs(Criteria: string, ParentCriteria: string, Percentage: number | string | null): Observable<BPCSE[] | string> {
+    return this._httpClient
+      .get<BPCSE[]>(
+        `${this.baseAddress}factapi/Fact/FilterSEs?Criteria=${Criteria}&ParentCriteria=${ParentCriteria}&Percentage=${Percentage}`
+      )
+      .pipe(catchError(this.errorHandler));
+  }
   GetSEsByPartnerID(PartnerID: string): Observable<BPCSE[] | string> {
     return this._httpClient
       .get<BPCSE[]>(
         `${this.baseAddress}factapi/Fact/GetSEsByPartnerID?PartnerID=${PartnerID}`
+      )
+      .pipe(catchError(this.errorHandler));
+  }
+  FilterSEByPartnerID(PartnerID: string, Criteria: string, ParentCriteria: string, Percentage: number | string | null): Observable<BPCSE[] | string> {
+    return this._httpClient
+      .get<BPCSE[]>(
+        `${this.baseAddress}factapi/Fact/FilterSEByPartnerID?PartnerID=${PartnerID}&Criteria=${Criteria}&ParentCriteria=${ParentCriteria}&Percentage=${Percentage}`
       )
       .pipe(catchError(this.errorHandler));
   }
