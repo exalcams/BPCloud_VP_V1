@@ -82,12 +82,13 @@ export class BPCPayDis extends CommonClass {
     InvoiceDate: Date | string | null;
     InvoiceAmount: number;
     PaidAmount: number;
-    BalanceAmount: string;
+    BalanceAmount: number;
     DueDate: Date | string | null;
     ProposedDueDate: Date | string | null;
     ProposedDiscount: number;
     PostDiscountAmount: number;
     ProfitCenter: string;
+    Plant: string;
     Status: string;
     ApprovedOn: Date | string | null;
     ApprovedBy: string;

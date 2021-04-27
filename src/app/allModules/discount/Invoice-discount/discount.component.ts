@@ -40,7 +40,7 @@ export class DiscountComponent implements OnInit {
   constructor(private dialog: MatDialog,
     private _discountService: DiscountService,
     private _router: Router,
-    private _authService:AuthService,
+    private _authService: AuthService,
     private _fuseConfigService: FuseConfigService,
     public snackBar: MatSnackBar) {
     this.isProgressBarVisibile = false;

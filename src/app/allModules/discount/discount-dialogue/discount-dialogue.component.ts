@@ -19,7 +19,7 @@ export class DiscountDialogueComponent implements OnInit {
   discountFormGroup: FormGroup;
   discountData: BPCPayDis = new BPCPayDis();
   discountMaster: BPCDiscountMaster[];
-  isChange: boolean = false;
+  isChange = false;
   ActionLog: any;
   authenticationDetails: any;
   currentUserID: any;
@@ -54,7 +54,7 @@ export class DiscountDialogueComponent implements OnInit {
       // }
 
     }
-    console.log("dialogData", this.dialogData);
+    // console.log("dialogData", this.dialogData);
     if (this.dialogData.isBuyer) {
       this.discountData = this.dialogData;
       this.discountFormGroup.get('RemainingDays').setValue(this.CalculateRmDays());
@@ -68,7 +68,7 @@ export class DiscountDialogueComponent implements OnInit {
       this.discountFormGroup.get('DiscountProposed').disable();
       this.discountFormGroup.get('PostDiscountAmount').disable();
       this._discountService.FilterBPCPayDiscount(this.dialogData).subscribe(x => {
-        console.log("FormAPI", x);
+        // console.log("FormAPI", x);
         if (x != null) {
           this.isChange = true;
           this.discountFormGroup.get('EPRD').disable();
@@ -92,11 +92,12 @@ export class DiscountDialogueComponent implements OnInit {
           this.discountData.BalanceAmount = this.dialogData.BalanceAmount;
           this.discountData.DueDate = this.dialogData.DueDate;
           this.discountData.ProfitCenter = this.dialogData.ProfitCenter;
+          this.discountData.Plant = this.dialogData.Plant;
         }
       });
       this.discountFormGroup.get('RemainingDays').setValue(this.CalculateRmDays());
       this._discountService.GetDiscountMasters().subscribe(x => {
-        console.log(x);
+        // console.log(x);
         this.discountMaster = x;
       });
     }
@@ -104,40 +105,48 @@ export class DiscountDialogueComponent implements OnInit {
   CalculateRmDays(): number {
     const today = new Date();
     const dueDay = new Date(this.dialogData.DueDate);
-    var Difference_In_Time = dueDay.getTime() - today.getTime();
-    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+    const Difference_In_Time = dueDay.getTime() - today.getTime();
+    const Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
     return Math.round(Difference_In_Days);
   }
-  handleERPD() {
-    var key = this.discountFormGroup.get('EPRD').value;
+  handleERPD(): void {
+    const key = this.discountFormGroup.get('EPRD').value;
     if (key == null) {
       this.discountFormGroup.get('DiscountProposed').setValue(null);
       this.discountFormGroup.get('PostDiscountAmount').setValue(null);
     }
     else {
-      var percentage = this.CalculateDiscountPercentage(key);
+      const percentage = this.CalculateDiscountPercentage(key);
       this.discountFormGroup.get('DiscountProposed').setValue(percentage);
       this.discountFormGroup.get('PostDiscountAmount').setValue(this.CalculatePostDiscount(percentage));
     }
   }
   CalculatePostDiscount(percentage: number): number {
-    var result = this.dialogData.BalanceAmount - ((this.dialogData.BalanceAmount / 100) * percentage);
+    const result = this.dialogData.BalanceAmount - ((this.dialogData.BalanceAmount / 100) * percentage);
     // console.log(result);
     return result;
   }
   CalculateDiscountPercentage(days: number): number {
-    if (days < this.discountMaster[0].Days) {
-      return 0;
-    }
-    for (let i = this.discountMaster.length - 1; i >= 0; i--) {
-      if (days >= this.discountMaster[i].Days) {
-        return this.discountMaster[i].Discount;
+    // if (days < this.discountMaster[0].Days) {
+    //   return 0;
+    // }
+    // for (let i = this.discountMaster.length - 1; i >= 0; i--) {
+    //   if (days >= this.discountMaster[i].Days) {
+    //     return this.discountMaster[i].Discount;
+    //   }
+    // }
+    for (let i = 0; i <= this.discountMaster.length - 1; i++) {
+      if (this.discountData.BalanceAmount >= this.discountMaster[i].Amount) {
+        if (days <= this.discountMaster[i].Days) {
+          return this.discountMaster[i].Discount;
+        }
       }
+     
     }
     return 0;
   }
   addDays(days: number): Date {
-    var date = new Date();
+    const date = new Date();
     date.setDate(date.getDate() + days);
     return date;
   }
@@ -163,7 +172,7 @@ export class DiscountDialogueComponent implements OnInit {
         this.discountData.ProposedDueDate = this.addDays(this.discountFormGroup.get('EPRD').value);
         this.discountData.ProposedDiscount = this.discountFormGroup.get('DiscountProposed').value;
         this.discountData.PostDiscountAmount = this.discountFormGroup.get('PostDiscountAmount').value;
-        console.log("onClose", this.discountData);
+       // console.log("onClose", this.discountData);
         this.dialogRef.close(this.discountData);
       }
     }
@@ -188,8 +197,8 @@ export class DiscountDialogueComponent implements OnInit {
 
   }
 
-  ChangeClicked() {
-    this.CreateActionLogvalues("Change")
+  ChangeClicked(): void {
+    this.CreateActionLogvalues("Change");
     this.isChange = false;
     this.discountFormGroup.get('EPRD').enable();
   }

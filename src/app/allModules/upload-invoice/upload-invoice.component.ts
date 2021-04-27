@@ -113,7 +113,7 @@ export class UploadInvoiceComponent implements OnInit {
   SelectedFlipCostTableIndex = -1;
   SelectFlipCostTableRow: BPCFLIPCost;
   ActionLog: any;
-  ItemID: number = 0;
+  ItemID = 0;
   fileToUpload1: File = null;
   ImageUrl: any;
   x_unit8: Uint8Array;
@@ -875,6 +875,7 @@ export class UploadInvoiceComponent implements OnInit {
 
   }
 
+  // tslint:disable-next-line:typedef
   async handleFileInput(evt) {
 
     //  FileList files
@@ -886,14 +887,14 @@ export class UploadInvoiceComponent implements OnInit {
     // Create a Blog object for selected file & define MIME type
     const blob = new Blob(evt.target.files, { type: evt.target.files[0].type });
     // Create Blog URL 
-    var url = window.URL.createObjectURL(blob);
+    const url = window.URL.createObjectURL(blob);
 
-    if (files.item(0).type == "application/pdf") {
+    if (files.item(0).type === "application/pdf") {
       getTxtFrmPdf(url, invoicenum).then((z) => {
         console.log('textfromts:', z);
         if (z < 1) {
           this.fileToUpload = null;
-          this.flipFormGroup.get('InvoiceNumber').setErrors({ qty1: true })
+          this.flipFormGroup.get('InvoiceNumber').setErrors({ qty1: true });
           this.flipFormGroup.get('InvoiceNumber').markAsTouched();
 
 
@@ -902,7 +903,7 @@ export class UploadInvoiceComponent implements OnInit {
         else {
           this.fileToUpload = evt.target.files[0];
 
-          this.flipFormGroup.get('InvoiceNumber').valid;
+          // this.flipFormGroup.get('InvoiceNumber').valid;
 
           this.flipFormGroup.get('InvoiceNumber').markAsUntouched();
 
@@ -919,7 +920,7 @@ export class UploadInvoiceComponent implements OnInit {
 
         this.fileToUpload = null;
 
-        this.flipFormGroup.get('InvoiceNumber').setErrors({ qty1: true })
+        this.flipFormGroup.get('InvoiceNumber').setErrors({ qty1: true });
         this.flipFormGroup.get('InvoiceNumber').markAsTouched();
 
 
@@ -930,7 +931,7 @@ export class UploadInvoiceComponent implements OnInit {
 
         this.fileToUpload = evt.target.files[0];
 
-        this.flipFormGroup.get('InvoiceNumber').valid;
+        // this.flipFormGroup.get('InvoiceNumber').valid;
 
         this.flipFormGroup.get('InvoiceNumber').markAsUntouched();
 
@@ -1013,28 +1014,23 @@ export class UploadInvoiceComponent implements OnInit {
     // }
   }
 
-  Tesseract(url, invoicenum) {
+  Tesseract(url, invoicenum): any {
     let x = 0;
     let y = 0;
+    // tslint:disable-next-line:typedef
     return Tesseract.recognize(url).then(function (result) {
-
-
-
-
       const text = result.data.text;
       const word = invoicenum;
       console.log("text", text);
-
-
       for (let i = 0; i < text.length; i++) {
 
-        if (text[i] == word[0]) {
+        if (text[i] === word[0]) {
           for (let j = i; j < i + word.length; j++) {
 
-            if (text[j] == word[j - i]) {
+            if (text[j] === word[j - i]) {
               y++;
             }
-            if (y == word.length) {
+            if (y === word.length) {
               x++;
             }
           }
@@ -1047,7 +1043,7 @@ export class UploadInvoiceComponent implements OnInit {
     }).then(() => {
 
       return x;
-    })
+    });
   }
   numberOnly(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
