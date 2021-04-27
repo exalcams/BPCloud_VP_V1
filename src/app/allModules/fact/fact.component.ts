@@ -433,6 +433,7 @@ export class FactComponent implements OnInit {
     this._FactService.GetFactByPartnerIDAndType(this.currentUserName, 'V').subscribe(
       (data) => {
         const fact = data as BPCFact[];
+        console.log('fact',fact);
         if (fact[0]) {
           this.loadSelectedBPCFact(fact[0]);
         }
@@ -699,7 +700,6 @@ export class FactComponent implements OnInit {
     //   }
     // );
     var attachment = this.CertificateFileList.findIndex(x => x.file.name == element.Attachment);
-    console.log("attachment", attachment);
     const fileType = this.CertificateFileList[attachment].file.name.toLowerCase().includes('.jpg') ? 'image/jpg' :
       this.CertificateFileList[attachment].file.name.toLowerCase().includes('.jpeg') ? 'image/jpeg' :
         this.CertificateFileList[attachment].file.name.toLowerCase().includes('.png') ? 'image/png' :
@@ -730,9 +730,9 @@ export class FactComponent implements OnInit {
       (data) => {
         this.CertificatesByPartnerID = data as BPCCertificate[];
         this.CertificateDataSource = new MatTableDataSource(this.CertificatesByPartnerID);
-
+        console.log('CertificatesByPartnerID', this.CertificatesByPartnerID);
         this.CertificatesByPartnerID.forEach(element => {
-          this._FactService.DownloadOfAttachment(this.authenticationDetails.UserName, element.CertificateName, element.CertificateType).subscribe(
+          this._FactService.DownloadOfAttachment(this.authenticationDetails.UserName, element.CertificateName, element.CertificateType, element.AttachmentID).subscribe(
             data => {
               if (data) {
                 let fileType = 'image/jpg';
@@ -747,6 +747,7 @@ export class FactComponent implements OnInit {
                 const attachment = new BPCCertificateAttachment();
                 attachment.client = this.SelectedBPCFact.Client;
                 attachment.company = this.SelectedBPCFact.Company;
+                attachment.type = this.SelectedBPCFact.Type;
                 attachment.patnerID = this.SelectedBPCFact.PatnerID;
                 attachment.CertificateName = element.CertificateName;
                 attachment.CertificateType = element.CertificateType;
@@ -1022,7 +1023,6 @@ export class FactComponent implements OnInit {
   AddCertificateToTable(): void {
     // this.add.push(1);
     if (this.CertificateFormGroup.valid) {
-      //this.CreateActionLogvalues("AddCertificateToTable");
       const attachment = new BPCCertificateAttachment();
       const bpcCertificate = new BPCCertificate();
       bpcCertificate.Client = this.SelectedBPCFact.Client;
@@ -1036,6 +1036,7 @@ export class FactComponent implements OnInit {
         bpcCertificate.Attachment = this.fileToUpload.name;
         attachment.client = this.SelectedBPCFact.Client;
         attachment.company = this.SelectedBPCFact.Company;
+        attachment.type = this.SelectedBPCFact.Type;
         attachment.patnerID = this.SelectedBPCFact.PatnerID;
         attachment.file = this.fileToUpload;
       }
@@ -1123,7 +1124,6 @@ export class FactComponent implements OnInit {
     this.CertificateFormGroup.get('CertificateType').patchValue(row.CertificateType);
     this.CertificateFormGroup.get('CertificateName').patchValue(row.CertificateName);
     // this.CertificateFormGroup.get('Validity').patchValue(row.Validity);
-    console.log('FileUploadList', this.CertificateFileList);
   }
   getOpacityDelete(): any {
     if ((this.Bankcount - this.Bankadd) === this.bankDeleteIndex) {
@@ -1415,6 +1415,17 @@ export class FactComponent implements OnInit {
     // this.SelectedBPCFact.ParentVendor = this.SelectedBPCFactView.ParentVendor = this.FactFormGroup.get('ParentVendor').value;
     // this.SelectedBPCFact.Status = this.SelectedBPCFactView.Status = this.FactFormGroup.get('Status').value;
 
+    this.SelectedBPCFactSupport.BPCFact.MSME = this.SelectedBPCFact.MSME;
+    this.SelectedBPCFactSupport.BPCFact.MSME_TYPE = this.SelectedBPCFact.MSME_TYPE;
+    this.SelectedBPCFactSupport.BPCFact.MSME_Att_ID = this.SelectedBPCFact.MSME_Att_ID;
+    this.SelectedBPCFactSupport.BPCFact.RP = this.SelectedBPCFact.RP;
+    this.SelectedBPCFactSupport.BPCFact.RP_Att_ID = this.SelectedBPCFact.RP_Att_ID;
+    this.SelectedBPCFactSupport.BPCFact.RP_Name = this.SelectedBPCFact.RP_Name;
+    this.SelectedBPCFactSupport.BPCFact.RP_Type = this.SelectedBPCFact.RP_Type;
+    this.SelectedBPCFactSupport.BPCFact.Reduced_TDS = this.SelectedBPCFact.Reduced_TDS;
+    this.SelectedBPCFactSupport.BPCFact.TDS_Att_ID = this.SelectedBPCFact.TDS_Att_ID;
+    this.SelectedBPCFactSupport.BPCFact.TDS_RATE = this.SelectedBPCFact.TDS_RATE;
+
   }
 
   GetBPCFactSubItemValues(): void {
@@ -1464,7 +1475,7 @@ export class FactComponent implements OnInit {
   //   });
   // }
   CertificateTypeChange() {
-    this.SelectedCertificateTableRowIndex=null;
+    this.SelectedCertificateTableRowIndex = null;
   }
   SaveClicked(): void {
     if (this.FactFormGroup.valid) {
@@ -1477,10 +1488,10 @@ export class FactComponent implements OnInit {
         CertificateDataSourcelength = this.CertificateDataSource.data.length;
       }
       if (CertificateDataSourcelength == (this.CertificateTypes.length - 1)) {
-        const Actiontype = 'Update';
-        const Catagory = 'Fact';
-        // this.UpdateFact();
-        this.OpenConfirmationDialog(Actiontype, Catagory);
+      const Actiontype = 'Update';
+      const Catagory = 'Fact';
+      // this.UpdateFact();
+      this.OpenConfirmationDialog(Actiontype, Catagory);
       }
       else {
         this.notificationSnackBarComponent.openSnackBar("Please add attachments for all certificates", SnackBarStatus.danger);
@@ -1529,16 +1540,26 @@ export class FactComponent implements OnInit {
     this.CertificatesByPartnerID.forEach(element => {
       this.SelectedBPCFactSupport.BPCFactCerificate.push(element);
     });
-    console.log("Final Data Sent to Api", this.SelectedBPCFactSupport, this.CertificateFileList);
-    // this.IsProgressBarVisibile = true;
+    this.IsProgressBarVisibile = true;
 
     this._FactService.UpdateFactSupport(this.SelectedBPCFactSupport).subscribe(
       (data) => {
+        var count = 0;
+        console.log("CertificateFileList",this.CertificateFileList);
         this.CertificateFileList.forEach(file => {
           this._FactService.UploadOfAttachment(file).subscribe(
             (data2) => {
-              if (data2) {
-                this.IsProgressBarVisibile = false;
+                count=count + 1;
+                if (count === this.CertificateFileList.length) {
+                  this._FactService.CreateFactSupportXML(this.currentUserName).subscribe(
+                    (data) => {
+                      this.IsProgressBarVisibile = false;
+                    },
+                    (err) => {
+                      this.notificationSnackBarComponent.openSnackBar(err, SnackBarStatus.danger);
+                      this.IsProgressBarVisibile = false;
+                    }
+                  );
               }
             },
             (err) => {
@@ -1547,8 +1568,7 @@ export class FactComponent implements OnInit {
             });
         });
         this.CreateSupportTicket();
-        this.CertificateFileList = [];
-        this.IsProgressBarVisibile = false;
+        // this.CertificateFileList = [];
       },
       (err) => {
         this.IsProgressBarVisibile = false;
@@ -1633,6 +1653,7 @@ export class FactComponent implements OnInit {
       },
       (err) => {
         this.ShowErrorNotificationSnackBar(err);
+        this.IsProgressBarVisibile = false;
       }
     );
   }

@@ -345,7 +345,7 @@ export class CapaResponseComponent implements OnInit {
       this.ResponseDetails.CAPAResItems.forEach(details => {
         if (details.ReqItemID === item.ReqItemID) {
           DialogData.Text = details.Text;
-          DialogData.DueDate = details.DueDate;
+          DialogData.DueDate = details.DueDate.toDateString();
           DialogData.Status = details.Status;
 
           if (this.Type == 'Respond' && Action) {

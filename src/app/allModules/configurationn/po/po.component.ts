@@ -32,7 +32,7 @@ export class POComponent implements OnInit {
   BuyerEmailAddress: string;
   selectID=0;
   AllPo=[];
-  POTypes=["Import","Material"];
+  POTypes=["Import","Material","Service","Asset"];
   Levels=["Notification","Remainder","Expenditor"];
   Stages=["PO Ack","Shipment","Reaching At Port","Port Creattion","During Payment"];
   Notifications=["To Supplier","To Buyer","To Expenditor"];
@@ -87,6 +87,7 @@ export class POComponent implements OnInit {
       POType: ['', Validators.required],
       Stage: ['', Validators.required],
       Level: ['', Validators.required],
+      Interval:['', Validators.required],
       BeforeEvent: [''],
       AfterEvent: [''],
       AfterDunning1: [''],
@@ -118,6 +119,7 @@ export class POComponent implements OnInit {
     this.SelectedPO.POType=this.POFormGroup.get('POType').value;
     this.SelectedPO.Stage=this.POFormGroup.get('Stage').value;
     this.SelectedPO.Level=this.POFormGroup.get('Level').value;
+    this.SelectedPO.Interval=this.POFormGroup.get('Interval').value;
     this.SelectedPO.BeforeEvent=this.POFormGroup.get('BeforeEvent').value;
     this.SelectedPO.AfterEvent=this.POFormGroup.get('AfterEvent').value;
     this.SelectedPO.AfterDunning1=this.POFormGroup.get('AfterDunning1').value;
@@ -136,11 +138,13 @@ export class POComponent implements OnInit {
     );
   }
   loadSelectedProduct(Data:PO){
+    console.log("loadSelectedProduct",Data);
     this.selectID=Data.ID;
     this.SelectedPO.ID=Data.ID;
     this.SelectedPO.POType=Data.POType;
     this.SelectedPO.Level=Data.Level;
     this.SelectedPO.Stage=Data.Stage;
+    this.SelectedPO.Interval=Data.Interval;
     this.SelectedPO.BeforeEvent=Data.BeforeEvent;
     this.SelectedPO.AfterDunning1=Data.AfterDunning1;
     this.SelectedPO.AfterEvent=Data.AfterEvent;
@@ -151,6 +155,7 @@ export class POComponent implements OnInit {
     this.POFormGroup.get('POType').patchValue(SelectedPO.POType);
     this.POFormGroup.get('Level').patchValue(SelectedPO.Level);
     this.POFormGroup.get('Stage').patchValue(SelectedPO.Stage);
+    this.POFormGroup.get('Interval').patchValue(SelectedPO.Interval);
     this.POFormGroup.get('BeforeEvent').patchValue(SelectedPO.BeforeEvent);
     this.POFormGroup.get('AfterEvent').patchValue(SelectedPO.AfterEvent);
     this.POFormGroup.get('AfterDunning1').patchValue(SelectedPO.AfterDunning1);

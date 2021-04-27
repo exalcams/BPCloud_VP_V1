@@ -104,7 +104,7 @@ export class CAPAResponseView {
 export class CAPADialogResponse {
     Text: string;
     Status: string;
-    DueDate: Date | null;
+    DueDate: string | null;
     IsDocumentRequried:string;
     Files: File | null;
     ActionStatus:string;
