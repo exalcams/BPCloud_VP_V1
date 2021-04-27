@@ -38,7 +38,7 @@ export class BPCFact extends CommonClass {
     TDS_Att_ID: string;
     Reduced_TDS: boolean;
     TDS_RATE: string;
-
+    TDS_Cert_No:string
     RP: boolean;
     RP_Name: string;
     RP_Type: string;
@@ -118,6 +118,7 @@ export class BPCCertificate extends CommonClass {
     Mandatory: string;
     Attachment: string;
     AttachmentFile: File;
+    AttachmentID:number;
 }
 
 export class BPCCertificateAttachment extends CommonClass {
@@ -209,7 +210,7 @@ export class CAPAvendor {
     Action: boolean;
 }
 export class BPCAttachments extends CommonClass {
-    AttachmentID: string;
+    AttachmentID: number;
     Client: string;
     Company: string;
     Type: string;
@@ -219,14 +220,16 @@ export class BPCAttachments extends CommonClass {
     ContentType: string;
     ContentLength: string;
     AttachmentFile: any;
+    Category:string;
     // AttachmentFile:Uint8Array;
     // 
 
 }
 export class BPCAttach {
 
-    AttachmentID: number
-    AttachmentName: string
+    AttachmentID: number;
+    AttachmentName: string;
+    Catogery:string;
 }
 export class BPCSE extends CommonClass {
     Client: string;

@@ -1,4 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
+import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
@@ -29,6 +30,7 @@ export class CapaResponseDialogComponent implements OnInit {
   SelectTiggerd=null;
 
   constructor(private dialog: MatDialog,
+    private _datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public Item: CAPADialogResponse,
     public matDialogRef: MatDialogRef<CapaResponseDialogComponent>,
     private _formBuilder: FormBuilder, public snackBar: MatSnackBar) {
@@ -67,7 +69,7 @@ export class CapaResponseDialogComponent implements OnInit {
     // console.log("this.ResponseStatus",this.ResponseStatus);
   }
   LoadDialogData() {
-    console.log("Item",this.Item);
+    console.log("LoadDialogData-Item",this.Item);
     if (this.Item.IsDocumentRequried === "Yes") {
       this.IsAttachmentRequried = true;
     }
@@ -82,7 +84,7 @@ export class CapaResponseDialogComponent implements OnInit {
       // this.ResponseStatus.push("Open");
       //Item
       this.ResponseFormGroup.get('Text').patchValue(this.Item.Text);
-      this.ResponseFormGroup.get('DueDate').patchValue(this.Item.DueDate);
+      this.ResponseFormGroup.get('DueDate').patchValue(new Date(this.Item.DueDate));
       // if(this.Item.Status === "Resolved" || this.Item.Status === "Differed")
       // {
         this.ResponseFormGroup.get('Status').patchValue(this.Item.Status);
@@ -173,11 +175,11 @@ export class CapaResponseDialogComponent implements OnInit {
     // responseData.Status = this.ResponseFormGroup.get('Status').value;
     responseData.Status = Status;
     if (responseData.Status === "Differed") {
-      responseData.DueDate = this.ResponseFormGroup.get('DueDate').value;
+      responseData.DueDate = this._datePipe.transform(this.ResponseFormGroup.get('DueDate').value, 'yyyy-MM-dd');
     }
     else if(responseData.Status === "Resolved" && this.ResponseFormGroup.get('DueDate').value !== null)
     {
-      responseData.DueDate = this.ResponseFormGroup.get('DueDate').value;
+      responseData.DueDate = this._datePipe.transform(this.ResponseFormGroup.get('DueDate').value, 'yyyy-MM-dd');
     }
     else {
       responseData.DueDate = null;

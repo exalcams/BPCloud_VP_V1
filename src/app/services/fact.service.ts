@@ -55,17 +55,16 @@ export class FactService {
     const formData: FormData = new FormData();
     Attachment.forEach(x => {
       if (x.AttachmentFile) {
-        formData.append(x.AttachmentFile.name, x.AttachmentFile, x.AttachmentFile.name);
+        var name = x.AttachmentID.toString() + "_" + x.Category;
+        formData.append(name, x.AttachmentFile, x.AttachmentFile.name);
       }
-
-
     });
     formData.append('Client', Attachment[0].Client);
     formData.append('Company', Attachment[0].Company)
     formData.append('PatnerID', Attachment[0].PatnerID);
     formData.append('ReferenceNo', Attachment[0].ReferenceNo);
     formData.append('Type', Attachment[0].Type);
-
+    console.log('UpdateAttachment FormData',formData);
     return this._httpClient.post<any[]>(`${this.baseAddress}factapi/Fact/UpdateAttachment`,
       formData,
       // {
@@ -303,14 +302,17 @@ export class FactService {
     formData.append('PartnerID', selectedFile.patnerID);
     formData.append('CertificateName', selectedFile.CertificateName);
     formData.append('CertificateType', selectedFile.CertificateType);
+    formData.append('Client', selectedFile.client);
+    formData.append('Company', selectedFile.company);
+    formData.append('Type', selectedFile.type);
     return this._httpClient.post<any>(`${this.baseAddress}factapi/Fact/UploadOfCertificateAttachment`,
       formData,
     ).pipe(catchError(this.errorHandler));
 
   }
-  DownloadOfAttachment(PartnerID: string, certificateName: string, certificateType: string): Observable<Blob | string> {
+  DownloadOfAttachment(PartnerID: string, certificateName: string, certificateType: string,AttachmentID:number): Observable<Blob | string> {
     return this._httpClient.get(`${this.baseAddress}factapi/Fact/DownloadOfAttachment?PartnerID=${PartnerID}&certificateName=${certificateName}
-    &certificateType=${certificateType}`,
+    &certificateType=${certificateType}&AttachmentID=${AttachmentID}`,
       {
         responseType: 'blob',
         headers: new HttpHeaders().append('Content-Type', 'application/json')
@@ -325,6 +327,10 @@ export class FactService {
       //     'Content-Type': 'application/json'
       //   })
       // }
+    ).pipe(catchError(this.errorHandler));
+  }
+  CreateFactSupportXML(PatnerID: any): Observable<any> {
+    return this._httpClient.get<any>(`${this.baseAddress}factapi/Fact/CreateFactSupportXML?PatnerID=${PatnerID}`,
     ).pipe(catchError(this.errorHandler));
   }
   SaveDashboardCards(CreatedBy: string, selectedFiles: File[]): Observable<any> {

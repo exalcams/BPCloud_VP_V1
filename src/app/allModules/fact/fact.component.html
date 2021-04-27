@@ -254,12 +254,12 @@
             </form>
 
             <div fxFlex fxLayout="column" *ngIf="ContactPersonsByPartnerID?.length">
-              <div style="margin-left: 7px">
+              <!-- <div style="margin-left: 7px">
                 <div class="SectionTitle">
                   <strong>Contact Person Table</strong>
                   <div [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="borderbottom"></div>
                 </div>
-              </div>
+              </div> -->
               <div class="mt-8">
                 <!-- <form autocomplete="off" fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" novalidate
                   [formGroup]="ContactPersonFormGroup">
@@ -631,7 +631,7 @@
                       <mat-form-field class="pl-20 pr-16" style="width: 100%;">
                         <mat-select matInput matNativeControl placeholder="CertificateType" formControlName="CertificateType" (selectionChange)="CertificateTypeChange()">
                           <mat-option *ngFor="let CertificateType of CertificateTypes" [value]="CertificateType">
-                            <span>{{CertificateType}}</span>
+                            <span>{{CertificateType}}</span><span *ngIf="CertificateType !== 'Others'" style="color: red !important;"> *</span>
                           </mat-option>
                         </mat-select>
                         <!-- <input matInput placeholder="CertificateType" formControlName="CertificateType"> -->

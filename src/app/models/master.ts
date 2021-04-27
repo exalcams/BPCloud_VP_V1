@@ -50,6 +50,7 @@ export class PO {
     BeforeEvent: string[];
     AfterEvent: string[];
     AfterDunning1: string[];
+    Interval:number
     CreatedOn: Date;
     CreatedBy: string;
     ModifiedOn?: Date;

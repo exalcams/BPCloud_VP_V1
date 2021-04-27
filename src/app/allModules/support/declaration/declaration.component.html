@@ -27,9 +27,15 @@
                     <div fxFlex=16 style="margin-top: 21px;" class="lable_align">
                       <mat-label class="msme">MSME Enrolled :</mat-label>
                     </div>
-                    <div fxFlex style="margin-left: -36px;">
-                      <mat-slide-toggle [checked]="bool_msme" style="
-                margin-top: 25px;" id="slide_msme" (change)="setValue( $event )" required></mat-slide-toggle>
+                    <div fxFlex="10">
+                      <mat-form-field style="width: 100%;">
+                        <mat-select matInput matNativeControl (selectionChange)="setValue($event,'MSME')" formControlName="IsMSME">
+                          <mat-option *ngFor="let Declaration of IsDeclaration" [value]="Declaration">
+                            <span>{{Declaration}}</span>
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <!-- <mat-slide-toggle [checked]="bool_msme" style="margin-top: 25px;" id="slide_msme" (change)="setValue( $event )" required></mat-slide-toggle> -->
                     </div>
                   </div>
                   <div fxLayout="row" fxFlex style="width:100%">
@@ -67,20 +73,15 @@
                           <img src="assets/images/screen.png" class="screen">
                         </div>
                         <div fxFlex=100 fxLayout="column" class="uploadfilename_flex">
-                          <div fxFlex=100 style="margin-bottom: -11px !important;    font-size: 9px;
-                         ">
-                            <p class="invoice">{{uploadfile_name}}</p>
+                          <div fxFlex=100 style="margin-bottom: -11px !important;    font-size: 9px;">
+                            <p class="invoice" (click)="ViewAttachment(uploadfile_name)">{{uploadfile_name}}</p>
                           </div>
                           <!-- <div fxFlex>
                             <p class="kb">{{size_KB}}</p>
                           </div> -->
                         </div>
                       </div>
-
-
                     </mat-card>
-
-
                     <div fxFlex style="align-self: center;">
                       <button class="button1" [ngClass]="BGClassName?.layout?.navbar?.primaryBackground   "
                         (click)="fileInput1.click()">Upload</button>
@@ -105,10 +106,17 @@
                     <div fxFlex=16 style="margin-top: 21px;" class="lable_align">
                       <mat-label class="msme">Related Party :</mat-label>
                     </div>
-                    <div fxFlex style="    margin-left: -36px;">
-                      <mat-slide-toggle [checked]="bool_RP" style="
+                    <div fxFlex="10">
+                      <mat-form-field style="width: 100%;">
+                        <mat-select matInput matNativeControl (selectionChange)="setValue($event,'RP')" formControlName="IsRP">
+                          <mat-option *ngFor="let Declaration of IsDeclaration" [value]="Declaration">
+                            <span>{{Declaration}}</span>
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <!-- <mat-slide-toggle [checked]="bool_RP" style="
                 margin-top: 25px;" id="slide_RelatedParty" (change)="setValue(  $event )" required>
-                      </mat-slide-toggle>
+                      </mat-slide-toggle> -->
                     </div>
                   </div>
                   <div fxLayout="row" fxFlex style="width:100%">
@@ -155,7 +163,7 @@
                         <div fxFlex=100 fxLayout="column" class="uploadfilename_flex">
                           <div fxFlex=100 style="margin-bottom: -11px !important;    font-size: 9px;
                          ">
-                            <p class="invoice">{{uploadfile_RelatedParty}}</p>
+                            <p class="invoice" (click)="ViewAttachment(uploadfile_RelatedParty)">{{uploadfile_RelatedParty}}</p>
                           </div>
                           <!-- <div fxFlex>
                             <p class="kb">{{size_KB_RelatedParty}}</p>
@@ -189,10 +197,29 @@
                     <div fxFlex=16 style="margin-top: 21px;    text-align: -webkit-right;">
                       <mat-label class="msme"> Lower Deduction Certificate :</mat-label>
                     </div>
+                    <div fxFlex="10" style="margin-left: 36px;margin-top: -5px;">
+                      <mat-form-field style="width: 100%;">
+                        <mat-select matInput matNativeControl (selectionChange)="setValue($event,'LDS')" formControlName="IsLDS">
+                          <mat-option *ngFor="let Declaration of IsDeclaration" [value]="Declaration" >
+                            <span>{{Declaration}}</span>
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div fxLayout="row" fxFlex style="width:100%">
+                    <div fxFlex=16 style="margin-top: 21px;margin-right: 36px;
+                    align-self: center;
+                    text-align: -webkit-right;">
+                      <mat-label class="msme">Certificate Number :</mat-label>
+                    </div>
                     <div fxFlex>
-                      <mat-slide-toggle [checked]="bool_TDSRate" style="
-                margin-top: 25px;" id="slide_LowerDedution" (change)="setValue( $event )" required>
-                      </mat-slide-toggle>
+                      <mat-form-field style="width: 28%;">
+
+                        <input matInput formControlName="TDS_Cert_No" class="relatedparty_input">
+                        <mat-error *ngIf=" SupportDeclarationFormGroup.get('TDS_Cert_No').hasError('required')">
+                          Certificate Number is required </mat-error>
+                      </mat-form-field>
                     </div>
                   </div>
                   <div fxLayout="row" fxFlex style="width:100%">
@@ -234,7 +261,7 @@
                         <div fxFlex=100 fxLayout="column" class="uploadfilename_flex">
                           <div fxFlex=100 style="margin-bottom: -11px !important;    font-size: 9px;
                          ">
-                            <p class="invoice">{{uploadfile_TDS}}</p>
+                            <p class="invoice" (click)="ViewAttachment(uploadfile_TDS)">{{uploadfile_TDS}}</p>
                           </div>
                           <!-- <div fxFlex>
                             <p class="kb">{{size_KB_TDS}}</p>

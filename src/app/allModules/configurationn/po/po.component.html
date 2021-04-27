@@ -137,6 +137,18 @@
                   </mat-form-field>
                 </div>
               </div>
+
+              <div fxLayout="row" fxLayoutAlign="space-between  center">
+                <div fxFlex="25">
+                  <mat-form-field style="width: 100%;">
+                    <input matInput  type="text" placeholder="Interval in Hours" fxFlex formControlName="Interval">
+                    <mat-error
+                      *ngIf="POFormGroup.get('Interval').touched && POFormGroup.get('Interval').hasError('required')">
+                      Interval is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
             </form>
           </div>
           <div fxLayout>
