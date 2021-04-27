@@ -7,6 +7,7 @@ import { BPCPayDis } from 'app/models/Payment.model';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { DiscountService } from 'app/services/discount.service';
+import { MasterService } from 'app/services/master.service';
 import { Guid } from 'guid-typescript';
 import { DiscountDialogueComponent } from '../discount-dialogue/discount-dialogue.component';
 
@@ -24,27 +25,29 @@ export class BuyerDiscountComponent implements OnInit {
   BGClassName: any;
   fuseConfig: any;
   BuyerDiscountData: BPCPayDis[];
-  notificationSnackBarComponent:NotificationSnackBarComponent;
+  notificationSnackBarComponent: NotificationSnackBarComponent;
   BuyerDiscDisplayedColumns = ["PartnerID", "InvoiceNumber", "InvoiceDate", "DocumentNumber", "DocumentDate", "PaidAmount",
-    "BalanceAmount","PostDiscountAmount", "DueDate","ProfitCenter", "Proceed"];
+    "BalanceAmount", "PostDiscountAmount", "DueDate", "ProfitCenter", "Proceed"];
   BuyerDiscDataSource: MatTableDataSource<BPCPayDis>;
   @ViewChild(MatPaginator) discountPaginator: MatPaginator;
   @ViewChild(MatSort) discountSort: MatSort;
   @ViewChild(MatMenuTrigger) matMenuTrigger: MatMenuTrigger;
-  isProgressBarVisibile:boolean;
+  isProgressBarVisibile: boolean;
+  Plants: string[] = [];
 
-  constructor(private _discountService: DiscountService,
-     public dialog: MatDialog,
+  constructor(
+    private _discountService: DiscountService,
+    private _masterService: MasterService,
+    public dialog: MatDialog,
     public snackBar: MatSnackBar,
     private _fuseConfigService: FuseConfigService,
-    private _router:Router
-    )
-     {
-      this.isProgressBarVisibile = false;
-      this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
-   }
+    private _router: Router
+  ) {
+    this.isProgressBarVisibile = false;
+    this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
+  }
 
-  ngOnInit() {
+  ngOnInit(): void {
     // Retrive authorizationData
     const retrievedObject = localStorage.getItem('authorizationData');
     if (retrievedObject) {
@@ -63,7 +66,8 @@ export class BuyerDiscountComponent implements OnInit {
       this._router.navigate(['/auth/login']);
     }
     this.SetUserPreference();
-    this.GetTableData();
+    this.GetBuyerPlants();
+    // this.GetTableData();
   }
 
   SetUserPreference(): void {
@@ -74,26 +78,40 @@ export class BuyerDiscountComponent implements OnInit {
       });
     // this._fuseConfigService.config = this.fuseConfig;
   }
+  GetBuyerPlants(): void {
+    this._masterService
+      .GetBuyerPlants(this.currentUserID)
+      .subscribe((data) => {
+        if (data) {
+          this.Plants = data as string[];
+          this.GetTableData();
+        }
+        
+      },
+        (err) => {
+          console.error(err);
+        });
+  }
 
-  GetTableData() {
-    this.isProgressBarVisibile=true;
-    this._discountService.GetDiscountByPartnerID(this.currentUserName).subscribe(data => {
-      console.log(data);
+  GetTableData(): void {
+    this.isProgressBarVisibile = true;
+    this._discountService.GetBPCPayDiscountByPlants(this.Plants).subscribe(data => {
+      // console.log(data);
       this.BuyerDiscountData = data;
       this.BuyerDiscDataSource = new MatTableDataSource(this.BuyerDiscountData);
       this.BuyerDiscDataSource.paginator = this.discountPaginator;
       this.BuyerDiscDataSource.sort = this.discountSort;
-      this.isProgressBarVisibile=false;
-    },err=>{
+      this.isProgressBarVisibile = false;
+    }, err => {
 
-    })
+    });
   }
 
-  handleProceed(item) {
+  handleProceed(item): void {
     this.OpenProceedeDialogue(item);
   }
 
-  OpenProceedeDialogue(Data: any) {
+  OpenProceedeDialogue(Data: any): void {
     Data.isBuyer = true;
     const dialogConfig: MatDialogConfig = {
       panelClass: 'discount-dialog',
@@ -103,38 +121,38 @@ export class BuyerDiscountComponent implements OnInit {
     dialogRef.afterClosed().subscribe(
       result => {
         console.log(result);
-        if (result.Status=="Accepted") {
-          result.ApprovedBy=this.currentUserName;
+        if (result.Status === "Accepted") {
+          result.ApprovedBy = this.currentUserName;
           this.ApproveDiscount(result);
-          //console.log(result);
+          // console.log(result);
         }
-        else if(result.Status=="Rejected"){
+        else if (result.Status === "Rejected") {
           this.RejectDiscount(result);
         }
       });
   }
-  ApproveDiscount(data: BPCPayDis) {
-    this.isProgressBarVisibile=true;
+  ApproveDiscount(data: BPCPayDis): void {
+    this.isProgressBarVisibile = true;
     this._discountService.ApproveBPCPayDiscount(data).subscribe(x => {
-      this.isProgressBarVisibile=false;
+      this.isProgressBarVisibile = false;
       this.notificationSnackBarComponent.openSnackBar('Discount Approved', SnackBarStatus.success);
-      
+
     },
       err => {
         console.log(err);
-        this.isProgressBarVisibile=false;
+        this.isProgressBarVisibile = false;
         this.notificationSnackBarComponent.openSnackBar("something went wrong", SnackBarStatus.danger);
-        
+
       });
   }
-  RejectDiscount(data: BPCPayDis) {
-    this.isProgressBarVisibile=true;
+  RejectDiscount(data: BPCPayDis): void {
+    this.isProgressBarVisibile = true;
     this._discountService.RejecteBPCPayDiscount(data).subscribe(x => {
-      this.isProgressBarVisibile=false;
+      this.isProgressBarVisibile = false;
       this.notificationSnackBarComponent.openSnackBar('Discount Rejected', SnackBarStatus.success);
     },
       err => {
-        this.isProgressBarVisibile=false;
+        this.isProgressBarVisibile = false;
         this.notificationSnackBarComponent.openSnackBar("something went wrong", SnackBarStatus.danger);
       });
   }

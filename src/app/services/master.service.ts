@@ -83,7 +83,7 @@ export class MasterService {
             )
             .pipe(catchError(this.errorHandler));
     }
-    GetPO(UserId:Guid): Observable<PO[] | string> {
+    GetPO(UserId: Guid): Observable<PO[] | string> {
         return this._httpClient
             .get<PO[]>(
                 `${this.baseAddress}authenticationapi/Master/GetPo?UserId=${UserId}`
@@ -172,6 +172,10 @@ export class MasterService {
             }
             )
             .pipe(catchError(this.errorHandler));
+    }
+    GetBuyerPlants(UserID: Guid): Observable<string[] | string> {
+        return this._httpClient.get<string[]>(`${this.baseAddress}authenticationapi/Master/GetBuyerPlants?UserID=${UserID}`)
+        .pipe(catchError(this.errorHandler));
     }
 
     GetAppUsagesByUser(UserID: Guid): Observable<AppUsageView[] | string> {
@@ -633,13 +637,13 @@ export class MasterService {
             .pipe(catchError(this.errorHandler));
     }
 
- // Products
+    // Products
     GetAllProducts(): Observable<BPCProd[] | string> {
-    return this._httpClient.get<BPCProd[]>(`${this.baseAddress}poapi/Product/GetAllProducts`)
-        .pipe(catchError(this.errorHandler));
+        return this._httpClient.get<BPCProd[]>(`${this.baseAddress}poapi/Product/GetAllProducts`)
+            .pipe(catchError(this.errorHandler));
     }
     CreateProduct(
-        product:BPCProd
+        product: BPCProd
     ): Observable<any> {
         return this._httpClient
             .post<any>(
@@ -655,7 +659,7 @@ export class MasterService {
     }
 
     UpdateProduct(
-        product:BPCProd
+        product: BPCProd
     ): Observable<any> {
         return this._httpClient
             .post<any>(
@@ -671,7 +675,7 @@ export class MasterService {
     }
 
     DeleteProduct(
-        product:BPCProd
+        product: BPCProd
     ): Observable<any> {
         return this._httpClient
             .post<any>(
