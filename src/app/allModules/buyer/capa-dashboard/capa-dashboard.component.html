@@ -123,8 +123,13 @@
           <ng-container matColumnDef="Patners">
             <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
               Patners </th>
-            <td mat-cell *matCellDef="let element" (click)="ViewVendors(element.Patners)">
-              {{element.Patners.length}} Selected</td>
+            <td mat-cell *matCellDef="let element" (click)="ViewVendors(element.Patners)" style="cursor: pointer !important;text-align: center;">
+              <div style="margin-top: 7px; margin-left: 4px;">
+                <span [matBadge]="element.Patners.length" matBadgeSize="medium" matBadgeColor="accent"
+                  matBadgeOverlap="false"></span>
+              </div>
+              <mat-icon aria-hidden="false" aria-label="Example home icon">person</mat-icon>
+              </td>
           </ng-container>
           <ng-container matColumnDef="Status">
             <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">

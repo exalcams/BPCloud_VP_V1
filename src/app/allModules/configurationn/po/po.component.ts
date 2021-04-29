@@ -33,6 +33,7 @@ export class POComponent implements OnInit {
   selectID=0;
   AllPo=[];
   POTypes=["Import","Material","Service","Asset"];
+  POAliasNames=["IMP","MAT","SER","AST"];
   Levels=["Notification","Remainder","Expenditor"];
   Stages=["PO Ack","Shipment","Reaching At Port","Port Creattion","During Payment"];
   Notifications=["To Supplier","To Buyer","To Expenditor"];
@@ -116,7 +117,15 @@ export class POComponent implements OnInit {
   {
     this.SelectedPO.ID=this.selectID;
     this.SelectedPO.UserId=this.currentUserID;
-    this.SelectedPO.POType=this.POFormGroup.get('POType').value;
+    const type=this.POFormGroup.get('POType').value;
+
+    this.POTypes.forEach((poType,index) => {
+      if(poType == type)
+      {
+        this.SelectedPO.POType=this.POAliasNames[index];
+      }
+    });
+    // this.SelectedPO.POType=this.POFormGroup.get('POType').value;
     this.SelectedPO.Stage=this.POFormGroup.get('Stage').value;
     this.SelectedPO.Level=this.POFormGroup.get('Level').value;
     this.SelectedPO.Interval=this.POFormGroup.get('Interval').value;

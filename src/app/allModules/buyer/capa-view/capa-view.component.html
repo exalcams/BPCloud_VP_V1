@@ -27,7 +27,8 @@
           <div fxLayout="column" fxLayoutAlign="center stretch">
             <h3 style="padding-left: 20px;"><b>Headers</b></h3>
             <form autocomplete="off" fxLayout="row wrap" fxLayoutGap="50px" name="form" novalidate
-              [formGroup]="HeaderFormGroup" style="margin-left: 20px !important;margin-top: 20px;">
+              [formGroup]="HeaderFormGroup" style="margin-left: 20px !important;margin-top: 20px;"
+              (mouseleave)="UpdateProgressbar()" (keyup)="UpdateProgressbar()">
               <div fxFlex="20">
                 <mat-form-field style="width: 100%;">
                   <input matInput placeholder="Start Date" [matDatepicker]="picker2"
@@ -130,7 +131,7 @@
                 <mat-form-field class="TextArea" style="width: 100% !important;" appearance="outline">
                   <!-- <mat-label>Address</mat-label> -->
                   <textarea matInput matTextareaAutosize [matAutosizeMinRows]="TextAreaMinRow"
-                    [matAutosizeMaxRows]="TextAreaMaxRow" [(ngModel)]="TextAreaValue"></textarea>
+                    [matAutosizeMaxRows]="TextAreaMaxRow" [(ngModel)]="TextAreaValue" (keyup)="UpdateProgressbar()"></textarea>
                 </mat-form-field>
               </div>
 
@@ -345,11 +346,58 @@
         <ng-template mat-tab-label>
           <p>Vendor</p>
         </ng-template>
-        <ng-template matTabContent>
-          <div style="margin:  20px !important;" fxLayout="column" fxLayoutGap="20px">
-            <div align="end">
-              <img class="addIcon" src="assets/images/logos/add-button.png" (click)="openVendorDialog()">
-            </div>
+
+        <div style="padding: 20px !important;" fxLayout="column" fxFlex="100" fxLayoutAlign="space-between stretch">
+          <div fxLayoutAlign="end center" fxLayout="row" fxFlex="10">
+            <img class="addIcon" src="assets/images/logos/add-button.png" (click)="openVendorDialog()">
+          </div><br>
+          <!-- <table class="table" mat-table [dataSource]="VendorDataSource" matSort>
+              <ng-container matColumnDef="S.No">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No</th>
+                <td mat-cell *matCellDef="let row;let odd=odd;let i=index;" class="tableLeftBorder pl-0">
+                  <div fxLayout>
+                    <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                    <div fxFlex class="pl-8">{{i + 1}} </div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="Vendor">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Vendor </th>
+                <td mat-cell *matCellDef="let row"> {{row.PatnerID }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="VendorName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Vendor Name </th>
+                <td mat-cell *matCellDef="let row"> {{row.LegalName }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="GSTNumber">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> GST Number </th>
+                <td mat-cell *matCellDef="let row"> {{row.GSTNumber}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="City">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> City </th>
+                <td mat-cell *matCellDef="let row"> {{row.City}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="Action">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                  [ngClass]="BGClassName?.layout?.toolbar?.background">
+                  Action </th>
+                <td mat-cell *matCellDef="let element;let i = index">
+                  <button (click)="clearVendorTable(i)">
+                    <img src="./assets/images/delete.png" class="deleteImg">
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="VendorTableDisplayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: VendorTableDisplayedColumns;">
+              </tr>
+            </table> -->
+          <div style="overflow-x:auto;height: 320px !important;" fxLayout="column">
             <table class="table" mat-table [dataSource]="VendorDataSource" matSort>
               <ng-container matColumnDef="S.No">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No</th>
@@ -396,16 +444,42 @@
               <tr mat-row *matRowDef="let row; columns: VendorTableDisplayedColumns;">
               </tr>
             </table>
+
+            <div flex fxLayoutAlign="center center" class="TableFooter" *ngIf="!Selectedvendors?.length">
+              <mat-icon svgIcon="infoIcon" style="color: #1b56ca;">
+              </mat-icon>
+              <span style="margin-left: 10px;">The table does not contain any records</span>
+            </div>
+            <div>
+              <mat-paginator [pageSizeOptions]="[5]"></mat-paginator>
+            </div>
           </div>
-        </ng-template>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="end start"
+          style="margin-left: 20px !important;margin-bottom: 15px !important;" fxFlex>
+          <button mat-flat-button color="primary" (click)="PreviousTab(NextTabIndex)">Previous</button>
+        </div>
       </mat-tab>
     </mat-tab-group>
-    <div fxLayout id="footerCard" fxLayoutAlign="end center" fxLayoutGap="20px" *ngIf="IsFooterDisable">
-      <button (click)="SaveClicked('Save')" [ngClass]="BGClassName?.layout?.navbar?.primaryBackground" class="SaveBtn"
-        mat-flat-button>Save</button>
-      <button style="color: #efb577;background-color: white;" mat-stroked-button (click)="SaveClicked('Open')"
-        class="mr-20">Submit</button>
+    <div fxLayout id="footerCard" fxLayoutAlign="end center" fxLayoutGap="15px" *ngIf="IsFooterDisable">
+      <div fxLayout fxLayoutGap="20px" fxLayoutAlign="end">
+        <button (click)="SaveClicked('Save')" [ngClass]="BGClassName?.layout?.navbar?.primaryBackground" class="SaveBtn"
+          mat-flat-button>Save</button>
+        <button style="color: #efb577;background-color: white;" mat-stroked-button (click)="SaveClicked('Open')"
+          class="mr-20">Submit</button>
+      </div>
+      <mat-progress-bar mode="determinate" [value]="ProgressBarValue" class="ProgressBar"></mat-progress-bar>
     </div>
+    <!-- <div fxLayout id="footerCard" fxLayoutAlign="end stretch" fxLayoutGap="15px" *ngIf="!IsFooterDisable"
+      fxLayout="column">
+      <div fxLayout fxLayoutGap="20px" fxLayoutAlign="end">
+        <button (click)="SaveClicked('Save')" [ngClass]="BGClassName?.layout?.navbar?.primaryBackground" class="SaveBtn"
+          mat-flat-button>Save</button>
+        <button style="color: #efb577;background-color: white;" mat-stroked-button (click)="SaveClicked('Open')"
+          class="mr-20">Submit</button>
+      </div>
+      <mat-progress-bar mode="determinate" [value]="ProgressBarValue" class="ProgressBar"></mat-progress-bar>
+    </div> -->
     <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
     </mat-progress-spinner>
     <div id="overlay" *ngIf="isProgressBarVisibile"></div>

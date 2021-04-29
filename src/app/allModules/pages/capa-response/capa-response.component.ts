@@ -392,7 +392,7 @@ export class CapaResponseComponent implements OnInit {
           Resitem.Text = response.Text;
           Resitem.Status = response.Status;
 
-          if (response.DueDate.toString() == "") {
+          if (response.DueDate == null  || response.DueDate.toString() == "") {
             Resitem.DueDate = new Date(this.HeaderFormGroup.get('DueDate').value);
           }
           else {

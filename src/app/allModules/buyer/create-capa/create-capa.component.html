@@ -11,7 +11,8 @@
     </div>
 
     <!-- Tabs -->
-    <mat-tab-group (selectedIndexChange)="TabSelected($event)" [selectedIndex]="NextTabIndex" style="margin-bottom: 50px !important;">
+    <mat-tab-group (selectedIndexChange)="TabSelected($event)" [selectedIndex]="NextTabIndex"
+      style="margin-bottom: 50px !important; height: 100% !important;">
 
       <!-- CAPA -->
       <mat-tab>
@@ -24,11 +25,12 @@
           <div fxLayout="column" fxLayoutAlign="center stretch">
             <h3 style="padding-left: 20px;"><b>Headers</b></h3>
             <form autocomplete="off" fxLayout="row wrap" fxLayoutGap="50px" name="form" novalidate
-              [formGroup]="HeaderFormGroup" style="margin-left: 20px !important;margin-top: 20px;">
+              [formGroup]="HeaderFormGroup" style="margin-left: 20px !important;margin-top: 20px;"
+              (mouseleave)="UpdateProgressbar()" (keyup)="UpdateProgressbar()">
               <div fxFlex="20" >
                 <mat-form-field style="width: 100%;">
-                  <input matInput placeholder="Start Date" [matDatepicker]="picker2" (dateInput)="StartDateChange($event)"
-                    formControlName="StartDate" [min]="minDate" [max]="maxDate">
+                  <input matInput placeholder="Start Date" [matDatepicker]="picker2"
+                    (dateInput)="StartDateChange($event)" formControlName="StartDate" [min]="minDate" [max]="maxDate">
                   <mat-datepicker-toggle matSuffix [for]="picker2">
                     <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
                   </mat-datepicker-toggle>
@@ -39,7 +41,7 @@
                   </mat-error>
                 </mat-form-field>
               </div>
-              <div fxFlex="20" >
+              <div fxFlex="20">
                 <mat-form-field style="width: 100%;">
                   <input matInput placeholder="Text" formControlName="Text">
                   <mat-error
@@ -48,7 +50,7 @@
                   </mat-error>
                 </mat-form-field>
               </div>
-              <div fxFlex="20" >
+              <div fxFlex="20">
                 <mat-form-field style="width: 100%;">
                   <input matInput placeholder="Due Date" [matDatepicker]="picker1" (dateInput)="DueDateChange($event)"
                     formControlName="DueDate" [min]="DueMinDate" [max]="maxDate">
@@ -62,9 +64,10 @@
                   </mat-error>
                 </mat-form-field>
               </div>
-              <div fxFlex="20" >
+              <div fxFlex="20">
                 <mat-form-field style="width: 100%;">
-                  <mat-select matInput matNativeControl placeholder="Recurring" formControlName="Recurring" (selectionChange)="RecurringChanged($event)">
+                  <mat-select matInput matNativeControl placeholder="Recurring" formControlName="Recurring"
+                    (selectionChange)="RecurringChanged($event)">
                     <mat-option *ngFor="let Recur of Recurring" [value]="Recur">
                       <span>{{Recur}}</span>
                     </mat-option>
@@ -122,7 +125,7 @@
                 <mat-form-field class="TextArea" style="width: 100% !important;" appearance="outline">
                   <!-- <mat-label>Address</mat-label> -->
                   <textarea matInput matTextareaAutosize [matAutosizeMinRows]="TextAreaMinRow"
-                    [matAutosizeMaxRows]="TextAreaMaxRow" [(ngModel)]="TextAreaValue"></textarea>
+                    [matAutosizeMaxRows]="TextAreaMaxRow" [(ngModel)]="TextAreaValue" (keyup)="UpdateProgressbar()"></textarea>
                 </mat-form-field>
               </div>
 
@@ -331,15 +334,15 @@
       </mat-tab>
 
       <!-- Vendor -->
-      <mat-tab>
+      <mat-tab fxFlex>
         <ng-template mat-tab-label>
           <p>Add Vendor</p>
         </ng-template>
-        <div style="padding: 20px !important;">
-          <div align="end">
+        <div style="padding: 20px !important;" fxLayout="column" fxFlex="100" fxLayoutAlign="space-between stretch">
+          <div fxLayoutAlign="end center" fxLayout="row" fxFlex="10">
             <img class="addIcon" src="assets/images/logos/add-button.png" (click)="openVendorDialog()">
           </div><br>
-          <div style="overflow-x:auto;">
+          <div style="overflow-x:auto;height: 320px !important;" fxLayout="column">
             <table class="table" mat-table [dataSource]="VendorDataSource" matSort>
               <ng-container matColumnDef="S.No">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No</th>
@@ -386,26 +389,31 @@
               <tr mat-row *matRowDef="let row; columns: VendorTableDisplayedColumns;">
               </tr>
             </table>
+
             <div flex fxLayoutAlign="center center" class="TableFooter" *ngIf="!Selectedvendors?.length">
               <mat-icon svgIcon="infoIcon" style="color: #1b56ca;">
               </mat-icon>
               <span style="margin-left: 10px;">The table does not contain any records</span>
             </div>
+            <div>
+              <mat-paginator [pageSizeOptions]="[5]"></mat-paginator>
+            </div>
           </div>
-          <div>
-            <mat-paginator [pageSizeOptions]="[5]"></mat-paginator>
-          </div>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="end start" style="margin-left: 20px !important;margin-bottom: 15px !important;" fxFlex>
+          <button mat-flat-button color="primary" (click)="PreviousTab(NextTabIndex)">Previous</button>
         </div>
       </mat-tab>
     </mat-tab-group>
-    <div fxLayout id="footerCard" fxLayoutAlign="end center" fxLayoutGap="20px" *ngIf="!IsFooterDisable">
-      <div>
+    <div fxLayout id="footerCard" fxLayoutAlign="end stretch" fxLayoutGap="15px" *ngIf="!IsFooterDisable" fxLayout="column">
+      <div fxLayout fxLayoutGap="20px" fxLayoutAlign="end">
         <button (click)="SaveClicked('Save')" [ngClass]="BGClassName?.layout?.navbar?.primaryBackground" class="SaveBtn"
           mat-flat-button>
           Save</button>
+        <button class="mr-20" style="color: #efb577;background-color: white;" mat-stroked-button
+          (click)="SaveClicked('Open')">Submit</button>
       </div>
-      <button class="mr-20" style="color: #efb577;background-color: white;" mat-stroked-button
-        (click)="SaveClicked('Open')">Submit</button>
+      <mat-progress-bar mode="determinate" [value]="ProgressBarValue" class="ProgressBar"></mat-progress-bar>
     </div>
     <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
     </mat-progress-spinner>

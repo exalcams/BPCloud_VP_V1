@@ -41,6 +41,7 @@ export class CreateCapaComponent implements OnInit {
   Selectedvendors: BPCFact[] = [];
   TextAreaValue = "";
   NextTabIndex = 0;
+  ProgressBarValue = 0;
   CAPAView: CAPAReqView;
   @ViewChild(MatPaginator) Paginator: MatPaginator;
   @ViewChild(MatSort) CheckListSort: MatSort;
@@ -66,6 +67,10 @@ export class CreateCapaComponent implements OnInit {
   minDate: Date;
   maxDate: Date;
   DueMinDate: Date;
+  ISHeaderFormValid = false;
+  IsItem = false;
+  ISCheckListFormValid = false;
+  IsVendorListValid=false;
   constructor(private _formBuilder: FormBuilder, private dialog: MatDialog,
     private _factService: FactService,
     private _datePipe: DatePipe,
@@ -77,7 +82,7 @@ export class CreateCapaComponent implements OnInit {
     this.CAPAView = new CAPAReqView();
 
     var TodayDate = new Date();
-    this.minDate = new Date(TodayDate.getFullYear(), 0, 1, TodayDate.getHours(), TodayDate.getMinutes(), TodayDate.getSeconds());
+    this.minDate = new Date(TodayDate.getFullYear(), TodayDate.getMonth(), TodayDate.getDate());
     this.maxDate = new Date(TodayDate.getFullYear() + 5, 5, 30, TodayDate.getHours(), TodayDate.getMinutes(), TodayDate.getSeconds());
 
   }
@@ -110,7 +115,28 @@ export class CreateCapaComponent implements OnInit {
   }
   RadioBtnChanged(event): void {
     this.RadioBtnValue = event.value;
-    // console.log(this.RadioBtnValue);
+    console.log('RadioBtnChanged');
+    if(this.IsItem || this.ISCheckListFormValid)
+    {
+      this.ProgressBarValue-=25;
+      console.log('Items',this.IsItem,this.ISCheckListFormValid);
+      this.IsItem=false;
+      this.ISCheckListFormValid=false;
+    }
+    
+    if(this.RadioBtnValue == "Dialog" && this.TextAreaValue != "")
+    {
+      this.IsItem=true;
+      this.ProgressBarValue+=25;
+    }
+    else
+    {
+      if(this.CheckListItems.length > 0)
+      {
+        this.ISCheckListFormValid=true;
+        this.ProgressBarValue+=25;
+      }
+    }
   }
   InitializeCheckListFormGroup(): void {
     this.CheckListFormGroup = this._formBuilder.group({
@@ -163,6 +189,7 @@ export class CreateCapaComponent implements OnInit {
       this.CheckListDataSource.sort = this.CheckListSort;
       this.clearCheckListFormGroup();
       this.SelectedItemIndex = null;
+      this.UpdateProgressbar();
     }
     else {
       this.showValidationErrors(this.CheckListFormGroup);
@@ -178,6 +205,8 @@ export class CreateCapaComponent implements OnInit {
       this.HeaderFormGroup.get('Ocurrence').disable();
       this.HeaderFormGroup.get('Interval').disable();
     }
+
+    this.UpdateProgressbar();//To Update Progress Bar
   }
   TextTableClicked(index: any, row: CAPAReqItem) {
     this.SelectedItemIndex = index;
@@ -198,12 +227,17 @@ export class CreateCapaComponent implements OnInit {
       element.DueDate = event.value;
     });
     this.CheckListDataSource = new MatTableDataSource<CAPAReqItem>(this.CheckListItems);
+
+    this.UpdateProgressbar();//To Update Progress Bar
   }
   StartDateChange(event) {
     this.HeaderFormGroup.get('StartDate').patchValue(event.value);
     var dates = new Date(event.value);
     this.DueMinDate = new Date(dates.getFullYear(), dates.getMonth(), dates.getDate() + 1);
     // console.log(this.DueMinDate,dates.getFullYear(),dates.getMonth(),dates.getDate(),dates);
+
+
+    this.UpdateProgressbar();//To Update Progress Bar
   }
   showValidationErrors(formGroup: FormGroup): void {
     Object.keys(formGroup.controls).forEach(key => {
@@ -252,6 +286,8 @@ export class CreateCapaComponent implements OnInit {
     this.CheckListItems.splice(index, 1);
     this.CheckListDataSource = new MatTableDataSource<CAPAReqItem>(this.CheckListItems);
     this.CheckListDataSource.sort = this.CheckListSort;
+
+    this.UpdateProgressbar();
   }
   openVendorDialog(): void {
     this.data.Vendors = [];
@@ -283,8 +319,63 @@ export class CreateCapaComponent implements OnInit {
         this.VendorDataSource.paginator = this.Paginator;
 
         this.VendorDataSource.sort = this.CheckListSort;
+
+        if (this.Selectedvendors.length > 0) {
+          if (!this.IsVendorListValid) {
+            this.IsVendorListValid = true;
+            this.ProgressBarValue += 50;
+          }
+        }
+        else {
+          if (this.IsVendorListValid) {
+            this.IsVendorListValid = false;
+            this.ProgressBarValue -= 50;
+          }
+        }
       }
     });
+  }
+  UpdateProgressbar() {
+
+    if (this.HeaderFormGroup.valid) { // Header
+      if (!this.ISHeaderFormValid) {
+        this.ISHeaderFormValid = true;
+        this.ProgressBarValue += 25;
+      }
+    }
+    else {
+      if (this.ISHeaderFormValid) {
+        this.ISHeaderFormValid = false;
+        this.ProgressBarValue -= 25;
+      }
+    }
+
+    if (this.RadioBtnValue == "Dialog") { // Dialog
+      if (!this.IsItem && this.TextAreaValue != "") {
+        this.IsItem = true;
+        this.ProgressBarValue += 25;
+      }
+      else {
+        if (this.IsItem && this.TextAreaValue == "") {
+          this.IsItem = false;
+          this.ProgressBarValue -= 25;
+        }
+      }
+    }
+    else {
+      if (this.CheckListItems.length > 0) {
+        if (!this.ISCheckListFormValid) {
+          this.ISCheckListFormValid = true;
+          this.ProgressBarValue += 25;
+        }
+      }
+      else {
+        if (this.ISCheckListFormValid) {
+          this.ISCheckListFormValid = false;
+          this.ProgressBarValue -= 25;
+        }
+      }
+    }
   }
   GetAllVendors() {
     this.isProgressBarVisibile = true;
@@ -304,6 +395,14 @@ export class CreateCapaComponent implements OnInit {
     this.VendorDataSource = new MatTableDataSource<BPCFact>(this.Selectedvendors);
     this.VendorDataSource.paginator = this.Paginator;
     this.VendorDataSource.sort = this.CheckListSort;
+
+    if (this.Selectedvendors.length == 0) {
+      if(this.IsVendorListValid)
+      {
+        this.ProgressBarValue -= 50;
+        this.IsVendorListValid=false;
+      }
+    }
   }
   InitializeVendorsTable() {
     this.VendorDataSource = new MatTableDataSource<BPCFact>(this.Selectedvendors);
@@ -354,7 +453,7 @@ export class CreateCapaComponent implements OnInit {
     }
   }
   CreateCAPAReq(action: any) {
-    // this.isProgressBarVisibile = true;
+    this.isProgressBarVisibile = true;
 
     this.GetReqDetails();
     this.CAPAView.Status = action;
@@ -450,5 +549,8 @@ export class CreateCapaComponent implements OnInit {
   }
   NextTab(index: any) {
     this.NextTabIndex = index + 1;
+  }
+  PreviousTab(index: any) {
+    this.NextTabIndex = index - 1;
   }
 }
