@@ -67,7 +67,12 @@ export class CapaViewComponent implements OnInit {
   IsRecurring: any;
   minDate: Date;
   maxDate: Date;
-  DueMinDate:Date;
+  DueMinDate: Date;
+  ISHeaderFormValid = false;
+  ProgressBarValue = 0;
+  IsItem = false;
+  ISCheckListFormValid = false;
+  IsVendorListValid = false;
   constructor(private _formBuilder: FormBuilder, private dialog: MatDialog,
     private _factService: FactService, private _capaService: CapaService,
     public snackBar: MatSnackBar, private _route: ActivatedRoute, private _router: Router) {
@@ -78,9 +83,10 @@ export class CapaViewComponent implements OnInit {
     this.CAPAView = new CAPAReqView();
     this.CAPAView.CAPAReqItems = [];
     this.CAPAView.CAPAReqPartners = [];
-    var todayDate=new Date()
-    this.minDate = new Date(todayDate.getFullYear(), 0, 1);
-    this.maxDate = new Date(todayDate.getFullYear() + 5, 0, 1);
+    var TodayDate = new Date()
+    this.minDate = new Date(TodayDate.getFullYear(), TodayDate.getMonth(), TodayDate.getDate());
+    this.maxDate = new Date(TodayDate.getFullYear() + 5, 5, 30, TodayDate.getHours(), TodayDate.getMinutes(), TodayDate.getSeconds());
+
   }
 
   ngOnInit() {
@@ -124,10 +130,13 @@ export class CapaViewComponent implements OnInit {
         this.CAPAView.Status = details.Status;
         this.CAPAView.ReqID = details.ReqID;
         this.CAPAView.DueDate = details.DueDate;
-        this.CAPAView.StartDate=details.StartDate;
-        this.CAPAView.Recurring=details.Recurring;
-        this.CAPAView.Ocurrence=details.Ocurrence;
-        this.CAPAView.Interval=details.Interval;
+        this.CAPAView.StartDate = details.StartDate;
+        this.CAPAView.Recurring = details.Recurring;
+        this.CAPAView.Ocurrence = details.Ocurrence;
+        this.CAPAView.Interval = details.Interval;
+
+
+
         if (this.CAPAView.Status === "Open" || this.CAPAView.Status === "Closed") {
           this.IsFooterDisable = false;
         }
@@ -165,14 +174,20 @@ export class CapaViewComponent implements OnInit {
     this.HeaderFormGroup.get('Interval').patchValue(this.CAPAView.Interval);
     this.HeaderFormGroup.get('Ocurrence').patchValue(this.CAPAView.Ocurrence);
 
+    //Header
+    this.ProgressBarValue += 25;
+    this.ISHeaderFormValid = true;
+
     this.IsRecurring = this.CAPAView.Recurring;
 
-    var dates=new Date(this.CAPAView.StartDate);
-    this.DueMinDate=new Date(dates.getFullYear(),dates.getMonth(),dates.getDate() + 1);
+    var dates = new Date(this.CAPAView.StartDate);
+    this.DueMinDate = new Date(dates.getFullYear(), dates.getMonth(), dates.getDate() + 1);
     //Dialog
     if (this.CAPAView.CAPAReqItems.length === 1 && this.CAPAView.CAPAReqItems[0].Priority === null) {
       this.RadioBtnValue = "Dialog";
       this.TextAreaValue = this.CAPAView.CAPAReqItems[0].Text;
+      this.IsItem = true;
+      this.ProgressBarValue += 25;
     }
     else {
       this.RadioBtnValue = "CheckList";
@@ -187,6 +202,8 @@ export class CapaViewComponent implements OnInit {
         }
         this.CheckListItems.push(items);
       });
+      this.ISCheckListFormValid = true;
+      this.ProgressBarValue += 25;
       this.CheckListDataSource = new MatTableDataSource<CAPAReqItem>(this.CheckListItems);
       this.CheckListDataSource.sort = this.CheckListSort;
     }
@@ -200,7 +217,8 @@ export class CapaViewComponent implements OnInit {
           var fact = this.Vendors.find(x => x.PatnerID == ReqVendors.PatnerID);
           this.Selectedvendors.push(fact)
         });
-
+        this.IsVendorListValid = true;
+        this.ProgressBarValue += 50;
         this.VendorDataSource = new MatTableDataSource<BPCFact>(this.Selectedvendors);
         this.VendorDataSource.sort = this.CheckListSort;
         this.isProgressBarVisibile = false;
@@ -208,12 +226,73 @@ export class CapaViewComponent implements OnInit {
     );
 
   }
+  UpdateProgressbar() {
+
+    if (this.HeaderFormGroup.valid) { // Header
+      if (!this.ISHeaderFormValid) {
+        this.ISHeaderFormValid = true;
+        this.ProgressBarValue += 25;
+      }
+    }
+    else {
+      if (this.ISHeaderFormValid) {
+        this.ISHeaderFormValid = false;
+        this.ProgressBarValue -= 25;
+      }
+    }
+
+    if (this.RadioBtnValue == "Dialog") { // Dialog
+      if (!this.IsItem && this.TextAreaValue != "") {
+        this.IsItem = true;
+        this.ProgressBarValue += 25;
+      }
+      else {
+        if (this.IsItem && this.TextAreaValue == "") {
+          this.IsItem = false;
+          this.ProgressBarValue -= 25;
+        }
+      }
+    }
+    else {
+      if (this.CheckListItems.length > 0) {
+        if (!this.ISCheckListFormValid) {
+          this.ISCheckListFormValid = true;
+          this.ProgressBarValue += 25;
+        }
+      }
+      else {
+        if (this.ISCheckListFormValid) {
+          this.ISCheckListFormValid = false;
+          this.ProgressBarValue -= 25;
+        }
+      }
+    }
+  }
   TabSelected(event): void {
     this.SelectedTabIndex = parseInt(event);
   }
   RadioBtnChanged(event): void {
     this.RadioBtnValue = event.value;
     // console.log(this.RadioBtnValue);
+
+
+    if (this.IsItem || this.ISCheckListFormValid) {
+      this.ProgressBarValue -= 25;
+      console.log('Items', this.IsItem, this.ISCheckListFormValid);
+      this.IsItem = false;
+      this.ISCheckListFormValid = false;
+    }
+
+    if (this.RadioBtnValue == "Dialog" && this.TextAreaValue != "") {
+      this.IsItem = true;
+      this.ProgressBarValue += 25;
+    }
+    else {
+      if (this.CheckListItems.length > 0) {
+        this.ISCheckListFormValid = true;
+        this.ProgressBarValue += 25;
+      }
+    }
   }
   InitializeCheckListFormGroup(): void {
     this.CheckListFormGroup = this._formBuilder.group({
@@ -251,6 +330,7 @@ export class CapaViewComponent implements OnInit {
       this.HeaderFormGroup.get('Ocurrence').disable();
       this.HeaderFormGroup.get('Interval').disable();
     }
+    this.UpdateProgressbar();
   }
   AddToCheckListTable() {
     if (this.CheckListFormGroup.valid) {
@@ -279,6 +359,8 @@ export class CapaViewComponent implements OnInit {
       this.CheckListDataSource.sort = this.CheckListSort;
       this.clearCheckListFormGroup();
       this.SelectedItemIndex = null;
+      this.UpdateProgressbar();
+
     }
     else {
       this.showValidationErrors(this.CheckListFormGroup);
@@ -337,6 +419,9 @@ export class CapaViewComponent implements OnInit {
     this.CheckListItems.splice(index, 1);
     this.CheckListDataSource = new MatTableDataSource<CAPAReqItem>(this.CheckListItems);
     this.CheckListDataSource.sort = this.CheckListSort;
+
+    this.UpdateProgressbar();
+
   }
   openVendorDialog(): void {
     this.data.Vendors = [];
@@ -367,6 +452,19 @@ export class CapaViewComponent implements OnInit {
         console.log(this.Selectedvendors);
         this.VendorDataSource = new MatTableDataSource<BPCFact>(this.Selectedvendors);
         this.VendorDataSource.sort = this.CheckListSort;
+
+        if (this.Selectedvendors.length > 0) {
+          if (!this.IsVendorListValid) {
+            this.IsVendorListValid = true;
+            this.ProgressBarValue += 50;
+          }
+        }
+        else {
+          if (this.IsVendorListValid) {
+            this.IsVendorListValid = false;
+            this.ProgressBarValue -= 50;
+          }
+        }
       }
     });
   }
@@ -384,6 +482,13 @@ export class CapaViewComponent implements OnInit {
     this.Selectedvendors.splice(index, 1);
     this.VendorDataSource = new MatTableDataSource<BPCFact>(this.Selectedvendors);
     this.VendorDataSource.sort = this.CheckListSort;
+
+    if (this.Selectedvendors.length == 0) {
+      if (this.IsVendorListValid) {
+        this.ProgressBarValue -= 50;
+        this.IsVendorListValid = false;
+      }
+    }
   }
   InitializeVendorsTable() {
     console.log("Selectedvendors", this.Selectedvendors);
@@ -435,20 +540,20 @@ export class CapaViewComponent implements OnInit {
     }
   }
   CreateCAPAReq(action: any) {
-    // this.isProgressBarVisibile = true;
+    this.isProgressBarVisibile = true;
     this.GetReqDetails();
     this.CAPAView.Status = action;
-    // this._capaService.CreateCAPAReq(this.CAPAView).subscribe(
-    //   (response) => {
-    //     this.isProgressBarVisibile = false;
-    //     this.notificationSnackBarComponent.openSnackBar("Vendor Success", SnackBarStatus.success);
-    //     this.ClearData();
-    //   },
-    //   (err) => {
-    //     this.isProgressBarVisibile = false;
-    //     this.notificationSnackBarComponent.openSnackBar(err, SnackBarStatus.danger);
-    //   }
-    // );
+    this._capaService.CreateCAPAReq(this.CAPAView).subscribe(
+      (response) => {
+        this.isProgressBarVisibile = false;
+        this.notificationSnackBarComponent.openSnackBar("Vendor Success", SnackBarStatus.success);
+        this.ClearData();
+      },
+      (err) => {
+        this.isProgressBarVisibile = false;
+        this.notificationSnackBarComponent.openSnackBar(err, SnackBarStatus.danger);
+      }
+    );
   }
   ClearData() {
     this.Selectedvendors = [];
@@ -465,14 +570,18 @@ export class CapaViewComponent implements OnInit {
     this.CheckListFormGroup.get('DueDate').patchValue(event.value);
 
     this.CheckListItems.forEach(element => {
-      element.DueDate=event.value;
+      element.DueDate = event.value;
     });
-    this.CheckListDataSource=new MatTableDataSource<CAPAReqItem>(this.CheckListItems);
+    this.CheckListDataSource = new MatTableDataSource<CAPAReqItem>(this.CheckListItems);
+
+    this.UpdateProgressbar();
   }
   StartDateChange(event) {
     this.HeaderFormGroup.get('StartDate').patchValue(event.value);
-    var dates=new Date(event.value);
-    this.DueMinDate=new Date(dates.getFullYear(),dates.getMonth(),dates.getDate() + 1);
+    var dates = new Date(event.value);
+    this.DueMinDate = new Date(dates.getFullYear(), dates.getMonth(), dates.getDate() + 1);
+
+    this.UpdateProgressbar();
   }
   GetReqDetails() {
     this.CAPAView.CAPAReqItems = [];
@@ -523,7 +632,7 @@ export class CapaViewComponent implements OnInit {
       }
       this.CAPAView.CAPAReqPartners.push(ven);
     });
-    console.log("GetReqDetails",this.CAPAView);
+    console.log("GetReqDetails", this.CAPAView);
   }
   openConfirmationDialog(Actiontype: string, Catagory = "CAPA Request"): void {
     // if (Actiontype == "Open") {
@@ -546,5 +655,8 @@ export class CapaViewComponent implements OnInit {
   }
   NextTab(index: any) {
     this.NextTabIndex = index + 1;
+  }
+  PreviousTab(index: any) {
+    this.NextTabIndex = index - 1;
   }
 }

@@ -16,8 +16,8 @@ export class AddvendorDialogComponent implements OnInit {
   facts: BPCFact[] = [];
   FactsView: BPCFact[] = [];
   SearchText = "";
-  DisableSelect:boolean;
-  ofStatusOptions=["1","2","3","4","5"];
+  DisableSelect: boolean;
+  ofStatusOptions = ["1", "2", "3", "4", "5"];
   constructor(private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public vendorDetails: CAPAvendor,
     public matDialogRef: MatDialogRef<AddvendorDialogComponent>) { }
@@ -41,21 +41,20 @@ export class AddvendorDialogComponent implements OnInit {
     this.matDialogRef.close(false);
   }
   LoadvendorDetails() {
-    this.vendorDetails.Vendors.forEach(element => {
-      this.facts.push(element);
-      this.FactsView.push(element);
+    this.vendorDetails.Vendors.forEach((element, index) => {
+        this.facts.push(element);
+        this.FactsView.push(element);
     });
     this.vendorDetails.SelectedVendors.forEach(element => {
       this.SelectedVendors.push(element);
     });
-    this.DisableSelect=!this.vendorDetails.Action;
-    if(this.DisableSelect)
-    {
+    this.DisableSelect = !this.vendorDetails.Action;
+    if (this.DisableSelect) {
       this.vendorDetails.Vendors.forEach(element => {
         this.SelectedVendors.push(element);
       });
     }
-    console.log("LoadvendorDetails", this.SelectedVendors);
+    console.log("LoadvendorDetails", this.facts);
   }
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -74,14 +73,19 @@ export class AddvendorDialogComponent implements OnInit {
           partnerid = element.PatnerID.toString();
         }
         if (partnerid != "" && partnerid.includes(this.SearchText) || city != "" && city.includes(this.SearchText)) {
-          matchedIndex.push(element.PatnerID);
+          const obj = {
+            PatnerID: element.PatnerID,
+            Type: element.Type,
+            Company:element.Company
+          }
+          matchedIndex.push(obj);
         }
       });
       if (matchedIndex.length > 0) {
         this.facts = [];
       }
       for (var i = 0; i < matchedIndex.length; i++) {
-        var FactIndex=this.FactsView.findIndex(x=>x.PatnerID ==  matchedIndex[i]);
+        var FactIndex = this.FactsView.findIndex(x => x.PatnerID == matchedIndex[i].PatnerID && x.Type == matchedIndex[i].Type && x.Company == matchedIndex[i].Company);
         this.facts.push(this.FactsView[FactIndex]);
       }
     }

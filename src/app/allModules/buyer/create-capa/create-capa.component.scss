@@ -109,11 +109,10 @@
         border-bottom: 0px !important;
     }
     .mat-tab-group {
-      
         margin-bottom: 50px !important;
+        flex-grow: 1 !important;
     }
-    
-    
+
     .TextArea .mat-form-field-underline {
         display: none;
     }
@@ -180,7 +179,7 @@
     }
     #footerCard {
         position: fixed;
-        height: 50px;
+        height: 60px;
         box-shadow: 0 -5px 10px 0 rgba(0, 0, 0, 0.16);
         background-color: #ffffff;
         bottom: 0px;
@@ -194,7 +193,24 @@
         color: white;
     }
     .mat-tab-body-content {
-        height: 100%;
+        height: 100% !important;
         overflow: none !important;
+    }
+    .mat-tab-body-wrapper {
+        min-height: 350px !important;
+    }
+    .mat-tab-body {
+        min-height: 350px !important;
+    }
+    .ProgressBar{
+        margin-bottom: 7px !important;
+        width: 93% !important;
+        margin-left: 77px !important;
+        position: absolute !important;
+        border-radius: 20px;
+        height: 3px !important;
+    }
+    .mat-progress-bar-fill::after {
+        background-color: #9bf359;
     }
 }
