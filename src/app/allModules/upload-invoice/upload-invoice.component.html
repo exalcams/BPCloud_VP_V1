@@ -59,7 +59,7 @@
                 <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="50px">
                   <div fxFlex="33" style="display: none;">
                     <mat-form-field style="width: 100%;">
-                      <input matInput placeholder="Doc Number" formControlName="DocumentNumber">
+                      <input matInput placeholder="Doc Number" formControlName="DocumentNumber" >
                       <mat-error
                         *ngIf="flipFormGroup.get('DocumentNumber').touched && flipFormGroup.get('DocumentNumber').hasError('required')">
                         Doc Number is required
@@ -80,7 +80,7 @@
                   </div>
                   <div fxFlex="33">
                     <mat-form-field style="width: 100%;">
-                      <input matInput placeholder="Invoice No (16 Char)" formControlName="InvoiceNumber">
+                      <input matInput placeholder="Invoice No (16 Char)" formControlName="InvoiceNumber" (change)="handleFileInput(event_file)">
                       <mat-error *ngIf="flipFormGroup.get('InvoiceNumber').hasError('qty1')">
                         Please select a valid invoice document
                       </mat-error>

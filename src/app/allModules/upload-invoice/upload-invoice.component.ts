@@ -25,7 +25,7 @@ import { FactService } from 'app/services/fact.service';
 import { AuthService } from 'app/services/auth.service';
 import { map, startWith } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
-import * as Tesseract from 'tesseract.js';
+// import * as Tesseract from 'tesseract.js';
 import { DomSanitizer } from '@angular/platform-browser';
 import { T } from '@angular/core/src/render3';
 // import { PdfReaderService } from 'app/services/pdf-reader.service';
@@ -35,7 +35,7 @@ declare function getTxtFrmPdf(url: any, invoicenum: any): any;
 declare function GetPdfImages(url: any): any;
 
 declare function foo(): any;
-
+declare var Tesseract;
 
 @Component({
   selector: 'app-upload-invoice',
@@ -118,6 +118,8 @@ export class UploadInvoiceComponent implements OnInit {
   ImageUrl: any;
   x_unit8: Uint8Array;
   Result = 'Recognizing...';
+  x_wrd: any;
+  event_file: any;
 
   constructor(
     private _fuseConfigService: FuseConfigService,
@@ -874,9 +876,14 @@ export class UploadInvoiceComponent implements OnInit {
     });
 
   }
-
+  // tslint:disable-next-line:typedef
+  inputhandle(evt){
+    this.handleFileInput(evt);
+  }
   // tslint:disable-next-line:typedef
   async handleFileInput(evt) {
+    if (evt.target.files !== "")
+    {
 
     //  FileList files
     const invoicenum = this.flipFormGroup.get("InvoiceNumber").value;
@@ -896,7 +903,7 @@ export class UploadInvoiceComponent implements OnInit {
           this.fileToUpload = null;
           this.flipFormGroup.get('InvoiceNumber').setErrors({ qty1: true });
           this.flipFormGroup.get('InvoiceNumber').markAsTouched();
-
+          this.event_file = "";
 
         }
 
@@ -906,6 +913,7 @@ export class UploadInvoiceComponent implements OnInit {
           // this.flipFormGroup.get('InvoiceNumber').valid;
 
           this.flipFormGroup.get('InvoiceNumber').markAsUntouched();
+          this.event_file = evt;
 
         }
 
@@ -914,8 +922,30 @@ export class UploadInvoiceComponent implements OnInit {
     else {
       this.isProgressBarVisibile = true;
 
-      const a = await this.Tesseract(url, invoicenum);
-      if (a < 1) {
+      const tes = await this.Tesseract(url, invoicenum);
+      let x = 0;
+      let y = 0;
+      const text = tes.text;
+      const word = invoicenum;
+      console.log("text", text);
+      for (let i = 0; i < text.length; i++) {
+
+        if (text[i] === word[0]) {
+          for (let j = i; j < i + word.length; j++) {
+
+            if (text[j] === word[j - i]) {
+              y++;
+            }
+            if (y === word.length) {
+              x++;
+            }
+          }
+          y = 0;
+        }
+      }
+      // console.log("y", y);
+      // console.log("x", x);
+      if (x < 1) {
         this.isProgressBarVisibile = false;
 
         this.fileToUpload = null;
@@ -923,8 +953,8 @@ export class UploadInvoiceComponent implements OnInit {
         this.flipFormGroup.get('InvoiceNumber').setErrors({ qty1: true });
         this.flipFormGroup.get('InvoiceNumber').markAsTouched();
 
-
-      }
+        this.event_file = "";
+      } 
 
       else {
         this.isProgressBarVisibile = false;
@@ -934,11 +964,12 @@ export class UploadInvoiceComponent implements OnInit {
         // this.flipFormGroup.get('InvoiceNumber').valid;
 
         this.flipFormGroup.get('InvoiceNumber').markAsUntouched();
+        this.event_file = evt;
 
       }
 
 
-    }
+    }}
     // end
 
     // this.pdfReader.readPdf('./assets/SOC.pdf')
@@ -1019,31 +1050,34 @@ export class UploadInvoiceComponent implements OnInit {
     let y = 0;
     // tslint:disable-next-line:typedef
     return Tesseract.recognize(url).then(function (result) {
-      const text = result.data.text;
-      const word = invoicenum;
-      console.log("text", text);
-      for (let i = 0; i < text.length; i++) {
+      // alert(result.text)
+      // const text = result.text;
+      // const word = invoicenum;
+      // console.log("text", text);
+      // for (let i = 0; i < text.length; i++) {
 
-        if (text[i] === word[0]) {
-          for (let j = i; j < i + word.length; j++) {
+      //   if (text[i] === word[0]) {
+      //     for (let j = i; j < i + word.length; j++) {
 
-            if (text[j] === word[j - i]) {
-              y++;
-            }
-            if (y === word.length) {
-              x++;
-            }
-          }
-          y = 0;
-        }
-      }
-      console.log("y", y);
-      console.log("x", x);
+      //       if (text[j] === word[j - i]) {
+      //         y++;
+      //       }
+      //       if (y === word.length) {
+      //         x++;
+      //       }
+      //     }
+      //     y = 0;
+      //   }
+      // }
+      // console.log("y", y);
+      // console.log("x", x);
+    
 
     }).then(() => {
 
       return x;
     });
+   
   }
   numberOnly(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
