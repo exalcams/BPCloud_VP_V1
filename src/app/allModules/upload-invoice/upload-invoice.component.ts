@@ -877,99 +877,90 @@ export class UploadInvoiceComponent implements OnInit {
 
   }
   // tslint:disable-next-line:typedef
-  inputhandle(evt){
+  inputhandle(evt) {
     this.handleFileInput(evt);
   }
   // tslint:disable-next-line:typedef
   async handleFileInput(evt) {
-    if (evt.target.files !== "")
-    {
+    if (evt.target.files !== "") {
+      this.isProgressBarVisibile = true;
+      //  FileList files
+      const invoicenum = this.flipFormGroup.get("InvoiceNumber").value;
 
-    //  FileList files
-    const invoicenum = this.flipFormGroup.get("InvoiceNumber").value;
 
+      const files = evt.target.files;
 
-    const files = evt.target.files;
+      // Create a Blog object for selected file & define MIME type
+      const blob = new Blob(evt.target.files, { type: evt.target.files[0].type });
+      // Create Blog URL 
+      const url = window.URL.createObjectURL(blob);
 
-    // Create a Blog object for selected file & define MIME type
-    const blob = new Blob(evt.target.files, { type: evt.target.files[0].type });
-    // Create Blog URL 
-    const url = window.URL.createObjectURL(blob);
+      if (files.item(0).type === "application/pdf") {
+        getTxtFrmPdf(url, invoicenum).then((z) => {
+          console.log('textfromts:', z);
+          if (z < 1) {
+            this.isProgressBarVisibile = false;
+            this.fileToUpload = null;
+            this.flipFormGroup.get('InvoiceNumber').setErrors({ qty1: true });
+            // this.flipFormGroup.get('InvoiceNumber').updateValueAndValidity();
+            this.flipFormGroup.get('InvoiceNumber').markAsTouched();
+            this.event_file = "";
+          }
+          else {
+            this.isProgressBarVisibile = false;
+            this.fileToUpload = evt.target.files[0];
+            this.flipFormGroup.get('InvoiceNumber').setErrors({ qty1: null })
+            this.flipFormGroup.get('InvoiceNumber').updateValueAndValidity();
+            this.flipFormGroup.get('InvoiceNumber').markAsTouched();
+            this.event_file = evt;
+          }
 
-    if (files.item(0).type === "application/pdf") {
-      getTxtFrmPdf(url, invoicenum).then((z) => {
-        console.log('textfromts:', z);
-        if (z < 1) {
+        });
+      }
+      else {
+        this.isProgressBarVisibile = true;
+        const tes = await this.Tesseract(url, invoicenum);
+        let x = 0;
+        let y = 0;
+        const text = tes.text;
+        const word = invoicenum;
+        console.log("text", text);
+        for (let i = 0; i < text.length; i++) {
+
+          if (text[i] === word[0]) {
+            for (let j = i; j < i + word.length; j++) {
+
+              if (text[j] === word[j - i]) {
+                y++;
+              }
+              if (y === word.length) {
+                x++;
+              }
+            }
+            y = 0;
+          }
+        }
+        // console.log("y", y);
+        // console.log("x", x);
+        if (x < 1) {
+          this.isProgressBarVisibile = false;
           this.fileToUpload = null;
           this.flipFormGroup.get('InvoiceNumber').setErrors({ qty1: true });
+          // this.flipFormGroup.get('InvoiceNumber').updateValueAndValidity();
           this.flipFormGroup.get('InvoiceNumber').markAsTouched();
           this.event_file = "";
-
         }
 
         else {
+          this.isProgressBarVisibile = false;
           this.fileToUpload = evt.target.files[0];
-
-          // this.flipFormGroup.get('InvoiceNumber').valid;
-
-          this.flipFormGroup.get('InvoiceNumber').markAsUntouched();
+          this.flipFormGroup.get('InvoiceNumber').setErrors({ qty1: null });
+          this.flipFormGroup.get('InvoiceNumber').updateValueAndValidity();
+          this.flipFormGroup.get('InvoiceNumber').markAsTouched();
           this.event_file = evt;
-
         }
-
-      });
+      }
     }
-    else {
-      this.isProgressBarVisibile = true;
-
-      const tes = await this.Tesseract(url, invoicenum);
-      let x = 0;
-      let y = 0;
-      const text = tes.text;
-      const word = invoicenum;
-      console.log("text", text);
-      for (let i = 0; i < text.length; i++) {
-
-        if (text[i] === word[0]) {
-          for (let j = i; j < i + word.length; j++) {
-
-            if (text[j] === word[j - i]) {
-              y++;
-            }
-            if (y === word.length) {
-              x++;
-            }
-          }
-          y = 0;
-        }
-      }
-      // console.log("y", y);
-      // console.log("x", x);
-      if (x < 1) {
-        this.isProgressBarVisibile = false;
-
-        this.fileToUpload = null;
-
-        this.flipFormGroup.get('InvoiceNumber').setErrors({ qty1: true });
-        this.flipFormGroup.get('InvoiceNumber').markAsTouched();
-
-        this.event_file = "";
-      } 
-
-      else {
-        this.isProgressBarVisibile = false;
-
-        this.fileToUpload = evt.target.files[0];
-
-        // this.flipFormGroup.get('InvoiceNumber').valid;
-
-        this.flipFormGroup.get('InvoiceNumber').markAsUntouched();
-        this.event_file = evt;
-
-      }
-
-
-    }}
     // end
 
     // this.pdfReader.readPdf('./assets/SOC.pdf')
@@ -1071,13 +1062,13 @@ export class UploadInvoiceComponent implements OnInit {
       // }
       // console.log("y", y);
       // console.log("x", x);
-    
+
 
     }).then(() => {
 
       return x;
     });
-   
+
   }
   numberOnly(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
