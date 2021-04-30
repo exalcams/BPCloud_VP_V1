@@ -80,7 +80,7 @@ export class CapaResponseComponent implements OnInit {
         if (res) {
           this.SelectedVendor = res as CAPAReqView;
           var item = this.SelectedVendor.CAPAReqItems;
-
+          console.log("Header Start Date", this.SelectedVendor.StartDate);
           this.SelectedVendor.CAPAReqItems.forEach(items => {
             if (items.IsDocumentRequired === true) {
               items.IsDocumentRequired = "Yes";
@@ -90,8 +90,14 @@ export class CapaResponseComponent implements OnInit {
             }
             this.ItemList.push(items);
           });
+          if (this.Type != "Accept") {
+            this.ItemList.forEach((item, Index) => {
+              if (item.Status == "Closed") {
+                this.ItemList.splice(Index, 1);
+              }
+            });
+          }
           this.LoadHeaderDetails();
-          // console.log("this.ItemList", this.ItemList);
 
           if (this.Type != "Respond") {
             this.GetCAPABuyerResponseItem();
@@ -141,7 +147,7 @@ export class CapaResponseComponent implements OnInit {
             Resitem.PartnerID = this.currentUserName;
             Resitem.Text = item.Text;
             Resitem.Status = item.Status;
-            Resitem.DueDate = new Date(item.DueDate)
+            Resitem.DueDate = item.DueDate;
             this.ResponseDetails.CAPAResItems.forEach((Responseitems, index) => {
               if (Responseitems.ReqItemID == item.ReqItemID) {
                 this.ResponseDetails.CAPAResItems.splice(index, 1);
@@ -159,6 +165,7 @@ export class CapaResponseComponent implements OnInit {
     if (this.Type == "ResolvedDiffered") {
       this.Type = "Others";
     }
+    console.log("GetCAPABuyerResponseItem Called");
     this._capaService.GetCAPABuyerResponseItem(this.SelectedID, this.currentUserName, this.Type).subscribe(
       (data) => {
         this.ItemList = [];
@@ -205,7 +212,7 @@ export class CapaResponseComponent implements OnInit {
         this.ResponseItem(Resitem, true);
       }
       else {
-        console.log("Reqitem",Reqitem);
+        console.log("Reqitem", Reqitem);
         this.ResponseItem(Resitem, false, Reqitem.IsDocumentRequired);
       }
     }
@@ -333,21 +340,22 @@ export class CapaResponseComponent implements OnInit {
   // }
   ResponseItem(item: any, Action = false, IsDocumentRequried = null) {
     var DialogData = new CAPADialogResponse();
-
+    DialogData.MinDate = new Date(this.SelectedVendor.StartDate);
+    
     if (IsDocumentRequried != null) {
-      DialogData.IsDocumentRequried =IsDocumentRequried;
+      DialogData.IsDocumentRequried = IsDocumentRequried;
     }
     else {
-      DialogData.IsDocumentRequried =  item.IsDocumentRequired;
+      DialogData.IsDocumentRequried = item.IsDocumentRequired;
     }
 
     if (this.ResponseDetails.CAPAResItems.length > 0) {
       this.ResponseDetails.CAPAResItems.forEach(details => {
         if (details.ReqItemID === item.ReqItemID) {
           DialogData.Text = details.Text;
-          DialogData.DueDate = details.DueDate.toDateString();
+          DialogData.DueDate = details.DueDate;
           DialogData.Status = details.Status;
-
+          DialogData.MinDate = new Date(this.SelectedVendor.StartDate);
           if (this.Type == 'Respond' && Action) {
             DialogData.ActionStatus = "View";
           }
@@ -392,11 +400,11 @@ export class CapaResponseComponent implements OnInit {
           Resitem.Text = response.Text;
           Resitem.Status = response.Status;
 
-          if (response.DueDate == null  || response.DueDate.toString() == "") {
-            Resitem.DueDate = new Date(this.HeaderFormGroup.get('DueDate').value);
+          if (response.DueDate == null || response.DueDate.toString() == "") {
+            Resitem.DueDate = this._datePipe.transform(this.HeaderFormGroup.get('DueDate').value, 'yyyy-MM-dd')
           }
           else {
-            Resitem.DueDate = new Date(response.DueDate);
+            Resitem.DueDate = response.DueDate;
           }
           this.ResponseDetails.CAPAResItems.forEach((Responseitems, index) => {
             if (Responseitems.ReqItemID == item.ReqItemID) {

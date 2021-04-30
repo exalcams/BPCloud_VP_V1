@@ -166,7 +166,7 @@ export class CreateCapaComponent implements OnInit {
     if (this.CheckListFormGroup.valid) {
       const item = new CAPAReqItem();
       item.Text = this.CheckListFormGroup.get('Text').value;
-      item.DueDate = this.CheckListFormGroup.get('DueDate').value;
+      item.DueDate = this._datePipe.transform(this.CheckListFormGroup.get('DueDate').value,'yyyy-MM-dd');
       item.Priority = this.CheckListFormGroup.get('Priority').value;
       item.Impact = this.CheckListFormGroup.get('Impact').value;
       item.Department = this.CheckListFormGroup.get('Department').value;
@@ -175,7 +175,7 @@ export class CreateCapaComponent implements OnInit {
 
       if (this.SelectedItemIndex >= 0 && this.SelectedItemIndex != null) {
         this.CheckListItems[this.SelectedItemIndex].Text = this.CheckListFormGroup.get('Text').value;
-        this.CheckListItems[this.SelectedItemIndex].DueDate = this.CheckListFormGroup.get('DueDate').value;
+        this.CheckListItems[this.SelectedItemIndex].DueDate = this._datePipe.transform(this.CheckListFormGroup.get('DueDate').value,'yyyy-MM-dd');
         this.CheckListItems[this.SelectedItemIndex].Priority = this.CheckListFormGroup.get('Priority').value;
         this.CheckListItems[this.SelectedItemIndex].Impact = this.CheckListFormGroup.get('Impact').value;
         this.CheckListItems[this.SelectedItemIndex].Department = this.CheckListFormGroup.get('Department').value;
@@ -221,10 +221,15 @@ export class CreateCapaComponent implements OnInit {
     this.CheckListFormGroup.get('IsDocumentRequired').patchValue(row.IsDocumentRequired);
   }
   DueDateChange(event) {
+    const PreviousDueDate=this._datePipe.transform(this.CheckListFormGroup.get('DueDate').value,'yyyy-MM-dd');
     this.CheckListFormGroup.get('DueDate').patchValue(event.value);
-
+    console.log("PreviousDueDate",PreviousDueDate);
     this.CheckListItems.forEach(element => {
-      element.DueDate = event.value;
+      var newDueDate=this._datePipe.transform(event.value,'yyyy-MM-dd');
+      if(PreviousDueDate == element.DueDate)
+      {
+        element.DueDate = newDueDate;
+      }
     });
     this.CheckListDataSource = new MatTableDataSource<CAPAReqItem>(this.CheckListItems);
 
@@ -502,7 +507,7 @@ export class CreateCapaComponent implements OnInit {
     else {
       var item = new CAPAReqItem();
       item.Text = this.TextAreaValue;
-      item.DueDate = this.HeaderFormGroup.get('DueDate').value;
+      item.DueDate =  this._datePipe.transform(this.HeaderFormGroup.get('DueDate').value, 'yyyy-MM-dd');
       this.CAPAView.CAPAReqItems.push(item);
     }
     //Vendors

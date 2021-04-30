@@ -92,7 +92,7 @@ export class CAPAResItem extends CommonClass {
     Text: string;
     Date: string;
     Status: string;
-    DueDate: Date | null;
+    DueDate: string | null;
     AttachmentID: number | null;
 }
 export class CAPAResponseView {
@@ -108,6 +108,7 @@ export class CAPADialogResponse {
     IsDocumentRequried:string;
     Files: File | null;
     ActionStatus:string;
+    MinDate:Date;
 }
 export class CAPADialogResponseFiles {
     ReqItemID: number;

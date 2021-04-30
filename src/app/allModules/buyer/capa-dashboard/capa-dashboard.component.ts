@@ -58,7 +58,7 @@ export class CapaDashboardComponent implements OnInit {
   CurrentUserRole: string;
   MenuItems: string[];
   data: CAPAvendor;
-
+  SelectAllCheckBox=false;
   CAPAAcceptResItems: CAPAAcceptItems[];
   notificationSnackBarComponent: NotificationSnackBarComponent;
   IsAllSelected = true;
@@ -184,6 +184,9 @@ export class CapaDashboardComponent implements OnInit {
 
     this.isProgressBarVisibile = false;
 
+    this.SelectedResItem=[];
+    this.SelectAllCheckBox=false;
+
   }
   ResolvedDifferedCard(index: any) {
     this.isProgressBarVisibile = true;
@@ -238,7 +241,8 @@ export class CapaDashboardComponent implements OnInit {
     this.DashboardAccpetTableDataSource = new MatTableDataSource<CAPAAcceptItems>(this.DifferedList);
     this.DashboardAccpetTableDataSource.sort = this.tableSort;
     this.DashboardAccpetTableDataSource.paginator = this.tablePaginator;
-
+    this.SelectedResItem=[];
+    this.SelectAllCheckBox=false;
   }
   AcceptCard(index: any) {
     this.TableName = "Accept";
@@ -380,24 +384,31 @@ export class CapaDashboardComponent implements OnInit {
     }
     else {
       this.SelectedResItem = [];
-      this.ResolvedDifferedList.forEach(list => {
-        this.SelectedResItem.push(list);
-      });
-      // if (this.TableName == "Differed") {
-      //   this.DifferedList.forEach(list => {
-      //     this.SelectedResItem.push(list);
-      //   });
-      // }
-      // else {
-      //   this.ResolvedList.forEach(list => {
-      //     this.SelectedResItem.push(list);
-      //   });
-      // }
+      if (this.TableName == "Differed") {
+        this.DifferedList.forEach(list => {
+          this.SelectedResItem.push(list);
+        });
+      }
+      else if (this.TableName == "Resolved") {
+        this.ResolvedList.forEach(list => {
+          this.SelectedResItem.push(list);
+        });
+      }
+      else {
+        this.ResolvedDifferedList.forEach(list => {
+          this.SelectedResItem.push(list);
+        });
+      }
+
+      console.log("SelectAllTableRow",this.SelectedResItem);
+      this.SelectAllCheckBox=true;
     }
   }
 
   AcceptResItems() {
     if (this.SelectedResItem.length > 0) {
+      this.SelectAllCheckBox=false;
+
       this.isProgressBarVisibile = true;
       this._capaService.AcceptCAPAResponseItem(this.SelectedResItem).subscribe(
         (data) => {
@@ -405,6 +416,7 @@ export class CapaDashboardComponent implements OnInit {
           this.isProgressBarVisibile = false;
           this.GetRequestHeaders();
           this.DueToRealseCard(1);
+
           this.notificationSnackBarComponent.openSnackBar("Item Accepted", SnackBarStatus.success);
         },
         (err) => {
@@ -428,10 +440,12 @@ export class CapaDashboardComponent implements OnInit {
     this.AcceptList = [];
     this.RejectList = [];
     this.CAPACloseList = [];
-    this.ResolvedDifferedList=[];
+    this.ResolvedDifferedList = [];
   }
   RejectResItems() {
     if (this.SelectedResItem.length > 0) {
+      this.SelectAllCheckBox=false;
+
       this.isProgressBarVisibile = true;
       this._capaService.RejectCAPAResponseItem(this.SelectedResItem).subscribe(
         (data) => {
