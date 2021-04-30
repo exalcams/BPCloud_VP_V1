@@ -150,7 +150,12 @@ export class POComponent implements OnInit {
     console.log("loadSelectedProduct",Data);
     this.selectID=Data.ID;
     this.SelectedPO.ID=Data.ID;
-    this.SelectedPO.POType=Data.POType;
+    this.POAliasNames.forEach((poType,index) => {
+      if(poType == Data.POType)
+      {
+        this.SelectedPO.POType=this.POTypes[index];
+      }
+    });
     this.SelectedPO.Level=Data.Level;
     this.SelectedPO.Stage=Data.Stage;
     this.SelectedPO.Interval=Data.Interval;
