@@ -111,7 +111,7 @@
               Action </th>
             <td mat-cell *matCellDef="let element;let i = index" style="text-align: center;">
 
-              <button mat-flat-button color="accent"  (click)="ViewItem(element)">{{Type == 'Accept'?'View' : 'Response'}}</button>
+              <button mat-flat-button color="accent"  (click)="ViewItem(element)">{{Type == 'Accept'?'View' : Type == 'Others'?'View':'Response'}}</button>
             </td>
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="CheckListDisplayColumns;sticky: true"></tr>

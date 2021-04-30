@@ -19,6 +19,7 @@ export class CapaResponseDialogComponent implements OnInit {
 
   TextAreaMinRow = 5;
   TextAreaMaxRow = 10;
+  MinDate:Date;
   ResponseFormGroup: FormGroup;
   ResponseDetails: CAPAResponseView;
   ResponseStatus = ["Resolved", "Differed"];
@@ -70,6 +71,9 @@ export class CapaResponseDialogComponent implements OnInit {
   }
   LoadDialogData() {
     console.log("LoadDialogData-Item",this.Item);
+    const NewDate=new Date(this.Item.MinDate);
+    this.MinDate = new Date(NewDate.getFullYear(), NewDate.getMonth(), NewDate.getDate() + 1);
+
     if (this.Item.IsDocumentRequried === "Yes") {
       this.IsAttachmentRequried = true;
     }

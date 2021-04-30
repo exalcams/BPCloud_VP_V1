@@ -1,4 +1,4 @@
-<div id="CAPA-Create" class="page-layout carded" fusePerfectScrollbar>
+<div id="CAPA-View" class="page-layout carded" fusePerfectScrollbar>
   <div class="center" fxLayout="column" fxLayoutGap="10px">
     <div class="outer" fxLayout>
       <div class="bg"></div>
@@ -153,7 +153,7 @@
                     </div>
                     <div fxFlex="20">
                       <mat-form-field style="width: 100%;">
-                        <input matInput placeholder="Due Date" [matDatepicker]="picker1" formControlName="DueDate">
+                        <input matInput placeholder="Due Date" [matDatepicker]="picker1" formControlName="DueDate" [min]="DueMinDate">
                         <mat-datepicker-toggle matSuffix [for]="picker1">
                           <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
                         </mat-datepicker-toggle>
@@ -245,7 +245,7 @@
                         </mat-error>
                       </mat-form-field>
                     </div>
-                    <div fxFlex="20" fxLayoutAlign="end">
+                    <div fxFlex="20" fxLayoutAlign="end" *ngIf="IsFooterDisable">
                       <img class="addIcon" src="assets/images/logos/add-button.png" (click)="AddToCheckListTable()">
                     </div>
                   </form>
@@ -348,7 +348,7 @@
         </ng-template>
 
         <div style="padding: 20px !important;" fxLayout="column" fxFlex="100" fxLayoutAlign="space-between stretch">
-          <div fxLayoutAlign="end center" fxLayout="row" fxFlex="10">
+          <div fxLayoutAlign="end center" fxLayout="row" fxFlex="10" *ngIf="IsFooterDisable">
             <img class="addIcon" src="assets/images/logos/add-button.png" (click)="openVendorDialog()">
           </div><br>
           <!-- <table class="table" mat-table [dataSource]="VendorDataSource" matSort>

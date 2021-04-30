@@ -14,6 +14,7 @@ import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notific
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationDetails } from 'app/models/master';
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-capa-view',
@@ -74,7 +75,7 @@ export class CapaViewComponent implements OnInit {
   ISCheckListFormValid = false;
   IsVendorListValid = false;
   constructor(private _formBuilder: FormBuilder, private dialog: MatDialog,
-    private _factService: FactService, private _capaService: CapaService,
+    private _factService: FactService, private _capaService: CapaService, private _datePipe: DatePipe,
     public snackBar: MatSnackBar, private _route: ActivatedRoute, private _router: Router) {
 
 
@@ -217,8 +218,10 @@ export class CapaViewComponent implements OnInit {
           var fact = this.Vendors.find(x => x.PatnerID == ReqVendors.PatnerID);
           this.Selectedvendors.push(fact)
         });
-        this.IsVendorListValid = true;
-        this.ProgressBarValue += 50;
+        if (this.Selectedvendors.length > 0) {
+          this.IsVendorListValid = true;
+          this.ProgressBarValue += 50;
+        }
         this.VendorDataSource = new MatTableDataSource<BPCFact>(this.Selectedvendors);
         this.VendorDataSource.sort = this.CheckListSort;
         this.isProgressBarVisibile = false;
@@ -336,7 +339,7 @@ export class CapaViewComponent implements OnInit {
     if (this.CheckListFormGroup.valid) {
       const item = new CAPAReqItem();
       item.Text = this.CheckListFormGroup.get('Text').value;
-      item.DueDate = this.CheckListFormGroup.get('DueDate').value;
+      item.DueDate = this._datePipe.transform(this.CheckListFormGroup.get('DueDate').value, 'yyyy-MM-dd');
       item.Priority = this.CheckListFormGroup.get('Priority').value;
       item.Impact = this.CheckListFormGroup.get('Impact').value;
       item.Department = this.CheckListFormGroup.get('Department').value;
@@ -345,7 +348,7 @@ export class CapaViewComponent implements OnInit {
 
       if (this.SelectedItemIndex >= 0 && this.SelectedItemIndex != null) {
         this.CheckListItems[this.SelectedItemIndex].Text = this.CheckListFormGroup.get('Text').value;
-        this.CheckListItems[this.SelectedItemIndex].DueDate = this.CheckListFormGroup.get('DueDate').value;
+        this.CheckListItems[this.SelectedItemIndex].DueDate = this._datePipe.transform(this.CheckListFormGroup.get('DueDate').value, 'yyyy-MM-dd');;
         this.CheckListItems[this.SelectedItemIndex].Priority = this.CheckListFormGroup.get('Priority').value;
         this.CheckListItems[this.SelectedItemIndex].Impact = this.CheckListFormGroup.get('Impact').value;
         this.CheckListItems[this.SelectedItemIndex].Department = this.CheckListFormGroup.get('Department').value;
@@ -380,6 +383,7 @@ export class CapaViewComponent implements OnInit {
   }
   showValidationErrors(formGroup: FormGroup): void {
     Object.keys(formGroup.controls).forEach(key => {
+
       if (!formGroup.get(key).valid) {
         console.log(key);
       }
@@ -567,10 +571,16 @@ export class CapaViewComponent implements OnInit {
     this.GetCAPADetilsByReqId();
   }
   DueDateChange(event) {
+    const PreviousDueDate=this._datePipe.transform(this.CheckListFormGroup.get('DueDate').value,'yyyy-MM-dd');
     this.CheckListFormGroup.get('DueDate').patchValue(event.value);
+    var newDueDate=this._datePipe.transform(event.value,'yyyy-MM-dd');
 
+    console.log("PreviousDueDate",PreviousDueDate,newDueDate);
     this.CheckListItems.forEach(element => {
-      element.DueDate = event.value;
+      if(PreviousDueDate == element.DueDate)
+      {
+        element.DueDate = newDueDate;
+      }
     });
     this.CheckListDataSource = new MatTableDataSource<CAPAReqItem>(this.CheckListItems);
 
@@ -589,7 +599,7 @@ export class CapaViewComponent implements OnInit {
     //Header
     this.CAPAView.ReqID = parseInt(this.SelectedID);
     this.CAPAView.Text = this.HeaderFormGroup.get('Text').value;
-    this.CAPAView.DueDate = this.HeaderFormGroup.get('DueDate').value;
+    this.CAPAView.DueDate = this._datePipe.transform(this.HeaderFormGroup.get('DueDate').value, 'yyyy-MM-dd');
     this.CAPAView.StartDate = this.HeaderFormGroup.get('StartDate').value;
     this.CAPAView.Recurring = this.HeaderFormGroup.get('Recurring').value;
     if (this.CAPAView.Recurring === "Yes") {
@@ -617,7 +627,7 @@ export class CapaViewComponent implements OnInit {
       this.CheckListDataSource = new MatTableDataSource<CAPAReqItem>(this.CheckListItems);
       var item = new CAPAReqItem();
       item.Text = this.TextAreaValue;
-      item.DueDate = this.HeaderFormGroup.get('DueDate').value;
+      item.DueDate = this._datePipe.transform(this.HeaderFormGroup.get('DueDate').value, 'yyyy-MM-dd');
       this.CAPAView.CAPAReqItems.push(item);
     }
     //Vendors

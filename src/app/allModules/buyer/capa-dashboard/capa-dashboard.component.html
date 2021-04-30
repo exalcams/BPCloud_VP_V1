@@ -132,9 +132,9 @@
               </td>
           </ng-container>
           <ng-container matColumnDef="Status">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background" >
               Item Status </th>
-            <td mat-cell *matCellDef="let element" (click)="RowSelected(element)">
+            <td mat-cell *matCellDef="let element" (click)="RowSelected(element)" style="cursor: pointer !important;">
               <a>{{element.ItemStatus}}</a> </td>
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="DashboardtableColumn;sticky: true"></tr>
@@ -207,7 +207,7 @@
               [ngClass]="BGClassName?.layout?.toolbar?.background">
               Response Status </th>
             <td mat-cell *matCellDef="let element">
-              <a>{{element.ResponseItemStatus}}</a> </td>
+              <p style="color: #039be5 !important;">{{element.ResponseItemStatus}}</p> </td>
           </ng-container>
           <ng-container matColumnDef="Attachments">
             <th mat-header-cell *matHeaderCellDef mat-sort-header
@@ -244,7 +244,7 @@
             <ng-container matColumnDef="Select">
               <th mat-header-cell *matHeaderCellDef style="text-align: center !important;"
                 [ngClass]="BGClassName?.layout?.toolbar?.background" class="TableSelectHeader">
-                <mat-checkbox class="HeaderCheckBox" (change)="SelectAllTableRow()"></mat-checkbox>
+                <mat-checkbox class="HeaderCheckBox" (change)="SelectAllTableRow()" [checked]="SelectAllCheckBox"></mat-checkbox>
               </th>
               <td mat-cell *matCellDef="let element" style="text-align: center !important;">
                 <mat-checkbox (change)="SelectTableRow(element)"
@@ -309,7 +309,7 @@
                 [ngClass]="BGClassName?.layout?.toolbar?.background">
                 Response Status </th>
               <td mat-cell *matCellDef="let element">
-                <a>{{element.ResponseItemStatus}} </a></td>
+                <p style="color: #039be5 !important;">{{element.ResponseItemStatus}} </p></td>
             </ng-container>
             <ng-container matColumnDef="Attachments">
               <th mat-header-cell *matHeaderCellDef mat-sort-header

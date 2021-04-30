@@ -27,7 +27,7 @@
             <form autocomplete="off" fxLayout="row wrap" fxLayoutGap="50px" name="form" novalidate
               [formGroup]="HeaderFormGroup" style="margin-left: 20px !important;margin-top: 20px;"
               (mouseleave)="UpdateProgressbar()" (keyup)="UpdateProgressbar()">
-              <div fxFlex="20" >
+              <div fxFlex="20">
                 <mat-form-field style="width: 100%;">
                   <input matInput placeholder="Start Date" [matDatepicker]="picker2"
                     (dateInput)="StartDateChange($event)" formControlName="StartDate" [min]="minDate" [max]="maxDate">
@@ -125,7 +125,8 @@
                 <mat-form-field class="TextArea" style="width: 100% !important;" appearance="outline">
                   <!-- <mat-label>Address</mat-label> -->
                   <textarea matInput matTextareaAutosize [matAutosizeMinRows]="TextAreaMinRow"
-                    [matAutosizeMaxRows]="TextAreaMaxRow" [(ngModel)]="TextAreaValue" (keyup)="UpdateProgressbar()"></textarea>
+                    [matAutosizeMaxRows]="TextAreaMaxRow" [(ngModel)]="TextAreaValue"
+                    (keyup)="UpdateProgressbar()"></textarea>
                 </mat-form-field>
               </div>
 
@@ -147,7 +148,8 @@
                       </div>
                       <div fxFlex="20">
                         <mat-form-field style="width: 100%;">
-                          <input matInput placeholder="Due Date" [matDatepicker]="picker1" formControlName="DueDate">
+                          <input matInput placeholder="Due Date" [min]="DueMinDate" [matDatepicker]="picker1"
+                            formControlName="DueDate">
                           <mat-datepicker-toggle matSuffix [for]="picker1">
                             <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
                           </mat-datepicker-toggle>
@@ -400,12 +402,14 @@
             </div>
           </div>
         </div>
-        <!-- <div fxLayout="column" fxLayoutAlign="end start" style="margin-left: 20px !important;margin-bottom: 15px !important;" fxFlex>
+        <div fxLayout="column" fxLayoutAlign="end start"
+          style="margin-left: 20px !important;margin-bottom: 15px !important;" fxFlex>
           <button mat-flat-button color="primary" (click)="PreviousTab(NextTabIndex)">Previous</button>
-        </div> -->
+        </div>
       </mat-tab>
     </mat-tab-group>
-    <div fxLayout id="footerCard" fxLayoutAlign="end stretch" fxLayoutGap="15px" *ngIf="!IsFooterDisable" fxLayout="column">
+    <div fxLayout id="footerCard" fxLayoutAlign="end stretch" fxLayoutGap="15px" *ngIf="!IsFooterDisable"
+      fxLayout="column">
       <div fxLayout fxLayoutGap="20px" fxLayoutAlign="end">
         <button (click)="SaveClicked('Save')" [ngClass]="BGClassName?.layout?.navbar?.primaryBackground" class="SaveBtn"
           mat-flat-button>
