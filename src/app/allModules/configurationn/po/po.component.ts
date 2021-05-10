@@ -88,12 +88,12 @@ export class POComponent implements OnInit {
       POType: ['', Validators.required],
       Stage: ['', Validators.required],
       Level: ['', Validators.required],
-      Interval:['', Validators.required],
+      Interval:['', [Validators.required,Validators.pattern('[0-9]{1,3}$')]],
       BeforeEvent: [''],
       AfterEvent: [''],
-      AfterDunning1: [''],
-      AfterDunning2: [''],
-      AfterDunning3: [''],
+      AfterDunning1: ['',Validators.pattern('[0-9]{1,3}$')],
+      AfterDunning2: ['',Validators.pattern('[0-9]{1,3}$')],
+      AfterDunning3: ['',Validators.pattern('[0-9]{1,3}$')],
     });
   }
   CreatePO()
@@ -131,7 +131,11 @@ export class POComponent implements OnInit {
     this.SelectedPO.Interval=this.POFormGroup.get('Interval').value;
     this.SelectedPO.BeforeEvent=this.POFormGroup.get('BeforeEvent').value;
     this.SelectedPO.AfterEvent=this.POFormGroup.get('AfterEvent').value;
-    this.SelectedPO.AfterDunning1=this.POFormGroup.get('AfterDunning1').value;
+    this.SelectedPO.AfterDunning1=parseInt(this.POFormGroup.get('AfterDunning1').value);
+    this.SelectedPO.AfterDunning2=parseInt(this.POFormGroup.get('AfterDunning2').value);
+    this.SelectedPO.AfterDunning3=parseInt(this.POFormGroup.get('AfterDunning3').value);
+
+    console.log('SelectedPO',this.SelectedPO);
   }
   UpdatePO()
   {
@@ -161,6 +165,9 @@ export class POComponent implements OnInit {
     this.SelectedPO.Interval=Data.Interval;
     this.SelectedPO.BeforeEvent=Data.BeforeEvent;
     this.SelectedPO.AfterDunning1=Data.AfterDunning1;
+    this.SelectedPO.AfterDunning2=Data.AfterDunning2;
+    this.SelectedPO.AfterDunning3=Data.AfterDunning3;
+
     this.SelectedPO.AfterEvent=Data.AfterEvent;
 
     this.LoadPoData(this.SelectedPO);
@@ -173,6 +180,9 @@ export class POComponent implements OnInit {
     this.POFormGroup.get('BeforeEvent').patchValue(SelectedPO.BeforeEvent);
     this.POFormGroup.get('AfterEvent').patchValue(SelectedPO.AfterEvent);
     this.POFormGroup.get('AfterDunning1').patchValue(SelectedPO.AfterDunning1);
+    this.POFormGroup.get('AfterDunning2').patchValue(SelectedPO.AfterDunning2);
+    this.POFormGroup.get('AfterDunning3').patchValue(SelectedPO.AfterDunning3);
+
   }
   ResetControl()
   {

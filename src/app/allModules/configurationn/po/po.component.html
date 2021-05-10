@@ -124,16 +124,15 @@
 
                 <div fxFlex="25">
                   <mat-form-field style="width: 100%;">
-                    <mat-select matInput matNativeControl placeholder="After Dunning1" formControlName="AfterDunning1"
-                      multiple="true">
-                      <mat-option *ngFor="let Notification of Notifications" [value]="Notification">
-                        <span>{{Notification}}</span>
-                      </mat-option>
-                    </mat-select>
+                    <input matInput  type="text" placeholder="AfterDunning1 in Hours" fxFlex formControlName="AfterDunning1">
                     <mat-error
                       *ngIf="POFormGroup.get('AfterDunning1').touched && POFormGroup.get('AfterDunning1').hasError('required')">
-                      After Dunning1After Dunning1 is required
+                      After  Dunning1 is required
                     </mat-error>
+                    <mat-error
+                    *ngIf="POFormGroup.get('AfterDunning1').touched && POFormGroup.get('AfterDunning1').hasError('pattern')">
+                    AfterDunning1 is not in number
+                  </mat-error>
                   </mat-form-field>
                 </div>
               </div>
@@ -141,10 +140,40 @@
               <div fxLayout="row" fxLayoutAlign="space-between  center">
                 <div fxFlex="25">
                   <mat-form-field style="width: 100%;">
+                    <input matInput  type="text" placeholder="AfterDunning2 in Hours" fxFlex formControlName="AfterDunning2">
+                    <mat-error
+                      *ngIf="POFormGroup.get('AfterDunning2').touched && POFormGroup.get('AfterDunning2').hasError('required')">
+                      After AfterDunning2 is required
+                    </mat-error>
+                    <mat-error
+                    *ngIf="POFormGroup.get('AfterDunning2').touched && POFormGroup.get('AfterDunning2').hasError('pattern')">
+                    AfterDunning2 is not in number
+                  </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="25">
+                  <mat-form-field style="width: 100%;">
+                    <input matInput  type="text" placeholder="AfterDunning3 in Hours" fxFlex formControlName="AfterDunning3">
+                    <mat-error
+                      *ngIf="POFormGroup.get('AfterDunning3').touched && POFormGroup.get('AfterDunning3').hasError('required')">
+                      After Dunning3 is required
+                    </mat-error>
+                    <mat-error
+                    *ngIf="POFormGroup.get('AfterDunning3').touched && POFormGroup.get('AfterDunning3').hasError('pattern')">
+                    AfterDunning3 is not in number
+                  </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="25">
+                  <mat-form-field style="width: 100%;">
                     <input matInput  type="text" placeholder="Interval in Hours" fxFlex formControlName="Interval">
                     <mat-error
                       *ngIf="POFormGroup.get('Interval').touched && POFormGroup.get('Interval').hasError('required')">
                       Interval is required
+                    </mat-error>
+                    <mat-error
+                      *ngIf="POFormGroup.get('Interval').touched && POFormGroup.get('Interval').hasError('pattern')">
+                      Interval is not in number
                     </mat-error>
                   </mat-form-field>
                 </div>

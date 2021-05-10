@@ -49,7 +49,9 @@ export class PO {
     Level: string;
     BeforeEvent: string[];
     AfterEvent: string[];
-    AfterDunning1: string[];
+    AfterDunning1: number;
+    AfterDunning2: number;
+    AfterDunning3: number;
     Interval:number
     CreatedOn: Date;
     CreatedBy: string;
