@@ -436,13 +436,15 @@ export class ASNComponent implements OnInit {
     GetASNBasedOnCondition(): void {
         if (this.currentUserRole === 'GateUser') {
             this.GetASNByDocAndASN();
-        } else {
+        } 
+        else {
             if (this.SelectedDocNumber) {
                 this.GetASNByDocAndPartnerID();
                 this.GetPOByDocAndPartnerID(this.SelectedDocNumber);
                 // this.GetPOItemsByDocAndPartnerID();
                 this.GetArrivalDateIntervalByPOAndPartnerID();
-            } else {
+            } 
+            else {
                 this.GetAllASNByPartnerID();
             }
         }

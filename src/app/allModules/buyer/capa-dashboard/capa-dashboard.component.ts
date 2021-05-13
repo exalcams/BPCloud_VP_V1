@@ -346,7 +346,10 @@ export class CapaDashboardComponent implements OnInit {
     });
   }
   SelectTableRow(row: CAPAAcceptItems, Action = null) {
-
+    this.IsAllSelected = !this.IsAllSelected;
+    if (this.IsAllSelected) {
+      this.SelectedResItem = [];
+    }
     var ResItems = new CAPAAcceptItems();
     ResItems.ReqID = row.ReqID;
     ResItems.ReqItemID = row.ReqItemID;
@@ -408,7 +411,7 @@ export class CapaDashboardComponent implements OnInit {
   AcceptResItems() {
     if (this.SelectedResItem.length > 0) {
       this.SelectAllCheckBox=false;
-
+      console.log("AcceptResItems",this.SelectedResItem);
       this.isProgressBarVisibile = true;
       this._capaService.AcceptCAPAResponseItem(this.SelectedResItem).subscribe(
         (data) => {
@@ -445,7 +448,7 @@ export class CapaDashboardComponent implements OnInit {
   RejectResItems() {
     if (this.SelectedResItem.length > 0) {
       this.SelectAllCheckBox=false;
-
+      console.log("RejectResItems",this.SelectedResItem);
       this.isProgressBarVisibile = true;
       this._capaService.RejectCAPAResponseItem(this.SelectedResItem).subscribe(
         (data) => {

@@ -83,10 +83,10 @@ export class MasterService {
             )
             .pipe(catchError(this.errorHandler));
     }
-    GetPO(UserId: Guid): Observable<PO[] | string> {
+    GetPO(): Observable<PO[] | string> {
         return this._httpClient
             .get<PO[]>(
-                `${this.baseAddress}authenticationapi/Master/GetPo?UserId=${UserId}`
+                `${this.baseAddress}authenticationapi/Master/GetPo`
             )
             .pipe(catchError(this.errorHandler));
     }

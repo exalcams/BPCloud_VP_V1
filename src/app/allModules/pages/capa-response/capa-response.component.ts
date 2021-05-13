@@ -80,7 +80,6 @@ export class CapaResponseComponent implements OnInit {
         if (res) {
           this.SelectedVendor = res as CAPAReqView;
           var item = this.SelectedVendor.CAPAReqItems;
-          console.log("Header Start Date", this.SelectedVendor.StartDate);
           this.SelectedVendor.CAPAReqItems.forEach(items => {
             if (items.IsDocumentRequired === true) {
               items.IsDocumentRequired = "Yes";
@@ -97,13 +96,14 @@ export class CapaResponseComponent implements OnInit {
               }
             });
           }
+          console.log('ItemList', this.ItemList);
+
           this.LoadHeaderDetails();
 
           if (this.Type != "Respond") {
             this.GetCAPABuyerResponseItem();
           }
           else {
-            // console.log('Respond');
             this.CheckListDataSource = new MatTableDataSource<CAPAReqItem>(this.ItemList);
             this.CheckListDataSource.sort = this.CheckListSort;
           }
@@ -115,10 +115,12 @@ export class CapaResponseComponent implements OnInit {
       }
     );
   }
-  GetResponseDetails() {
+  async GetResponseDetails() {
     this.isProgressBarVisibile = true;
     var file: File;
-    this.ItemList.forEach(items => {
+    console.log('GetResponseDetails - ItemList', this.ItemList);
+    var ItemIndex = [];
+    await this.ItemList.forEach((items, index) => {
       this._capaService.ViewResponseItem(items.ReqID, items.ReqItemID, this.currentUserName).subscribe(
         async (data) => {
           if (data != null) {
@@ -153,10 +155,28 @@ export class CapaResponseComponent implements OnInit {
                 this.ResponseDetails.CAPAResItems.splice(index, 1);
               }
             });
-            this.ResponseDetails.CAPAResItems.push(Resitem);
+            if (Resitem.Status == "Resolved" || Resitem.Status == "Differed") {
+              this.ItemList.splice(index, 1);
+              this.CheckListDataSource = new MatTableDataSource<CAPAReqItem>(this.ItemList);
+              this.CheckListDataSource.sort = this.CheckListSort;
+            }
+            else {
+              this.ResponseDetails.CAPAResItems.push(Resitem);
+            }
           }
         });
     });
+
+    // if(this.ResponseDetails.CAPAResItems.length >0)
+    //  {
+    //    var Index=[];
+    //   this.ResponseDetails.CAPAResItems.forEach((element,index) => {
+    //     if(element.Status == "Resolved" || element.Status == "Differed")
+    //     {
+    //       this.ResponseDetails.CAPAResItems.splice(index,1);
+    //     }
+    //   });
+    // }
     console.log("ResponseDetails", this.ResponseDetails);
     this.isProgressBarVisibile = false;
   }
@@ -165,7 +185,6 @@ export class CapaResponseComponent implements OnInit {
     if (this.Type == "ResolvedDiffered") {
       this.Type = "Others";
     }
-    console.log("GetCAPABuyerResponseItem Called");
     this._capaService.GetCAPABuyerResponseItem(this.SelectedID, this.currentUserName, this.Type).subscribe(
       (data) => {
         this.ItemList = [];
@@ -178,6 +197,7 @@ export class CapaResponseComponent implements OnInit {
             element.IsDocumentRequired = "No";
           }
         });
+        console.log('GetCAPABuyerResponseItem - ItemList', this.ItemList);
         this.CheckListDataSource = new MatTableDataSource<CAPAReqItem>(this.ItemList);
         this.CheckListDataSource.sort = this.CheckListSort;
         this.LoadHeaderDetails();
@@ -341,7 +361,7 @@ export class CapaResponseComponent implements OnInit {
   ResponseItem(item: any, Action = false, IsDocumentRequried = null) {
     var DialogData = new CAPADialogResponse();
     DialogData.MinDate = new Date(this.SelectedVendor.StartDate);
-    
+
     if (IsDocumentRequried != null) {
       DialogData.IsDocumentRequried = IsDocumentRequried;
     }
@@ -439,7 +459,7 @@ export class CapaResponseComponent implements OnInit {
   }
   SubmitClicked(action: any) {
     this.GetHeaderDetails();
-    console.log(this.ResponseDetails, this.FileUploadList);
+    console.log(this.ResponseDetails, this.ResponseDetails.CAPAResItems, this.FileUploadList);
     if (this.ResponseDetails.CAPAResItems.length === this.ItemList.length) {
       var index = this.ResponseDetails.CAPAResItems.findIndex(x => x.Status === "Reject" || x.Status === "Open");
       if (index >= 0) {
@@ -450,7 +470,19 @@ export class CapaResponseComponent implements OnInit {
       }
     }
     else {
+      // var IsItemIndex = this.ResponseDetails.CAPAResItems.findIndex(x => x.ReqItemID == this.ItemList[0].ReqItemID);
+      // if (IsItemIndex != -1) {
+      //   var index = this.ResponseDetails.CAPAResItems.findIndex(x => x.Status === "Reject" || x.Status === "Open");
+      //   if (index >= 0) {
+      //     this.notificationSnackBarComponent.openSnackBar("Please Responed To  Item", SnackBarStatus.danger);
+      //   }
+      //   else {
+      //     this.openConfirmationDialog(action);
+      //   }
+      // }
+      // else {
       this.notificationSnackBarComponent.openSnackBar("Please Responed To All Items", SnackBarStatus.danger);
+      // }
     }
   }
   CreateCAPAResponse() {
