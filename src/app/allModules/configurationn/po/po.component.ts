@@ -58,7 +58,8 @@ export class POComponent implements OnInit {
         );
         this._router.navigate(['/auth/login']);
       }
-    } else {
+    } 
+    else {
       this._router.navigate(['/auth/login']);
     }
 
@@ -67,7 +68,7 @@ export class POComponent implements OnInit {
   }
   GetPo()
   {
-    this._masterService.GetPO(this.currentUserID).subscribe(
+    this._masterService.GetPO().subscribe(
       (data)=>
       {
         this.CreatedPo=data as PO[];
