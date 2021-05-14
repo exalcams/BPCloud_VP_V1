@@ -106,8 +106,9 @@ export class CapaResponseComponent implements OnInit {
           else {
             this.CheckListDataSource = new MatTableDataSource<CAPAReqItem>(this.ItemList);
             this.CheckListDataSource.sort = this.CheckListSort;
+            this.GetResponseDetails();
           }
-          this.GetResponseDetails();
+
         }
       },
       (err) => {
@@ -115,12 +116,12 @@ export class CapaResponseComponent implements OnInit {
       }
     );
   }
-  async GetResponseDetails() {
+  GetResponseDetails() {
     this.isProgressBarVisibile = true;
     var file: File;
     console.log('GetResponseDetails - ItemList', this.ItemList);
     var ItemIndex = [];
-    await this.ItemList.forEach((items, index) => {
+    this.ItemList.forEach((items, index) => {
       this._capaService.ViewResponseItem(items.ReqID, items.ReqItemID, this.currentUserName).subscribe(
         async (data) => {
           if (data != null) {
@@ -155,10 +156,15 @@ export class CapaResponseComponent implements OnInit {
                 this.ResponseDetails.CAPAResItems.splice(index, 1);
               }
             });
-            if (Resitem.Status == "Resolved" || Resitem.Status == "Differed") {
-              this.ItemList.splice(index, 1);
-              this.CheckListDataSource = new MatTableDataSource<CAPAReqItem>(this.ItemList);
-              this.CheckListDataSource.sort = this.CheckListSort;
+            if (this.Type == "Respond") {
+              if (Resitem.Status == "Resolved" || Resitem.Status == "Differed" || Resitem.Status == "Reject") {
+                this.ItemList.splice(index, 1);
+                this.CheckListDataSource = new MatTableDataSource<CAPAReqItem>(this.ItemList);
+                this.CheckListDataSource.sort = this.CheckListSort;
+              }
+              else {
+                this.ResponseDetails.CAPAResItems.push(Resitem);
+              }
             }
             else {
               this.ResponseDetails.CAPAResItems.push(Resitem);
@@ -201,6 +207,7 @@ export class CapaResponseComponent implements OnInit {
         this.CheckListDataSource = new MatTableDataSource<CAPAReqItem>(this.ItemList);
         this.CheckListDataSource.sort = this.CheckListSort;
         this.LoadHeaderDetails();
+        this.GetResponseDetails();
         this.isProgressBarVisibile = false;
       },
       (err) => {
