@@ -384,6 +384,7 @@ export class CapaDashboardComponent implements OnInit {
     this.IsAllSelected = !this.IsAllSelected;
     if (this.IsAllSelected) {
       this.SelectedResItem = [];
+      // this.IsAllSelected=false;
     }
     else {
       this.SelectedResItem = [];
@@ -411,6 +412,7 @@ export class CapaDashboardComponent implements OnInit {
   AcceptResItems() {
     if (this.SelectedResItem.length > 0) {
       this.SelectAllCheckBox=false;
+      this.IsAllSelected=true;
       console.log("AcceptResItems",this.SelectedResItem);
       this.isProgressBarVisibile = true;
       this._capaService.AcceptCAPAResponseItem(this.SelectedResItem).subscribe(
@@ -448,6 +450,7 @@ export class CapaDashboardComponent implements OnInit {
   RejectResItems() {
     if (this.SelectedResItem.length > 0) {
       this.SelectAllCheckBox=false;
+      this.IsAllSelected=true;
       console.log("RejectResItems",this.SelectedResItem);
       this.isProgressBarVisibile = true;
       this._capaService.RejectCAPAResponseItem(this.SelectedResItem).subscribe(

@@ -41,10 +41,12 @@
 
       <mat-card class="example-card" fxFlex="18" >
         <mat-card-content fxLayout="column">
-          <div fxLayoutGap="20px" style="padding: 25px !important;" fxLayoutAlign="start center" (click)="AcceptAndRejectCard(3)">
+          <div fxLayoutGap="20px" style="padding: 25px !important;" fxLayoutAlign="start center">
             <!-- <img src="assets/images/pending.png" style="height: 30px;width: 30px;"> -->
             <mat-icon class="Dashboardicons">report_off</mat-icon>
-            <span class="HeaderCardCount">{{AcceptList.length}} / {{RejectList.length}}</span>
+            <span class="HeaderCardCount">
+              <span (click)="AcceptCard(3)">{{AcceptList.length}}</span> / <span (click)="RejectCard(3)">{{RejectList.length}}</span>
+            </span>
           </div>
           <div class="FooterCard">
             <p style="margin-left: 10px;"><span (click)="AcceptCard(3)">Accept</span> / <span (click)="RejectCard(3)">Reject</span></p>
@@ -53,10 +55,10 @@
       </mat-card>
       <mat-card class="example-card" fxFlex="18" >
         <mat-card-content fxLayout="column">
-          <div fxLayoutGap="20px" style="padding: 25px !important;" fxLayoutAlign="start center" (click)="ResolvedDifferedCard(4)">
+          <div fxLayoutGap="20px" style="padding: 25px !important;" fxLayoutAlign="start center" >
             <!-- <img src="assets/images/pending.png" style="height: 30px;width: 30px;"> -->
             <mat-icon class="Dashboardicons">done_all</mat-icon>
-            <span class="HeaderCardCount">{{ResolvedList.length}} / {{DifferedList.length}}</span>
+            <span class="HeaderCardCount"><span (click)="ResolvedCard(4)">{{ResolvedList.length}}</span> / <span (click)="DifferedCard(4)">{{DifferedList.length}}</span></span>
           </div>
           <div class="FooterCard">
             <p style="margin-left: 10px;"><span (click)="ResolvedCard(4)">Resolved</span> / <span (click)="DifferedCard(4)">Differed</span></p>
