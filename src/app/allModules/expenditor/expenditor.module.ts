@@ -50,7 +50,7 @@ import {
 } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { FormsModule } from "@angular/forms";
-import { DecimalPipe } from "@angular/common";
+import { CommonModule, DecimalPipe } from "@angular/common";
 import { NgCircleProgressModule } from "ng-circle-progress";
 import { ChartsModule } from "ng2-charts";
 import "chartjs-plugin-labels";
@@ -58,44 +58,18 @@ import "chartjs-plugin-annotation";
 import { NgImageSliderModule } from "ng-image-slider";
 import { TranslateModule } from '@ngx-translate/core';
 
-import { PPMComponent } from './ppm/ppm.component';
-import { VendorRatingComponent } from './vendor-rating/vendor-rating.component';
-import { OverviewComponent } from './overview/overview.component';
-import { DOLComponent } from './dol/dol.component';
-import { InspectionPlanComponent } from './inspection-plan/inspection-plan.component';
-// import 'chart.piecelabel.js';
-
+import { ExpenditorDashboardComponent } from './expenditor-dashboard/expenditor-dashboard.component';
 const routes = [
-    {
-        path: "ppm",
-        component: PPMComponent,
-    },
-    {
-        path: "dol",
-        component: DOLComponent,
-    },
-    {
-        path: "vendorRating",
-        component: VendorRatingComponent,
-    },
-    {
-        path: "overview",
-        component: OverviewComponent,
-    },
-    {
-        path: "inspectionPlan",
-        component: InspectionPlanComponent,
-    },
-    {
-        path: "**",
-        redirectTo: "/auth/login",
-    },
+  {
+      path: "dashboard",
+      component: ExpenditorDashboardComponent,
+  }
 ];
 @NgModule({
-    imports: [
-        // HttpClientModule,
-        // TranslateModule,
-        GaugeChartModule,
+  declarations: [ExpenditorDashboardComponent],
+  imports: [
+    CommonModule,
+    GaugeChartModule,
         MatFormFieldModule,
         MatAutocompleteModule,
         MatBadgeModule,
@@ -161,15 +135,7 @@ const routes = [
         NgImageSliderModule,
         RouterModule.forChild(routes),
         TranslateModule
-    ],
-    declarations: [
-        PPMComponent,
-        DOLComponent,
-        VendorRatingComponent,
-        OverviewComponent,
-        InspectionPlanComponent,
-    ],
-    providers: [DecimalPipe],
-    entryComponents: [],
+  ],
+  providers: [DecimalPipe],
 })
-export class QaulityModule { }
+export class ExpenditorModule { }

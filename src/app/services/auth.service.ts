@@ -124,6 +124,12 @@ export class AuthService {
                 `${this.baseAddress}authenticationapi/Master/GetAllActionLogs`)
             .pipe(catchError(this.errorHandler1));
     }
+    GetExpenditorNotification(): Observable<any> {
+        return this._httpClient
+            .get<Notification[]>(
+                `${this.baseAddress}authenticationapi/Master/GetExpenditorNotification`)
+            .pipe(catchError(this.errorHandler1));
+    }
     GetUserPreferenceByUserID(
         UserID: Guid
     ): Observable<UserPreference | string> {

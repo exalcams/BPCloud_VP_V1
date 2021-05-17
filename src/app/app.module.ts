@@ -132,6 +132,10 @@ const appRoutes: Routes = [
         loadChildren: './allModules/support/support.module#SupportModule'
     },
     {
+        path: 'expenditor',
+        loadChildren: './allModules/expenditor/expenditor.module#ExpenditorModule'
+    },
+    {
         path: 'balanceconfirmation',
         loadChildren: './allModules/balance-confirmation/balance-confirmation.module#BalanceConfirmationModule'
     },

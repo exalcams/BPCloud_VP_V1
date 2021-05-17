@@ -1,0 +1,106 @@
+<div id="Expenditor" class="page-layout carded fullwidth">
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div fxLayout="row" fxLayoutAlign="start none">
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Master details</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+
+    <div style="margin-top: 20px !important;overflow: auto !important;">
+      <table class="table" mat-table [dataSource]="ExpenditorListDataSource" matSort>
+        <ng-container matColumnDef="S.No">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            S.No </th>
+          <td mat-cell *matCellDef="let element;let odd=odd;let i= index;" class="tableLeftBorder pl-0">
+            <div fxLayout>
+              <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+              <div fxFlex class="pl-12">{{i+1}} </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="PatnerID">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header  
+            [ngClass]="BGClassName?.layout?.toolbar?.background"> Patner ID </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.PatnerID}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="PO">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header  
+            [ngClass]="BGClassName?.layout?.toolbar?.background"> PO </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.PO}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header  
+            [ngClass]="BGClassName?.layout?.toolbar?.background"> PO Status </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.Status}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="POType">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header  
+            [ngClass]="BGClassName?.layout?.toolbar?.background"> PO Type </th>
+          <td mat-cell *matCellDef="let element"> {{element.POType}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="AfterDunning1">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header  
+            [ngClass]="BGClassName?.layout?.toolbar?.background"> AfterDunning 1 </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.AfterDunning1}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="AfterDunning2">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header  
+            [ngClass]="BGClassName?.layout?.toolbar?.background"> AfterDunning 2</th>
+          <td mat-cell *matCellDef="let element"  class="AmountClass">
+            {{element.AfterDunning2}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="AfterDunning3">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header  
+            [ngClass]="BGClassName?.layout?.toolbar?.background"> AfterDunning 3 </th>
+          <td mat-cell *matCellDef="let element" class="AmountClass">
+            {{element.AfterDunning3}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="IsAllCompleted">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Is AllCompleted </th>
+          <td mat-cell *matCellDef="let element">
+            <span class="p-4">
+              {{element.IsAllCompleted}}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="LastRespondedOn">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Last Responded On </th>
+          <td mat-cell *matCellDef="let element">
+            <span class="p-4">
+              {{element.ModifiedOn | date :'dd/MM/yyyy' }}
+            </span>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="ExpenditorDisplayedColumns;sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: ExpenditorDisplayedColumns;let even=even">
+        </tr>
+      </table>
+      <div>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+      </div>
+    </div>
+
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="IsProgressBarVisibile"></div>
+  </div>
+</div>

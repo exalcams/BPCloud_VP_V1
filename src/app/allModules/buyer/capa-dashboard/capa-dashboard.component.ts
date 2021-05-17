@@ -378,7 +378,6 @@ export class CapaDashboardComponent implements OnInit {
     else if (Action != null && Action == 'Reject') {
       this.RejectResItems();
     }
-    console.log("SelectedResItem", this.SelectedResItem);
   }
   SelectAllTableRow() {
     this.IsAllSelected = !this.IsAllSelected;
@@ -403,17 +402,13 @@ export class CapaDashboardComponent implements OnInit {
           this.SelectedResItem.push(list);
         });
       }
-
-      console.log("SelectAllTableRow",this.SelectedResItem);
       this.SelectAllCheckBox=true;
     }
   }
-
   AcceptResItems() {
     if (this.SelectedResItem.length > 0) {
       this.SelectAllCheckBox=false;
       this.IsAllSelected=true;
-      console.log("AcceptResItems",this.SelectedResItem);
       this.isProgressBarVisibile = true;
       this._capaService.AcceptCAPAResponseItem(this.SelectedResItem).subscribe(
         (data) => {
