@@ -300,6 +300,9 @@ export class LoginComponent implements OnInit {
         } else if (data.UserRole === "GateUser") {
             this._router.navigate(["orderfulfilment/asnlist"]);
         }
+        else if (data.UserRole === "Expenditor") {
+            this._router.navigate(["expenditor/dashboard"]);
+        }
         else {
             this._router.navigate(["pages/home"]);
         }
@@ -477,7 +480,7 @@ export class LoginComponent implements OnInit {
         this.GetCustomerMenus();
         this.GetBuyerMenus();
         this.GetAdminMenus();
-
+        this.GetExpenditorMenus();
         // this.GetCustomerMenus();
         // this.GetAdminMenus();
 
@@ -1159,7 +1162,19 @@ export class LoginComponent implements OnInit {
             });
         }
     }
-
+    GetExpenditorMenus():void{
+        if (this.menuItems.indexOf("Expenditor_Dashboard") >= 0) {
+            this.children.push({
+                id: "expenditor_dashboard",
+                title: "Dashboard",
+                translate: "DASHBOARD.Expenditor_Dashboard",
+                type: "item",
+                icon: "billIcon",
+                isSvgIcon: true,
+                url: "/expenditor/dashboard",
+            });
+        }
+    }
     GetBuyerMenus(): void {
 
         if (this.menuItems.indexOf("BuyerPOList") >= 0) {

@@ -97,7 +97,8 @@ export const locale = {
             'CLEAN_TYPE': 'Clean Type',
             'RGATEWAY_ID': 'Reciever Gateway Id',
             'Between_Containers_Handled': '(26th to 25th)',
-            'content1ShowName': 'content1ShowName'
+            'content1ShowName': 'content1ShowName',
+            'Expenditor_Dashboard':'Dashboard'
         },
         'ORDER_FULFILMENT_CENTER': {
             'HEADER_TITLE': 'Fulfilment Center',

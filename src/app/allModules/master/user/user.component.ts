@@ -358,7 +358,7 @@ export class UserComponent implements OnInit {
       }
     });
     // console.log(this.role_name);
-    if (this.role_name === "Buyer" || this.role_name === "GateUser") {
+    if (this.role_name === "Buyer" || this.role_name === "GateUser" || this.role_name === "Expenditor") {
       this.bool_role = false;
       // this._masterService.GetAllPlant().subscribe(
       //   (data) => {

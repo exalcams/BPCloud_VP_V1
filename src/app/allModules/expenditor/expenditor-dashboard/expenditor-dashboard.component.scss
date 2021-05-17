@@ -1,0 +1,101 @@
+@import "src/@fuse/scss/fuse";
+#Expenditor {
+    background-color: white;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        padding: 0px;
+        margin: 0px;
+    }
+    .progressBarPostion {
+        position: absolute !important;
+        top: 350px;
+        z-index: 1;
+        left: 55%;
+    }
+    .outer {
+        border-bottom: 1px solid rgba(255, 85, 0, 0.1);
+        position: relative;
+        z-index: 1;
+        .bg {
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-image: url("assets/images/header_2.png");
+            opacity: 0.1;
+            background-repeat: no-repeat;
+        }
+        width: 100%;
+        object-fit: contain;
+        line-height: 50px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    @mixin TableBorderRight($color) {
+        border-right: 1px solid $color;
+    }
+
+    .TableCommon {
+        padding: 5px;
+        font-size: 12px;
+        min-width: 100px !important;
+    }
+    .tableLeftBorder {
+        border-left: 1px solid rgba(0, 0, 0, 0.12);
+    }
+
+    .tableCellBorder {
+        height: 20px;
+        vertical-align: middle;
+        width: 10px;
+        background-color: #d87e39;
+        opacity: 0.7;
+    }
+    table {
+        width: 100%;
+
+        th {
+            @include TableBorderRight(gray);
+            @extend .TableCommon;
+            text-align: left;
+            color: white;
+            background-color: #121214;
+        }
+
+        td {
+            @include TableBorderRight(rgba(0, 0, 0, 0.12));
+            @extend .TableCommon;
+            // font-size: 12px;
+            padding: 16px 8px;
+            // text-align: center;
+            &.AmountClass {
+                text-align: right;
+            }
+            min-width: max-content !important;
+        }
+
+        tr {
+            height: 40px;
+        }
+
+        .mat-sort-header-container {
+            padding-left: 5px;
+            display: flex;
+            justify-content: flex-start;
+        }
+        // .StatusHeader {
+        //     .mat-sort-header-container {
+        //         padding-left: 5px;
+        //         display: flex;
+        //         justify-content: center;
+        //     }
+        // }
+    }
+}

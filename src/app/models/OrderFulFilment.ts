@@ -24,6 +24,20 @@ export class BPCOFHeader extends CommonClass {
     PlantName: string;
     DocCount: number;
 }
+export class Notification extends CommonClass {
+    ID: number;
+    Client: string;
+    Company: string;
+    Type: string;
+    PatnerID: string;
+    PO: string;
+    Status: string;
+    POType: string;
+    AfterDunning1: boolean;
+    AfterDunning2: boolean;
+    AfterDunning3: boolean;
+    IsAllCompleted: boolean;
+}
 export class BPCOFItem extends CommonClass {
     Client: string;
     Company: string;
