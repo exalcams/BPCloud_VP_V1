@@ -157,7 +157,8 @@ export class CapaResponseComponent implements OnInit {
               }
             });
             if (this.Type == "Respond") {
-              if (Resitem.Status == "Resolved" || Resitem.Status == "Differed" || Resitem.Status == "Reject") {
+              // Resitem.Status == "Resolved" || Resitem.Status == "Differed" || Resitem.Status == "Reject"
+              if (Resitem.Status != "Open") {
                 this.ItemList.splice(index, 1);
                 this.CheckListDataSource = new MatTableDataSource<CAPAReqItem>(this.ItemList);
                 this.CheckListDataSource.sort = this.CheckListSort;
