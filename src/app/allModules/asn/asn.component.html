@@ -833,12 +833,17 @@
                           [ngClass]="BGClassName?.layout?.toolbar?.background"> ASN Qty</th>
                         <td mat-cell class="QtyClass editable" *matCellDef="let element; let index = index"
                           [formGroupName]="index" style="width: 120px;">
-                          <mat-form-field class="px-8" appearance="outline" style="width: 100px;">
-                            <input matInput formControlName="ASNQty" (keydown)="decimalOnly($event)"
-                              (blur)="CalculateShipmentAmount()">
+                          <mat-form-field class="px-8" appearance="outline"  style="width: 100px;">
+                            <input matInput formControlName="ASNQty"     
+                              (blur)="CalculateShipmentAmount()"  (change)="Enable(index);decimalOnly($event)">
+                         
                             <mat-error *ngIf="ASNItemFormGroup.get('ASNItems').controls[index]?.get('ASNQty').touched && 
                             ASNItemFormGroup.get('ASNItems').controls[index]?.get('ASNQty').hasError('required')">
                               *
+                            </mat-error>
+                            <mat-error *ngIf=" 
+                            ASNItemFormGroup.get('ASNItems').controls[index]?.get('ASNQty').hasError({qty :true})">
+                              error
                             </mat-error>
                             <mat-error style="margin-left: -9px;" *ngIf="ASNItemFormGroup.get('ASNItems').controls[index]?.get('ASNQty').touched && 
                             !ASNItemFormGroup.get('ASNItems').controls[index]?.get('ASNQty').hasError('required')&&
