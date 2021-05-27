@@ -8,7 +8,8 @@ export const environment = {
      baseAddress: 'http://localhost:7020/',
     // baseAddress: 'http://192.168.0.28:7010/',
     // baseAddress: 'http://localhost:60789/', 
-    clientId: 'ngAuthApp'
+    clientId: 'ngAuthApp',
+    SecretKey: 'FGHJ@#$%^XCTVBNM<&*()'
 };
 
 /*

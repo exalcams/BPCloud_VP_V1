@@ -13,6 +13,8 @@ import { MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-customer-dashboard',
@@ -44,6 +46,8 @@ export class CustomerDashboardComponent implements OnInit {
   selection = new SelectionModel<any>(true, []);
   todayDate: any;
   SelectedBPCAIACTByPartnerID: BPCAIACT;
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _masterService: MasterService,
@@ -52,8 +56,12 @@ export class CustomerDashboardComponent implements OnInit {
     private _router: Router,
     public snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _authService: AuthService,
+
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.SelectedBPCFact = new BPCFact();
     this.SelectedBPCAIACTByPartnerID = new BPCAIACT();
     this.SelectedBPCFactView = new BPCFactView();
@@ -64,7 +72,7 @@ export class CustomerDashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =  this.SecureStorage.get('authorizationData');
     this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;

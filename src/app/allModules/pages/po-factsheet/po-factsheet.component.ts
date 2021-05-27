@@ -19,6 +19,9 @@ import { AttachmentViewDialogComponent } from 'app/notifications/attachment-view
 import { NotificationDialog1Component } from 'app/notifications/notification-dialog1/notification-dialog1.component';
 import { Location } from '@angular/common';
 import { PoFactServiceDialogComponent } from '../po-fact-service-dialog/po-fact-service-dialog.component';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
+
 @Component({
     selector: 'app-po-factsheet',
     templateUrl: './po-factsheet.component.html',
@@ -185,6 +188,8 @@ export class PoFactsheetComponent implements OnInit {
     ret: BPCPIHeader[];
     ofAttachments: BPCInvoiceAttachment[];
     yesterday = new Date();
+    SecretKey: string;
+    SecureStorage: SecureLS;
     constructor(
         private route: ActivatedRoute,
         public _dashboardService: DashboardService,
@@ -194,7 +199,9 @@ export class PoFactsheetComponent implements OnInit {
         private formBuilder: FormBuilder,
         private datepipe: DatePipe,
         private dialog: MatDialog,
-        private _location: Location
+        private _location: Location,
+        private _authService: AuthService,
+
 
     ) {
         this.tab1 = true;
@@ -207,10 +214,12 @@ export class PoFactsheetComponent implements OnInit {
         this.tab8 = false;
         this.ItemPlantDetails = new BPCPlantMaster();
         this.isDeliveryDateMismatched = false;
+        this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     }
 
     ngOnInit(): void {
-        const retrievedObject = localStorage.getItem('authorizationData');
+        const retrievedObject =this.SecureStorage.get('authorizationData');
         if (retrievedObject) {
             this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
             this.currentUserID = this.authenticationDetails.UserID;

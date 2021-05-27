@@ -13,6 +13,8 @@ import { DatePipe } from '@angular/common';
 import { ExcelService } from 'app/services/excel.service';
 import { BPCPlantMaster } from 'app/models/OrderFulFilment';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-user',
@@ -51,14 +53,20 @@ export class UserComponent implements OnInit {
   bool_role: boolean = true;
   AllPlantForAllUsers: any[] = [];
   SelectedPlant: string[];
+  SecretKey: string;
+  SecureStorage: SecureLS;
+
   constructor(
     private _masterService: MasterService,
     private _router: Router,
     public snackBar: MatSnackBar,
+    private _authService: AuthService,
     private dialog: MatDialog,
     private _formBuilder: FormBuilder,
     private _datePipe: DatePipe,
     private _excelService: ExcelService,) {
+      this.SecretKey = this._authService.SecretKey;
+      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.selectedUser = new UserWithRole();
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -70,7 +78,7 @@ export class UserComponent implements OnInit {
 
   ngOnInit(): void {
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.menuItems = this.authenticationDetails.MenuItemNames.split(',');

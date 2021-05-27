@@ -15,6 +15,9 @@ import { ExcelService } from 'app/services/excel.service';
 import { MasterService } from 'app/services/master.service';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { FuseConfigService } from '@fuse/services/config.service';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
+
 @Component({
   selector: 'app-ppm',
   templateUrl: './ppm.component.html',
@@ -51,12 +54,14 @@ export class PPMComponent implements OnInit {
   @ViewChild(MatPaginator) ppmItemPaginator: MatPaginator;
   @ViewChild(MatSort) ppmItemSort: MatSort;
   @ViewChild(MatMenuTrigger) matMenuTrigger: MatMenuTrigger;
+  SecretKey: string;
+  SecureStorage: SecureLS;
   // PPMData: any[] = [];
   // fromdate: any = '';
   // todate: any = '';
   constructor(private _reportService: ReportService,
     private _fuseConfigService: FuseConfigService,
-
+    private _authService: AuthService,
     private formBuilder: FormBuilder,
     private _router: Router,
     public snackBar: MatSnackBar,
@@ -64,6 +69,8 @@ export class PPMComponent implements OnInit {
     private _masterService: MasterService,
     private _datePipe: DatePipe,
     private _excelService: ExcelService) {
+      this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.isProgressBarVisibile = false;
@@ -80,7 +87,7 @@ export class PPMComponent implements OnInit {
     this.SetUserPreference();
 
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

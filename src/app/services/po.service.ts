@@ -10,6 +10,7 @@ import { OverviewReportOption } from 'app/models/ReportModel';
 import { BPCInvoicePayment, BPCInvoicePayView, BPCPayRecord } from 'app/models/customer';
 import { DocumentDetails } from 'app/models/Dashboard';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,6 +20,7 @@ export class POService {
 
   constructor(private _httpClient: HttpClient, private _authService: AuthService) {
     this.baseAddress = _authService.baseAddress;
+   
   }
 
   // Error Handler

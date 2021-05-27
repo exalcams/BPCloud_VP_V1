@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-scocmessage',
@@ -22,13 +24,18 @@ export class SCOCMessageComponent implements OnInit {
   notesForm: FormGroup;
   selectedSCOCMessage: BPCSCOCMessage;
   IsProgressBarVisibile: boolean;
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _formBuilder: FormBuilder,
     private _POService: POService,
     private _router: Router,
     public snackBar: MatSnackBar,
     private dialog: MatDialog,
+    private _authService: AuthService,
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.selectedSCOCMessage = new BPCSCOCMessage();
     this.IsProgressBarVisibile = false;
     this.authenticationDetails = new AuthenticationDetails();
@@ -36,7 +43,7 @@ export class SCOCMessageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.menuItems = this.authenticationDetails.MenuItemNames.split(',');

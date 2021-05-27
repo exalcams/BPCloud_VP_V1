@@ -5,9 +5,11 @@ import { BPCRetHeader } from 'app/models/customer';
 import { AuthenticationDetails } from 'app/models/master';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { SnackBarStatus } from 'app/notifications/snackbar-status-enum';
+import { AuthService } from 'app/services/auth.service';
 import { CustomerService } from 'app/services/customer.service';
 import { FactService } from 'app/services/fact.service';
 import { Guid } from 'guid-typescript';
+import * as SecureLS from 'secure-ls';
 
 @Component({
   selector: 'app-customer-return-list',
@@ -44,14 +46,19 @@ export class CustomerReturnListComponent implements OnInit {
     "Status",
     // "StatusFlow",
   ];
+  SecretKey: string;
+    SecureStorage: SecureLS;
   // PurchaseDataSource: MatTableDataSource<BPCPIHeader>;
   // AllPurchase: BPCPIHeader[] = [];
   // @ViewChild(MatPaginator) PurchasePaginator: MatPaginator;
   // @ViewChild(MatSort) PurchaseSort: MatSort;
-  constructor(public customerService:CustomerService,private _FactService: FactService, private _router: Router) { }
+  constructor(public customerService:CustomerService,private _FactService: FactService, private _router: Router,
+    private _authService: AuthService,
+    ) {  this.SecretKey = this._authService.SecretKey;
+      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey }); }
 // ReturnsData:
   ngOnInit() {
-    const retrievedObject = localStorage.getItem("authorizationData");
+    const retrievedObject = this.SecureStorage.get("authorizationData");
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(
         retrievedObject

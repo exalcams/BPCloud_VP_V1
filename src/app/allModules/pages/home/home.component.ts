@@ -19,6 +19,8 @@ import { POService } from 'app/services/po.service';
 import { Validators } from '@angular/forms';
 import { BPCCEOMessage, BPCSCOCMessage } from 'app/models/Message.model';
 import { FuseConfigService } from '@fuse/services/config.service';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from "app/services/auth.service";
 @Component({
     selector: "app-home",
     templateUrl: "./home.component.html",
@@ -41,13 +43,17 @@ export class HomeComponent implements OnInit {
     color_90: any = [];
     fuseConfig: any;
     BGClassName: any;
-
+    SecretKey: string;
+    SecureStorage: SecureLS;
     constructor(
         private dialog: MatDialog,
         private _POService: POService,
         private _router: Router,
-        private _fuseConfigService: FuseConfigService
+        private _fuseConfigService: FuseConfigService,
+        private _authService: AuthService,
     ) {
+        this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
         this.IsProgressBarVisibile = false;
 
         this.authenticationDetails = new AuthenticationDetails();
@@ -57,7 +63,7 @@ export class HomeComponent implements OnInit {
 
     ngOnInit(): void {
         this.SetUserPreference();
-        const retrievedObject = localStorage.getItem('authorizationData');
+        const retrievedObject =  this.SecureStorage.get('authorizationData');
         if (retrievedObject) {
             this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
             this.menuItems = this.authenticationDetails.MenuItemNames.split(',');

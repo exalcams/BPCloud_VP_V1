@@ -16,6 +16,7 @@ import { AuthService } from 'app/services/auth.service';
 import { ExcelService } from 'app/services/excel.service';
 import { Guid } from 'guid-typescript';
 import { AsnlistPrintDialogComponent } from '../asnlist/asnlist-print-dialogue/asnlist-print-dialog/asnlist-print-dialog.component';
+import * as SecureLS from 'secure-ls';
 
 @Component({
   selector: 'app-ser-list',
@@ -51,6 +52,8 @@ export class SerListComponent implements OnInit {
   SelectValue: string;
   TableSelectValue: string;
   ActionLog: any;
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private formBuilder: FormBuilder,
@@ -62,6 +65,8 @@ export class SerListComponent implements OnInit {
     public snackBar: MatSnackBar,
     private dialog: MatDialog,
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -77,7 +82,7 @@ export class SerListComponent implements OnInit {
   ngOnInit(): void {
     this.SetUserPreference();
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.getItem('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

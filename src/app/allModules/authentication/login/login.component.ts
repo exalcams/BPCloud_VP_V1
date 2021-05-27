@@ -31,7 +31,7 @@ import { LoginService } from 'app/services/login.service';
 import { ForgetUserIdLinkDialogComponent } from "../forget-user-id-link-dialog/forget-user-id-link-dialog.component";
 import { FactService } from "app/services/fact.service";
 import { BPCFact } from "app/models/fact";
-
+import * as SecureLS from 'secure-ls';
 @Component({
     selector: "login",
     templateUrl: "./login.component.html",
@@ -88,6 +88,8 @@ export class LoginComponent implements OnInit {
         "RFQ process",
     ];
     currentMessage = 0;
+    SecretKey: string;
+    SecureStorage: SecureLS;
     public screenWidth: any;
     public screenHeight: any;
     constructor(
@@ -103,9 +105,14 @@ export class LoginComponent implements OnInit {
         public snackBar: MatSnackBar,
         private _cookieService: CookieService
     ) {
-        localStorage.removeItem("authorizationData");
-        localStorage.removeItem("menuItemsData");
-        localStorage.removeItem("userPreferenceData");
+        this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
+        this.SecureStorage.remove("authorizationData");
+        this.SecureStorage.remove("menuItemsData");
+        this.SecureStorage.remove("userPreferenceData");
+        // localStorage.removeItem("authorizationData");
+        // localStorage.removeItem("menuItemsData");
+        // localStorage.removeItem("userPreferenceData");
         this._compiler.clearCache();
 
         this._fuseConfigService.config = {
@@ -185,7 +192,7 @@ export class LoginComponent implements OnInit {
                                         "theme-secondaryBackground";
                                     userPre.ToolbarBackground = "theme-toolBar ";
                                 }
-                                localStorage.setItem(
+                                this.SecureStorage.set(
                                     "userPreferenceData",
                                     JSON.stringify(userPre)
                                 );
@@ -227,7 +234,7 @@ export class LoginComponent implements OnInit {
             .subscribe((config) => {
                 this.fuseConfig = config;
                 // Retrive user preference from Local Storage
-                const userPre = localStorage.getItem("userPreferenceData");
+                const userPre =this.SecureStorage.get("userPreferenceData");
                 if (userPre) {
                     const userPrefercence: UserPreference = JSON.parse(
                         userPre
@@ -276,7 +283,7 @@ export class LoginComponent implements OnInit {
     }
 
     saveUserDetails(data: AuthenticationDetails): void {
-        localStorage.setItem("authorizationData", JSON.stringify(data));
+        this.SecureStorage.set("authorizationData", JSON.stringify(data));
         this.updateMenu();
         this.notificationSnackBarComponent.openSnackBar(
             "Logged in successfully",
@@ -430,7 +437,7 @@ export class LoginComponent implements OnInit {
     }
 
     updateMenu(): void {
-        const retrievedObject = localStorage.getItem("authorizationData");
+        const retrievedObject =this.SecureStorage.get("authorizationData");
         if (retrievedObject) {
             this.authenticationDetails = JSON.parse(
                 retrievedObject
@@ -535,7 +542,7 @@ export class LoginComponent implements OnInit {
             children: this.children,
         });
         // Saving local Storage
-        localStorage.setItem("menuItemsData", JSON.stringify(this.navigation));
+        this.SecureStorage.set("menuItemsData", JSON.stringify(this.navigation));
         // Update the service in order to update menu
         this._menuUpdationService.PushNewMenus(this.navigation);
     }

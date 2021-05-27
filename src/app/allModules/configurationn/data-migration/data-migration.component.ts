@@ -18,6 +18,9 @@ import { ReportService } from 'app/services/report.service';
 import { BPCFactBankXLSX, BPCFactXLSX } from 'app/models/fact';
 import { BPCOFHeaderXLSX, BPCOFItemXLSX, BPCOFScheduleLineXLSX, BPCOFGRGIXLSX, BPCOFQMXLSX } from 'app/models/OrderFulFilment';
 import { BPCInvoiceXLSX, BPCPaymentXLSX } from 'app/models/ReportModel';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from "app/services/auth.service";
+
 @Component({
   selector: "app-data-migration",
   templateUrl: "./data-migration.component.html",
@@ -55,7 +58,8 @@ export class DataMigrationComponent implements OnInit {
   BPCOFQMXLSXs: BPCOFQMXLSX[] = [];
   BPCInvoiceXLSXs: BPCInvoiceXLSX[] = [];
   BPCPaymentXLSXs: BPCPaymentXLSX[] = [];
-
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _formBuilder: FormBuilder,
     private _router: Router,
@@ -67,7 +71,10 @@ export class DataMigrationComponent implements OnInit {
     private _excelService: ExcelService,
     private _datePipe: DatePipe,
     private dialog: MatDialog,
+    private _authService: AuthService,
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.IsProgressBarVisibile = false;
     this.IsProgressBarVisibile1 = false;
     this.IsProgressBarVisibile2 = false;
@@ -81,7 +88,7 @@ export class DataMigrationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

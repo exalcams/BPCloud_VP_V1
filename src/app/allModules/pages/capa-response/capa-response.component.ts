@@ -11,6 +11,8 @@ import { CapaService } from 'app/services/capa.service';
 import { log } from 'console';
 import { CapaResponseDialogComponent } from '../capa-response-dialog/capa-response-dialog.component';
 import { DatePipe } from '@angular/common';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-capa-response',
@@ -41,12 +43,15 @@ export class CapaResponseComponent implements OnInit {
   //   private dialog: MatDialog, private _formBuilder: FormBuilder, public snackBar: MatSnackBar) {
   BGClassName: any;
   Type: any;
-  constructor(private _route: ActivatedRoute, private _capaService: CapaService, private _router: Router,
+  SecretKey: string;
+  SecureStorage: SecureLS;
+  constructor(private _route: ActivatedRoute, private _capaService: CapaService, private _router: Router, private _authService: AuthService,
     private dialog: MatDialog, private _formBuilder: FormBuilder, public snackBar: MatSnackBar, private _datePipe: DatePipe,) {
     this.SelectedVendor = new CAPAReqView();
     this.ResponseDetails = new CAPAResponseView();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
-
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.ResponseDetails.CAPAResItems = [];
   }
 
@@ -55,7 +60,7 @@ export class CapaResponseComponent implements OnInit {
       this.SelectedID = params['id'];
       this.Type = params['Type'];
     });
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.CurrentUserID = this.authenticationDetails.UserID;

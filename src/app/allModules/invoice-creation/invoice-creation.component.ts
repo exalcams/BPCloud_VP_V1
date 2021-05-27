@@ -18,6 +18,8 @@ import { Guid } from "guid-typescript";
 import { BehaviorSubject } from "rxjs";
 import { BPCFLIPHeader, BPCFLIPHeaderView, BPCFLIPCost, BPCFLIPItem, BPCExpenseTypeMaster } from 'app/models/po-flip';
 import { BPCInvoiceAttachment, BPCCurrencyMaster, BPCCountryMaster } from 'app/models/ASN';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from "app/services/auth.service";
 
 @Component({
   selector: 'app-invoice-creation',
@@ -85,7 +87,8 @@ export class InvoiceCreationComponent implements OnInit {
   invoiceTypes: string[] = [];
   math = Math;
   maxDate: Date;
-
+  SecretKey: string;
+  SecureStorage: SecureLS;
 
   constructor(
     private _fuseConfigService: FuseConfigService,
@@ -97,8 +100,11 @@ export class InvoiceCreationComponent implements OnInit {
     private _route: ActivatedRoute,
     public snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _authService: AuthService,
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.selectedFlip = new BPCFLIPHeader();
     this.selectedFlipView = new BPCFLIPHeaderView();
     this.selectedFLIPID = '';
@@ -155,7 +161,7 @@ export class InvoiceCreationComponent implements OnInit {
       this.selectedDocNumber = params['id'];
     });
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

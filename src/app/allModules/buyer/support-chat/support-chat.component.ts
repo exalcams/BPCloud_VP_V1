@@ -14,6 +14,8 @@ import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notific
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
 import { AttachmentDetails } from 'app/models/task';
 import { AttachmentDialogComponent } from 'app/notifications/attachment-dialog/attachment-dialog.component';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-support-chat',
@@ -46,6 +48,8 @@ export class SupportChatComponent implements OnInit {
   TicketResolved: boolean;
   notificationSnackBarComponent: NotificationSnackBarComponent;
   IsReOpen: boolean;
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private route: ActivatedRoute,
     public _supportDeskService: SupportDeskService,
@@ -54,8 +58,12 @@ export class SupportChatComponent implements OnInit {
     private _router: Router,
     public snackBar: MatSnackBar,
     private _dialog: MatDialog,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _authService: AuthService,
+
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.TicketResolved = false;
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.SelectedSupportLog = new SupportLog();
@@ -64,7 +72,7 @@ export class SupportChatComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

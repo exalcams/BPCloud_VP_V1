@@ -17,6 +17,8 @@ import { SupportMaster, SupportHeader, SupportHeaderView } from 'app/models/supp
 import { SupportDeskService } from 'app/services/support-desk.service';
 import { MasterService } from 'app/services/master.service';
 import { Router } from '@angular/router';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 
 @Component({
@@ -48,10 +50,14 @@ export class AttachmentViewDialogComponent implements OnInit {
     'AttachmentName',
   ];
   AttachmentDataSource: MatTableDataSource<BPCInvoiceAttachment>;
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private dialog: MatDialog,
     public _dashboardService: DashboardService,
     public snackBar: MatSnackBar,
+    private _authService: AuthService,
+
     public matDialogRef: MatDialogRef<AttachmentViewDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public ofAttachmentData: OfAttachmentData,
     private sanitizer: DomSanitizer,
@@ -59,6 +65,9 @@ export class AttachmentViewDialogComponent implements OnInit {
     private _masterService: MasterService,
     private _router: Router
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
+
     this.isProgressBarVisibile = false;
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.supportTicketView = new SupportHeaderView();
@@ -69,7 +78,7 @@ export class AttachmentViewDialogComponent implements OnInit {
 
   ngOnInit(): void {
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

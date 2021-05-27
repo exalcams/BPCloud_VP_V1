@@ -9,6 +9,8 @@ import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notific
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
 import { fuseAnimations } from '@fuse/animations';
 import { Guid } from 'guid-typescript';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-reason',
@@ -32,13 +34,19 @@ export class ReasonComponent implements OnInit {
   selectReasonID = 0;
   ReasonFormGroup: FormGroup;
   KeysFormArray: FormArray = this._formBuilder.array([]);
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _masterService: MasterService,
     private _router: Router,
     public snackBar: MatSnackBar,
     private _formBuilder: FormBuilder,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private _authService: AuthService,
+
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.IsProgressBarVisibile = false;
@@ -50,7 +58,7 @@ export class ReasonComponent implements OnInit {
 
   ngOnInit(): void {
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =   this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.CurrentUserName = this.authenticationDetails.UserName;

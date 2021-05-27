@@ -89,6 +89,8 @@ export interface ChartOptions {
     responsive: ApexResponsive[];
     options: ApexOptions;
 }
+import * as SecureLS from 'secure-ls';
+
 @Component({
     selector: "app-order-fulfilment-center",
     templateUrl: "./order-fulfilment-center.component.html",
@@ -325,7 +327,8 @@ export class OrderFulFilmentCenterComponent implements OnInit {
         { backgroundColor: "#40a8e2" },
         { backgroundColor: "#fb863a" },
     ];
-
+    SecretKey: string;
+    SecureStorage: SecureLS;
     constructor(
         private _fuseConfigService: FuseConfigService,
         private _formBuilder: FormBuilder,
@@ -336,8 +339,11 @@ export class OrderFulFilmentCenterComponent implements OnInit {
         private _masterService: MasterService,
         private _factService: FactService,
         private datePipe: DatePipe,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        
     ) {
+        this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
         this.notificationSnackBarComponent = new NotificationSnackBarComponent(
             this.snackBar
         );
@@ -424,7 +430,7 @@ export class OrderFulFilmentCenterComponent implements OnInit {
         this.SetUserPreference();
 
         // Retrive authorizationData
-        const retrievedObject = localStorage.getItem("authorizationData");
+        const retrievedObject = this.SecureStorage.get("authorizationData");
         if (retrievedObject) {
             this.authenticationDetails = JSON.parse(
                 retrievedObject

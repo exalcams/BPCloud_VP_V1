@@ -18,6 +18,7 @@ import { FactService } from 'app/services/fact.service';
 import { BPCFact } from 'app/models/fact';
 import { ActionLog } from 'app/models/OrderFulFilment';
 import { AuthService } from 'app/services/auth.service';
+import * as SecureLS from 'secure-ls';
 
 @Component({
   selector: 'app-support-chat',
@@ -53,6 +54,8 @@ export class SupportChatComponent implements OnInit {
   notificationSnackBarComponent: NotificationSnackBarComponent;
   IsReOpen: boolean;
   ActionLog: any;
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private route: ActivatedRoute,
     public _supportDeskService: SupportDeskService,
@@ -62,8 +65,11 @@ export class SupportChatComponent implements OnInit {
     private _router: Router,
     public snackBar: MatSnackBar,
     private _dialog: MatDialog,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.TicketResolved = false;
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.SelectedSupportLog = new SupportLog();
@@ -73,7 +79,7 @@ export class SupportChatComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

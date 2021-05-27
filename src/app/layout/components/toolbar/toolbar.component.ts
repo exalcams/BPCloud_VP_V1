@@ -14,7 +14,7 @@ import { MasterService } from 'app/services/master.service';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { AuthenticationDetails, UserNotification, ChangePassword } from 'app/models/master';
 import { ChangePassDialogComponent } from './change-pass-dialog/change-pass-dialog.component';
-
+import * as SecureLS from 'secure-ls';
 @Component({
     selector: 'toolbar',
     templateUrl: './toolbar.component.html',
@@ -39,6 +39,8 @@ export class ToolbarComponent implements OnInit, OnDestroy, OnChanges {
     AllNotificationByUserID: UserNotification[] = [];
     SetIntervalID: any;
     searchText = '';
+    SecretKey: string;
+    SecureStorage: SecureLS;
     // Private
     private _unsubscribeAll: Subject<any>;
 
@@ -108,7 +110,8 @@ export class ToolbarComponent implements OnInit, OnDestroy, OnChanges {
         this.CurrentLoggedInUser = 'Support';
         this.CurrentLoggedInUserProfile = 'assets/images/avatars/support.png';
         this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
-
+        this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
         // Set the private defaults
         this._unsubscribeAll = new Subject();
     }
@@ -134,7 +137,7 @@ export class ToolbarComponent implements OnInit, OnDestroy, OnChanges {
         this.selectedLanguage = _.find(this.languages, { 'id': this._translateService.currentLang });
 
         // Retrive authorizationData
-        const retrievedObject = localStorage.getItem('authorizationData');
+        const retrievedObject = this.SecureStorage.get('authorizationData');
         if (retrievedObject) {
             this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
             this.CurrentLoggedInUser = this.authenticationDetails.DisplayName;
@@ -204,7 +207,7 @@ export class ToolbarComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        const retrievedObject = localStorage.getItem('authorizationData');
+        const retrievedObject = this.SecureStorage.get('authorizationData');
         this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
         this.CurrentLoggedInUser = this.authenticationDetails.DisplayName;
         console.log(this.authenticationDetails);
@@ -241,8 +244,8 @@ export class ToolbarComponent implements OnInit, OnDestroy, OnChanges {
     logOutClick(): void {
         this._authService.SignOut(this.authenticationDetails.UserID).subscribe(
             (data) => {
-                localStorage.removeItem('authorizationData');
-                localStorage.removeItem('menuItemsData');
+                this.SecureStorage.remove('authorizationData');
+                this.SecureStorage.remove('menuItemsData');
                 this._compiler.clearCache();
                 this._router.navigate(['auth/login']);
                 this.notificationSnackBarComponent.openSnackBar('Signed out successfully', SnackBarStatus.success);
@@ -273,8 +276,8 @@ export class ToolbarComponent implements OnInit, OnDestroy, OnChanges {
                         (res) => {
                             console.log(res);
                             this.notificationSnackBarComponent.openSnackBar('Password updated successfully, please log with new password', SnackBarStatus.success);
-                            localStorage.removeItem('authorizationData');
-                            localStorage.removeItem('menuItemsData');
+                            this.SecureStorage.remove('authorizationData');
+                            this.SecureStorage.remove('menuItemsData');
                             this._compiler.clearCache();
                             this._router.navigate(['auth/login']);
                         }, (err) => {

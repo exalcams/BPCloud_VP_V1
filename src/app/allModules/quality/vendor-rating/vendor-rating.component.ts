@@ -18,6 +18,8 @@ import { MasterService } from 'app/services/master.service';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfigService } from '@fuse/services/config.service';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-vendor-rating',
@@ -49,6 +51,8 @@ export class VendorRatingComponent implements OnInit {
   @ViewChild(MatPaginator) vendorRatingPaginator: MatPaginator;
   @ViewChild(MatSort) vendorRatingSort: MatSort;
   @ViewChild(MatMenuTrigger) matMenuTrigger: MatMenuTrigger;
+  SecretKey: string;
+  SecureStorage: SecureLS;
 
   public canvasWidth = 200;
   public needleValue = 87;
@@ -107,10 +111,13 @@ export class VendorRatingComponent implements OnInit {
     private formBuilder: FormBuilder,
     private _router: Router,
     public snackBar: MatSnackBar,
+    private _authService: AuthService,
     private dialog: MatDialog,
     private _masterService: MasterService,
     private _datePipe: DatePipe,
     private _excelService: ExcelService) {
+      this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.isProgressBarVisibile = false;
@@ -127,7 +134,7 @@ export class VendorRatingComponent implements OnInit {
     this.SetUserPreference();
 
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

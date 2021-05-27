@@ -8,6 +8,8 @@ import { AuthenticationDetails } from 'app/models/master';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { Guid } from 'guid-typescript';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from "app/services/auth.service";
 
 @Component({
     selector: "app-improvement",
@@ -23,13 +25,18 @@ export class ImprovementComponent implements OnInit {
   currentDisplayName: string;
   notificationSnackBarComponent: NotificationSnackBarComponent;
   isProgressBarVisibile: boolean;
-
+  SecretKey: string;
+    SecureStorage: SecureLS;
     constructor(
         private _masterService: MasterService,
         private _router: Router,
         public snackBar: MatSnackBar,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private _authService: AuthService,
+
     ) {
+        this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
         this.authenticationDetails = new AuthenticationDetails();
         this.notificationSnackBarComponent = new NotificationSnackBarComponent(
             this.snackBar
@@ -38,7 +45,7 @@ export class ImprovementComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        const retrievedObject = localStorage.getItem("authorizationData");
+        const retrievedObject = this.SecureStorage.get("authorizationData");
         this.authenticationDetails = JSON.parse(
             retrievedObject
         ) as AuthenticationDetails;

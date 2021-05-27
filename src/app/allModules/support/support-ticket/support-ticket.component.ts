@@ -18,6 +18,7 @@ import { POService } from 'app/services/po.service';
 import { ActionLog, BPCOFItem } from 'app/models/OrderFulFilment';
 import { DatePipe, Location } from '@angular/common';
 import { AuthService } from 'app/services/auth.service';
+import * as SecureLS from 'secure-ls';
 
 @Component({
   selector: 'app-support-ticket',
@@ -51,6 +52,8 @@ export class SupportTicketComponent implements OnInit {
   OFItems: BPCOFItem[] = [];
   SupportAppMasters: SupportAppMaster[] = [];
   ActionLog: any;
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
@@ -71,10 +74,12 @@ export class SupportTicketComponent implements OnInit {
     this.SupportTicketView = new SupportHeaderView();
     this.SupportTicket = new SupportHeader();
     this.SelectedBPCFact = new BPCFact();
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
   }
 
   ngOnInit(): void {
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

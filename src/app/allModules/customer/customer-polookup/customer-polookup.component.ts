@@ -19,6 +19,8 @@ import { AttachmentDetails } from 'app/models/task';
 import { AttachmentDialogComponent } from 'app/notifications/attachment-dialog/attachment-dialog.component';
 import { AttachmentViewDialogComponent } from 'app/notifications/attachment-view-dialog/attachment-view-dialog.component';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 
 @Component({
@@ -126,7 +128,8 @@ export class CustomerPolookupComponent implements OnInit {
   attachmentDetails: string;
   file: string;
   filetype: string;
-
+  SecretKey: string;
+    SecureStorage: SecureLS;
   constructor(
     private route: ActivatedRoute,
     public _dashboardService: DashboardService,
@@ -137,9 +140,12 @@ export class CustomerPolookupComponent implements OnInit {
     private formBuilder: FormBuilder,
     private datepipe: DatePipe,
     private dialog: MatDialog,
-  ) {
+    private _authService: AuthService,
 
-    const retrievedObject = localStorage.getItem('authorizationData');
+  ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

@@ -25,6 +25,8 @@ import { ASNService } from 'app/services/asn.service';
 import { fuseAnimations } from '@fuse/animations';
 import { PO } from 'app/models/Dashboard';
 import { BPCFact } from 'app/models/fact';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
     selector: 'app-purchase-indent',
@@ -95,7 +97,8 @@ export class PurchaseIndentComponent implements OnInit {
     isHidden: boolean = true;
     show: boolean;
     length: number;
-
+    SecretKey: string;
+    SecureStorage: SecureLS;
     constructor(
         private _fuseConfigService: FuseConfigService,
         private _masterService: MasterService,
@@ -108,7 +111,11 @@ export class PurchaseIndentComponent implements OnInit {
         private _router: Router,
         public snackBar: MatSnackBar,
         private dialog: MatDialog,
-        private _formBuilder: FormBuilder) {
+        private _formBuilder: FormBuilder,
+        private _authService: AuthService,
+        ) {
+            this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
         this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
         this.authenticationDetails = new AuthenticationDetails();
         this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -132,7 +139,7 @@ export class PurchaseIndentComponent implements OnInit {
 
     ngOnInit(): void {
         // Retrive authorizationData
-        const retrievedObject = localStorage.getItem('authorizationData');
+        const retrievedObject = this.SecureStorage.get('authorizationData');
         if (retrievedObject) {
             this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
             this.currentUserID = this.authenticationDetails.UserID;

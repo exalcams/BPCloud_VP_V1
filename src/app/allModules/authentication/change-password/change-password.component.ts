@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material';
 import { CustomValidator } from 'app/shared/custom-validator';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { ChangePassword, AuthenticationDetails } from 'app/models/master';
+import * as SecureLS from 'secure-ls';
 
 @Component({
   selector: 'change-password',
@@ -23,7 +24,8 @@ export class ChangePasswordComponent implements OnInit {
   authenticationDetails: AuthenticationDetails;
   notificationSnackBarComponent: NotificationSnackBarComponent;
   IsProgressBarVisibile: boolean;
-
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _formBuilder: FormBuilder,
@@ -51,13 +53,15 @@ export class ChangePasswordComponent implements OnInit {
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.IsProgressBarVisibile = false;
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     // Set the private defaults
   }
 
   ngOnInit(): void {
 
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
     } else {

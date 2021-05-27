@@ -7,7 +7,9 @@ import { AuthenticationDetails } from 'app/models/master';
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
+import { AuthService } from 'app/services/auth.service';
 import { MasterService } from 'app/services/master.service';
+import * as SecureLS from 'secure-ls';
 
 @Component({
   selector: 'app-products',
@@ -28,12 +30,18 @@ export class ProductsComponent implements OnInit {
   selectedValue_star: any;
   stars: number[] = [1, 2, 3, 4, 5];
   patnerId: string;
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _masterService: MasterService,
     private _router: Router,
     public snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private _formBuilder: FormBuilder)  {
+    private _formBuilder: FormBuilder,
+    private _authService: AuthService,
+    )  {
+      this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
       this.selectedProduct=new BPCProd();
       this.ProductFav=new BPCProdFav();
       this.authenticationDetails = new AuthenticationDetails();
@@ -43,7 +51,7 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit() {
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     this.patnerId=this.authenticationDetails.UserName;
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;

@@ -13,6 +13,8 @@ import { DatePipe } from '@angular/common';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { MasterService } from 'app/services/master.service';
 import { FuseConfigService } from '@fuse/services/config.service';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from "app/services/auth.service";
 
 @Component({
   selector: "app-payment",
@@ -50,8 +52,11 @@ export class PaymentComponent implements OnInit {
   searchText: string;
   SelectValue: string;
   isExpanded: boolean;
+  SecretKey: string;
+    SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
+    private _authService: AuthService,
 
     private _formBuilder: FormBuilder,
     private _router: Router,
@@ -61,6 +66,8 @@ export class PaymentComponent implements OnInit {
     private _excelService: ExcelService,
     private _datePipe: DatePipe
   ) {
+    this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -76,7 +83,7 @@ export class PaymentComponent implements OnInit {
 
   ngOnInit(): void {
     this.SetUserPreference();
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

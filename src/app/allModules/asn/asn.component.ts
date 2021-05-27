@@ -36,6 +36,8 @@ import { NotificationDialog1Component } from 'app/notifications/notification-dia
 import { ASNItemServiceDialogComponent } from './asnitem-service-dialog/asnitem-service-dialog.component';
 import { AuthService } from 'app/services/auth.service';
 import { GateService } from 'app/services/gate.service';
+import * as SecureLS from 'secure-ls';
+
 @Component({
     selector: 'app-asn',
     templateUrl: './asn.component.html',
@@ -155,7 +157,8 @@ export class ASNComponent implements OnInit {
     DocumentType: string;
     SelectedDocType: string;
     ActionLog: any;
-
+    SecretKey: string;
+    SecureStorage: SecureLS;
 
     constructor(
         private _fuseConfigService: FuseConfigService,
@@ -175,6 +178,8 @@ export class ASNComponent implements OnInit {
         public snackBar: MatSnackBar,
         private dialog: MatDialog,
         private _formBuilder: FormBuilder) {
+        this.SecretKey = this._authservice.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
         this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
         this.authenticationDetails = new AuthenticationDetails();
         this.IsProgressBarVisibile = false;
@@ -198,7 +203,7 @@ export class ASNComponent implements OnInit {
     ngOnInit(): void {
         this.SetUserPreference();
         // Retrive authorizationData
-        const retrievedObject = localStorage.getItem('authorizationData');
+        const retrievedObject =  this.SecureStorage.get('authorizationData');
         if (retrievedObject) {
             this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
             this.currentUserID = this.authenticationDetails.UserID;

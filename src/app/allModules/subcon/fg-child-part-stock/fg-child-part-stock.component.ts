@@ -25,6 +25,9 @@ import { SnackBarStatus } from "app/notifications/notification-snack-bar/notific
 import { fuseAnimations } from "@fuse/animations";
 import { ChartType } from "chart.js";
 import { FuseConfigService } from "@fuse/services/config.service";
+import * as SecureLS from "secure-ls";
+import { AuthService } from "app/services/auth.service";
+
 @Component({
     selector: "app-fg-child-part-stock",
     templateUrl: "./fg-child-part-stock.component.html",
@@ -229,9 +232,11 @@ export class FGChildPartStockComponent implements OnInit {
             backgroundColor: ["#6dd7d3"],
         },
     ];
+    SecretKey: string;
+    SecureStorage: SecureLS;
     constructor(
         private _fuseConfigService: FuseConfigService,
-
+        private _authService: AuthService,
         private _reportService: ReportService,
         private formBuilder: FormBuilder,
         private _router: Router,
@@ -241,6 +246,8 @@ export class FGChildPartStockComponent implements OnInit {
         private _datePipe: DatePipe,
         private _excelService: ExcelService
     ) {
+        this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
         this.authenticationDetails = new AuthenticationDetails();
         this.notificationSnackBarComponent = new NotificationSnackBarComponent(
             this.snackBar
@@ -259,7 +266,7 @@ export class FGChildPartStockComponent implements OnInit {
         this.SetUserPreference();
 
         // Retrive authorizationData
-        const retrievedObject = localStorage.getItem("authorizationData");
+        const retrievedObject =  this.SecureStorage.get("authorizationData");
         if (retrievedObject) {
             this.authenticationDetails = JSON.parse(
                 retrievedObject

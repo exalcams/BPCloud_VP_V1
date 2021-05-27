@@ -8,6 +8,8 @@ import { SupportDeskService } from 'app/services/support-desk.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { MasterService } from 'app/services/master.service';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-support-desk',
@@ -40,13 +42,17 @@ export class SupportDeskComponent implements OnInit {
 
   supportMasters: SupportMaster[] = [];
   isSupport: boolean;
-
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
+    private _authService: AuthService,
     private _masterService: MasterService,
     public _supportdeskService: SupportDeskService,
     private _router: Router,
     public snackBar: MatSnackBar,
     private _activatedRoute: ActivatedRoute) {
+      this.SecretKey = this._authService.SecretKey;
+      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.partnerID = '';
     this.isSupport = false;
@@ -54,7 +60,7 @@ export class SupportDeskComponent implements OnInit {
 
 
   ngOnInit(): void {
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

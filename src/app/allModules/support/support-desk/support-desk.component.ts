@@ -11,6 +11,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { ActionLog } from 'app/models/OrderFulFilment';
 import { AuthService } from 'app/services/auth.service';
+import * as SecureLS from 'secure-ls';
+
 @Component({
   selector: 'app-support-desk',
   templateUrl: './support-desk.component.html',
@@ -47,13 +49,16 @@ export class SupportDeskComponent implements OnInit {
   isSupport: boolean;
   ActionLog: any;
   currentUserName: string;
-
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
     public _supportdeskService: SupportDeskService,
     private _authService: AuthService,
     private _router: Router,
     private _activatedRoute: ActivatedRoute) {
+      this.SecretKey = this._authService.SecretKey;
+      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.partnerID = '';
     this.isSupport = false;
   }
@@ -61,7 +66,7 @@ export class SupportDeskComponent implements OnInit {
 
   ngOnInit(): void {
     this.SetUserPreference();
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =  this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

@@ -11,6 +11,8 @@ import { NotificationSnackBarComponent } from 'app/notifications/notification-sn
 import { SnackBarStatus } from 'app/notifications/snackbar-status-enum';
 import { CapaService } from 'app/services/capa.service';
 import { AddvendorDialogComponent } from '../addvendor-dialog/addvendor-dialog.component';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-capa-dashboard',
@@ -62,8 +64,14 @@ export class CapaDashboardComponent implements OnInit {
   CAPAAcceptResItems: CAPAAcceptItems[];
   notificationSnackBarComponent: NotificationSnackBarComponent;
   IsAllSelected = true;
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(private _capaService: CapaService, private _router: Router, public snackBar: MatSnackBar, private dialog: MatDialog,
+    private _authService: AuthService,
+
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.SelectedResItem = [];
     this.data = new CAPAvendor();
@@ -71,7 +79,7 @@ export class CapaDashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
 
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;

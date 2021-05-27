@@ -17,7 +17,7 @@ import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 import { ActionLog } from 'app/models/OrderFulFilment';
 import { AuthService } from 'app/services/auth.service';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-
+import * as SecureLS from 'secure-ls';
 @Component({
   selector: 'app-action-center',
   templateUrl: './action-center.component.html',
@@ -56,6 +56,8 @@ export class ActionCenterComponent implements OnInit {
   ActionLog: any;
 
   Fatc_list: BPCFact[] = [];
+  SecretKey: string;
+  SecureStorage: SecureLS;
   default_Company: string;
   // TempActionData = [
   //   {
@@ -98,7 +100,10 @@ export class ActionCenterComponent implements OnInit {
     public snackBar: MatSnackBar,
     private dialog: MatDialog,
     private sanitizer: DomSanitizer,
+    
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.selectedFact = new BPCFact();
 
     this.selectedAIACT = new BPCAIACT();
@@ -113,7 +118,7 @@ export class ActionCenterComponent implements OnInit {
   ngOnInit(): void {
     this.SetUserPreference();
 
-    const retrievedObject = localStorage.getItem("authorizationData");
+    const retrievedObject = this.SecureStorage.get("authorizationData");
     this.authenticationDetails = JSON.parse(
       retrievedObject
     ) as AuthenticationDetails;

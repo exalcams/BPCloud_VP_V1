@@ -19,6 +19,7 @@ import { GateService } from 'app/services/gate.service';
 import { AsnlistPrintDialogComponent } from './asnlist-print-dialogue/asnlist-print-dialog/asnlist-print-dialog.component';
 import { AttachmentDetails } from 'app/models/task';
 import { AttachmentDialogComponent } from 'app/notifications/attachment-dialog/attachment-dialog.component';
+import * as SecureLS from 'secure-ls';
 
 @Component({
   selector: 'app-asn-list',
@@ -65,6 +66,8 @@ export class AsnListComponent implements OnInit {
   SelectValue: string;
   TableSelectValue: string;
   Plants: string[] = [];
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private formBuilder: FormBuilder,
@@ -77,6 +80,8 @@ export class AsnListComponent implements OnInit {
     public snackBar: MatSnackBar,
     private dialog: MatDialog,
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -92,7 +97,7 @@ export class AsnListComponent implements OnInit {
   ngOnInit(): void {
     this.SetUserPreference();
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =  this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

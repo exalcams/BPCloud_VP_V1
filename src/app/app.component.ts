@@ -24,7 +24,7 @@ import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 import { SnackBarStatus } from './notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { InformationDialogComponent } from './notifications/information-dialog/information-dialog.component';
-
+import * as SecureLS from 'secure-ls';
 @Component({
     selector: 'app',
     templateUrl: './app.component.html',
@@ -40,7 +40,8 @@ export class AppComponent implements OnInit, OnDestroy {
     notificationSnackBarComponent: NotificationSnackBarComponent;
     // Private
     private _unsubscribeAll: Subject<any>;
-
+    SecretKey: string;
+    SecureStorage: SecureLS;
     /**
      * Constructor
      *
@@ -72,6 +73,8 @@ export class AppComponent implements OnInit, OnDestroy {
         private _compiler: Compiler,
         private _router: Router,
     ) {
+        this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
         this.authenticationDetails = new AuthenticationDetails();
         this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
         this.sessionTimeOut = 300;
@@ -214,7 +217,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.bnIdle.startWatching(this.sessionTimeOut).subscribe((res) => {
             if (res) {
                 // Retrive authorizationData
-                const retrievedObject = localStorage.getItem('authorizationData');
+                const retrievedObject = this.SecureStorage.get('authorizationData');
                 if (retrievedObject) {
                     this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
                     this.SignoutAndExit();
@@ -241,8 +244,8 @@ export class AppComponent implements OnInit, OnDestroy {
     SignoutAndExit(): void {
         this._authService.SignOut(this.authenticationDetails.UserID).subscribe(
             (data) => {
-                localStorage.removeItem('authorizationData');
-                localStorage.removeItem('menuItemsData');
+                this.SecureStorage.remove('authorizationData');
+                this.SecureStorage.remove('menuItemsData');
                 this._compiler.clearCache();
                 // this._router.navigate(['auth/login']);
                 console.error('Your session has expired! Please login again');
@@ -252,8 +255,8 @@ export class AppComponent implements OnInit, OnDestroy {
             (err) => {
                 console.error(err);
                 // this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
-                localStorage.removeItem('authorizationData');
-                localStorage.removeItem('menuItemsData');
+                this.SecureStorage.remove('authorizationData');
+                this.SecureStorage.remove('menuItemsData');
                 this._compiler.clearCache();
                 // this._router.navigate(['auth/login']);
                 console.error('Your session has expired! Please login again');
@@ -295,7 +298,7 @@ export class AppComponent implements OnInit, OnDestroy {
             });
 
         // Retrive menu items from Local Storage
-        const menuItems = localStorage.getItem('menuItemsData');
+        const menuItems = this.SecureStorage.get('menuItemsData');
         if (menuItems) {
             this.navigation = JSON.parse(menuItems);
             this._fuseNavigationService.unregister('main');
@@ -322,7 +325,7 @@ export class AppComponent implements OnInit, OnDestroy {
           .subscribe((config) => {
             this.fuseConfig = config;
             // Retrive user preference from Local Storage
-            const userPre = localStorage.getItem('userPreferenceData');
+            const userPre = this.SecureStorage.get('userPreferenceData');
             if (userPre) {
               const userPrefercence: UserPreference = JSON.parse(userPre) as UserPreference;
               if (userPrefercence.NavbarPrimaryBackground && userPrefercence.NavbarPrimaryBackground !== '-') {

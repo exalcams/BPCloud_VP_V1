@@ -4,6 +4,7 @@ import { AuthService } from "app/services/auth.service";
 import { Component, OnInit } from "@angular/core";
 import { MatCarousel, MatCarouselComponent } from "@ngmodule/material-carousel";
 import { MatDialogRef } from "@angular/material/dialog";
+import * as SecureLS from 'secure-ls';
 
 @Component({
     selector: "app-tour",
@@ -30,14 +31,18 @@ export class TourComponent implements OnInit {
             comments, deadlines, associated issues, risks ans meetings.`,
         },
     ];
-
+    SecretKey: string;
+    SecureStorage: SecureLS;
     constructor(
         private dialogRef: MatDialogRef<TourComponent>,
         private authService: AuthService
-    ) {}
+    ) {
+        this.SecretKey = this.authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
+    }
 
     ngOnInit(): void {
-        const retrievedObject = localStorage.getItem("authorizationData");
+        const retrievedObject = this.SecureStorage.get("authorizationData");
         this.authenticationDetails = JSON.parse(
             retrievedObject
         ) as AuthenticationDetails;
@@ -50,7 +55,7 @@ export class TourComponent implements OnInit {
             .SetApplicationTourDisabled(this.tourStatus)
             .subscribe((data) => {
                 this.authenticationDetails.TourStatus = this.isFinal;
-                localStorage.setItem(
+                this.SecureStorage.set(
                     "authorizationData",
                     JSON.stringify(this.authenticationDetails)
                 );

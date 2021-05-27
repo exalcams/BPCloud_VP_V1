@@ -19,7 +19,7 @@ import {
 } from "app/models/master";
 import { environment } from "environments/environment";
 import { ActionLog } from "app/models/OrderFulFilment";
-
+import * as SecureLS from 'secure-ls';
 @Injectable({
     providedIn: "root",
 })
@@ -29,8 +29,10 @@ export class AuthService {
     constructor(private _httpClient: HttpClient) {
         this.baseAddress = environment.baseAddress;
         this.clientId = environment.clientId;
+        this.SecretKey = environment.SecretKey;
     }
-
+    ls: SecureLS;
+    SecretKey: string;
     // Error Handler
 
     errorHandler(error: HttpErrorResponse): Observable<string> {

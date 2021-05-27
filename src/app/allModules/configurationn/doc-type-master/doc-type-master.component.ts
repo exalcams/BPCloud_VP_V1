@@ -9,6 +9,8 @@ import { MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
 import { BPCDocumentCenterMaster } from 'app/models/ASN';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-doc-type-master',
@@ -28,12 +30,17 @@ export class DocTypeMasterComponent implements OnInit {
   selectID: number;
   DocumentCenterMasterFormGroup: FormGroup;
   searchText = '';
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _masterService: MasterService,
     private _router: Router,
+    private _authService: AuthService,
     public snackBar: MatSnackBar,
     private dialog: MatDialog,
     private _formBuilder: FormBuilder) {
+      this.SecretKey = this._authService.SecretKey;
+      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });  
     this.selectedDocumentCenterMaster = new BPCDocumentCenterMaster();
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -42,7 +49,7 @@ export class DocTypeMasterComponent implements OnInit {
 
   ngOnInit(): void {
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.menuItems = this.authenticationDetails.MenuItemNames.split(',');

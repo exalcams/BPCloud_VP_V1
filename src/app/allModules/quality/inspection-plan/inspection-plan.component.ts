@@ -18,6 +18,9 @@ import { MasterService } from 'app/services/master.service';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfigService } from '@fuse/services/config.service';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
+
 @Component({
   selector: 'app-inspection-plan',
   templateUrl: './inspection-plan.component.html',
@@ -105,10 +108,11 @@ export class InspectionPlanComponent implements OnInit {
     backgroundColor: ['#3c9cdf', '#fddc0e', '#58dfa7']
 
   }];
-
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
-
+    private _authService: AuthService,
     private _reportService: ReportService,
     private formBuilder: FormBuilder,
     private _router: Router,
@@ -117,6 +121,8 @@ export class InspectionPlanComponent implements OnInit {
     private _masterService: MasterService,
     private _datePipe: DatePipe,
     private _excelService: ExcelService) {
+      this.SecretKey = this._authService.SecretKey;
+      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.isProgressBarVisibile = false;
@@ -133,7 +139,7 @@ export class InspectionPlanComponent implements OnInit {
     this.SetUserPreference();
 
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

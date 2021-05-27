@@ -22,6 +22,8 @@ import { ThrowStmt } from '@angular/compiler';
 import { ActionLog } from 'app/models/OrderFulFilment';
 import { AuthService } from 'app/services/auth.service';
 import { ASNListFilter, GRNListFilter } from 'app/models/ASN';
+import * as SecureLS from 'secure-ls';
+
 @Component({
   selector: 'app-gr-receipts',
   templateUrl: './gr-receipts.component.html',
@@ -188,7 +190,8 @@ export class GRReceiptsComponent implements OnInit {
   // Dateto: any;
   ActionLog: any;
   Plants: string[] = [];
-
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _reportService: ReportService,
@@ -200,6 +203,8 @@ export class GRReceiptsComponent implements OnInit {
     private _masterService: MasterService,
     private _datePipe: DatePipe,
     private _excelService: ExcelService) {
+      this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.isProgressBarVisibile = false;
@@ -215,7 +220,7 @@ export class GRReceiptsComponent implements OnInit {
   ngOnInit(): void {
     this.SetUserPreference();
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

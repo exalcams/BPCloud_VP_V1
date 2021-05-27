@@ -13,6 +13,8 @@ import { DatePipe } from '@angular/common';
 import { ExcelService } from 'app/services/excel.service';
 import { MasterService } from 'app/services/master.service';
 import { FuseConfigService } from '@fuse/services/config.service';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-payments',
@@ -54,7 +56,8 @@ export class PaymentsComponent implements OnInit {
   @ViewChild(MatPaginator) tablePaginator: MatPaginator;
   @ViewChild(MatMenuTrigger) matMenuTrigger: MatMenuTrigger;
   @ViewChild(MatSort) tableSort: MatSort;
-
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
 
@@ -66,7 +69,11 @@ export class PaymentsComponent implements OnInit {
     private _masterService: MasterService,
     private _datePipe: DatePipe,
     private _excelService: ExcelService,
+    private _authService: AuthService,
+
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -83,7 +90,7 @@ export class PaymentsComponent implements OnInit {
   ngOnInit(): void {
     this.SetUserPreference();
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { FactService } from 'app/services/fact.service';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-card-update',
@@ -31,7 +33,8 @@ export class CardUpdateComponent implements OnInit {
   AttachmentData1: SafeUrl;
   AttachmentData2: SafeUrl;
   IsProgressBarVisibile: boolean;
-
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private formBuilder: FormBuilder,
     private httpClient: HttpClient,
@@ -39,8 +42,11 @@ export class CardUpdateComponent implements OnInit {
     private _FactService: FactService,
     private _router: Router,
     public snackBar: MatSnackBar,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private _authService: AuthService,
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.IsProgressBarVisibile = false;
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(
@@ -51,7 +57,7 @@ export class CardUpdateComponent implements OnInit {
   ngOnInit(): void {
 
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

@@ -24,6 +24,8 @@ import { AttachmentDetails } from 'app/models/task';
 import { AttachmentDialogComponent } from 'app/notifications/attachment-dialog/attachment-dialog.component';
 import { ASNService } from 'app/services/asn.service';
 import { BPCFact } from 'app/models/fact';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-pod',
@@ -59,6 +61,8 @@ export class PODComponent implements OnInit {
   @ViewChild(MatSort) PODItemSort: MatSort;
   @ViewChild(MatPaginator) PODDetails: MatPaginator;
   @ViewChild(MatPaginator) POPaginator: MatPaginator;
+  SecretKey: string;
+  SecureStorage: SecureLS;
 
   constructor(
     private _fuseConfigService: FuseConfigService,
@@ -71,18 +75,21 @@ export class PODComponent implements OnInit {
     private _route: ActivatedRoute,
     private _router: Router,
     public snackBar: MatSnackBar,
+    private _authService: AuthService,
     private dialog: MatDialog,
     private _formBuilder: FormBuilder) {
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.IsProgressBarVisibile = false;
+    this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
 
   }
 
   ngOnInit(): void {
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

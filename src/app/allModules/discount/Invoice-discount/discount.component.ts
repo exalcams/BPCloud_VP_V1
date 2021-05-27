@@ -11,6 +11,7 @@ import { AuthService } from 'app/services/auth.service';
 import { DiscountService } from 'app/services/discount.service';
 import { Guid } from 'guid-typescript';
 import { DiscountDialogueComponent } from '../discount-dialogue/discount-dialogue.component';
+import * as SecureLS from 'secure-ls';
 
 @Component({
   selector: 'app-discount',
@@ -35,6 +36,8 @@ export class DiscountComponent implements OnInit {
   AccountStatements: BPCPayAccountStatement[];
   notificationSnackBarComponent: NotificationSnackBarComponent;
   ActionLog: any;
+  SecretKey: string;
+    SecureStorage: SecureLS;
 
 
   constructor(private dialog: MatDialog,
@@ -42,9 +45,13 @@ export class DiscountComponent implements OnInit {
     private _router: Router,
     private _authService: AuthService,
     private _fuseConfigService: FuseConfigService,
-    public snackBar: MatSnackBar) {
+    public snackBar: MatSnackBar,
+    ) {
+      this.SecretKey = this._authService.SecretKey;
+      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.isProgressBarVisibile = false;
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
+    
   }
 
   OpenCalculateDialogue(Data: any): void {
@@ -65,7 +72,7 @@ export class DiscountComponent implements OnInit {
 
   ngOnInit(): void {
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =  this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

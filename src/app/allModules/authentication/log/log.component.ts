@@ -11,6 +11,7 @@ import { NotificationSnackBarComponent } from 'app/notifications/notification-sn
 import { SnackBarStatus } from 'app/notifications/snackbar-status-enum';
 import { AuthService } from 'app/services/auth.service';
 import { ExcelService } from 'app/services/excel.service';
+import * as SecureLS from 'secure-ls';
 
 @Component({
   selector: 'app-log',
@@ -37,6 +38,8 @@ export class LogComponent implements OnInit {
   currentUserName: string;
   currentUserRole: string;
   MenuItems: string[];
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(private _authService: AuthService, 
     private formBuilder: FormBuilder, 
     private _datePipe: DatePipe, 
@@ -48,13 +51,14 @@ export class LogComponent implements OnInit {
     this.IsProgressBarVisibile = false;
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
-
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.isExpanded = false;
   }
 
   ngOnInit() {
     this.SetUserPreference();
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =  this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;
