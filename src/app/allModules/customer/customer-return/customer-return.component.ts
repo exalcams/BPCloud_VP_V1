@@ -25,6 +25,8 @@ import { BPCPIHeader, BPCPIView, BPCPIItem, BPCProd, BPCRetHeader, BPCRetView_ne
 import { BPCFact } from 'app/models/fact';
 import { BatchDialogComponent } from '../batch-dialog/batch-dialog.component';
 import { SerialDialogComponent } from '../serial-dialog/serial-dialog.component';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-customer-return',
@@ -98,6 +100,8 @@ export class CustomerReturnComponent implements OnInit {
   retqty: number;
   invoice_duplicate: any;
   length: number;
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _masterService: MasterService,
@@ -106,11 +110,14 @@ export class CustomerReturnComponent implements OnInit {
     private _CustomerService: CustomerService,
     private _ASNService: ASNService,
     private _datePipe: DatePipe,
+    private _authService: AuthService,
     private _route: ActivatedRoute,
     private _router: Router,
     public snackBar: MatSnackBar,
     private dialog: MatDialog,
     private _formBuilder: FormBuilder) {
+      this.SecretKey = this._authService.SecretKey;
+      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -131,7 +138,7 @@ export class CustomerReturnComponent implements OnInit {
 
   ngOnInit(): void {
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

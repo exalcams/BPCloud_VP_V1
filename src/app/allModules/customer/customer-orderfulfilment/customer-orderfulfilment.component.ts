@@ -49,6 +49,8 @@ import { OfAttachmentData } from "app/models/OrderFulFilment";
 import { BPCInvoiceAttachment } from "app/models/ASN";
 import { AttachmentViewDialogComponent } from 'app/notifications/attachment-view-dialog/attachment-view-dialog.component';
 import { FactService } from "app/services/fact.service";
+import * as SecureLS from 'secure-ls';
+import { AuthService } from "app/services/auth.service";
 
 @Component({
     selector: "app-customer-orderfulfilment",
@@ -137,7 +139,8 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
     progressPercentage1 = 0;
     progressPercentage2 = 0;
     nextProcess: string;
-
+    SecretKey: string;
+    SecureStorage: SecureLS;
     // Doughnut Chart
     public doughnutChartOptions = {
         responsive: true,
@@ -259,7 +262,8 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
         public _dashboardService: DashboardService,
         private _masterService: MasterService,
         private datePipe: DatePipe,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private _authService: AuthService,
     ) {
         this.notificationSnackBarComponent = new NotificationSnackBarComponent(
             this.snackBar
@@ -272,13 +276,15 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
             Status: [""],
         });
         this.ShowAddBtn = true;
+        this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     }
 
     ngOnInit(): void {
     
         this.SetUserPreference();
         // Retrive authorizationData
-        const retrievedObject = localStorage.getItem("authorizationData");
+        const retrievedObject = this.SecureStorage.get("authorizationData");
         if (retrievedObject) {
             this.authenticationDetails = JSON.parse(
                 retrievedObject

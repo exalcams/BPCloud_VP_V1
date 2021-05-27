@@ -12,9 +12,11 @@ import { AttachmentDialogComponent } from 'app/notifications/attachment-dialog/a
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { SnackBarStatus } from 'app/notifications/snackbar-status-enum';
+import { AuthService } from 'app/services/auth.service';
 import { FactService } from 'app/services/fact.service';
 import { SupportDeskService } from 'app/services/support-desk.service';
 import { Guid } from 'guid-typescript';
+import * as SecureLS from 'secure-ls';
 
 @Component({
   selector: 'app-declaration',
@@ -65,6 +67,8 @@ export class DeclarationComponent implements OnInit {
   IsProgressBarVisibile: boolean;
   BASE64_MARKER = ';base64,';
   LowerTDS = "";
+  SecretKey: string;
+  SecureStorage: SecureLS;
   // pattern= "^[0-9]$";
   constructor(private _fuseConfigService: FuseConfigService,
     private _router: Router,
@@ -72,7 +76,10 @@ export class DeclarationComponent implements OnInit {
     private _FactService: FactService,
     private _formBuilder: FormBuilder,
     private __supportDeskService: SupportDeskService,
+    private _authService: AuthService,
     private dialog: MatDialog) {
+      this.SecretKey = this._authService.SecretKey;
+      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.IsProgressBarVisibile = false;
@@ -87,7 +94,7 @@ export class DeclarationComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.CurrentUserID = this.authenticationDetails.UserID;

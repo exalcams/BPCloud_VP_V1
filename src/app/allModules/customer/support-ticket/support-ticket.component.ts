@@ -14,6 +14,8 @@ import { AttachmentDetails } from 'app/models/task';
 import { AttachmentDialogComponent } from 'app/notifications/attachment-dialog/attachment-dialog.component';
 import { BPCFact } from 'app/models/fact';
 import { FactService } from 'app/services/fact.service';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-support-ticket',
@@ -42,6 +44,8 @@ export class SupportTicketComponent implements OnInit {
   dateOfCreation: Date;
   docRefNo: string;
   notificationSnackBarComponent: NotificationSnackBarComponent;
+  SecretKey: string;
+    SecureStorage: SecureLS;
   constructor(
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
@@ -50,8 +54,12 @@ export class SupportTicketComponent implements OnInit {
     private _formBuilder: FormBuilder,
     public _supportDeskService: SupportDeskService,
     private _masterService: MasterService,
-    private _FactService: FactService
+    private _FactService: FactService,
+    private _authService: AuthService,
+
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.authenticationDetails = new AuthenticationDetails();
     this.dateOfCreation = new Date();
@@ -60,7 +68,7 @@ export class SupportTicketComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

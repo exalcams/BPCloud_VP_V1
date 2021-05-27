@@ -15,6 +15,8 @@ import { Router } from '@angular/router';
 import { AuthenticationDetails } from 'app/models/master';
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
 import { DatePipe } from '@angular/common';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-create-capa',
@@ -71,11 +73,17 @@ export class CreateCapaComponent implements OnInit {
   IsItem = false;
   ISCheckListFormValid = false;
   IsVendorListValid=false;
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(private _formBuilder: FormBuilder, private dialog: MatDialog,
     private _factService: FactService,
     private _datePipe: DatePipe,
     private _capaService: CapaService, public snackBar: MatSnackBar,
-    private _router: Router) {
+    private _router: Router,
+    private _authService: AuthService,
+    ) {
+      this.SecretKey = this._authService.SecretKey;
+      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
 
     this.data = new CAPAvendor();
@@ -88,7 +96,7 @@ export class CreateCapaComponent implements OnInit {
   }
 
   ngOnInit() {
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

@@ -14,6 +14,8 @@ import { DatePipe } from '@angular/common';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { POService } from 'app/services/po.service';
 import { BPCOFHeader } from 'app/models/OrderFulFilment';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-po-list',
@@ -56,6 +58,8 @@ export class PoListComponent implements OnInit {
   SelectValue: string;
   isExpanded: boolean;
   POStatuses: any[] = [];
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(private _fuseConfigService: FuseConfigService,
     private _formBuilder: FormBuilder,
     private _router: Router,
@@ -63,8 +67,12 @@ export class PoListComponent implements OnInit {
     private _masterService: MasterService,
     private _POService: POService,
     private _excelService: ExcelService,
-    private _datePipe: DatePipe
+    private _datePipe: DatePipe,
+    private _authService: AuthService,
+
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.authenticationDetails = new AuthenticationDetails();
     this.IsProgressBarVisibile = false;
@@ -87,7 +95,7 @@ export class PoListComponent implements OnInit {
   ngOnInit(): void {
     this.SetUserPreference();
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =   this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

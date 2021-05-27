@@ -18,6 +18,7 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
 import { ActionLog } from 'app/models/OrderFulFilment';
 import { AuthService } from 'app/services/auth.service';
+import * as SecureLS from 'secure-ls';
 
 @Component({
   selector: 'app-account-statement',
@@ -65,6 +66,8 @@ export class AccountStatementComponent implements OnInit {
   BPCPayAccountStatement: BPCPayAccountStatement[] = [];
   BCHeader: BPCPayAccountStatement;
   ActionLog: any;
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private formBuilder: FormBuilder,
@@ -78,6 +81,8 @@ export class AccountStatementComponent implements OnInit {
     private _excelService: ExcelService,
 
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -96,7 +101,7 @@ export class AccountStatementComponent implements OnInit {
   ngOnInit(): void {
     this.SetUserPreference();
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

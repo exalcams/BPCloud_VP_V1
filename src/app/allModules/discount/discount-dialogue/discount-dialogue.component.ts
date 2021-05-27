@@ -7,6 +7,7 @@ import { ActionLog } from 'app/models/OrderFulFilment';
 import { BPCDiscountMaster, BPCPayDis } from 'app/models/Payment.model';
 import { AuthService } from 'app/services/auth.service';
 import { DiscountService } from 'app/services/discount.service';
+import * as SecureLS from 'secure-ls';
 
 @Component({
   selector: 'app-discount-dialogue',
@@ -25,13 +26,18 @@ export class DiscountDialogueComponent implements OnInit {
   currentUserID: any;
   currentUserName: any;
   currentUserRole: any;
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
     public dialogRef: MatDialogRef<DiscountDialogueComponent>,
     public fb: FormBuilder,
     private _authService: AuthService,
-    private _discountService: DiscountService
+    private _discountService: DiscountService,
+    
   ) {
+    this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.discountFormGroup = this.fb.group({
       RemainingDays: [null],
       EPRD: [null, [Validators.required, Validators.max(this.CalculateRmDays()), Validators.min(5)]],
@@ -41,7 +47,7 @@ export class DiscountDialogueComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

@@ -16,6 +16,8 @@ import { ExcelService } from "app/services/excel.service";
 import { DatePipe } from "@angular/common";
 import { SnackBarStatus } from "app/notifications/notification-snack-bar/notification-snackbar-status-enum";
 import { FuseConfigService } from '@fuse/services/config.service';
+import * as SecureLS from "secure-ls";
+import { AuthService } from "app/services/auth.service";
 
 @Component({
     selector: "app-resource",
@@ -47,7 +49,10 @@ export class ResourceComponent implements OnInit {
     // SearchFormGroup: FormGroup;
     isDateError: boolean;
     searchText = "";
+    SecretKey: string;
+    SecureStorage: SecureLS;
     constructor(
+        private _authService: AuthService,
         private _fuseConfigService: FuseConfigService,
         private _formBuilder: FormBuilder,
         private _router: Router,
@@ -55,11 +60,12 @@ export class ResourceComponent implements OnInit {
         private _reportService: ReportService,
         private _excelService: ExcelService,
         private _datePipe: DatePipe
-    ) { }
+    ) { this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });}
 
     ngOnInit(): void {
         this.SetUserPreference();
-        const retrievedObject = localStorage.getItem("authorizationData");
+        const retrievedObject = this.SecureStorage.get("authorizationData");
         if (retrievedObject) {
             this.authenticationDetails = JSON.parse(
                 retrievedObject

@@ -20,6 +20,8 @@ import { NotificationDialogComponent } from 'app/notifications/notification-dial
 import { AttachmentDetails } from 'app/models/task';
 import { AttachmentDialogComponent } from 'app/notifications/attachment-dialog/attachment-dialog.component';
 import { SubconService } from 'app/services/subcon.service';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-subcon',
@@ -61,6 +63,8 @@ export class SubconComponent implements OnInit {
   IsDeleteRequired: boolean;
   currentDate: Date;
   lastOrderedQty: number;
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _masterService: MasterService,
@@ -73,8 +77,11 @@ export class SubconComponent implements OnInit {
     private _route: ActivatedRoute,
     private _router: Router,
     public snackBar: MatSnackBar,
+    private _authService: AuthService,
     private dialog: MatDialog,
     private _formBuilder: FormBuilder) {
+      this.SecretKey = this._authService.SecretKey;
+      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -89,7 +96,7 @@ export class SubconComponent implements OnInit {
 
   ngOnInit(): void {
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =  this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

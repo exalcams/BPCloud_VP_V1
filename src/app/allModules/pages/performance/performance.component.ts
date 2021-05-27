@@ -7,6 +7,9 @@ import { NotificationSnackBarComponent } from 'app/notifications/notification-sn
 import { Router } from '@angular/router';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { NgImageSliderComponent } from 'ng-image-slider';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from "app/services/auth.service";
+
 @Component({
   selector: "app-performance",
   templateUrl: "./performance.component.html",
@@ -63,11 +66,16 @@ export class PerformanceComponent implements OnInit {
   //   alt: 'Image alt' // Optional: You can use this key if want to show image with alt
   // }
   // ];
-
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _router: Router,
     public snackBar: MatSnackBar,
+    private _authService: AuthService,
+
   ) {
+    this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.sliderArray = [
       { img: 'http://bloquo.cc/img/works/1.jpg', alt: '', text: '365 Days Of weddings a year' },
       { img: 'http://bloquo.cc/img/works/2.jpg', alt: '', text: '365 Days Of weddings a year' },
@@ -84,7 +92,7 @@ export class PerformanceComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

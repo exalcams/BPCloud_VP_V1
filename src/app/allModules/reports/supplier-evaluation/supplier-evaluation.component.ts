@@ -17,6 +17,7 @@ import { FactService } from 'app/services/fact.service';
 import { MasterService } from 'app/services/master.service';
 import { PaymentService } from 'app/services/payment.service';
 import { Guid } from 'guid-typescript';
+import * as SecureLS from 'secure-ls';
 
 @Component({
   selector: 'app-supplier-evaluation',
@@ -60,6 +61,8 @@ export class SupplierEvaluationComponent implements OnInit {
   BPCSE: BPCSE[] = [];
   BCHeader: BPCSE;
   ActionLog: any;
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private formBuilder: FormBuilder,
@@ -73,6 +76,8 @@ export class SupplierEvaluationComponent implements OnInit {
     private _excelService: ExcelService,
 
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -91,7 +96,7 @@ export class SupplierEvaluationComponent implements OnInit {
   ngOnInit(): void {
     this.SetUserPreference();
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

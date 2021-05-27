@@ -9,9 +9,11 @@ import { AuthenticationDetails } from 'app/models/master';
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
+import { AuthService } from 'app/services/auth.service';
 import { BalanceConfirmationService } from 'app/services/balance-confirmation.service';
 import { ExcelService } from 'app/services/excel.service';
 import { Guid } from 'guid-typescript';
+import * as SecureLS from 'secure-ls';
 
 @Component({
   selector: 'app-balance-confirmation',
@@ -40,6 +42,8 @@ export class BalanceConfirmationComponent implements OnInit {
   balanceConfirmationDataSource: MatTableDataSource<BalanceConfirmationItem>;
   balanceConfirmationDisplayedColumns = ["FiscalYear", "DocNumber", "DocDate", "InvoiceNumber", "InvoiceAmount", "BillAmount", "PaidAmont",
    "TDSAmount", "TotalPaidAmount", "DownPayment", "NetDueAmount", "Currency", "BalDate"];
+   SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _bcService: BalanceConfirmationService,
@@ -48,18 +52,22 @@ export class BalanceConfirmationComponent implements OnInit {
     public snackBar: MatSnackBar,
     private _router: Router,
     private dialog: MatDialog,
+    private _authService: AuthService,
+
   ) {
     this.isProgressBarVisibile = false;
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.confirmationDetails = new ConfirmationDetails();
     this.BCHeader = new BalanceConfirmationHeader();
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
   }
 
   ngOnInit(): void {
     this.isProgressBarVisibile = true;
     this.SetUserPreference();
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

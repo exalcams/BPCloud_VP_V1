@@ -13,6 +13,9 @@ import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notific
 import { DatePipe } from '@angular/common';
 import { SupportDeskService } from 'app/services/support-desk.service';
 import { SupportMaster, SupportMasterView } from 'app/models/support-desk';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
+
 interface Reason {
     ReasonCode: string;
     ReasonText: string;
@@ -43,8 +46,10 @@ export class SupportDeskMasterComponent implements OnInit {
     SelectedSupportMasterView: SupportMasterView;
     SupportDeskUsers: UserWithRole[] = [];
     Reasons: Reason[] = [];
-
+    SecretKey: string;
+    SecureStorage: SecureLS;
     constructor(
+        private _authService: AuthService,
         private _masterService: MasterService,
         private _supportDeskService: SupportDeskService,
         private _datePipe: DatePipe,
@@ -52,6 +57,8 @@ export class SupportDeskMasterComponent implements OnInit {
         public snackBar: MatSnackBar,
         private dialog: MatDialog,
         private _formBuilder: FormBuilder) {
+        this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
         this.authenticationDetails = new AuthenticationDetails();
         this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
         this.IsProgressBarVisibile = false;
@@ -70,7 +77,7 @@ export class SupportDeskMasterComponent implements OnInit {
 
     ngOnInit(): void {
         // Retrive authorizationData
-        const retrievedObject = localStorage.getItem('authorizationData');
+        const retrievedObject =  this.SecureStorage.get('authorizationData');
         if (retrievedObject) {
             this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
             this.currentUserID = this.authenticationDetails.UserID;

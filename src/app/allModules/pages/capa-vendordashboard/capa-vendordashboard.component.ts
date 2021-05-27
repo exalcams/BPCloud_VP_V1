@@ -8,7 +8,9 @@ import { AttachmentDetails } from 'app/models/task';
 import { AttachmentDialogComponent } from 'app/notifications/attachment-dialog/attachment-dialog.component';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { SnackBarStatus } from 'app/notifications/snackbar-status-enum';
+import { AuthService } from 'app/services/auth.service';
 import { CapaService } from 'app/services/capa.service';
+import * as SecureLS from 'secure-ls';
 
 @Component({
   selector: 'app-capa-vendordashboard',
@@ -48,13 +50,17 @@ export class CapaVendordashboardComponent implements OnInit {
   isProgressBarVisibile = false;
   ReqIds: any[] = [];
   ResponseItemList: CAPAAcceptItems[];
-  constructor(private _capaService: CapaService, private _router: Router, public snackBar: MatSnackBar,
+  SecretKey: string;
+  SecureStorage: SecureLS;
+  constructor(private _capaService: CapaService, private _router: Router, public snackBar: MatSnackBar, private _authService: AuthService,
     private dialog: MatDialog) {
+      this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
   }
 
   ngOnInit() {
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =  this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.CurrentUserID = this.authenticationDetails.UserID;

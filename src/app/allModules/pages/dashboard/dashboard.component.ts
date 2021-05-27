@@ -20,6 +20,8 @@ import { Validators } from '@angular/forms';
 import { BPCCEOMessage, BPCSCOCMessage } from 'app/models/Message.model';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import * as SecureLS from 'secure-ls';
+
 import {
     ApexAxisChartSeries,
     ApexChart,
@@ -39,6 +41,7 @@ import {
     ApexNonAxisChartSeries,
     ApexOptions
 } from "ng-apexcharts";
+import { AuthService } from "app/services/auth.service";
 export interface ChartOptions {
     series: ApexAxisChartSeries;
     guageseries: ApexNonAxisChartSeries;
@@ -126,21 +129,27 @@ export class DashboardComponent implements OnInit {
     public GuagechartOptionsOTIF: Partial<ChartOptions>;
     public GuagechartOptionsPV: Partial<ChartOptions>;
     public GuagechartOptionsRES: Partial<ChartOptions>;
+    SecretKey: string;
+    SecureStorage: SecureLS;
 
     constructor(
         private dialog: MatDialog,
         private _POService: POService,
         private _router: Router,
+        private _authService: AuthService,
+
         private _fuseConfigService: FuseConfigService) {
         this.IsProgressBarVisibile = false;
         this.authenticationDetails = new AuthenticationDetails();
         this.selectedCEOMessage = new BPCCEOMessage();
         this.selectedSCOCMessage = new BPCSCOCMessage();
+        this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     }
 
     ngOnInit(): void {
         this.SetUserPreference();
-        const retrievedObject = localStorage.getItem('authorizationData');
+        const retrievedObject = this.SecureStorage.get('authorizationData');
         // if (retrievedObject) {
         //     this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
         //     this.menuItems = this.authenticationDetails.MenuItemNames.split(',');

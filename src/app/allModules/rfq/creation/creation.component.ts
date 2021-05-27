@@ -18,6 +18,8 @@ import { SupportDeskService } from 'app/services/support-desk.service';
 import { VendorMasterService } from 'app/services/vendor-master.service';
 import { Guid } from 'guid-typescript';
 import { RFxHC, RFxHeader, RFxIC, RFxItem, RFxOD, RFxPartner, RFxVendor, RFxVendorView, RFxView } from 'app/models/RFx';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-creation',
@@ -99,7 +101,8 @@ export class CreationComponent implements OnInit {
   FilteredUsers: UserWithRole[] = [];
   SupportMasters: SupportMaster[] = [];
   SupportHeader: SupportHeader;
-
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _masterService: MasterService,
@@ -109,7 +112,9 @@ export class CreationComponent implements OnInit {
     private _router: Router,
     public snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _authService: AuthService,
+
   ) {
     // this._fuseConfigService.config = {
     //   layout: {
@@ -127,6 +132,8 @@ export class CreationComponent implements OnInit {
     //     }
     //   }
     // };
+    this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.SelectedRFx = new RFxHeader();
     this.SelectedRFxView = new RFxView();
     this.authenticationDetails = new AuthenticationDetails();
@@ -138,7 +145,7 @@ export class CreationComponent implements OnInit {
 
   ngOnInit(): void {
     this.SetUserPreference();
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =  this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.CurrentUserID = this.authenticationDetails.UserID;

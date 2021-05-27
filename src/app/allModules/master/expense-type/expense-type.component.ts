@@ -9,6 +9,8 @@ import { MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
 import { BPCExpenseTypeMaster } from 'app/models/POD';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-expense-type',
@@ -25,12 +27,18 @@ export class ExpenseTypeComponent implements OnInit {
   selectID: number;
   ExpensetypeMainFormGroup: FormGroup;
   searchText = '';
+  SecretKey: string;
+    SecureStorage: SecureLS;
   constructor(
     private _masterService: MasterService,
     private _router: Router,
     public snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private _formBuilder: FormBuilder) {
+    private _formBuilder: FormBuilder,
+    private _authService: AuthService,
+    ) {
+      this.SecretKey = this._authService.SecretKey;
+      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.selectedUser = new BPCExpenseTypeMaster();
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -38,7 +46,7 @@ export class ExpenseTypeComponent implements OnInit {
    }
 
   ngOnInit() {
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.menuItems = this.authenticationDetails.MenuItemNames.split(',');

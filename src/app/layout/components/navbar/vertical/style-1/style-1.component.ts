@@ -12,7 +12,7 @@ import { MatDialog, MatDialogConfig, MatSnackBar } from '@angular/material';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { ChangePassDialogComponent } from 'app/layout/components/toolbar/change-pass-dialog/change-pass-dialog.component';
-
+import * as SecureLS from 'secure-ls';
 @Component({
     selector: 'navbar-vertical-style-1',
     templateUrl: './style-1.component.html',
@@ -32,7 +32,8 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
     // Private
     private _fusePerfectScrollbar: FusePerfectScrollbarDirective;
     private _unsubscribeAll: Subject<any>;
-
+    SecretKey: string;
+    SecureStorage: SecureLS;
     /**
      * Constructor
      *
@@ -58,6 +59,8 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
         this.CurrentLoggedInUserProfile = 'assets/images/avatars/support.png';
         this.isShowIcon = true;
         this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
+        this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -143,7 +146,7 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
             });
 
         // Retrive authorizationData
-        const retrievedObject = localStorage.getItem('authorizationData');
+        const retrievedObject =  this.SecureStorage.get('authorizationData');
         if (retrievedObject) {
             this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
             this.CurrentLoggedInUser = this.authenticationDetails.DisplayName;
@@ -196,9 +199,9 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
     logOutClick(): void {
         this._authService.SignOut(this.authenticationDetails.UserID).subscribe(
             (data) => {
-                localStorage.removeItem('authorizationData');
-                localStorage.removeItem('menuItemsData');
-                localStorage.removeItem('userPreferenceData');
+                this.SecureStorage.remove('authorizationData');
+                this.SecureStorage.remove('menuItemsData');
+                this.SecureStorage.remove('userPreferenceData');
                 this._compiler.clearCache();
                 this._router.navigate(['auth/login']);
                 this.notificationSnackBarComponent.openSnackBar('Signed out successfully', SnackBarStatus.success);
@@ -228,8 +231,8 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
                         (res) => {
                             console.log(res);
                             this.notificationSnackBarComponent.openSnackBar('Password updated successfully, please log with new password', SnackBarStatus.success);
-                            localStorage.removeItem('authorizationData');
-                            localStorage.removeItem('menuItemsData');
+                            this.SecureStorage.remove('authorizationData');
+                            this.SecureStorage.remove('menuItemsData');
                             this._compiler.clearCache();
                             this._router.navigate(['auth/login']);
                         }, (err) => {

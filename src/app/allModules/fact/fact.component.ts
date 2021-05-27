@@ -26,6 +26,7 @@ import { UpdateAttachmentComponent } from './update-attachment/update-attachment
 import { fuseAnimations } from '@fuse/animations';
 import FileSaver from 'file-saver';
 import { AuthService } from 'app/services/auth.service';
+import * as SecureLS from 'secure-ls';
 
 @Component({
   selector: 'app-fact',
@@ -174,6 +175,8 @@ export class FactComponent implements OnInit {
   SelectedBankRowIndex = null;
   SelectedCertificateTableRow: BPCCertificate;
   SelectedCertificateTableRowIndex = null;
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _masterService: MasterService,
@@ -204,6 +207,8 @@ export class FactComponent implements OnInit {
     //     }
     //   }
     // };
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.SelectedBPCFact = new BPCFact();
     this.SelectedBPCFactView = new BPCFactView();
     this.SelectedBPCFactSupport = new FactViewSupport();
@@ -216,7 +221,7 @@ export class FactComponent implements OnInit {
 
   ngOnInit(): void {
     this.SetUserPreference();
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.CurrentUserID = this.authenticationDetails.UserID;

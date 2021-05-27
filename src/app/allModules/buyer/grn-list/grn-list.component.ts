@@ -18,6 +18,8 @@ import { MasterService } from 'app/services/master.service';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfigService } from '@fuse/services/config.service';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-grn-list',
@@ -183,7 +185,8 @@ export class GrnListComponent implements OnInit {
   formatdate: any;
   Datefrom: any;
   Dateto: any;
-
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _reportService: ReportService,
@@ -193,7 +196,10 @@ export class GrnListComponent implements OnInit {
     private dialog: MatDialog,
     private _masterService: MasterService,
     private _datePipe: DatePipe,
-    private _excelService: ExcelService) {
+    private _excelService: ExcelService,
+    private _authService: AuthService,) {
+      this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.isProgressBarVisibile = false;
@@ -204,12 +210,13 @@ export class GrnListComponent implements OnInit {
     this.defaultFromDate = new Date();
     this.defaultFromDate.setDate(this.defaultFromDate.getDate() - 30);
     this.defaultToDate = new Date();
+    
   }
 
   ngOnInit(): void {
     this.SetUserPreference();
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =   this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-asn-field-master',
@@ -28,13 +30,20 @@ export class AsnFieldMasterComponent implements OnInit {
   selectID: number;
   ASNFieldMasterFormGroup: FormGroup;
   searchText = '';
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _masterService: MasterService,
     private _asnService: ASNService,
     private _router: Router,
     public snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private _formBuilder: FormBuilder) {
+    private _formBuilder: FormBuilder,
+    private _authService: AuthService,
+    ) {
+      this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
+
     this.selectedASNFieldMaster = new BPCASNFieldMaster();
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -43,7 +52,7 @@ export class AsnFieldMasterComponent implements OnInit {
 
   ngOnInit(): void {
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =  this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.menuItems = this.authenticationDetails.MenuItemNames.split(',');

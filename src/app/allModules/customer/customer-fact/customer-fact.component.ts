@@ -16,6 +16,8 @@ import { CBPLocation } from 'app/models/vendor-master';
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
 import { SupportMaster, SupportHeader, SupportHeaderView } from 'app/models/support-desk';
 import { SupportDeskService } from 'app/services/support-desk.service';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-customer-fact',
@@ -116,6 +118,8 @@ export class CustomerFactComponent implements OnInit {
   FilteredUsers: UserWithRole[] = [];
   SupportMasters: SupportMaster[] = [];
   SupportHeader: SupportHeader;
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _masterService: MasterService,
@@ -125,7 +129,9 @@ export class CustomerFactComponent implements OnInit {
     private _router: Router,
     public snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _authService: AuthService,
+
   ) {
     // this._fuseConfigService.config = {
     //   layout: {
@@ -143,6 +149,8 @@ export class CustomerFactComponent implements OnInit {
     //     }
     //   }
     // };
+    this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.SelectedBPCFact = new BPCFact();
     this.SelectedBPCFactView = new BPCFactView();
     this.authenticationDetails = new AuthenticationDetails();
@@ -153,7 +161,7 @@ export class CustomerFactComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.CurrentUserID = this.authenticationDetails.UserID;

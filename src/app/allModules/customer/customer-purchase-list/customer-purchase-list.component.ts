@@ -13,6 +13,9 @@ import { Router } from '@angular/router';
 import { BPCPIHeader } from 'app/models/customer';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { FactService } from 'app/services/fact.service';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
+
 @Component({
   selector: 'app-customer-purchase-list',
   templateUrl: './customer-purchase-list.component.html',
@@ -42,12 +45,19 @@ export class CustomerPurchaseListComponent implements OnInit {
   company: any;
   type: any;
   patnerid: any;
+  SecretKey: string;
+  SecureStorage: SecureLS;
   
-  constructor(public _customerService: CustomerService, private _router: Router,private _FactService: FactService,) { }
+  constructor(public _customerService: CustomerService, private _router: Router,private _FactService: FactService,
+    private _authService: AuthService,
+    ) {
+      this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
+     }
 
   ngOnInit() {
 
-    const retrievedObject = localStorage.getItem("authorizationData");
+    const retrievedObject = this.SecureStorage.get("authorizationData");
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(
         retrievedObject

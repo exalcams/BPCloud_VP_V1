@@ -20,6 +20,9 @@ import { BPCInvoiceAttachment, BPCCurrencyMaster, BPCCountryMaster } from 'app/m
 import { ASNService } from 'app/services/asn.service';
 import { MasterService } from 'app/services/master.service';
 import { FuseConfigService } from '@fuse/services/config.service';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
+
 @Component({
   selector: 'app-po-flip',
   templateUrl: './po-flip.component.html',
@@ -88,7 +91,8 @@ export class PoFlipComponent implements OnInit {
   invoiceTypes: string[] = [];
   math = Math;
   maxDate: Date;
-
+  SecretKey: string;
+    SecureStorage: SecureLS;
 
   constructor(
     private _fuseConfigService: FuseConfigService,
@@ -100,8 +104,12 @@ export class PoFlipComponent implements OnInit {
     private _route: ActivatedRoute,
     public snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _authService: AuthService,
+
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.selectedFlip = new BPCFLIPHeader();
     this.selectedFlipView = new BPCFLIPHeaderView();
     this.selectedFLIPID = '';
@@ -158,7 +166,7 @@ export class PoFlipComponent implements OnInit {
       this.selectedDocNumber = params['id'];
     });
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

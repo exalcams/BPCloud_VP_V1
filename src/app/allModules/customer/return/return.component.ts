@@ -23,6 +23,8 @@ import { AttachmentDetails } from 'app/models/task';
 import { AttachmentDialogComponent } from 'app/notifications/attachment-dialog/attachment-dialog.component';
 import { BPCPIHeader, BPCPIView, BPCPIItem, BPCProd } from 'app/models/customer';
 import { BPCFact } from 'app/models/fact';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-return',
@@ -85,7 +87,8 @@ export class ReturnComponent implements OnInit {
   @ViewChild('fileInput1') fileInput: ElementRef<HTMLElement>;
   selectedDocCenterMaster: BPCDocumentCenterMaster;
   ArrivalDateInterval: number;
-
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _masterService: MasterService,
@@ -98,7 +101,11 @@ export class ReturnComponent implements OnInit {
     private _router: Router,
     public snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private _formBuilder: FormBuilder) {
+    private _formBuilder: FormBuilder,
+    private _authService: AuthService,
+    ) {
+      this.SecretKey = this._authService.SecretKey;
+      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -119,7 +126,7 @@ export class ReturnComponent implements OnInit {
 
   ngOnInit(): void {
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

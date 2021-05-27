@@ -11,6 +11,7 @@ import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notific
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
 import { ActionLog } from 'app/models/OrderFulFilment';
 import { AuthService } from 'app/services/auth.service';
+import * as SecureLS from 'secure-ls';
 
 @Component({
   selector: 'app-user-preferences',
@@ -31,12 +32,15 @@ export class UserPreferencesComponent implements OnInit {
   ActionLog: any;
   CurrentUserId: any;
   CurrentUserName: string;
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(private _fuseConfigService: FuseConfigService,
     private _masterService: MasterService,
     private _formBuilder: FormBuilder,
     private _authService:AuthService,
     private _router: Router,
     public snackBar: MatSnackBar,
+    
     private dialog: MatDialog) {
     this.userPreferenceFormGroup = this._formBuilder.group({
       navbarPrimaryBackground: [''],
@@ -47,12 +51,14 @@ export class UserPreferencesComponent implements OnInit {
     this.userPreference = new UserPreference();
     this.authenticationDetails = new AuthenticationDetails();
     this._unsubscribeAll = new Subject();
+    this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
   }
 
   ngOnInit(): void {
     // console.log(this.currentSelecteduserPreference);
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.CurrentUserName=this.authenticationDetails.UserName;
@@ -83,7 +89,7 @@ export class UserPreferencesComponent implements OnInit {
         this.IsProgressBarVisibile = false;
         if (data) {
           this.userPreference = data as UserPreference;
-          localStorage.setItem('userPreferenceData', JSON.stringify(this.userPreference));
+          this.SecureStorage.set('userPreferenceData', JSON.stringify(this.userPreference));
           this.UpdateUserPreference();
           this.userPreferenceFormGroup.get('navbarPrimaryBackground').patchValue(this.userPreference.NavbarPrimaryBackground);
           this.userPreferenceFormGroup.get('navbarSecondaryBackground').patchValue(this.userPreference.NavbarSecondaryBackground);
@@ -244,7 +250,7 @@ export class UserPreferencesComponent implements OnInit {
         this.fuseConfig = config;
         this.BGClassName = config;
         // Retrive user preference from Local Storage
-        const userPre = localStorage.getItem('userPreferenceData');
+        const userPre = this.SecureStorage.get('userPreferenceData');
         if (userPre) {
           const userPrefercence: UserPreference = JSON.parse(userPre) as UserPreference;
           if (userPrefercence.NavbarPrimaryBackground && userPrefercence.NavbarPrimaryBackground !== '-') {

@@ -24,6 +24,8 @@ import { AttachmentDetails } from 'app/models/task';
 import { AttachmentDialogComponent } from 'app/notifications/attachment-dialog/attachment-dialog.component';
 import { PODItemAttachmentDialogComponent } from '../poditem-attachment-dialog/poditem-attachment-dialog.component';
 import { BPCFact } from 'app/models/fact';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-poddetails',
@@ -101,6 +103,8 @@ export class PODDetailsComponent implements OnInit {
   recivedStatus1_eq: any;
   Recived_status: any;
   doc: string;
+  SecretKey: string;
+    SecureStorage: SecureLS;
 
   constructor(
     private _fuseConfigService: FuseConfigService,
@@ -111,10 +115,13 @@ export class PODDetailsComponent implements OnInit {
     private _vendorMasterService: VendorMasterService,
     private _datePipe: DatePipe,
     private _route: ActivatedRoute,
+    private _authService: AuthService,
     private _router: Router,
     public snackBar: MatSnackBar,
     private dialog: MatDialog,
     private _formBuilder: FormBuilder) {
+      this.SecretKey = this._authService.SecretKey;
+      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -133,7 +140,7 @@ export class PODDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

@@ -30,6 +30,7 @@ import { BPCGateHoveringVechicles } from 'app/models/Gate';
 import { AuthService } from 'app/services/auth.service';
 import { OfStatus } from 'app/models/Dashboard';
 import { ShareParameterService } from 'app/services/share-parameters.service';
+import * as SecureLS from 'secure-ls';
 
 @Component({
   selector: 'app-asnlist',
@@ -111,7 +112,8 @@ export class ASNListComponent implements OnInit {
   ];
 
   Plants: string[] = [];
-
+  SecretKey: string;
+    SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private formBuilder: FormBuilder,
@@ -128,8 +130,11 @@ export class ASNListComponent implements OnInit {
     private _POService: POService,
     private _authService: AuthService,
     private _GateService: GateService,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -147,7 +152,7 @@ export class ASNListComponent implements OnInit {
   ngOnInit(): void {
     this.SetUserPreference();
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

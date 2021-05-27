@@ -21,6 +21,8 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { ActionLog, BPCOFQM } from 'app/models/OrderFulFilment';
 import { POService } from 'app/services/po.service';
 import { AuthService } from 'app/services/auth.service';
+import * as SecureLS from 'secure-ls';
+
 @Component({
   selector: 'app-overview',
   templateUrl: './overview.component.html',
@@ -113,7 +115,8 @@ export class OverviewComponent implements OnInit {
 
   ActionLog: any;
   Chartdata: BPCOFQM[];
-
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _authService: AuthService,
@@ -126,6 +129,8 @@ export class OverviewComponent implements OnInit {
     private _POService: POService,
     private _datePipe: DatePipe,
     private _excelService: ExcelService) {
+      this.SecretKey = this._authService.SecretKey;
+      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.isProgressBarVisibile = false;
@@ -141,7 +146,7 @@ export class OverviewComponent implements OnInit {
   ngOnInit(): void {
     this.SetUserPreference();
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =  this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

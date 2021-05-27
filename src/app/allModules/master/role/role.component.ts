@@ -9,6 +9,8 @@ import { AuthenticationDetails, RoleWithApp, MenuApp } from 'app/models/master';
 import { Guid } from 'guid-typescript';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'role',
@@ -29,23 +31,28 @@ export class RoleComponent implements OnInit {
   AllMenuApps: MenuApp[] = [];
   AllRoles: RoleWithApp[] = [];
   AppIDListAllID: number;
-
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _masterService: MasterService,
     private _router: Router,
     public snackBar: MatSnackBar,
     private dialog: MatDialog,
+    private _authService: AuthService,
+
     private _formBuilder: FormBuilder) {
     this.selectedRole = new RoleWithApp();
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.isProgressBarVisibile = true;
     this.AppIDListAllID = 0;
+    this.SecretKey = this._authService.SecretKey;
+        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
   }
 
   ngOnInit(): void {
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =  this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.menuItems = this.authenticationDetails.MenuItemNames.split(',');

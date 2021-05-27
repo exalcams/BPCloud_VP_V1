@@ -7,8 +7,10 @@ import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationDetails, PO } from 'app/models/master';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { SnackBarStatus } from 'app/notifications/snackbar-status-enum';
+import { AuthService } from 'app/services/auth.service';
 import { MasterService } from 'app/services/master.service';
 import { Guid } from 'guid-typescript';
+import * as SecureLS from 'secure-ls';
 
 @Component({
   selector: 'app-po',
@@ -37,14 +39,19 @@ export class POComponent implements OnInit {
   Levels=["Notification","Remainder","Expenditor"];
   Stages=["PO Ack","Shipment","Reaching At Port","Port Creattion","During Payment"];
   Notifications=["To Supplier","To Buyer","To Expenditor"];
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(private _formBuilder: FormBuilder, public snackBar: MatSnackBar,
-              private _router: Router,private _masterService:MasterService) {
+    private _authService: AuthService,
+    private _router: Router,private _masterService:MasterService,) {
+      this.SecretKey = this._authService.SecretKey;
+      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.SelectedPO=new PO();
   }
 
   ngOnInit() {
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

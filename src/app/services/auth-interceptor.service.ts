@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
+import * as SecureLS from 'secure-ls';
 
 @Injectable({
   providedIn: 'root'
@@ -16,18 +17,22 @@ export class AuthInterceptorService implements HttpInterceptor {
   authenticationDetails: AuthenticationDetails;
   baseAddress: string;
   notificationSnackBarComponent: NotificationSnackBarComponent;
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _authService: AuthService,
     private _router: Router,
     private _compiler: Compiler,
     public snackBar: MatSnackBar,
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.authenticationDetails = new AuthenticationDetails();
     this.baseAddress = this._authService.baseAddress;
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
   }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> | any {
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       const authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       if (authenticationDetails) {

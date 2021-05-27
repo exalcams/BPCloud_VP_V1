@@ -4,6 +4,9 @@ import { POService } from 'app/services/po.service';
 import { AuthenticationDetails, AppUsage } from "app/models/master";
 import { MatDialogConfig } from '@angular/material';
 import { Router } from '@angular/router';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
+
 @Component({
   selector: 'app-customer-home',
   templateUrl: './customer-home.component.html',
@@ -14,12 +17,17 @@ export class CustomerHomeComponent implements OnInit {
   selectedWelcomeMessage: BPCWelcomeMessage;
   authenticationDetails: AuthenticationDetails;
   menuItems: string[] = [];
-  constructor(private _POService: POService, private _router: Router,) { this.selectedWelcomeMessage = new BPCWelcomeMessage(); }
+  SecretKey: string;
+  SecureStorage: SecureLS;
+       
+        constructor(private _POService: POService, private _router: Router, private _authService: AuthService) { this.selectedWelcomeMessage = new BPCWelcomeMessage();
+          this.SecretKey = this._authService.SecretKey;
+          this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey }); }
 
   ngOnInit() {
     // console.log("workss")
     this.GetWelcomeMessage();
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
         this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
         this.menuItems = this.authenticationDetails.MenuItemNames.split(',');

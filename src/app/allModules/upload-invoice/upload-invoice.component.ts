@@ -28,6 +28,8 @@ import { DatePipe } from '@angular/common';
 // import * as Tesseract from 'tesseract.js';
 import { DomSanitizer } from '@angular/platform-browser';
 import { T } from '@angular/core/src/render3';
+import * as SecureLS from 'secure-ls';
+
 // import { PdfReaderService } from 'app/services/pdf-reader.service';
 // import Tesseract from 'tesseract.js';
 // import { PDFExtract, PDFExtractOptions } from 'pdf.js-extract';
@@ -120,7 +122,8 @@ export class UploadInvoiceComponent implements OnInit {
   Result = 'Recognizing...';
   x_wrd: any;
   event_file: any;
-
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _poFlipService: POFlipService,
@@ -137,6 +140,8 @@ export class UploadInvoiceComponent implements OnInit {
     private _datePipe: DatePipe,
     private sanitizer: DomSanitizer,
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.selectedFlip = new BPCFLIPHeader();
     this.selectedFlipView = new BPCFLIPHeaderView();
     this.selectedFLIPID = '';
@@ -155,7 +160,7 @@ export class UploadInvoiceComponent implements OnInit {
       this.selectedDocNumber = params['id'];
     });
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

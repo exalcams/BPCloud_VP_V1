@@ -13,6 +13,8 @@ import { BPCInvoice } from 'app/models/ReportModel';
 import { DatePipe } from '@angular/common';
 import { ExcelService } from 'app/services/excel.service';
 import { MasterService } from 'app/services/master.service';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-invoice',
@@ -52,6 +54,8 @@ export class InvoiceComponent implements OnInit {
   searchText: string;
   SelectValue: string;
   isExpanded: boolean;
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(private _fuseConfigService: FuseConfigService,
     private _formBuilder: FormBuilder,
     private _router: Router,
@@ -59,8 +63,12 @@ export class InvoiceComponent implements OnInit {
     private _masterService: MasterService,
     private _reportService: ReportService,
     private _excelService: ExcelService,
-    private _datePipe: DatePipe
+    private _datePipe: DatePipe,
+    private _authService: AuthService,
+
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.authenticationDetails = new AuthenticationDetails();
     this.IsProgressBarVisibile = false;
@@ -76,7 +84,7 @@ export class InvoiceComponent implements OnInit {
   ngOnInit(): void {
     this.SetUserPreference();
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =  this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;

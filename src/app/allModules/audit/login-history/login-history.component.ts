@@ -10,6 +10,8 @@ import { MasterService } from 'app/services/master.service';
 import { ExcelService } from 'app/services/excel.service';
 import { fuseAnimations } from '@fuse/animations';
 import { Guid } from 'guid-typescript';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-login-history',
@@ -41,7 +43,8 @@ export class LoginHistoryComponent implements OnInit {
   tableDisplayedColumns: string[] = ['UserName', 'LoginTime', 'LogoutTime'];
   @ViewChild(MatPaginator) LoginHistoryPaginator: MatPaginator;
   @ViewChild(MatSort) LoginHistorySort: MatSort;
-
+  SecretKey: string;
+  SecureStorage: SecureLS;
   constructor(public _matDialog: MatDialog,
     private _masterService: MasterService,
     private _formBuilder: FormBuilder,
@@ -49,8 +52,12 @@ export class LoginHistoryComponent implements OnInit {
     private _excelService: ExcelService,
     private dialog: MatDialog,
     public snackBar: MatSnackBar,
-    private _router: Router
+    private _router: Router,
+    private _authService: AuthService,
+
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.authenticationDetails = new AuthenticationDetails();
     this.IsProgressBarVisibile = false;
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -65,7 +72,7 @@ export class LoginHistoryComponent implements OnInit {
 
   ngOnInit(): void {
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =  this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.CurrentUserID = this.authenticationDetails.UserID;

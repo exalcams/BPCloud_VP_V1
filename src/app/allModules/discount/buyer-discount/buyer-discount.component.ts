@@ -10,6 +10,8 @@ import { DiscountService } from 'app/services/discount.service';
 import { MasterService } from 'app/services/master.service';
 import { Guid } from 'guid-typescript';
 import { DiscountDialogueComponent } from '../discount-dialogue/discount-dialogue.component';
+import * as SecureLS from 'secure-ls';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-buyer-discount',
@@ -34,22 +36,27 @@ export class BuyerDiscountComponent implements OnInit {
   @ViewChild(MatMenuTrigger) matMenuTrigger: MatMenuTrigger;
   isProgressBarVisibile: boolean;
   Plants: string[] = [];
-
+  SecretKey: string;
+    SecureStorage: SecureLS;
   constructor(
     private _discountService: DiscountService,
     private _masterService: MasterService,
     public dialog: MatDialog,
     public snackBar: MatSnackBar,
     private _fuseConfigService: FuseConfigService,
-    private _router: Router
+    private _router: Router,
+    private _authService: AuthService,
+
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.isProgressBarVisibile = false;
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
   }
 
   ngOnInit(): void {
     // Retrive authorizationData
-    const retrievedObject = localStorage.getItem('authorizationData');
+    const retrievedObject =  this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;
