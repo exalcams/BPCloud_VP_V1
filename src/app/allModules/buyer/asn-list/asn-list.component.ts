@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AuthenticationDetails } from 'app/models/master';
 import { Guid } from 'guid-typescript';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
-import { ASNListFilter, ASNListView } from 'app/models/ASN';
+import { ASNListFilter, ASNListView, ASNListViewNewDoc } from 'app/models/ASN';
 import { MatTableDataSource, MatPaginator, MatSort, MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { FuseConfigService } from '@fuse/services/config.service';
@@ -18,6 +18,7 @@ import { AuthService } from 'app/services/auth.service';
 import { GateService } from 'app/services/gate.service';
 import { AsnlistPrintDialogComponent } from './asnlist-print-dialogue/asnlist-print-dialog/asnlist-print-dialog.component';
 import { AttachmentDetails } from 'app/models/task';
+import { AttachmentDialogComponent } from 'app/notifications/attachment-dialog/attachment-dialog.component';
 
 @Component({
   selector: 'app-asn-list',
@@ -39,7 +40,7 @@ export class AsnListComponent implements OnInit {
   fuseConfig: any;
   AllASNList: ASNListView[] = [];
   displayColumn: string[] = ['PatnerID', 'ASNNumber', 'ASNDate', 'DocNumber', 'AWBNumber', 'VessleNumber', 'DepartureDate',
-    'ArrivalDate', 'Status', 'Action'];
+    'ArrivalDate','AttachmentName', 'Status', 'Action'];
   TableDetailsDataSource: MatTableDataSource<ASNListView>;
   @ViewChild(MatPaginator) tablePaginator: MatPaginator;
   @ViewChild(MatSort) tableSort: MatSort;
@@ -133,6 +134,43 @@ export class AsnListComponent implements OnInit {
     this.AllASNList = [];
     this.ResetFormGroup(this.SearchFormGroup);
   }
+  
+  Attachmentclk(filename): void{
+
+    this._asnService.DownloadOfAttachmentOnlyName(filename).subscribe(
+      data => {
+        if (data) {
+          const FileName = filename;
+    let fileType = 'image/jpg';
+    fileType = FileName.toLowerCase().includes('.jpg') ? 'image/jpg' :
+      FileName.toLowerCase().includes('.jpeg') ? 'image/jpeg' :
+        FileName.toLowerCase().includes('.png') ? 'image/png' :
+          FileName.toLowerCase().includes('.gif') ? 'image/gif' :
+            FileName.toLowerCase().includes('.pdf') ? 'application/pdf' : '';
+    const blob = new Blob([data], { type: fileType });
+    const attachmentDetails: AttachmentDetails = {
+      FileName: FileName,
+      blob: blob
+    };
+    const dialogConfig: MatDialogConfig = {
+      data: attachmentDetails,
+      panelClass: 'attachment-dialog'
+    };
+    const dialogRef = this.dialog.open(AttachmentDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+      }
+    });
+        }
+    
+      },
+      error => {
+        console.error(error);
+      
+      }
+    );
+  }
+ 
   ResetFormGroup(formGroup: FormGroup): void {
     formGroup.reset();
     Object.keys(formGroup.controls).forEach(key => {

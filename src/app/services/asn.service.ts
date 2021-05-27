@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
 import { catchError } from 'rxjs/operators';
 import {
     BPCASNHeader, BPCASNView, BPCASNItem, DocumentCenter, BPCInvoiceAttachment,
-    BPCCountryMaster, BPCCurrencyMaster, BPCDocumentCenterMaster, BPCASNPack, ASNListView, BPCASNFieldMaster, BPCASNItemBatch, BPCASNItemView, ASNListFilter
+    BPCCountryMaster, BPCCurrencyMaster, BPCDocumentCenterMaster, BPCASNPack, ASNListView, BPCASNFieldMaster, BPCASNItemBatch, BPCASNItemView, ASNListFilter, ASNListViewNewDoc
 } from 'app/models/ASN';
 
 @Injectable({
@@ -55,24 +55,42 @@ export class ASNService {
         return this._httpClient.get<ASNListView[]>(`${this.baseAddress}poapi/ASN/GetAllASNListByPartnerID?PartnerID=${PartnerID}`)
             .pipe(catchError(this.errorHandler));
     }
+    // tslint:disable-next-line:max-line-length
     FilterASNList(VendorCode: string, ASNNumber: string, DocNumber: string, Material: string, Status: string, ASNFromDate: string, ASNToDate: string): Observable<ASNListView[] | string> {
         return this._httpClient.get<ASNListView[]>
+            // tslint:disable-next-line:max-line-length
             (`${this.baseAddress}poapi/ASN/FilterASNList?VendorCode=${VendorCode}&ASNNumber=${ASNNumber}&DocNumber=${DocNumber}&Material=${Material}&Status=${Status}&ASNFromDate=${ASNFromDate}&ASNToDate=${ASNToDate}`)
             .pipe(catchError(this.errorHandler));
     }
-    FilterASNListByPlants(filter: ASNListFilter): Observable<ASNListView[] | string> {
-        return this._httpClient.post<ASNListView[]>
+    FilterASNListByPlants(filter: ASNListFilter): Observable<ASNListViewNewDoc[] | string> {
+        return this._httpClient.post<ASNListViewNewDoc[]>
             (`${this.baseAddress}poapi/ASN/FilterASNListByPlants`, filter)
             .pipe(catchError(this.errorHandler));
     }
+    // doc
+    
+    DownloadOfAttachmentOnlyName( AttachmentName: string): Observable<Blob | string> {
+    return this._httpClient.get(`${this.baseAddress}poapi/ASN/DownloadOfAttachmentOnlyName?AttachmentName=${AttachmentName}`, {
+      responseType: 'blob',
+      headers: new HttpHeaders().append('Content-Type', 'application/json')
+    })
+      .pipe(catchError(this.errorHandler));
+  }
+
+    // 
+
+    // tslint:disable-next-line:max-line-length
     FilterASNListByPartnerID(PartnerID: string, ASNNumber: string, DocNumber: string, Material: string, Status: string, ASNFromDate: string, ASNToDate: string): Observable<ASNListView[] | string> {
         return this._httpClient.get<ASNListView[]>
+            // tslint:disable-next-line:max-line-length
             (`${this.baseAddress}poapi/ASN/FilterASNListByPartnerID?PartnerID=${PartnerID}&ASNNumber=${ASNNumber}&DocNumber=${DocNumber}&Material=${Material}&Status=${Status}&ASNFromDate=${ASNFromDate}&ASNToDate=${ASNToDate}`)
             .pipe(catchError(this.errorHandler));
     }
 
+    // tslint:disable-next-line:max-line-length
     FilterASNListBySER(PartnerID: string, ASNNumber: string, DocNumber: string, Material: string, Status: string, ASNFromDate: string, ASNToDate: string): Observable<ASNListView[] | string> {
         return this._httpClient.get<ASNListView[]>
+            // tslint:disable-next-line:max-line-length
             (`${this.baseAddress}poapi/ASN/FilterASNListBySER?PartnerID=${PartnerID}&ASNNumber=${ASNNumber}&DocNumber=${DocNumber}&Material=${Material}&Status=${Status}&ASNFromDate=${ASNFromDate}&ASNToDate=${ASNToDate}`)
             .pipe(catchError(this.errorHandler));
     }

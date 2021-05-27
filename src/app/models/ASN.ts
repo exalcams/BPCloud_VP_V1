@@ -352,6 +352,33 @@ export class ASNListView {
     // ASNQty: number;
     Status: string;
 }
+export class ASNListViewNewDoc {
+    Client: string;
+    Company: string;
+    Type: string;
+    PatnerID: string;
+    ASNNumber: string;
+    ASNDate: Date | string | null;
+    ArrivalDate: Date | string | null;
+    DepartureDate: Date | string | null;
+    CancelDuration: Date;
+    Time: any;
+    TurnaroundTime: string;
+    TransportMode: string;
+    DocNumber: string;
+    VessleNumber: string;
+    AWBNumber: string;
+    Plant: string;
+    // Material: string;
+    // MaterialText: string;
+    // ASNQty: number;
+    Status: string;
+    AttachmentName: string;
+    ContentType: string;
+    ContentLength: string;
+    AttachmentFile: any;
+
+}
 export class ASNListFilter {
     Plants: string[];
     ASNNumber: string;
