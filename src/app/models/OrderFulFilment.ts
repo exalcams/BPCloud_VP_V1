@@ -395,3 +395,30 @@ export class BPCOFHeaderView extends CommonClass {
     PlantName: string;
     DocCount: number;
 }
+
+export class BPCOFHeaderView1 extends CommonClass {
+    ID: number;
+    Client: string;
+    Company: string;
+    Type: string;
+    PatnerID: string;
+    DocNumber: string;
+    DocDate: Date | string | null;
+    DocVersion: string;
+    Status: string;
+    GateStatus: string;
+    GRNStatus: string;
+    RefDoc: string;
+    DocType: string;
+    PlantName: string;
+    DocCount: number;
+    Item: string;
+    Material: string;
+    MaterialText: string;
+    PlantCode: string;
+    DeliveryDate: Date | string | null;
+    OrderedQty: number | null;
+    CompletedQty: number | null;
+    TransitQty: number | null;
+    OpenQty: number | null;
+}

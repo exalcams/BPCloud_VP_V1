@@ -28,10 +28,15 @@ import { ChatModule } from '../chat/chat.module';
 import { SharedModule } from 'app/shared/shared-module';
 import { SerListComponent } from './ser-list/ser-list.component';
 import { ASNViewComponent } from './asnview/asnview.component';
+import { MaterialOrderFulfilmentComponent } from './material-order-fulfilment/material-order-fulfilment.component';
 const route: Routes = [
   {
     path: "orderfulfilmentCenter",
     component: OrderFulFilmentCenterComponent,
+  },
+  {
+    path: "materialOrderfulfilment",
+    component: MaterialOrderFulfilmentComponent,
   },
   {
     path: 'poschedules',
@@ -67,7 +72,8 @@ const route: Routes = [
     InvoiceListComponent,
     AsnlistPrintDialogComponent,
     SerListComponent,
-    ASNViewComponent
+    ASNViewComponent,
+    MaterialOrderFulfilmentComponent
   ],
   imports: [
     CommonModule,

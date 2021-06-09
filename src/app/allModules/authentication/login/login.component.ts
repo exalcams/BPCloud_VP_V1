@@ -60,6 +60,7 @@ export class LoginComponent implements OnInit {
     buyerSupportSubChildren: FuseNavigation[] = [];
     VendorCAPASubChildren: FuseNavigation[] = [];
     buyerCAPASubChildren: FuseNavigation[] = [];
+    buyerReportChildren: FuseNavigation[] = [];
     rfqSubChildren: FuseNavigation[] = [];
     private _unsubscribeAll: Subject<any>;
     message = "Snack Bar opened.";
@@ -234,7 +235,7 @@ export class LoginComponent implements OnInit {
             .subscribe((config) => {
                 this.fuseConfig = config;
                 // Retrive user preference from Local Storage
-                const userPre =this.SecureStorage.get("userPreferenceData");
+                const userPre = this.SecureStorage.get("userPreferenceData");
                 if (userPre) {
                     const userPrefercence: UserPreference = JSON.parse(
                         userPre
@@ -437,7 +438,7 @@ export class LoginComponent implements OnInit {
     }
 
     updateMenu(): void {
-        const retrievedObject =this.SecureStorage.get("authorizationData");
+        const retrievedObject = this.SecureStorage.get("authorizationData");
         if (retrievedObject) {
             this.authenticationDetails = JSON.parse(
                 retrievedObject
@@ -555,6 +556,16 @@ export class LoginComponent implements OnInit {
                 translate: "NAV.VENDOR.FULFILMENT_CENTER",
                 type: "item",
                 url: "/orderfulfilment/orderfulfilmentCenter",
+            });
+        }
+
+        if (this.menuItems.indexOf("OrderFulFilmentCenter") >= 0) {
+            this.orderFulfilmentSubChildren.push({
+                id: "materialFulfilmentCenter",
+                title: "Fulfilment Center by Material",
+                translate: "NAV.VENDOR.FULFILMENT_CENTER",
+                type: "item",
+                url: "/orderfulfilment/materialOrderfulfilment",
             });
         }
 
@@ -1169,7 +1180,7 @@ export class LoginComponent implements OnInit {
             });
         }
     }
-    GetExpenditorMenus():void{
+    GetExpenditorMenus(): void {
         if (this.menuItems.indexOf("Expenditor_Dashboard") >= 0) {
             this.children.push({
                 id: "expenditor_dashboard",
@@ -1265,6 +1276,32 @@ export class LoginComponent implements OnInit {
                 children: this.buyerCAPASubChildren,
             });
         }
+
+        if (this.menuItems.indexOf("SupplierEvaluation") >= 0) {
+            this.buyerReportChildren.push({
+                id: "evaluation",
+                title: "Supplier Evaluation",
+                // translate: "NAV.VENDOR.CAPACreate",
+                type: "item",
+                // icon: 'dashboard',
+                url: "/reports/evaluation",
+            });
+        }
+        if (
+            this.menuItems.indexOf("SupplierEvaluation") >= 0) {
+            this.children.push({
+                id: "report",
+                title: "Report",
+                // translate: "NAV.VENDOR.CAPA",
+                type: "collapsable",
+                icon: "assignment",
+                isSvgIcon: false,
+                // icon: 'view_list',
+                children: this.buyerReportChildren,
+            });
+        }
+
+
         // this.GetRFQMenus();
         if (this.menuItems.indexOf("BuyerSupportDesk") >= 0) {
             this.buyerSupportSubChildren.push({
@@ -1458,7 +1495,7 @@ export class LoginComponent implements OnInit {
         });
         this.configSubChildren.push({
             id: "PO",
-            title: "PO",
+            title: "Notification",
             translate: "NAV.ADMIN.PO",
             type: "item",
             url: "/configuration/po",

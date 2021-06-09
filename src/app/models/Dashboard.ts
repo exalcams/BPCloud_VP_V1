@@ -199,6 +199,18 @@ export class DeliverystatusDetails {
     Actual: string;
     Date: Date;
 }
+export class OfOption1 {
+    DocNumber: string;
+    FromDate: Date | string | null;
+    ToDate: Date | string | null;
+    Status: string;
+    DocType: string;
+    Material: string;
+    Plant: string;
+    OpenQty: number | null;
+    TransitQty: number | null;
+    PartnerID: string;
+}
 // export class Deliverystatus {
 //     Planned1:DeliverystatusDetails;
 //     Planned2:DeliverystatusDetails;

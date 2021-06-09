@@ -102,6 +102,7 @@ export const locale = {
         },
         'ORDER_FULFILMENT_CENTER': {
             'HEADER_TITLE': 'Fulfilment Center',
+            'HEADER_TITLE1': 'Fulfilment Center By Material',
             'ON_TIME_IN_FULL_OTIF': 'On Time In Full (OTIF)',
             'Available_Spaces': 'Available Spaces',
             'Exceptions': 'Exceptions',
