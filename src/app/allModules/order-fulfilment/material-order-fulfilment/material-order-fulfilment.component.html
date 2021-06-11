@@ -1,0 +1,314 @@
+<div id="order-fulfilment-center1" class="page-layout carded" fusePerfectScrollbar>
+  <div class="center" fxLayout="column" fxLayoutGap="10px">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;">
+          <b>{{'ORDER_FULFILMENT_CENTER.HEADER_TITLE1' | translate}}</b>
+        </h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <!-- Tiles -->
+    <!-- <div fxFlex fxLayout>
+      <div class="tile mx-20" fxFlex="30" fxLayout="column" fxLayoutAlign="start">
+        <div fxLayoutAlign="start center" class="pt-8">
+          <span class="boldClass pl-8">{{'ORDER_FULFILMENT_CENTER.ON_TIME_IN_FULL_OTIF' | translate}}</span>
+        </div>
+        <span [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="orangeBorderBottom1"></span>
+        <div fxFlex fxLayoutAlign="center" class="pt-8">
+          <svg height="140" width="140" viewBox="0 0 140 140" class="progress__svg">
+            <circle class="progress__meter" [style.strokeDasharray]="2" cx="70" cy="70" [attr.r]="radius"
+              stroke-width="10" />
+            <circle class="progress__value" [style.strokeDasharray]="circumference"
+              [style.strokeDashoffset]="1-dashoffset1" cx="70" cy="70" [attr.r]="radius" stroke-width="10" />
+            <circle r="49" cx="70" cy="70" stroke="#f3705a" stroke-width="2" fill="none" class="inner-circle" />
+            <text text-anchor="middle" alignment-baseline="middle" transform="rotate(90,70,70)">
+              <tspan x="70" y="70" dy="0.18em" font-size="20">{{progressPercentage1}}%</tspan>
+              <tspan x="70" y="70" dy="1.82em" font-size="10" class="progressSubtitle">Efficiency</tspan>
+            </text>
+          </svg>
+        </div>
+      </div>
+      <div class="tile mx-20" fxFlex="30" fxLayout="column" fxLayoutAlign="start">
+        <div fxLayoutAlign="start center" class="pt-8">
+          <span class="boldClass  pl-8">PPM</span>
+        </div>
+        <span [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="orangeBorderBottom"></span>
+        <div fxFlex fxLayoutAlign="center" class="pt-8">
+          <svg height="140" width="140" viewBox="0 0 140 140" class="progress__svg">
+            <circle class="progress__meter" [style.strokeDasharray]="2" cx="70" cy="70" [attr.r]="radius"
+              stroke-width="10" />
+            <circle class="progress__value" [style.strokeDasharray]="circumference"
+              [style.strokeDashoffset]="1-dashoffset2" cx="70" cy="70" [attr.r]="radius" stroke-width="10" />
+            <circle r="49" cx="70" cy="70" stroke="#f3705a" stroke-width="2" fill="none" class="inner-circle" />
+            <text text-anchor="middle" alignment-baseline="middle" transform="rotate(90,70,70)">
+              <tspan x="70" y="70" dy="0.18em" font-size="20">{{progressPercentage2}}</tspan>
+            </text>
+          </svg>
+        </div>
+      </div>
+      <div class="tile mx-20" fxFlex="40" fxLayout="column" fxLayoutAlign="start">
+        <div fxLayoutAlign="start center" class="pt-8">
+          <span class="boldClass orangeBorderBottom pl-8">Fulfilment </span>
+        </div>
+        <span [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="orangeBorderBottom2"></span>
+        <div *ngIf="doughnutChartLabels && doughnutChartLabels.length" id="doughnutChart" fxFlex fxLayout="row" fxLayoutAlign="center center" class="pt-8 pl-8 pr-4">
+
+          <canvas baseChart id="myChart" [data]="doughnutChartData" [labels]="doughnutChartLabels"
+            [chartType]="doughnutChartType" [options]="doughnutChartOptions" [colors]="colors"
+            (chartClick)="doughnutChartClicked($event)">
+          </canvas>
+
+        </div>
+        
+      </div>
+      
+    </div> -->
+    <!-- Tiles -->
+
+    <!-- ofSearchForm -->
+    <div class="sidenav-content px-24 mt-4" fxFlex>
+      <form class="formGroupStyle" autocomplete="off" fxFlex name="form" [formGroup]="ofDetailsFormGroup" novalidate>
+        <div fxLayout="row" class="formRowStyle" fxLayout.xs="column">
+          <div fxFlex="20%">
+            <mat-form-field style="width: 94%;">
+              <input matInput placeholder="Doc Number" formControlName="DocNumber">
+            </mat-form-field>
+          </div>
+          <div fxFlex="20%">
+            <mat-form-field style="width:94%">
+              <input matInput placeholder="From Date" [matDatepicker]="picker1" formControlName="FromDate"
+                (dateChange)="fromAndToDateChanged()">
+              <mat-datepicker-toggle matSuffix [for]="picker1">
+                <img matDatepickerToggleIcon class="calendarImg" src="assets/images/calendar.png">
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div fxFlex="20%">
+            <mat-form-field style="width:94%">
+              <input matInput placeholder="To Date" [matDatepicker]="picker2" formControlName="ToDate"
+                (dateChange)="fromAndToDateChanged()">
+              <mat-datepicker-toggle matSuffix [for]="picker2">
+                <img matDatepickerToggleIcon class="calendarImg" src="assets/images/calendar.png">
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker2 color="primary"></mat-datepicker>
+            </mat-form-field>
+            <div *ngIf="isDateError" style="color:#f44336;font-size: 12px;margin-top: -16px">
+              To date should not be less than from date
+            </div>
+          </div>
+          <div fxFlex="20%">
+            <mat-form-field style="width:94%">
+              <mat-select placeholder="PO Type" formControlName="DocType" [(ngModel)]="statusvalue">
+                <!-- <mat-option>None</mat-option> -->
+                <mat-option *ngFor="let ofType of ofTypeOptions" [value]="ofType.Value">
+                  <!-- (click)="getOfsByOptionClicked()" -->
+                  <span>{{ofType.Name}}</span>
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxFlex="20%">
+            <mat-form-field style="width:94%">
+              <mat-select placeholder="Status" formControlName="Status">
+                <mat-option>None</mat-option>
+                <mat-option *ngFor="let ofStatus of ofStatusOptions" [value]="ofStatus.Value">
+                  <!-- (click)="getOfsByOptionClicked()" -->
+                  <span>{{ofStatus.Name}}</span>
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+        </div>
+        <div fxLayout="row" class="formRowStyle" fxLayout.xs="column">
+
+          <div fxFlex="20%">
+            <mat-form-field style="width: 94%;">
+              <input matInput placeholder="Material" formControlName="Material">
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="20%">
+            <mat-form-field style="width: 94%;">
+              <input matInput placeholder="Plant" formControlName="Plant">
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="20%">
+            <mat-form-field style="width: 94%;">
+              <input matInput placeholder="Pipeline Qty" formControlName="TransitQty">
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="20%">
+            <mat-form-field style="width: 94%;">
+              <input matInput placeholder="Open Qty" formControlName="OpenQty">
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="20%">
+            <div fxLayout fxLayoutAlign="start center">
+              <button class="mt-12" style="color:white" [ngClass]="BGClassName?.layout?.navbar?.primaryBackground"
+                mat-raised-button (click)="getOfsByOptionClicked('Search')">Search</button>
+              <button class="ml-12 mt-12" style="color: #efb577;background-color: white;" mat-stroked-button
+                (click)="ResetClicked('Reset')">Reset</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- ofSearchForm -->
+
+    <!-- ofTable -->
+    <div class="px-20 pb-20">
+      <table class="abnormal" mat-table [dataSource]="ofDetailsDataSource" matSort>
+
+        <ng-container matColumnDef="Material">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%;"
+            [ngClass]="BGClassName?.layout?.toolbar?.background"> Material </th>
+          <td mat-cell *matCellDef="let element;let odd=odd" (click)="acknowledgementClicked(element.DocNumber)"
+            class="tableLeftBorder pl-0">
+            <div fxLayout>
+              <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+              <div fxFlex class="pl-4">{{element.Material}} </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="DocNumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;"
+            [ngClass]="BGClassName?.layout?.toolbar?.background">
+            PO Number </th>
+          <td mat-cell *matCellDef="let element" (click)="acknowledgementClicked(element.DocNumber)">
+            {{element.DocNumber}} </td>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="DocVersion">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%;"
+            [ngClass]="BGClassName?.layout?.toolbar?.background"> Version </th>
+          <td mat-cell *matCellDef="let element" (click)="acknowledgementClicked(element.DocNumber)">
+            {{element.DocVersion}} </td>
+        </ng-container> -->
+
+        <ng-container matColumnDef="DocType">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%;"
+            [ngClass]="BGClassName?.layout?.toolbar?.background"> Type </th>
+          <td mat-cell *matCellDef="let element" (click)="acknowledgementClicked(element.DocNumber)">
+            {{element.DocType}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="DocDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%;"
+            [ngClass]="BGClassName?.layout?.toolbar?.background"> Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.DocDate | date :'dd/MM/yyyy'}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="TransitQty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%;"
+            [ngClass]="BGClassName?.layout?.toolbar?.background"> Transit Qty </th>
+          <td mat-cell *matCellDef="let element" (click)="acknowledgementClicked(element.DocNumber)">
+            {{element.TransitQty}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="OpenQty">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%;"
+            [ngClass]="BGClassName?.layout?.toolbar?.background"> Open Qty </th>
+          <td mat-cell *matCellDef="let element" (click)="acknowledgementClicked(element.DocNumber)">
+            {{element.OpenQty}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="PlantCode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%;"
+            [ngClass]="BGClassName?.layout?.toolbar?.background"> Plant </th>
+          <td mat-cell *matCellDef="let element" (click)="acknowledgementClicked(element.DocNumber)">
+            {{element.PlantCode}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Status">
+          <th mat-header-cell *matHeaderCellDef style="min-width: 50%;" style="text-align: center"
+            [ngClass]="BGClassName?.layout?.toolbar?.background"> Order Fulfilment Status </th>
+          <td mat-cell *matCellDef="let element" style="min-width: 310px !important;">
+            <div fxLayout class="mt-4 mx-8">
+              <div fxFlex="30" fxLayout>
+                <div class="round" (click)="acknowledgementClicked(element.DocNumber,'DueForACK')"
+                  [style.border-color]="element.Status==='DueForACK'?'gray':'#34ad65'"></div>
+                <div style="width: 10px;margin-left: -1px !important"
+                  [class]="element.Status==='DueForACK'?'white-timeline':'green-timeline'"></div>
+                <div
+                  [class]="element.Status==='DueForACK'?'white-timeline':element.Status==='DueForASN'?'white-timeline':'green-timeline'"
+                  fxFlex></div>
+              </div>
+              <div fxFlex="30" fxLayout>
+                <div style="width: 10px;margin-right: -1px !important" [class]="getTimeline(element,'ASN')">
+                </div>
+                <div class="round" (click)="acknowledgementClicked(element.DocNumber,'DueForASN')"
+                  [style.border-color]="getStatusColor(element,'ASN')"></div>
+                <div style="width: 10px; margin-left: -1px !important" [class]="getTimeline(element,'ASN')">
+                </div>
+                <div [class]="getRestTimeline(element,'ASN')" fxFlex></div>
+              </div>
+              <div fxFlex="30" fxLayout>
+                <div style="width: 10px;margin-right: -1px !important" [class]="getGateTimeline(element)">
+                </div>
+                <div class="round" (click)="acknowledgementClicked(element.DocNumber,'DueForGate')"
+                  [style.border-color]="getGateStatusColor(element)"></div>
+                <div style="width: 10px;margin-left: -1px !important" [class]="getGateTimeline(element)">
+                </div>
+                <div [class]="getGateRestTimeline(element)" fxFlex></div>
+              </div>
+              <div fxFlex="10" fxLayout>
+                <div style="width: 10px;margin-right: -1px !important" [class]="getGRNTimeline(element)">
+                </div>
+                <div class="round" (click)="acknowledgementClicked(element.DocNumber,'DueForGRN')"
+                  [style.border-color]="getGRNStatusColor(element)"></div>
+              </div>
+            </div>
+            <div fxLayout fxLayoutAlign="start center" class="mx-8">
+              <div fxFlex="30" class="timelineItem">ACK</div>
+              <div fxFlex="30" class="timelineItem">ASN</div>
+              <div fxFlex="30" class="timelineItem">Gate</div>
+              <div fxFlex="10" class="timelineItem">GRN</div>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Document">
+          <th mat-header-cell *matHeaderCellDef style="width: 10%;" [ngClass]="BGClassName?.layout?.toolbar?.background"
+            style="text-align: center"> Document </th>
+          <td mat-cell *matCellDef="let element" (click)="viewOfAttachmentClicked(element)" style="text-align: center;">
+            <div style="margin-top: 3px; margin-left: 15px;">
+              <span [matBadge]="element.DocCount" matBadgeSize="medium" matBadgeColor="accent"
+                matBadgeOverlap="false"></span>
+            </div>
+            <img style="height: 24px" src="assets/images/attachment.png">
+          </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="ofDetailsDisplayedColumns"></tr>
+        <tr style="cursor: pointer;" mat-row *matRowDef="let row; columns: ofDetailsDisplayedColumns; ">
+        </tr>
+
+      </table>
+      <mat-toolbar *ngIf="TableFooterShow">
+        <span class="example-spacer"></span>
+        <span>No Datas Found</span>
+        <span class="example-spacer"></span>
+      </mat-toolbar>
+      <div>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+      </div>
+    </div>
+    <!-- ofTable -->
+
+    <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="isProgressBarVisibile"></div>
+  </div>
+</div>

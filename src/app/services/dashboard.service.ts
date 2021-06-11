@@ -7,11 +7,11 @@ import { AuthService } from './auth.service';
 import { catchError } from 'rxjs/operators';
 import {
   PO, OrderFulfilmentDetails, Acknowledgement, OfOption, DashboardGraphStatus,
-  FulfilmentStatus, ItemDetails, ASNDetails, GRNDetails, RETURNDetails, QADetails, SLDetails, DocumentDetails, FlipDetails, FulfilmentDetails
+  FulfilmentStatus, ItemDetails, ASNDetails, GRNDetails, RETURNDetails, QADetails, SLDetails, DocumentDetails, FlipDetails, FulfilmentDetails, OfOption1
 } from 'app/models/Dashboard';
 import { BPCPIHeader, SODetails } from 'app/models/customer';
 import { BPCKRA, CustomerBarChartData } from 'app/models/fact';
-import { BPCOFHeader, BPCOFAIACT, BPCPlantMaster, BPCOFHeaderView } from 'app/models/OrderFulFilment';
+import { BPCOFHeader, BPCOFAIACT, BPCPlantMaster, BPCOFHeaderView, BPCOFHeaderView1 } from 'app/models/OrderFulFilment';
 import { BPCASNItemSES, BPCInvoiceAttachment } from 'app/models/ASN';
 
 @Injectable({
@@ -51,6 +51,22 @@ export class DashboardService {
 
   GetOfsByOption(ofOption: OfOption): Observable<BPCOFHeaderView[] | string> {
     return this._httpClient.post<BPCOFHeaderView[]>(`${this.baseAddress}poapi/Dashboard/GetOfsByOption`,
+      ofOption,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      })
+      .pipe(catchError(this.errorHandler));
+  }
+
+  GetOFHeaderView1ByPartnerID(PartnerID: any): Observable<BPCOFHeaderView1[] | string> {
+    return this._httpClient.get<BPCOFHeaderView1[]>(`${this.baseAddress}poapi/Dashboard/GetOFHeaderView1ByPartnerID?PartnerID=${PartnerID}`)
+      .pipe(catchError(this.errorHandler));
+  }
+
+  GetOFHeaderView1ByOption(ofOption: OfOption1): Observable<BPCOFHeaderView1[] | string> {
+    return this._httpClient.post<BPCOFHeaderView1[]>(`${this.baseAddress}poapi/Dashboard/GetOFHeaderView1ByOption`,
       ofOption,
       {
         headers: new HttpHeaders({
