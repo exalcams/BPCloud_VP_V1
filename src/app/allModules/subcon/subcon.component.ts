@@ -3,7 +3,7 @@ import { AuthenticationDetails, UserWithRole, AppUsage } from 'app/models/master
 import { Guid } from 'guid-typescript';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
-import { BPCOFHeader, BPCOFItem, POScheduleLineView, BPCOFSubcon, SubconItems } from 'app/models/OrderFulFilment';
+import { BPCOFHeader, BPCOFItem, POScheduleLineView, BPCOFSubcon, SubconItems, BPCOFHeaderView } from 'app/models/OrderFulFilment';
 import { MatTableDataSource, MatPaginator, MatSort, MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
 import { BPCInvoiceAttachment, BPCCountryMaster, BPCCurrencyMaster, BPCDocumentCenterMaster } from 'app/models/ASN';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -38,9 +38,14 @@ export class SubconComponent implements OnInit {
   MenuItems: string[];
   notificationSnackBarComponent: NotificationSnackBarComponent;
   IsProgressBarVisibile: boolean;
-  SelectedPO: BPCOFHeader;
+  SelectedPO: BPCOFHeaderView;
+  poStatus: string;
+  gateStatus: string;
+  grnStatus: string;
   SelectedPONumber: string;
   SelectedScheduleLineView: POScheduleLineView;
+  POItems: BPCOFItem[] = [];
+  SelectedPOItem: BPCOFItem;
   POScheduleLines: POScheduleLineView[] = [];
   SelectedSlLine = '';
   SelectedItem = '';
@@ -80,13 +85,13 @@ export class SubconComponent implements OnInit {
     private _authService: AuthService,
     private dialog: MatDialog,
     private _formBuilder: FormBuilder) {
-      this.SecretKey = this._authService.SecretKey;
-      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.IsProgressBarVisibile = false;
-    this.SelectedPO = new BPCOFHeader();
+    this.SelectedPO = new BPCOFHeaderView();
     this.ReadyToBeShippedQty = 0;
     this.ProducedQty = 0;
     this.IsDeleteRequired = false;
@@ -96,7 +101,7 @@ export class SubconComponent implements OnInit {
 
   ngOnInit(): void {
     // Retrive authorizationData
-    const retrievedObject =  this.SecureStorage.get('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;
@@ -119,7 +124,7 @@ export class SubconComponent implements OnInit {
     }
     this.CreateAppUsage();
     this.InitializeSubconItemFormGroup();
-    this.GetPOByDocAndPartnerID();
+    this.GetPOViewByDocAndPartnerID();
   }
 
   CreateAppUsage(): void {
@@ -173,12 +178,16 @@ export class SubconComponent implements OnInit {
   }
 
 
-  GetPOByDocAndPartnerID(): void {
-    this._POService.GetPOByDocAndPartnerID(this.SelectedPONumber, this.currentUserName).subscribe(
+  GetPOViewByDocAndPartnerID(): void {
+    this._POService.GetPOViewByDocAndPartnerID(this.SelectedPONumber, this.currentUserName).subscribe(
       (data) => {
-        this.SelectedPO = data as BPCOFHeader;
+        this.SelectedPO = data as BPCOFHeaderView;
         if (this.SelectedPO && this.SelectedPO.DocNumber) {
-          this.GetPOSLByDocAndPartnerID();
+          // this.GetPOSLByDocAndPartnerID();
+          this.poStatus = this.SelectedPO.Status;
+          this.gateStatus = this.SelectedPO.GateStatus;
+          this.grnStatus = this.SelectedPO.GRNStatus;
+          this.GetPOItemsByDocAndPartnerID();
         }
       },
       (err) => {
@@ -186,14 +195,12 @@ export class SubconComponent implements OnInit {
       }
     );
   }
-
-
-  GetPOSLByDocAndPartnerID(): void {
-    this._subConService.GetPOSLByDocAndPartnerID(this.SelectedPO.DocNumber, this.currentUserName).subscribe(
+  GetPOItemsByDocAndPartnerID(): void {
+    this._POService.GetPOItemsByDocAndPartnerID(this.SelectedPO.DocNumber, this.currentUserName).subscribe(
       (data) => {
-        this.POScheduleLines = data as POScheduleLineView[];
-        if (this.POScheduleLines && this.POScheduleLines.length && this.POScheduleLines.length > 0) {
-          this.LoadSelectedSL(this.POScheduleLines[0]);
+        this.POItems = data as BPCOFItem[];
+        if (this.POItems && this.POItems.length && this.POItems.length > 0) {
+          this.LoadSelectedItem(this.POItems[0]);
         }
       },
       (err) => {
@@ -201,15 +208,61 @@ export class SubconComponent implements OnInit {
       }
     );
   }
-  LoadSelectedSL(ScheduleLineView: POScheduleLineView): void {
-    this.SelectedSlLine = ScheduleLineView.SlLine;
-    this.SelectedItem = ScheduleLineView.Item;
-    this.SelectedScheduleLineView = ScheduleLineView;
-    this.GetSubconBySLAndPartnerID();
+
+  // GetPOSLByDocAndPartnerID(): void {
+  //   this._subConService.GetPOSLByDocAndPartnerID(this.SelectedPO.DocNumber, this.currentUserName).subscribe(
+  //     (data) => {
+  //       this.POScheduleLines = data as POScheduleLineView[];
+  //       if (this.POScheduleLines && this.POScheduleLines.length && this.POScheduleLines.length > 0) {
+  //         this.LoadSelectedSL(this.POScheduleLines[0]);
+  //       }
+  //     },
+  //     (err) => {
+  //       console.error(err);
+  //     }
+  //   );
+  // }
+  // LoadSelectedSL(ScheduleLineView: POScheduleLineView): void {
+  //   this.SelectedSlLine = ScheduleLineView.SlLine;
+  //   this.SelectedItem = ScheduleLineView.Item;
+  //   this.SelectedScheduleLineView = ScheduleLineView;
+  //   this.GetSubconBySLAndPartnerID();
+  // }
+  LoadSelectedItem(item: BPCOFItem): void {
+    // this.SelectedSlLine = ScheduleLineView.SlLine;
+    this.SelectedPOItem = item;
+    this.SelectedItem = item.Item;
+    // this.SelectedScheduleLineView = ScheduleLineView;
+    this.GetSubconByItemAndPartnerID();
   }
 
-  GetSubconBySLAndPartnerID(): void {
-    this._subConService.GetSubconBySLAndPartnerID(this.SelectedPO.DocNumber, this.SelectedItem, this.SelectedSlLine, this.currentUserName).subscribe(
+  // GetSubconBySLAndPartnerID(): void {
+  //   this._subConService.GetSubconBySLAndPartnerID(this.SelectedPO.DocNumber, this.SelectedItem, this.SelectedSlLine, this.currentUserName).subscribe(
+  //     (data) => {
+  //       this.ReadyToBeShippedQty = 0;
+  //       this.ProducedQty = 0;
+  //       this.AllSubconItems = data as BPCOFSubcon[];
+  //       this.SubconItemDataSource = new MatTableDataSource(this.AllSubconItems);
+  //       if (this.AllSubconItems && this.AllSubconItems.length && this.AllSubconItems.length > 0) {
+  //         this.IsDeleteRequired = true;
+  //         this.AllSubconItems.forEach(x => {
+  //           this.ReadyToBeShippedQty += + x.OrderedQty;
+  //           this.ProducedQty += +x.OrderedQty;
+  //           this.SubconItemFormGroup.get('OrderedQty').patchValue(x.OrderedQty);
+  //         });
+  //       } else {
+  //         this.IsDeleteRequired = false;
+  //       }
+
+  //     },
+  //     (err) => {
+  //       console.error(err);
+  //     }
+  //   );
+  // }
+
+  GetSubconByItemAndPartnerID(): void {
+    this._subConService.GetSubconByItemAndPartnerID(this.SelectedPO.DocNumber, this.SelectedItem, this.currentUserName).subscribe(
       (data) => {
         this.ReadyToBeShippedQty = 0;
         this.ProducedQty = 0;
@@ -236,13 +289,13 @@ export class SubconComponent implements OnInit {
   AddSubconItemToTable(): void {
     if (this.SubconItemFormGroup.valid) {
       const SubItem = new BPCOFSubcon();
-      SubItem.Client = this.SelectedScheduleLineView.Client;
-      SubItem.Company = this.SelectedScheduleLineView.Company;
-      SubItem.Type = this.SelectedScheduleLineView.Type;
-      SubItem.PatnerID = this.SelectedScheduleLineView.PatnerID;
-      SubItem.DocNumber = this.SelectedScheduleLineView.DocNumber;
-      SubItem.Item = this.SelectedScheduleLineView.Item;
-      SubItem.SlLine = this.SelectedScheduleLineView.SlLine;
+      SubItem.Client = this.SelectedPOItem.Client;
+      SubItem.Company = this.SelectedPOItem.Company;
+      SubItem.Type = this.SelectedPOItem.Type;
+      SubItem.PatnerID = this.SelectedPOItem.PatnerID;
+      SubItem.DocNumber = this.SelectedPOItem.DocNumber;
+      SubItem.Item = this.SelectedPOItem.Item;
+      // SubItem.SlLine = this.SelectedPOItem.SlLine;
       SubItem.Date = this.SubconItemFormGroup.get('Date').value;
       SubItem.OrderedQty = this.SubconItemFormGroup.get('OrderedQty').value;
       SubItem.Batch = this.SubconItemFormGroup.get('Batch').value;
@@ -253,7 +306,7 @@ export class SubconComponent implements OnInit {
       }
       this.ProducedQty += +SubItem.OrderedQty;
       this.ReadyToBeShippedQty += +SubItem.OrderedQty;
-      if (this.ProducedQty > this.SelectedScheduleLineView.OrderedQty) {
+      if (this.ProducedQty > this.SelectedPOItem.OrderedQty) {
         this.notificationSnackBarComponent.openSnackBar('Cumulative produced quantity should not greater than Order qty', SnackBarStatus.danger);
         this.ProducedQty -= +SubItem.OrderedQty;
         this.ReadyToBeShippedQty -= +SubItem.OrderedQty;
@@ -392,7 +445,7 @@ export class SubconComponent implements OnInit {
         this.ResetControl();
         this.notificationSnackBarComponent.openSnackBar(`Subcon ${Actiontype === 'Submit' ? 'submitted' : 'saved'} successfully`, SnackBarStatus.success);
         this.IsProgressBarVisibile = false;
-        this.GetPOSLByDocAndPartnerID();
+        this.GetSubconByItemAndPartnerID();
       },
       (err) => {
         this.showErrorNotificationSnackBar(err);
@@ -406,55 +459,218 @@ export class SubconComponent implements OnInit {
         this.ResetControl();
         this.notificationSnackBarComponent.openSnackBar(`Subcon deleted successfully`, SnackBarStatus.success);
         this.IsProgressBarVisibile = false;
-        this.GetPOSLByDocAndPartnerID();
+        this.GetSubconByItemAndPartnerID();
       },
       (err) => {
         this.showErrorNotificationSnackBar(err);
       }
     );
   }
-  getStatusColor(StatusFor: string): string {
-    switch (StatusFor) {
-      case 'ASN':
-        return this.SelectedPO.Status === 'Open' ? 'gray' : this.SelectedPO.Status === 'ACK' ? '#efb577' : '#34ad65';
-      case 'Gate':
-        return this.SelectedPO.Status === 'Open' ? 'gray' : this.SelectedPO.Status === 'ACK' ? 'gray' : this.SelectedPO.Status === 'ASN' ? '#efb577' : '#34ad65';
-      case 'GRN':
-        return this.SelectedPO.Status === 'Open' ? 'gray' : this.SelectedPO.Status === 'ACK' ? 'gray' : this.SelectedPO.Status === 'ASN' ? 'gray' :
-          this.SelectedPO.Status === 'Gate' ? '#efb577' : '#34ad65';
+  // getStatusColor(StatusFor: string): string {
+  //   switch (StatusFor) {
+  //     case 'ASN':
+  //       return this.SelectedPO.Status === 'Open' ? 'gray' : this.SelectedPO.Status === 'ACK' ? '#efb577' : '#34ad65';
+  //     case 'Gate':
+  //       return this.SelectedPO.Status === 'Open' ? 'gray' : this.SelectedPO.Status === 'ACK' ? 'gray' : this.SelectedPO.Status === 'ASN' ? '#efb577' : '#34ad65';
+  //     case 'GRN':
+  //       return this.SelectedPO.Status === 'Open' ? 'gray' : this.SelectedPO.Status === 'ACK' ? 'gray' : this.SelectedPO.Status === 'ASN' ? 'gray' :
+  //         this.SelectedPO.Status === 'Gate' ? '#efb577' : '#34ad65';
+  //     default:
+  //       return '';
+  //   }
+  // }
+  // getTimeline(StatusFor: string): string {
+  //   switch (StatusFor) {
+  //     case 'ASN':
+  //       return this.SelectedPO.Status === 'Open' ? 'white-timeline' : this.SelectedPO.Status === 'ACK' ? 'orange-timeline' : 'green-timeline';
+  //     case 'Gate':
+  //       return this.SelectedPO.Status === 'Open' ? 'white-timeline' : this.SelectedPO.Status === 'ACK' ? 'white-timeline' :
+  //         this.SelectedPO.Status === 'ASN' ? 'orange-timeline' : 'green-timeline';
+  //     case 'GRN':
+  //       return this.SelectedPO.Status === 'Open' ? 'white-timeline' : this.SelectedPO.Status === 'ACK' ? 'white-timeline' : this.SelectedPO.Status === 'ASN' ? 'white-timeline' :
+  //         this.SelectedPO.Status === 'Gate' ? 'orange-timeline' : 'green-timeline';
+  //     default:
+  //       return '';
+  //   }
+  // }
+
+  // getRestTimeline(StatusFor: string): string {
+  //   switch (StatusFor) {
+  //     case 'ASN':
+  //       return this.SelectedPO.Status === 'Open' ? 'white-timeline' : this.SelectedPO.Status === 'ACK' ? 'white-timeline' : 'green-timeline';
+  //     case 'Gate':
+  //       return this.SelectedPO.Status === 'Open' ? 'white-timeline' : this.SelectedPO.Status === 'ACK' ? 'white-timeline' :
+  //         this.SelectedPO.Status === 'ASN' ? 'white-timeline' : 'green-timeline';
+  //     case 'GRN':
+  //       return this.SelectedPO.Status === 'Open' ? 'white-timeline' : this.SelectedPO.Status === 'ACK' ? 'white-timeline' : this.SelectedPO.Status === 'ASN' ? 'white-timeline' :
+  //         this.SelectedPO.Status === 'Gate' ? 'white-timeline' : 'green-timeline';
+  //     default:
+  //       return '';
+  //   }
+  // }
+  getStatusColor(statusFor: string): string {
+    switch (statusFor) {
+      case "ASN":
+        return this.poStatus === "DueForACK"
+          ? "gray"
+          : this.poStatus === "DueForASN"
+            ? "gray"
+            : this.poStatus === "PartialASN"
+              ? "#efb577" : "#34ad65";
+      case "Gate":
+        return this.poStatus === "DueForACK"
+          ? "gray"
+          : this.poStatus === "DueForASN"
+            ? "gray"
+            : this.poStatus === "PartialASN"
+              ? "gray"
+              : this.poStatus === "DueForGate"
+                ? "gray"
+                : "#34ad65";
+      case "GRN":
+        return this.poStatus === "DueForACK"
+          ? "gray"
+          : this.poStatus === "DueForASN"
+            ? "gray"
+            : this.poStatus === "PartialASN"
+              ? "gray"
+              : this.poStatus === "DueForGate"
+                ? "gray"
+                : this.poStatus === "DueForGRN"
+                  ? "gray"
+                  : this.poStatus === "PartialGRN"
+                    ? "#efb577"
+                    : "#34ad65";
       default:
-        return '';
+        return "";
     }
   }
-  getTimeline(StatusFor: string): string {
-    switch (StatusFor) {
-      case 'ASN':
-        return this.SelectedPO.Status === 'Open' ? 'white-timeline' : this.SelectedPO.Status === 'ACK' ? 'orange-timeline' : 'green-timeline';
-      case 'Gate':
-        return this.SelectedPO.Status === 'Open' ? 'white-timeline' : this.SelectedPO.Status === 'ACK' ? 'white-timeline' :
-          this.SelectedPO.Status === 'ASN' ? 'orange-timeline' : 'green-timeline';
-      case 'GRN':
-        return this.SelectedPO.Status === 'Open' ? 'white-timeline' : this.SelectedPO.Status === 'ACK' ? 'white-timeline' : this.SelectedPO.Status === 'ASN' ? 'white-timeline' :
-          this.SelectedPO.Status === 'Gate' ? 'orange-timeline' : 'green-timeline';
-      default:
-        return '';
-    }
+  getGateStatusColor(): string {
+    return this.gateStatus === "DueForGate"
+      ? "gray" : this.gateStatus === "PartialGate"
+        ? "#efb577" : "#34ad65";
+  }
+  getGRNStatusColor(): string {
+    return this.grnStatus === "DueForGRN"
+      ? "gray" : this.grnStatus === "PartialGRN"
+        ? "#efb577" : "#34ad65";
   }
 
-  getRestTimeline(StatusFor: string): string {
-    switch (StatusFor) {
-      case 'ASN':
-        return this.SelectedPO.Status === 'Open' ? 'white-timeline' : this.SelectedPO.Status === 'ACK' ? 'white-timeline' : 'green-timeline';
-      case 'Gate':
-        return this.SelectedPO.Status === 'Open' ? 'white-timeline' : this.SelectedPO.Status === 'ACK' ? 'white-timeline' :
-          this.SelectedPO.Status === 'ASN' ? 'white-timeline' : 'green-timeline';
-      case 'GRN':
-        return this.SelectedPO.Status === 'Open' ? 'white-timeline' : this.SelectedPO.Status === 'ACK' ? 'white-timeline' : this.SelectedPO.Status === 'ASN' ? 'white-timeline' :
-          this.SelectedPO.Status === 'Gate' ? 'white-timeline' : 'green-timeline';
-      default:
-        return '';
+  getNextProcess(element: any): void {
+    if (this.poStatus === "DueForACK") {
+      element.NextProcess = "ACK";
+    } else if (this.poStatus === "DueForASN") {
+      element.NextProcess = "ASN/SCN";
+    } else if (this.poStatus === "PartialASN") {
+      element.NextProcess = "ASN/SCN";
+    }
+    else if (this.poStatus === "DueForGate") {
+      element.NextProcess = "Gate";
+    } else if (this.poStatus === "PartialGRN") {
+      element.NextProcess = "GRN";
+    }
+    else {
+      element.NextProcess = "GRN";
     }
   }
-
+  getTimeline(statusFor: string): string {
+    switch (statusFor) {
+      case "ASN":
+        return this.poStatus === "DueForACK"
+          ? "white-timeline"
+          : this.poStatus === "DueForASN"
+            ? "white-timeline"
+            : this.poStatus === "PartialASN"
+              ? "orange-timeline" : "green-timeline";
+      case "Gate":
+        return this.poStatus === "DueForACK"
+          ? "white-timeline"
+          : this.poStatus === "DueForASN"
+            ? "white-timeline"
+            : this.poStatus === "PartialASN"
+              ? "white-timeline"
+              : this.poStatus === "DueForGate"
+                ? "white-timeline"
+                : "green-timeline";
+      case "GRN":
+        return this.poStatus === "DueForACK"
+          ? "white-timeline"
+          : this.poStatus === "DueForASN"
+            ? "white-timeline"
+            : this.poStatus === "PartialASN"
+              ? "white-timeline"
+              : this.poStatus === "DueForGate"
+                ? "white-timeline"
+                : this.poStatus === "DueForGRN"
+                  ? "white-timeline"
+                  : this.poStatus === "PartialGRN"
+                    ? "orange-timeline"
+                    : "green-timeline";
+      default:
+        return "";
+    }
+  }
+  getGateTimeline(): string {
+    return this.gateStatus === "DueForGate"
+      ? "white-timeline" : this.gateStatus === "PartialGate"
+        ? "orange-timeline" : "green-timeline";
+  }
+  getGRNTimeline(): string {
+    return this.grnStatus === "DueForGRN"
+      ? "white-timeline" : this.grnStatus === "PartialGRN"
+        ? "orange-timeline" : "green-timeline";
+  }
+  getRestTimeline(statusFor: string): string {
+    switch (statusFor) {
+      case "ASN":
+        return this.poStatus === "DueForACK"
+          ? "white-timeline"
+          : this.poStatus === "DueForASN"
+            ? "white-timeline"
+            : this.poStatus === "PartialASN"
+              ? this.gateStatus === 'PartialGate' ? "orange-timeline" : "white-timeline"
+              : this.poStatus === "DueForGate"
+                ? "white-timeline"
+                : "green-timeline";
+      case "Gate":
+        return this.poStatus === "DueForACK"
+          ? "white-timeline"
+          : this.poStatus === "DueForASN"
+            ? "white-timeline"
+            : this.poStatus === "PartialASN"
+              ? "white-timeline"
+              : this.poStatus === "DueForGate"
+                ? "white-timeline"
+                : this.poStatus === "DueForGRN"
+                  ? "white-timeline"
+                  : "green-timeline";
+      case "GRN":
+        return this.poStatus === "DueForACK"
+          ? "white-timeline"
+          : this.poStatus === "DueForASN"
+            ? "white-timeline"
+            : this.poStatus === "PartialASN"
+              ? "white-timeline"
+              : this.poStatus === "DueForGate"
+                ? "white-timeline"
+                : this.poStatus === "DueForGRN"
+                  ? "white-timeline"
+                  : this.poStatus === "PartialGRN"
+                    ? "white-timeline"
+                    : "green-timeline";
+      default:
+        return "";
+    }
+  }
+  getGateRestTimeline(): string {
+    return this.gateStatus === "DueForGate"
+      ? "white-timeline" : this.gateStatus === "PartialGate"
+        ? this.grnStatus === 'PartialGRN' ? "orange-timeline" : 'white-timeline' : "green-timeline";
+  }
+  getGRNRestTimeline(): string {
+    return this.grnStatus === "DueForGRN"
+      ? "white-timeline" : this.grnStatus === "PartialGRN"
+        ? "orange-timeline" : "green-timeline";
+  }
 
 }

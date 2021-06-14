@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { AuthService } from './auth.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { BPCOFHeader, BPCOFItem, BPCOFHeaderXLSX, BPCOFItemXLSX, BPCOFScheduleLineXLSX, BPCOFGRGIXLSX, BPCOFQMXLSX, BPCOFGRGI, SOItemCount, BPCOFItemView, BPCInvoice, BPCRetNew } from 'app/models/OrderFulFilment';
+import { BPCOFHeader, BPCOFItem, BPCOFHeaderXLSX, BPCOFItemXLSX, BPCOFScheduleLineXLSX, BPCOFGRGIXLSX, BPCOFQMXLSX, BPCOFGRGI, SOItemCount, BPCOFItemView, BPCInvoice, BPCRetNew, BPCOFHeaderView } from 'app/models/OrderFulFilment';
 import { BPCCEOMessage, BPCSCOCMessage ,BPCWelcomeMessage} from 'app/models/Message.model';
 import { BPCFact } from 'app/models/fact';
 import { OverviewReportOption } from 'app/models/ReportModel';
@@ -43,6 +43,10 @@ export class POService {
   }
   GetPOByDocAndPartnerID(DocNumber: string, PartnerID: string): Observable<BPCOFHeader | string> {
     return this._httpClient.get<any>(`${this.baseAddress}poapi/PO/GetPOByDocAndPartnerID?DocNumber=${DocNumber}&PartnerID=${PartnerID}`)
+      .pipe(catchError(this.errorHandler));
+  }
+  GetPOViewByDocAndPartnerID(DocNumber: string, PartnerID: string): Observable<BPCOFHeaderView | string> {
+    return this._httpClient.get<any>(`${this.baseAddress}poapi/PO/GetPOViewByDocAndPartnerID?DocNumber=${DocNumber}&PartnerID=${PartnerID}`)
       .pipe(catchError(this.errorHandler));
   }
   GetPOPartnerID(PartnerID: string): Observable<BPCFact | string> {

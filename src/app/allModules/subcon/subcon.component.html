@@ -113,7 +113,38 @@
             </div>
           </div> -->
           <div fxFlex="auto" class="borderleft pb-40 pt-12" *ngIf="SelectedPO">
-            <div fxLayout class="mx-40">
+            <div fxLayout style="margin-left: -12px !important;">
+              <div fxFlex="25" style="margin-left: 15px;;" fxLayout>ACK</div>
+              <div fxFlex="25" fxLayout>ASN</div>
+              <div fxFlex="25" fxLayout>GATE</div>
+              <div fxFlex="25" style="margin-right: 7% !important;" fxLayout>GRN</div>
+            </div>
+            <div fxLayout class="mt-4 mr-40 ml-8">
+              <div fxFlex="25" fxLayout>
+                <div class="round" [style.border-color]="poStatus==='DueForACK'?'gray':'#34ad65'"></div>
+                <div style="width: 10px;margin-left: -1px;"
+                  [class]="poStatus==='DueForACK'?'white-timeline':'green-timeline'">
+                </div>
+                <div [class]="poStatus==='DueForACK'?'white-timeline':poStatus==='DueForASN'?'white-timeline':'green-timeline'" fxFlex></div>
+              </div>
+              <div fxFlex="25" fxLayout>
+                <div style="width: 10px;margin-right: -1px;" [class]="getTimeline('ASN')"></div>
+                <div class="round" [style.border-color]="getStatusColor('ASN')"></div>
+                <div style="width: 10px;margin-left: -1px;" [class]="getTimeline('ASN')"></div>
+                <div [class]="getRestTimeline('ASN')" fxFlex></div>
+              </div>
+              <div fxFlex="25" fxLayout>
+                <div style="width: 10px;margin-right: -1px;" [class]="getGateTimeline()"></div>
+                <div class="round" [style.border-color]="getGateStatusColor()"></div>
+                <div style="width: 10px;margin-left: -1px;" [class]="getGateTimeline()"></div>
+                <div [class]="getGateRestTimeline()" fxFlex></div>
+              </div>
+              <div fxFlex="25" fxLayout>
+                <div style="width: 10px;margin-right: -1px;" [class]="getGRNTimeline()"></div>
+                <div class="round" [style.border-color]="getGRNStatusColor()"></div>
+              </div>
+            </div>
+            <!-- <div fxLayout class="mx-40">
               <div fxFlex="30">ACK</div>
               <div fxFlex="30">ASN</div>
               <div fxFlex="30">Gate</div>
@@ -142,7 +173,7 @@
                 <div style="width: 10px;margin-right: -1px;" [class]="getTimeline('GRN')"></div>
                 <div class="round" [style.border-color]="getStatusColor('GRN')"></div>
               </div>
-            </div>
+            </div> -->
             <!-- <div fxLayout class="mx-40">
                 <div fxFlex="30"> {{getStatusDate('SO')}} </div>
                 <div fxFlex="30"> {{getStatusDate('Shipped')}}</div>
@@ -167,12 +198,12 @@
               </mat-toolbar>
             </div>
             <div class="sidenav-content" fusePerfectScrollbar fxFlex>
-              <div *ngFor="let usr of POScheduleLines | filter: searchText">
+              <div *ngFor="let usr of POItems | filter: searchText">
                 <div>
                   <div class="mx-8 mb-8 mt-0 p-8 leftCard" (click)="LoadSelectedSL(usr)"
-                    [class.highlightCard]="SelectedSlLine===usr.SlLine && SelectedItem===usr.Item">
+                    [class.highlightCard]="SelectedItem===usr.Item">
                     <div fxLayout class="py-4" fxLayoutAlign="space-between center">
-                      <div fxFlex><strong>{{usr.SlLine +' . '}}{{usr.MaterialText}}</strong></div>
+                      <div fxFlex><strong>{{usr.MaterialText}}</strong></div>
                       <div fxFlex align="end">#{{usr.Material}}</div>
                     </div>
                     <div fxLayout class="py-4" fxLayoutAlign="space-between center">
@@ -185,25 +216,25 @@
                   </div>
                 </div>
               </div>
-              <div *ngIf="(POScheduleLines | filter: searchText)?.length === 0" class="no-results-message">
+              <div *ngIf="(POItems | filter: searchText)?.length === 0" class="no-results-message">
                 <span class="pl-12"> No results..</span>
               </div>
             </div>
             <div class="borderRight1"></div>
           </div>
           <mat-card fxFlex="77" class="side-bar p-0">
-            <div *ngIf="SelectedScheduleLineView" class="sidenav-content" fxFlex fxLayout="column">
+            <div *ngIf="SelectedPOItem" class="sidenav-content" fxFlex fxLayout="column">
               <div fxLayout fxLayoutAlign="space-between center" class="p-20 titleBorder">
                 <div fxFlex class="titleClass">
-                  {{SelectedScheduleLineView?.MaterialText}} (#{{SelectedScheduleLineView?.Material}})
+                  {{SelectedPOItem?.MaterialText}} (#{{SelectedPOItem?.Material}})
                 </div>
                 <div fxFlex fxLayout align="end">
                   <div fxFlex>
                     <!-- <mat-icon class="mr-4">av_timer</mat-icon> -->
                     <img class="pendingImg" src="assets/images/pending.png">
-                    <span class="boldClass"> {{SelectedScheduleLineView?.DeliveryDate | date:'dd/MM/yyyy'}}</span>
+                    <span class="boldClass"> {{SelectedPOItem?.DeliveryDate | date:'dd/MM/yyyy'}}</span>
                   </div>
-                  <div fxFlex align="end">Qty: <span class="boldClass">{{SelectedScheduleLineView?.OrderedQty}}</span></div>
+                  <div fxFlex align="end">Qty: <span class="boldClass">{{SelectedPOItem?.OrderedQty}}</span></div>
                 </div>
               </div>
               <div fxLayout fxLayoutAlign="center" class="p-20 QtyCard mx-20 mt-16">
@@ -358,7 +389,7 @@
 
 
             </div>
-            <mat-card-actions *ngIf="SelectedScheduleLineView && AllSubconItems?.length"
+            <mat-card-actions *ngIf="SelectedPOItem && AllSubconItems?.length"
               class="m-0 pl-12 pr-16 cardActions">
               <div fxLayout fxLayoutAlign="space-between center">
                 <div fxFlex *ngIf="IsDeleteRequired">

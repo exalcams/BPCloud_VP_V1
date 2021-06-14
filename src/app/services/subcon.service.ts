@@ -53,6 +53,11 @@ export class SubconService {
       .pipe(catchError(this.errorHandler));
   }
 
+  GetSubconByItemAndPartnerID(DocNumber: string, Item: string, PartnerID: string): Observable<BPCOFSubcon[] | string> {
+    return this._httpClient.get<BPCOFSubcon[]>
+      (`${this.baseAddress}poapi/Subcon/GetSubconByItemAndPartnerID?DocNumber=${DocNumber}&Item=${Item}&PartnerID=${PartnerID}`)
+      .pipe(catchError(this.errorHandler));
+  }
   GetSubconBySLAndPartnerID(DocNumber: string, Item: string, SlLine: string, PartnerID: string): Observable<BPCOFSubcon[] | string> {
     return this._httpClient.get<BPCOFSubcon[]>
       (`${this.baseAddress}poapi/Subcon/GetSubconBySLAndPartnerID?DocNumber=${DocNumber}&Item=${Item}&SlLine=${SlLine}&PartnerID=${PartnerID}`)
