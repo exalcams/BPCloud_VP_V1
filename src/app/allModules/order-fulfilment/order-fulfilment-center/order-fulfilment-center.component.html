@@ -277,8 +277,8 @@
                 </mat-option>
                 <mat-option value="ASN" (click)="goToASNClicked(element.DocNumber,element.DocType)">ASN / SCN</mat-option>
                 <!-- <mat-option value="POFlip" (click)="goToPOFlipClicked(element.DocNumber)">PO Flip</mat-option> -->
-                <!-- <mat-option value="Subcon" *ngIf="(element.DocType | lowercase)==='subcon'"
-                  (click)="goToSubconClicked(element.DocNumber)">Subcon</mat-option> -->
+                <mat-option value="Subcon" *ngIf="(element.DocType | lowercase)==='subcon'"
+                  (click)="goToSubconClicked(element.DocNumber)">Subcon</mat-option>
                 <mat-option value="SupportDesk" (click)="goToSupportDeskClicked(element.DocNumber)">Get
                   Solved
                 </mat-option>
