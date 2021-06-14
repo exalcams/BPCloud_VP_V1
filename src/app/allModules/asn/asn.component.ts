@@ -149,7 +149,7 @@ export class ASNComponent implements OnInit {
     arrayBuffer: any;
     ASNItemXLSXs: ASNItemXLSX[] = [];
     IsAtleastOneASNQty: boolean;
-
+    IsOneSERItem: boolean;
     AllASNFieldMaster: BPCASNFieldMaster[] = [];
 
     IsShipmentNotRelevant = false;
@@ -196,6 +196,7 @@ export class ASNComponent implements OnInit {
         this.selectedDocCenterMaster = new BPCDocumentCenterMaster();
         this.ArrivalDateInterval = 1;
         this.IsAtleastOneASNQty = false;
+        this.IsOneSERItem = true;
         this.IsInvoiceDetailsFormGroupEnabled = true;
         this.DocumentType = '';
     }
@@ -1228,6 +1229,8 @@ export class ASNComponent implements OnInit {
     GetASNItemValues(): void {
         this.SelectedASNView.ASNItems = [];
         this.IsAtleastOneASNQty = false;
+        this.IsOneSERItem = true;
+        let count = 0;
         const aSNItemFormArray = this.ASNItemFormGroup.get('ASNItems') as FormArray;
         aSNItemFormArray.controls.forEach((x, i) => {
             const item: BPCASNItemView = new BPCASNItemView();
@@ -1242,7 +1245,6 @@ export class ASNComponent implements OnInit {
             item.TransitQty = +x.get('PipelineQty').value;
             item.OpenQty = +x.get('OpenQty').value;
             item.ASNQty = +x.get('ASNQty').value;
-
             item.ASNItemBatches = x.get('Batch').value;
             item.ASNItemSESes = x.get('SES').value;
             item.PlantCode = x.get('PlantCode').value;
@@ -1250,12 +1252,6 @@ export class ASNComponent implements OnInit {
             item.Value = x.get('Value').value;
             item.TaxAmount = x.get('TaxAmount').value;
             item.TaxCode = x.get('TaxCode').value;
-
-
-            if (x.get('ASNQty').value) {
-                this.ASNQty_count = this.ASNQty_count + 1;
-            }
-
             // const manufDate = x.get('ManufactureDate').value;
             // if (manufDate) {
             //     itemBatch.ManufactureDate = this._datePipe.transform(manufDate, 'yyyy-MM-dd HH:mm:ss');
@@ -1269,6 +1265,11 @@ export class ASNComponent implements OnInit {
             //     itemBatch.ExpiryDate = x.get('ExpiryDate').value;
             // }
             if (this.SelectedDocNumber && this.PO) {
+                if (this.DocumentType === 'SER') {
+                    if (item.ASNQty > 0) {
+                        count++;
+                    }
+                }
                 item.Client = this.PO.Client;
                 item.Company = this.PO.Company;
                 item.Type = this.PO.Type;
@@ -1292,6 +1293,11 @@ export class ASNComponent implements OnInit {
                 // itemBatch.Type = this.PO.Type;
                 // itemBatch.PatnerID = this.PO.PatnerID;
             } else {
+                if (this.DocumentType === 'SER') {
+                    if (item.ASNQty > 0) {
+                        count++;
+                    }
+                }
                 item.Client = this.SelectedASNHeader.Client;
                 item.Company = this.SelectedASNHeader.Company;
                 item.Type = this.SelectedASNHeader.Type;
@@ -1321,8 +1327,9 @@ export class ASNComponent implements OnInit {
             this.SelectedASNView.ASNItems.push(item);
             // this.SelectedASNView.ASNItemBatches.push(itemBatch);
         });
-        // alert(this.ASNQty_count);
-        console.log("ASNQty_count", this.ASNQty_count);
+        if (count > 1) {
+            this.IsOneSERItem = false;
+        }
     }
     OpenItemBatch(index: number): void {
 
@@ -1624,80 +1631,246 @@ export class ASNComponent implements OnInit {
             this.ShowValidationErrors(this.InvoiceDetailsFormGroup);
         }
     }
+    // SubmitClicked(): void {
+    //     this.ASNQty_count = 0;
+    //     this.EnableAllFormGroup();
+    //     // this.CreateActionLogvalues("Submit");
+    //     this.InvoiceDetailsFormGroup.get('POBasicPrice').disable();
+    //     if (this.IsShipmentNotRelevant) {
+    //         if (!this.isWeightError) {
+    //             if (this.InvoiceDetailsFormGroup.valid) {
+    //                 if ((this.invoiceAttachment && this.invoiceAttachment.name) || this.invAttach.AttachmentName) {
+    //                     this.GetASNValues();
+    //                     this.GetASNItemValues();
+    //                     if ((this.SelectedDocType === "SER") && (this.ASNQty_count > 1)) {
+    //                         this.notificationSnackBarComponent.openSnackBar('please enter only one ASNQty in Shipment Proposal Item', SnackBarStatus.danger);
+    //                         this.ASNItemFormArray.controls.forEach((x, i) => {
+    //                             x.get('ASNQty').setErrors({ qty: true });
+    //                             x.get('ASNQty').markAsTouched();
+    //                         });
+
+    //                     }
+    //                     else {
+    //                         this.ASNItemFormArray.controls.forEach((x, i) => {
+    //                             x.get('ASNQty').setErrors({ qty: false });
+    //                             x.get('ASNQty').markAsUntouched();
+    //                         });
+
+
+
+    //                         this.GetASNPacksValues();
+    //                         if (this.CheckForNonZeroOpenQty()) {
+    //                             // this.CalculateInvoiceAmount();
+    //                             if (!this.isPOBasicPriceError) {
+    //                                 if (this.IsPriceNotMatched) {
+    //                                     const dialogConfig: MatDialogConfig = {
+    //                                         data: {
+    //                                             title: 'Price does not match with Shipment Value',
+    //                                             // subtitle: 'Please create a support ticket to acknowledge it.'
+    //                                         },
+    //                                         panelClass: 'confirmation-dialog'
+    //                                     };
+    //                                     const dialogRef = this.dialog.open(NotificationDialog1Component, dialogConfig);
+    //                                     dialogRef.afterClosed().subscribe(
+    //                                         result => {
+    //                                             if (result) {
+    //                                                 this.IsPriceNotMatched = false;
+    //                                                 this.GetInvoiceDetailValues();
+    //                                                 this.GetDocumentCenterValues();
+    //                                                 this.SelectedASNView.IsSubmitted = true;
+    //                                                 this.SelectedASNView.Status = 'ShipmentNotRelevant';
+    //                                                 this.SetActionToOpenConfirmation('Submit');
+    //                                             } else {
+    //                                                 this.IsPriceNotMatched = true;
+    //                                             }
+    //                                         },
+    //                                         () => {
+    //                                             this.IsPriceNotMatched = true;
+    //                                         });
+    //                                 } else {
+    //                                     this.GetInvoiceDetailValues();
+    //                                     this.GetDocumentCenterValues();
+    //                                     this.SelectedASNView.IsSubmitted = true;
+    //                                     this.SelectedASNView.Status = 'ShipmentNotRelevant';
+    //                                     this.SetActionToOpenConfirmation('Submit');
+    //                                 }
+    //                             }
+    //                         } else {
+
+    //                             this.notificationSnackBarComponent.openSnackBar('There is no Open Qty', SnackBarStatus.danger);
+    //                         }
+    //                     }
+    //                 } else {
+    //                     this.notificationSnackBarComponent.openSnackBar('Please add Invoice attachment', SnackBarStatus.danger);
+    //                 }
+    //             } else {
+    //                 this.ShowValidationErrors(this.InvoiceDetailsFormGroup);
+    //             }
+    //         }
+    //     } else {
+    //         if (this.ASNFormGroup.valid) {
+    //             if (!this.isWeightError) {
+    //                 if (this.ASNItemFormGroup.valid) {
+    //                     if (this.ASNPackFormGroup.valid) {
+    //                         if (this.InvoiceDetailsFormGroup.valid) {
+    //                             if ((this.invoiceAttachment && this.invoiceAttachment.name) || this.invAttach.AttachmentName) {
+    //                                 this.GetASNValues();
+    //                                 this.GetASNItemValues();
+    //                                 if ((this.SelectedDocType === "SER") && (this.ASNQty_count > 1)) {
+    //                                     this.notificationSnackBarComponent.openSnackBar('please enter only one ASNQty in Shipment Proposal Item', SnackBarStatus.danger);
+    //                                     this.ASNItemFormArray.controls.forEach((x, i) => {
+    //                                         x.get('ASNQty').setErrors({ qty: true });
+    //                                         x.get('ASNQty').markAsTouched();
+    //                                     });
+
+    //                                 }
+    //                                 else {
+    //                                     this.ASNItemFormArray.controls.forEach((x, i) => {
+    //                                         x.get('ASNQty').setErrors({ qty: false });
+    //                                         x.get('ASNQty').markAsUntouched();
+    //                                     });
+
+
+    //                                     console.log("asnformarray", this.ASNItemFormArray);
+
+
+    //                                     this.GetASNPacksValues();
+    //                                     if (this.CheckForNonZeroOpenQty()) {
+    //                                         if (this.IsAtleastOneASNQty) {
+    //                                             // this.CalculateInvoiceAmount();
+    //                                             if (!this.isPOBasicPriceError) {
+    //                                                 if (this.IsPriceNotMatched) {
+    //                                                     const dialogConfig: MatDialogConfig = {
+    //                                                         data: {
+    //                                                             title: 'Price does not match with Shipment Value',
+    //                                                             // subtitle: 'Please create a support ticket to acknowledge it.'
+    //                                                         },
+    //                                                         panelClass: 'confirmation-dialog'
+    //                                                     };
+    //                                                     const dialogRef = this.dialog.open(NotificationDialog1Component, dialogConfig);
+    //                                                     dialogRef.afterClosed().subscribe(
+    //                                                         result => {
+    //                                                             if (result) {
+    //                                                                 this.IsPriceNotMatched = false;
+    //                                                                 this.GetInvoiceDetailValues();
+    //                                                                 this.GetDocumentCenterValues();
+    //                                                                 this.SelectedASNView.Status = 'GateEntry';
+    //                                                                 this.SelectedASNView.IsSubmitted = true;
+    //                                                                 this.OpenASNReleaseDialog();
+    //                                                             } else {
+    //                                                                 this.IsPriceNotMatched = true;
+    //                                                             }
+    //                                                         },
+    //                                                         () => {
+    //                                                             this.IsPriceNotMatched = true;
+    //                                                         });
+    //                                                 } else {
+    //                                                     this.GetInvoiceDetailValues();
+    //                                                     this.GetDocumentCenterValues();
+    //                                                     this.SelectedASNView.Status = 'GateEntry';
+    //                                                     this.SelectedASNView.IsSubmitted = true;
+    //                                                     this.OpenASNReleaseDialog();
+    //                                                 }
+    //                                             }
+    //                                         } else {
+    //                                             this.notificationSnackBarComponent.openSnackBar('Atleast one item should have non zero value to proceed', SnackBarStatus.danger);
+    //                                         }
+    //                                     } else {
+
+    //                                         this.notificationSnackBarComponent.openSnackBar('There is no Open Qty', SnackBarStatus.danger);
+    //                                     }
+    //                                 }
+    //                             } else {
+    //                                 this.notificationSnackBarComponent.openSnackBar('Please add Invoice attachment', SnackBarStatus.danger);
+    //                             }
+    //                         } else {
+    //                             this.ShowValidationErrors(this.InvoiceDetailsFormGroup);
+    //                         }
+    //                     } else {
+    //                         this.ShowValidationErrors(this.ASNPackFormGroup);
+    //                     }
+
+    //                 } else {
+    //                     this.ShowValidationErrors(this.ASNItemFormGroup);
+    //                 }
+    //             }
+
+    //         } else {
+    //             this.ShowValidationErrors(this.ASNFormGroup);
+    //         }
+    //     }
+    // }
     SubmitClicked(): void {
-        this.ASNQty_count = 0;
         this.EnableAllFormGroup();
         // this.CreateActionLogvalues("Submit");
         this.InvoiceDetailsFormGroup.get('POBasicPrice').disable();
         if (this.IsShipmentNotRelevant) {
             if (!this.isWeightError) {
-                if (this.InvoiceDetailsFormGroup.valid) {
-                    if ((this.invoiceAttachment && this.invoiceAttachment.name) || this.invAttach.AttachmentName) {
-                        this.GetASNValues();
-                        this.GetASNItemValues();
-                        if ((this.SelectedDocType === "SER") && (this.ASNQty_count > 1)) {
-                            this.notificationSnackBarComponent.openSnackBar('please enter only one ASNQty in Shipment Proposal Item', SnackBarStatus.danger);
-                            this.ASNItemFormArray.controls.forEach((x, i) => {
-                                x.get('ASNQty').setErrors({ qty: true });
-                                x.get('ASNQty').markAsTouched();
-                            });
-
-                        }
-                        else {
-                            this.ASNItemFormArray.controls.forEach((x, i) => {
-                                x.get('ASNQty').setErrors({ qty: false });
-                                x.get('ASNQty').markAsUntouched();
-                            });
-
-
-
-                            this.GetASNPacksValues();
-                            if (this.CheckForNonZeroOpenQty()) {
-                                // this.CalculateInvoiceAmount();
-                                if (!this.isPOBasicPriceError) {
-                                    if (this.IsPriceNotMatched) {
-                                        const dialogConfig: MatDialogConfig = {
-                                            data: {
-                                                title: 'Price does not match with Shipment Value',
-                                                // subtitle: 'Please create a support ticket to acknowledge it.'
-                                            },
-                                            panelClass: 'confirmation-dialog'
-                                        };
-                                        const dialogRef = this.dialog.open(NotificationDialog1Component, dialogConfig);
-                                        dialogRef.afterClosed().subscribe(
-                                            result => {
-                                                if (result) {
-                                                    this.IsPriceNotMatched = false;
+                if (this.ASNItemFormGroup.valid) {
+                    if (this.ASNPackFormGroup.valid) {
+                        if (this.InvoiceDetailsFormGroup.valid) {
+                            if ((this.invoiceAttachment && this.invoiceAttachment.name) || (this.invAttach && this.invAttach.AttachmentName)) {
+                                this.GetASNValues();
+                                this.GetASNItemValues();
+                                this.GetASNPacksValues();
+                                if (this.CheckForNonZeroOpenQty()) {
+                                    if (this.IsAtleastOneASNQty) {
+                                        if (this.IsOneSERItem) {
+                                            // this.CalculateInvoiceAmount();
+                                            if (!this.isPOBasicPriceError) {
+                                                if (this.IsPriceNotMatched) {
+                                                    const dialogConfig: MatDialogConfig = {
+                                                        data: {
+                                                            title: 'Price does not match with Shipment Value',
+                                                            // subtitle: 'Please create a support ticket to acknowledge it.'
+                                                        },
+                                                        panelClass: 'confirmation-dialog'
+                                                    };
+                                                    const dialogRef = this.dialog.open(NotificationDialog1Component, dialogConfig);
+                                                    dialogRef.afterClosed().subscribe(
+                                                        result => {
+                                                            if (result) {
+                                                                this.IsPriceNotMatched = false;
+                                                                this.GetInvoiceDetailValues();
+                                                                this.GetDocumentCenterValues();
+                                                                this.SelectedASNView.IsSubmitted = true;
+                                                                this.SelectedASNView.Status = 'ShipmentNotRelevant';
+                                                                this.SetActionToOpenConfirmation('Submit');
+                                                            } else {
+                                                                this.IsPriceNotMatched = true;
+                                                            }
+                                                        },
+                                                        () => {
+                                                            this.IsPriceNotMatched = true;
+                                                        });
+                                                } else {
                                                     this.GetInvoiceDetailValues();
                                                     this.GetDocumentCenterValues();
                                                     this.SelectedASNView.IsSubmitted = true;
                                                     this.SelectedASNView.Status = 'ShipmentNotRelevant';
                                                     this.SetActionToOpenConfirmation('Submit');
-                                                } else {
-                                                    this.IsPriceNotMatched = true;
                                                 }
-                                            },
-                                            () => {
-                                                this.IsPriceNotMatched = true;
-                                            });
+                                            }
+                                        } else {
+                                            this.notificationSnackBarComponent.openSnackBar('Please create ASN for only one item', SnackBarStatus.danger);
+                                        }
                                     } else {
-                                        this.GetInvoiceDetailValues();
-                                        this.GetDocumentCenterValues();
-                                        this.SelectedASNView.IsSubmitted = true;
-                                        this.SelectedASNView.Status = 'ShipmentNotRelevant';
-                                        this.SetActionToOpenConfirmation('Submit');
+                                        this.notificationSnackBarComponent.openSnackBar('Atleast one item should have non zero value to proceed', SnackBarStatus.danger);
                                     }
+                                } else {
+                                    this.notificationSnackBarComponent.openSnackBar('There is no Open Qty', SnackBarStatus.danger);
                                 }
                             } else {
-
-                                this.notificationSnackBarComponent.openSnackBar('There is no Open Qty', SnackBarStatus.danger);
+                                this.notificationSnackBarComponent.openSnackBar('Please add Invoice attachment', SnackBarStatus.danger);
                             }
+                        } else {
+                            this.ShowValidationErrors(this.InvoiceDetailsFormGroup);
                         }
                     } else {
-                        this.notificationSnackBarComponent.openSnackBar('Please add Invoice attachment', SnackBarStatus.danger);
+                        this.ShowValidationErrors(this.ASNPackFormGroup);
                     }
                 } else {
-                    this.ShowValidationErrors(this.InvoiceDetailsFormGroup);
+                    this.ShowValidationErrors(this.ASNItemFormGroup);
                 }
             }
         } else {
@@ -1706,30 +1879,13 @@ export class ASNComponent implements OnInit {
                     if (this.ASNItemFormGroup.valid) {
                         if (this.ASNPackFormGroup.valid) {
                             if (this.InvoiceDetailsFormGroup.valid) {
-                                if ((this.invoiceAttachment && this.invoiceAttachment.name) || this.invAttach.AttachmentName) {
+                                if ((this.invoiceAttachment && this.invoiceAttachment.name) || (this.invAttach && this.invAttach.AttachmentName)) {
                                     this.GetASNValues();
                                     this.GetASNItemValues();
-                                    if ((this.SelectedDocType === "SER") && (this.ASNQty_count > 1)) {
-                                        this.notificationSnackBarComponent.openSnackBar('please enter only one ASNQty in Shipment Proposal Item', SnackBarStatus.danger);
-                                        this.ASNItemFormArray.controls.forEach((x, i) => {
-                                            x.get('ASNQty').setErrors({ qty: true });
-                                            x.get('ASNQty').markAsTouched();
-                                        });
-
-                                    }
-                                    else {
-                                        this.ASNItemFormArray.controls.forEach((x, i) => {
-                                            x.get('ASNQty').setErrors({ qty: false });
-                                            x.get('ASNQty').markAsUntouched();
-                                        });
-
-
-                                        console.log("asnformarray", this.ASNItemFormArray);
-
-
-                                        this.GetASNPacksValues();
-                                        if (this.CheckForNonZeroOpenQty()) {
-                                            if (this.IsAtleastOneASNQty) {
+                                    this.GetASNPacksValues();
+                                    if (this.CheckForNonZeroOpenQty()) {
+                                        if (this.IsAtleastOneASNQty) {
+                                            if (this.IsOneSERItem) {
                                                 // this.CalculateInvoiceAmount();
                                                 if (!this.isPOBasicPriceError) {
                                                     if (this.IsPriceNotMatched) {
@@ -1766,12 +1922,13 @@ export class ASNComponent implements OnInit {
                                                     }
                                                 }
                                             } else {
-                                                this.notificationSnackBarComponent.openSnackBar('Atleast one item should have non zero value to proceed', SnackBarStatus.danger);
+                                                this.notificationSnackBarComponent.openSnackBar('Please create ASN for only one item', SnackBarStatus.danger);
                                             }
                                         } else {
-
-                                            this.notificationSnackBarComponent.openSnackBar('There is no Open Qty', SnackBarStatus.danger);
+                                            this.notificationSnackBarComponent.openSnackBar('Atleast one item should have non zero value to proceed', SnackBarStatus.danger);
                                         }
+                                    } else {
+                                        this.notificationSnackBarComponent.openSnackBar('There is no Open Qty', SnackBarStatus.danger);
                                     }
                                 } else {
                                     this.notificationSnackBarComponent.openSnackBar('Please add Invoice attachment', SnackBarStatus.danger);

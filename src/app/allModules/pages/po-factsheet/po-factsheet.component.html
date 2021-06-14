@@ -76,11 +76,11 @@
         </div>
         <div fxLayout class="mt-4 mr-40 ml-8">
           <div fxFlex="25" fxLayout>
-            <div class="round" [style.border-color]="poStatus==='DueForACK'?'#efb577':'#34ad65'"></div>
+            <div class="round" [style.border-color]="poStatus==='DueForACK'?'gray':'#34ad65'"></div>
             <div style="width: 10px;margin-left: -1px;"
-              [class]="poStatus==='DueForACK'?'orange-timeline':'green-timeline'">
+              [class]="poStatus==='DueForACK'?'white-timeline':'green-timeline'">
             </div>
-            <div [class]="poStatus==='DueForACK'?'white-timeline':'green-timeline'" fxFlex></div>
+            <div [class]="poStatus==='DueForACK'?'white-timeline':poStatus==='DueForASN'?'white-timeline':'green-timeline'" fxFlex></div>
           </div>
           <div fxFlex="25" fxLayout>
             <div style="width: 10px;margin-right: -1px;" [class]="getTimeline('ASN')"></div>

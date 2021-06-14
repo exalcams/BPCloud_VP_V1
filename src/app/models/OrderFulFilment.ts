@@ -230,7 +230,6 @@ export class POScheduleLineView {
 }
 
 export class BPCOFSubcon extends CommonClass {
-    ID: number;
     Client: string;
     Company: string;
     Type: string;
@@ -238,7 +237,8 @@ export class BPCOFSubcon extends CommonClass {
     DocNumber: string;
     Item: string;
     SlLine: string;
-    Date: Date | string | null;
+    SubconID: number;
+    Date: Date | string;
     OrderedQty: number;
     Batch: string;
     Remarks: string;
@@ -255,6 +255,8 @@ export interface BPCOFSubconView {
     Item: string;
     SlLine: string;
     OrderedQty: number;
+    // ShippedQty: number;
+    // ReadyToBeShippedQty: number;
 }
 export class SubconItems {
     items: BPCOFSubcon[];
