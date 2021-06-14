@@ -203,7 +203,7 @@ export class ASNComponent implements OnInit {
     ngOnInit(): void {
         this.SetUserPreference();
         // Retrive authorizationData
-        const retrievedObject =  this.SecureStorage.get('authorizationData');
+        const retrievedObject = this.SecureStorage.get('authorizationData');
         if (retrievedObject) {
             this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
             this.currentUserID = this.authenticationDetails.UserID;
@@ -468,7 +468,7 @@ export class ASNComponent implements OnInit {
 
     decimalOnly(event): boolean {
 
-console.log("event",event);
+        console.log("event", event);
         // this.AmountSelected();
         const charCode = (event.which) ? event.which : event.keyCode;
         if (charCode === 8 || charCode === 9 || charCode === 13 || charCode === 46
@@ -486,9 +486,9 @@ console.log("event",event);
         this.ASNItemFormArray.controls[index].get('ASNQty').markAsTouched();
         const aSNItemFormArray = this.ASNItemFormGroup.get('ASNItems') as FormArray;
         aSNItemFormArray.controls.forEach((x, i) => {
-            var a=x.get('ASNQty').value;
+            var a = x.get('ASNQty').value;
             // console.log("eve",eve);
-            
+
             if (x.get('ASNQty').value) {
                 this.ASNQty_count1 = this.ASNQty_count1 + 1;
             }
@@ -501,19 +501,19 @@ console.log("event",event);
                 x.get('ASNQty').setErrors(null);
                 x.get('ASNQty').markAsUntouched();
                 x.get('ASNQty').valid;
- 
+
             });
 
         }
-        else{
-             this.ASNItemFormArray.controls[index].get('ASNQty').setErrors({ qty: true });
-        this.ASNItemFormArray.controls[index].get('ASNQty').markAsTouched();
+        else {
+            this.ASNItemFormArray.controls[index].get('ASNQty').setErrors({ qty: true });
+            this.ASNItemFormArray.controls[index].get('ASNQty').markAsTouched();
             this.ASNItemFormArray.controls.forEach((x, i) => {
                 x.get('ASNQty').setErrors({ qty: true });
                 x.get('ASNQty').markAsTouched();
             });
         }
-       
+
     }
     numberOnly(event): boolean {
         const charCode = (event.which) ? event.which : event.keyCode;
@@ -754,13 +754,13 @@ console.log("event",event);
                     this.InvoiceDetailsFormGroup.get('InvoiceAmountUOM').patchValue(this.PO.Currency);
                 }
                 this.DocumentType = this.PO.DocType;
-                // if (this.PO && this.PO.DocType && this.PO.DocType.toLocaleLowerCase() === "subcon") {
-                //     this.GetSubconViewByDocAndPartnerID();
-                // }
-                // else if (this.SelectedDocNumber && !this.SelectedASNHeader.ASNNumber) {
-                //     this.GetPOItemsByDocAndPartnerID();
-                // }
-                this.GetPOItemsByDocAndPartnerID();
+                if (this.PO && this.PO.DocType && this.PO.DocType.toLocaleLowerCase() === "subcon") {
+                    this.GetSubconViewByDocAndPartnerID();
+                }
+                else if (this.SelectedDocNumber && !this.SelectedASNHeader.ASNNumber) {
+                    this.GetPOItemsByDocAndPartnerID();
+                }
+                // this.GetPOItemsByDocAndPartnerID();
             },
             (err) => {
                 console.error(err);
@@ -796,16 +796,16 @@ console.log("event",event);
                     this.SelectedASNHeader.DocNumber = this.SelectedASNView.DocNumber = this.POItems[0].DocNumber;
                     this.POItems.forEach(poItem => {
                         if (poItem.OpenQty && poItem.OpenQty > 0) {
-                            // if (this.PO && this.PO.DocType && this.PO.DocType.toLocaleLowerCase() === "subcon") {
-                            //     const sub = this.SubconViews.filter(x => x.Item === poItem.Item)[0];
-                            //     if (sub) {
-                            //         const remainingQty = sub.OrderedQty - poItem.TransitQty;
-                            //         poItem.MaxAllowedQty = remainingQty;
-                            //     }
-                            // } else {
-                            //     poItem.MaxAllowedQty = poItem.OpenQty;
-                            // }
-                            poItem.MaxAllowedQty = poItem.OpenQty;
+                            if (this.PO && this.PO.DocType && this.PO.DocType.toLocaleLowerCase() === "subcon") {
+                                const sub = this.SubconViews.filter(x => x.Item === poItem.Item)[0];
+                                if (sub) {
+                                    const remainingQty = sub.OrderedQty - poItem.TransitQty;
+                                    poItem.MaxAllowedQty = remainingQty;
+                                }
+                            } else {
+                                poItem.MaxAllowedQty = poItem.OpenQty;
+                            }
+                            // poItem.MaxAllowedQty = poItem.OpenQty;
                         }
 
                         this.InsertPOItemsFormGroup(poItem);
@@ -1059,30 +1059,30 @@ console.log("event",event);
             TaxCode: [poItem.TaxCode],
         });
         row.disable();
-       
-        if (poItem.MaxAllowedQty && poItem.MaxAllowedQty > 0) {
-            row.get('ASNQty').setValidators([Validators.max(poItem.MaxAllowedQty), Validators.pattern('^([0-9]{0,10})([.][0-9]{1,3})?$')]);
-            row.get('ASNQty').updateValueAndValidity();
-            row.get('ASNQty').enable();
-        }
-        // if (poItem.OpenQty && poItem.OpenQty > 0) {
-        //     if (this.PO && this.PO.DocType && this.PO.DocType.toLocaleLowerCase() === "subcon") {
-        //         const sub = this.SubconViews.filter(x => x.Item === poItem.Item)[0];
-        //         if (sub) {
-        //             const remainingQty = sub.OrderedQty - poItem.TransitQty;
-        //             row.get('ASNQty').patchValue(remainingQty);
-        //             if (remainingQty > 0) {
-        //                 row.get('ASNQty').setValidators([Validators.required, Validators.max(remainingQty), Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')]);
-        //                 row.get('ASNQty').updateValueAndValidity();
-        //                 row.get('ASNQty').enable();
-        //             }
-        //         }
-        //     } else {
-        //         row.get('ASNQty').setValidators([Validators.required, Validators.max(poItem.OpenQty), Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')]);
-        //         row.get('ASNQty').updateValueAndValidity();
-        //         row.get('ASNQty').enable();
-        //     }
+
+        // if (poItem.MaxAllowedQty && poItem.MaxAllowedQty > 0) {
+        //     row.get('ASNQty').setValidators([Validators.max(poItem.MaxAllowedQty), Validators.pattern('^([0-9]{0,10})([.][0-9]{1,3})?$')]);
+        //     row.get('ASNQty').updateValueAndValidity();
+        //     row.get('ASNQty').enable();
         // }
+        if (poItem.OpenQty && poItem.OpenQty > 0) {
+            if (this.PO && this.PO.DocType && this.PO.DocType.toLocaleLowerCase() === "subcon") {
+                const sub = this.SubconViews.filter(x => x.Item === poItem.Item)[0];
+                if (sub) {
+                    const remainingQty = sub.OrderedQty - poItem.TransitQty;
+                    row.get('ASNQty').patchValue(remainingQty);
+                    if (remainingQty > 0) {
+                        row.get('ASNQty').setValidators([Validators.required, Validators.max(remainingQty), Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')]);
+                        row.get('ASNQty').updateValueAndValidity();
+                        row.get('ASNQty').enable();
+                    }
+                }
+            } else {
+                row.get('ASNQty').setValidators([Validators.required, Validators.max(poItem.OpenQty), Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')]);
+                row.get('ASNQty').updateValueAndValidity();
+                row.get('ASNQty').enable();
+            }
+        }
         // row.get('Batch').enable();
         // row.get('ManufactureDate').enable();
         // row.get('ExpiryDate').enable();
@@ -1689,7 +1689,7 @@ console.log("event",event);
                                     }
                                 }
                             } else {
-                               
+
                                 this.notificationSnackBarComponent.openSnackBar('There is no Open Qty', SnackBarStatus.danger);
                             }
                         }
@@ -1769,7 +1769,7 @@ console.log("event",event);
                                                 this.notificationSnackBarComponent.openSnackBar('Atleast one item should have non zero value to proceed', SnackBarStatus.danger);
                                             }
                                         } else {
-                                          
+
                                             this.notificationSnackBarComponent.openSnackBar('There is no Open Qty', SnackBarStatus.danger);
                                         }
                                     }
@@ -1955,7 +1955,7 @@ console.log("event",event);
         // this.SelectedBPASNView.TransID = this.SelectedBPASN.TransID;
         // this.SelectedASNView.ModifiedBy = this.authenticationDetails.UserID.toString();
         this.IsProgressBarVisibile = true;
-  
+
         this._ASNService.UpdateASN(this.SelectedASNView).subscribe(
             (data) => {
                 this.SelectedASNHeader.ASNNumber = (data as BPCASNHeader).ASNNumber;
@@ -1982,7 +1982,7 @@ console.log("event",event);
                 this.IsProgressBarVisibile = false;
             }
         );
- 
+
     }
 
     DeleteASN(): void {
