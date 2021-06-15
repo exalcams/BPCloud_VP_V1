@@ -55,6 +55,7 @@ export class SubconComponent implements OnInit {
   SubconItemDisplayedColumns: string[] = [
     'Date',
     'OrderedQty',
+    'ShippedQty',
     'Batch',
     'Remarks',
     'Status',
@@ -271,7 +272,7 @@ export class SubconComponent implements OnInit {
         if (this.AllSubconItems && this.AllSubconItems.length && this.AllSubconItems.length > 0) {
           this.IsDeleteRequired = true;
           this.AllSubconItems.forEach(x => {
-            this.ReadyToBeShippedQty += + x.OrderedQty;
+            this.ReadyToBeShippedQty += + x.ReadyToBeShippedQty;
             this.ProducedQty += +x.OrderedQty;
             this.SubconItemFormGroup.get('OrderedQty').patchValue(x.OrderedQty);
           });
@@ -298,6 +299,7 @@ export class SubconComponent implements OnInit {
       // SubItem.SlLine = this.SelectedPOItem.SlLine;
       SubItem.Date = this.SubconItemFormGroup.get('Date').value;
       SubItem.OrderedQty = this.SubconItemFormGroup.get('OrderedQty').value;
+      SubItem.ReadyToBeShippedQty = this.SubconItemFormGroup.get('OrderedQty').value;
       SubItem.Batch = this.SubconItemFormGroup.get('Batch').value;
       SubItem.Remarks = this.SubconItemFormGroup.get('Remarks').value;
       SubItem.Status = this.SubconItemFormGroup.get('Status').value;
@@ -305,7 +307,7 @@ export class SubconComponent implements OnInit {
         this.AllSubconItems = [];
       }
       this.ProducedQty += +SubItem.OrderedQty;
-      this.ReadyToBeShippedQty += +SubItem.OrderedQty;
+      this.ReadyToBeShippedQty += +SubItem.ReadyToBeShippedQty;
       if (this.ProducedQty > this.SelectedPOItem.OrderedQty) {
         this.notificationSnackBarComponent.openSnackBar('Cumulative produced quantity should not greater than Order qty', SnackBarStatus.danger);
         this.ProducedQty -= +SubItem.OrderedQty;
@@ -335,7 +337,7 @@ export class SubconComponent implements OnInit {
     }
     this.SubconItemDataSource = new MatTableDataSource(this.AllSubconItems);
     this.ProducedQty -= +doc.OrderedQty;
-    this.ReadyToBeShippedQty -= +doc.OrderedQty;
+    this.ReadyToBeShippedQty -= +doc.ReadyToBeShippedQty;
     // this.ReadyToBeShippedQty = 0;
     // this.ProducedQty = 0;
     // this.AllSubconItems.forEach(x => {

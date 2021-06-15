@@ -243,6 +243,8 @@ export class BPCOFSubcon extends CommonClass {
     Batch: string;
     Remarks: string;
     Status: string;
+    ShippedQty: number;
+    ReadyToBeShippedQty: number;
 }
 
 export interface BPCOFSubconView {
@@ -255,8 +257,8 @@ export interface BPCOFSubconView {
     Item: string;
     SlLine: string;
     OrderedQty: number;
-    // ShippedQty: number;
-    // ReadyToBeShippedQty: number;
+    ShippedQty: number;
+    ReadyToBeShippedQty: number;
 }
 export class SubconItems {
     items: BPCOFSubcon[];

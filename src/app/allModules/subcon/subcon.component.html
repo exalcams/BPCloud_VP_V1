@@ -55,7 +55,7 @@
           <div fxFlex="20" fxLayout="column" class="px-12 my-24">
             <div fxLayout fxLayoutAlign="center" fxLayoutGap="2px">
               <div fxFlex="40" fxLayoutAlign="end center">
-                PO No : 
+                PO No :
               </div>
               <div fxFlex="60" fxLayoutAlign="start center">
                 <span class="boldClass">{{SelectedPO?.DocNumber}}</span>
@@ -64,7 +64,7 @@
             <div class="mt-12">
               <div fxLayout fxLayoutAlign="center" fxLayoutGap="2px">
                 <div fxFlex="40" fxLayoutAlign="end center">
-                  PO Date : 
+                  PO Date :
                 </div>
                 <div fxFlex="60" fxLayoutAlign="start center">
                   <span class="boldClass">{{SelectedPO?.DocDate | date : 'dd/MM/yyyy'}}</span>
@@ -75,7 +75,7 @@
           <div fxFlex="20" fxLayout="column" class="borderleft px-12 my-24">
             <div fxLayout fxLayoutAlign="center" fxLayoutGap="2px">
               <div fxFlex="40" fxLayoutAlign="end center">
-                Currency : 
+                Currency :
               </div>
               <div fxFlex="60" fxLayoutAlign="start center">
                 <span class="boldClass">{{SelectedPO?.Currency}}</span>
@@ -84,7 +84,7 @@
             <div class="mt-12">
               <div fxLayout fxLayoutAlign="center" fxLayoutGap="2px">
                 <div fxFlex="40" fxLayoutAlign="end center">
-                  Version : 
+                  Version :
                 </div>
                 <div fxFlex="60" fxLayoutAlign="start center">
                   <span class="boldClass">{{SelectedPO?.DocVersion}}</span>
@@ -125,7 +125,9 @@
                 <div style="width: 10px;margin-left: -1px;"
                   [class]="poStatus==='DueForACK'?'white-timeline':'green-timeline'">
                 </div>
-                <div [class]="poStatus==='DueForACK'?'white-timeline':poStatus==='DueForASN'?'white-timeline':'green-timeline'" fxFlex></div>
+                <div
+                  [class]="poStatus==='DueForACK'?'white-timeline':poStatus==='DueForASN'?'white-timeline':'green-timeline'"
+                  fxFlex></div>
               </div>
               <div fxFlex="25" fxLayout>
                 <div style="width: 10px;margin-right: -1px;" [class]="getTimeline('ASN')"></div>
@@ -246,12 +248,12 @@
                 </div>
 
                 <div fxFlex="30" fxLayout fxLayoutAlign="start center">
-                  Shipped : <span class="boldClass ml-20">0</span>
+                  Shipped : <span class="boldClass ml-20">{{ProducedQty-ReadyToBeShippedQty}}</span>
                   <div class="ml-40">
                     <img class="doubleArrowClass" src="assets/images/doubleArrow.png" />
                   </div>
                 </div>
-              
+
                 <div fxFlex="40" fxLayoutAlign="start center">
                   Ready to be Shipped : <span class="boldClass ml-20">{{ReadyToBeShippedQty}}</span>
                 </div>
@@ -262,7 +264,8 @@
                     [formGroup]="SubconItemFormGroup">
                     <div fxFlex="15">
                       <mat-form-field class="px-12" style="width: 100%;">
-                        <input matInput placeholder="Date" [max]="maxDate" [matDatepicker]="picker1" formControlName="Date">
+                        <input matInput placeholder="Date" [max]="maxDate" [matDatepicker]="picker1"
+                          formControlName="Date">
                         <mat-datepicker-toggle matSuffix [for]="picker1">
                           <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon" class="mb-12"></mat-icon>
                         </mat-datepicker-toggle>
@@ -350,6 +353,12 @@
                       {{element.OrderedQty}} </td>
                   </ng-container>
 
+                  <ng-container matColumnDef="ShippedQty">
+                    <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Shipped Qty </th>
+                    <td mat-cell style="width: 15%;" *matCellDef="let element" class="QtyClass">
+                      {{element.ShippedQty}} </td>
+                  </ng-container>
+
                   <ng-container matColumnDef="Batch">
                     <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Batch </th>
                     <td mat-cell style="width: 15%;" *matCellDef="let element">
@@ -372,8 +381,8 @@
                   <ng-container matColumnDef="Action">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%"> </th>
                     <td mat-cell *matCellDef="let element" style="text-align: center;width: 10%">
-                      <img class="removeIcon" src="assets/images/remove-button.png"
-                        (click)="RemoveSubconItemFromTable(element)">
+                      <img [style.display]="element.ShippedQty>0?'none':'inherit'" class="removeIcon"
+                        src="assets/images/remove-button.png" (click)="RemoveSubconItemFromTable(element)">
                     </td>
                   </ng-container>
 
@@ -389,8 +398,7 @@
 
 
             </div>
-            <mat-card-actions *ngIf="SelectedPOItem && AllSubconItems?.length"
-              class="m-0 pl-12 pr-16 cardActions">
+            <mat-card-actions *ngIf="SelectedPOItem && AllSubconItems?.length" class="m-0 pl-12 pr-16 cardActions">
               <div fxLayout fxLayoutAlign="space-between center">
                 <div fxFlex *ngIf="IsDeleteRequired">
                   <button mat-stroked-button class="DeleteBtn mr-4 mb-4" (click)="DeleteClicked()">Delete</button>
