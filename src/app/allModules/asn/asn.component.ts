@@ -1066,24 +1066,43 @@ export class ASNComponent implements OnInit {
         //     row.get('ASNQty').updateValueAndValidity();
         //     row.get('ASNQty').enable();
         // }
-        if (poItem.OpenQty && poItem.OpenQty > 0) {
-            if (this.PO && this.PO.DocType && this.PO.DocType.toLocaleLowerCase() === "subcon") {
-                const sub = this.SubconViews.filter(x => x.Item === poItem.Item)[0];
-                if (sub) {
-                    const remainingQty = sub.OrderedQty - poItem.TransitQty;
-                    row.get('ASNQty').patchValue(remainingQty);
-                    if (remainingQty > 0) {
-                        row.get('ASNQty').setValidators([Validators.required, Validators.max(remainingQty), Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')]);
-                        row.get('ASNQty').updateValueAndValidity();
-                        row.get('ASNQty').enable();
-                    }
+        // if (poItem.OpenQty && poItem.OpenQty > 0) {
+        //     if (this.PO && this.PO.DocType && this.PO.DocType.toLocaleLowerCase() === "subcon") {
+        //         const sub = this.SubconViews.filter(x => x.Item === poItem.Item)[0];
+        //         if (sub) {
+        //             const remainingQty = sub.OrderedQty - poItem.TransitQty;
+        //             row.get('ASNQty').patchValue(remainingQty);
+        //             if (remainingQty > 0) {
+        //                 row.get('ASNQty').setValidators([Validators.required, Validators.max(remainingQty), Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')]);
+        //                 row.get('ASNQty').updateValueAndValidity();
+        //                 row.get('ASNQty').enable();
+        //             }
+        //         }
+        //     } else {
+        //         row.get('ASNQty').setValidators([Validators.required, Validators.max(poItem.OpenQty), Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')]);
+        //         row.get('ASNQty').updateValueAndValidity();
+        //         row.get('ASNQty').enable();
+        //     }
+        // }
+
+        if (this.PO && this.PO.DocType && this.PO.DocType.toLocaleLowerCase() === "subcon") {
+            const sub = this.SubconViews.filter(x => x.Item === poItem.Item)[0];
+            if (sub) {
+                const remainingQty = sub.OrderedQty - poItem.TransitQty;
+                row.get('ASNQty').patchValue(remainingQty);
+                if (remainingQty > 0) {
+                    row.get('ASNQty').setValidators([Validators.required, Validators.max(remainingQty), Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')]);
+                    row.get('ASNQty').updateValueAndValidity();
+                    row.get('ASNQty').enable();
                 }
-            } else {
-                row.get('ASNQty').setValidators([Validators.required, Validators.max(poItem.OpenQty), Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')]);
-                row.get('ASNQty').updateValueAndValidity();
-                row.get('ASNQty').enable();
             }
+        } else {
+            row.get('ASNQty').setValidators([Validators.required, Validators.max(poItem.MaxAllowedQty), Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')]);
+            row.get('ASNQty').updateValueAndValidity();
+            row.get('ASNQty').enable();
         }
+
+
         // row.get('Batch').enable();
         // row.get('ManufactureDate').enable();
         // row.get('ExpiryDate').enable();
@@ -1121,6 +1140,24 @@ export class ASNComponent implements OnInit {
         // row.get('Batch').enable();
         // row.get('ManufactureDate').enable();
         // row.get('ExpiryDate').enable();
+
+        if (this.PO && this.PO.DocType && this.PO.DocType.toLocaleLowerCase() === "subcon") {
+            const sub = this.SubconViews.filter(x => x.Item === asnItem.Item)[0];
+            if (sub) {
+                const remainingQty = sub.OrderedQty - asnItem.TransitQty;
+                // row.get('ASNQty').patchValue(remainingQty);
+                if (remainingQty > 0) {
+                    row.get('ASNQty').setValidators([Validators.required, Validators.max(remainingQty), Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')]);
+                    row.get('ASNQty').updateValueAndValidity();
+                    row.get('ASNQty').enable();
+                }
+            }
+        } else {
+            row.get('ASNQty').setValidators([Validators.required, Validators.max(asnItem.OpenQty), Validators.pattern('^([1-9][0-9]{0,9})([.][0-9]{1,3})?$')]);
+            row.get('ASNQty').updateValueAndValidity();
+            row.get('ASNQty').enable();
+        }
+
         this.ASNItemFormArray.push(row);
         this.ASNItemDataSource.next(this.ASNItemFormArray.controls);
         // return row;
