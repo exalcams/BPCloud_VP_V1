@@ -71,6 +71,7 @@ export class SubconComponent implements OnInit {
   lastOrderedQty: number;
   SecretKey: string;
   SecureStorage: SecureLS;
+  IsDeleteEnable: boolean;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _masterService: MasterService,
@@ -98,6 +99,7 @@ export class SubconComponent implements OnInit {
     this.IsDeleteRequired = false;
     this.currentDate = new Date();
     this.lastOrderedQty = 0;
+    this.IsDeleteEnable = true;
   }
 
   ngOnInit(): void {
@@ -275,6 +277,9 @@ export class SubconComponent implements OnInit {
             this.ReadyToBeShippedQty += + x.ReadyToBeShippedQty;
             this.ProducedQty += +x.OrderedQty;
             this.SubconItemFormGroup.get('OrderedQty').patchValue(x.OrderedQty);
+            if (x.ShippedQty && x.ShippedQty > 0) {
+              this.IsDeleteRequired = false;
+            }
           });
         } else {
           this.IsDeleteRequired = false;
