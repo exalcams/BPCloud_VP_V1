@@ -59,6 +59,8 @@ import { NgImageSliderModule } from "ng-image-slider";
 import { TranslateModule } from '@ngx-translate/core';
 import { ReportComponent } from './report/report.component';
 import { SupplierEvaluationComponent } from './supplier-evaluation/supplier-evaluation.component';
+import { OTIFComponent } from './otif/otif.component';
+import { NgApexchartsModule } from "ng-apexcharts";
 // import 'chart.piecelabel.js';
 
 const routes = [
@@ -69,6 +71,10 @@ const routes = [
     {
         path: "evaluation",
         component: SupplierEvaluationComponent,
+    },
+    {
+        path: "otif",
+        component: OTIFComponent,
     },
     {
         path: "**",
@@ -134,14 +140,37 @@ const routes = [
         FormsModule,
         NgCircleProgressModule.forRoot({
             // set defaults here
-            radius: 60,
-            outerStrokeWidth: 5,
-            innerStrokeWidth: 2,
-            outerStrokeColor: "#f3705a",
-            innerStrokeColor: "#f3705a",
-            showInnerStroke: true,
-            animationDuration: 300,
+            // radius: 60,
+            // clockwise: true,
+            // titleColor: "#444444",
+            // subtitleColor: "#A9A9A9",
+            // outerStrokeWidth: 10,
+            // innerStrokeWidth: 10,
+            // outerStrokeColor: "#4882c2",
+            // outerStrokeGradientStopColor: "#53a9ff",
+            // innerStrokeColor: "#e7e8ea",
+            // showInnerStroke: true,
+            // showZeroOuterStroke: true,
+            // animationDuration: 300,
+            "radius": 75,
+            "space": -10,
+            "outerStrokeGradient": true,
+            "outerStrokeWidth": 10,
+            "outerStrokeColor": "#5f2cff",
+            "outerStrokeGradientStopColor": "#5f2cff",
+            "innerStrokeColor": "#e7e8ea",
+            "innerStrokeWidth": 10,
+            "subtitle": "Overall value",
+            "subtitleFontSize": "15",
+            "subtitleColor": "#acacac",
+            "animateTitle": false,
+            "animationDuration": 300,
+            "showUnits": false,
+            "showBackground": false,
+            "startFromZero": false,
+            // "lazy": true
         }),
+        NgApexchartsModule,
         NgImageSliderModule,
         RouterModule.forChild(routes),
         TranslateModule
@@ -149,6 +178,7 @@ const routes = [
     declarations: [
         ReportComponent,
         SupplierEvaluationComponent,
+        OTIFComponent,
     ],
     providers: [DecimalPipe],
     entryComponents: [],

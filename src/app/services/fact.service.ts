@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpEvent, HttpResponse } f
 import { AuthService } from './auth.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { BPCFactContactPerson, BPCFactBank, BPCKRA, BPCAIACT, BPCFactView, BPCFact, BPCCertificate, BPCFactXLSX, BPCFactBankXLSX, FactViewSupport, BPCCertificateAttachment, BPCAttachments, BPCAttach, BPCSE } from 'app/models/fact';
+import { BPCFactContactPerson, BPCFactBank, BPCKRA, BPCAIACT, BPCFactView, BPCFact, BPCCertificate, BPCFactXLSX, BPCFactBankXLSX, FactViewSupport, BPCCertificateAttachment, BPCAttachments, BPCAttach, BPCSE, BPCOTIF, OTIFChartDetails } from 'app/models/fact';
 import { AnimationKeyframesSequenceMetadata } from '@angular/animations';
 // import { BPCFactContactPerson, BPCFactBank, BPCKRA, BPCAIACT, BPCFactView, BPCFact, BPCFactBankXLSX, BPCFactXLSX } from 'app/models/fact';
 
@@ -64,7 +64,7 @@ export class FactService {
     formData.append('PatnerID', Attachment[0].PatnerID);
     formData.append('ReferenceNo', Attachment[0].ReferenceNo);
     formData.append('Type', Attachment[0].Type);
-    console.log('UpdateAttachment FormData',formData);
+    console.log('UpdateAttachment FormData', formData);
     return this._httpClient.post<any[]>(`${this.baseAddress}factapi/Fact/UpdateAttachment`,
       formData,
       // {
@@ -310,7 +310,7 @@ export class FactService {
     ).pipe(catchError(this.errorHandler));
 
   }
-  DownloadOfAttachment(PartnerID: string, certificateName: string, certificateType: string,AttachmentID:number): Observable<Blob | string> {
+  DownloadOfAttachment(PartnerID: string, certificateName: string, certificateType: string, AttachmentID: number): Observable<Blob | string> {
     return this._httpClient.get(`${this.baseAddress}factapi/Fact/DownloadOfAttachment?PartnerID=${PartnerID}&certificateName=${certificateName}
     &certificateType=${certificateType}&AttachmentID=${AttachmentID}`,
       {
@@ -429,6 +429,44 @@ export class FactService {
     return this._httpClient
       .get<BPCSE[]>(
         `${this.baseAddress}factapi/Fact/FilterSEByPartnerID?PartnerID=${PartnerID}&Criteria=${Criteria}&ParentCriteria=${ParentCriteria}&Percentage=${Percentage}`
+      )
+      .pipe(catchError(this.errorHandler));
+  }
+
+  GetAllOTIFs(): Observable<BPCOTIF[] | string> {
+    return this._httpClient
+      .get<BPCOTIF[]>(
+        `${this.baseAddress}factapi/Fact/GetAllOTIFs`
+      )
+      .pipe(catchError(this.errorHandler));
+  }
+
+  GetOTIFsByPartnerID(PartnerID: string): Observable<BPCOTIF[] | string> {
+    return this._httpClient
+      .get<BPCOTIF[]>(
+        `${this.baseAddress}factapi/Fact/GetOTIFsByPartnerID?PartnerID=${PartnerID}`
+      )
+      .pipe(catchError(this.errorHandler));
+  }
+
+  FilterOTIFs(PartnerID: string, Material: string, FromDate: string, ToDate: string): Observable<BPCOTIF[] | string> {
+    return this._httpClient
+      .get<BPCOTIF[]>(
+        `${this.baseAddress}factapi/Fact/FilterOTIFs?PartnerID=${PartnerID}&Material=${Material}&FromDate=${FromDate}&ToDate=${ToDate}`
+      )
+      .pipe(catchError(this.errorHandler));
+  }
+  GetOTIFCircleProgressChartData(PartnerID: string, Material: string, FromDate: string, ToDate: string): Observable<OTIFChartDetails | string> {
+    return this._httpClient
+      .get<OTIFChartDetails>(
+        `${this.baseAddress}factapi/Fact/GetOTIFCircleProgressChartData?PartnerID=${PartnerID}&Material=${Material}&FromDate=${FromDate}&ToDate=${ToDate}`
+      )
+      .pipe(catchError(this.errorHandler));
+  }
+  GetOTIFBarChartData(PartnerID: string, Material: string, FromDate: string, ToDate: string): Observable<OTIFChartDetails[] | string> {
+    return this._httpClient
+      .get<OTIFChartDetails[]>(
+        `${this.baseAddress}factapi/Fact/GetOTIFBarChartData?PartnerID=${PartnerID}&Material=${Material}&FromDate=${FromDate}&ToDate=${ToDate}`
       )
       .pipe(catchError(this.errorHandler));
   }
