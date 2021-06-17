@@ -1287,6 +1287,16 @@ export class LoginComponent implements OnInit {
                 url: "/reports/evaluation",
             });
         }
+        if (this.menuItems.indexOf("OTIF") >= 0 || true) {
+            this.buyerReportChildren.push({
+                id: "otif",
+                title: "OTIF",
+                // translate: "NAV.VENDOR.CAPACreate",
+                type: "item",
+                // icon: 'dashboard',
+                url: "/reports/otif",
+            });
+        }
         if (
             this.menuItems.indexOf("SupplierEvaluation") >= 0) {
             this.children.push({
