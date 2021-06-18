@@ -411,6 +411,13 @@ export class FactService {
       )
       .pipe(catchError(this.errorHandler));
   }
+  GetSEPieChartData(): Observable<OTIFChartDetails[] | string> {
+    return this._httpClient
+      .get<OTIFChartDetails[]>(
+        `${this.baseAddress}factapi/Fact/GetSEPieChartData`
+      )
+      .pipe(catchError(this.errorHandler));
+  }
   FilterSEs(Criteria: string, ParentCriteria: string, Percentage: number | string | null): Observable<BPCSE[] | string> {
     return this._httpClient
       .get<BPCSE[]>(
@@ -432,7 +439,13 @@ export class FactService {
       )
       .pipe(catchError(this.errorHandler));
   }
-
+  GetSEPieChartDataByPartnerID(PartnerID: string, Criteria: string, ParentCriteria: string, Percentage: number | string | null): Observable<OTIFChartDetails[] | string> {
+    return this._httpClient
+      .get<OTIFChartDetails[]>(
+        `${this.baseAddress}factapi/Fact/GetSEPieChartDataByPartnerID?PartnerID=${PartnerID}&Criteria=${Criteria}&ParentCriteria=${ParentCriteria}&Percentage=${Percentage}`
+      )
+      .pipe(catchError(this.errorHandler));
+  }
   GetAllOTIFs(): Observable<BPCOTIF[] | string> {
     return this._httpClient
       .get<BPCOTIF[]>(

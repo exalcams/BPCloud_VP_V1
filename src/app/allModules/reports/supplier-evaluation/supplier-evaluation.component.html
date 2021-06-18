@@ -54,53 +54,67 @@
           </div>
         </div>
       </div> -->
-      <div class="ml-20 mr-20" fxFlex="100">
-        <form autocomplete="off" name="form" novalidate [formGroup]="SearchFormGroup">
-          <div fxLayout="row" fxLayoutAlign="start center">
-            <mat-form-field appearance="outline" fxFlex="25" class="mr-8">
-              <input matInput placeholder="Criteria" formControlName="Criteria">
-            </mat-form-field>
-            <mat-form-field appearance="outline" fxFlex="25" class="mr-8">
-              <input matInput placeholder="Parent Criteria" formControlName="ParentCriteria">
-            </mat-form-field>
-            <mat-form-field appearance="outline" fxFlex="25" class="mr-8">
-              <input matInput placeholder="Percentage" formControlName="Percentage">
-            </mat-form-field>
-            <div fxFlex align="end">
-              <button mat-raised-button class="SaveBtn" (click)="SearchClicked('Search')"
-                [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">Search</button>
-            </div>
-            <!-- <mat-form-field appearance="outline" fxFlex="25" class="mr-8">
-              <input matInput placeholder="From Date" [matDatepicker]="picker1" formControlName="FromDate"
-                (dateChange)="DateSelected()">
-              <mat-datepicker-toggle matSuffix [for]="picker1">
-                <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
-              </mat-datepicker-toggle>
-              <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
-            <div fxFlex="25">
-              <mat-form-field appearance="outline" class="ml-8" style="width: 96%;">
-                <input matInput placeholder="To Date" [matDatepicker]="picker2" formControlName="ToDate"
-                  (dateChange)="DateSelected()">
-                <mat-datepicker-toggle matSuffix [for]="picker2">
-                  <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
-                </mat-datepicker-toggle>
-                <mat-datepicker #picker2></mat-datepicker>
-              </mat-form-field>
-              <div *ngIf="isDateError" class="DateError mb-12 ml-12">
-                To date should not be less than from date
-              </div>
-            </div> -->
-          </div>
+      <!-- <div class="ml-20 mr-20" fxFlex="100">
+       
+      </div> -->
 
-          <!-- <div fxLayout="row" fxLayoutAlign="start center">
-            <div fxFlex align="end">
-              <button mat-raised-button class="SaveBtn" (click)="SearchClicked('Search')"
-                [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">Search</button>
+      <div fxFlex fxLayout fxLayoutGap="0px">
+
+        <div class="tile mx-20" fxFlex="50">
+          <form autocomplete="off" class="p-12" name="form" novalidate [formGroup]="SearchFormGroup">
+            <div fxLayout="column" class="mt-16" fxLayoutAlign="center stretch">
+              <div fxLayout fxLayoutAlign="start center">
+                <mat-form-field appearance="outline" fxFlex="50" class="mr-8">
+                  <mat-label>Partner ID</mat-label>
+                  <input matInput formControlName="PartnerID">
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="50" class="mr-8">
+                  <mat-label>Percentage</mat-label>
+                  <input matInput formControlName="Percentage">
+                </mat-form-field>
+              </div>
+              <div fxLayout fxLayoutAlign="start center">
+                <mat-form-field appearance="outline" fxFlex="50" class="mr-8">
+                  <mat-label>Criteria</mat-label>
+                  <input matInput formControlName="Criteria">
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="50" class="mr-8">
+                  <mat-label>Parent Criteria</mat-label>
+                  <input matInput formControlName="ParentCriteria">
+                </mat-form-field>
+              </div>
+              <div fxLayout fxLayoutAlign="center">
+                <button mat-raised-button class="SaveBtn" (click)="SearchClicked('Search')"
+                  [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">Search</button>
+              </div>
+
             </div>
-          </div> -->
-        </form>
+          </form>
+        </div>
+
+        <div class="tile mx-20" fxFlex="25" fxLayout="column" fxLayoutAlign="start">
+          <div fxLayoutAlign="start center" class="pt-8">
+            <span class="boldClass pl-8">Evaluation ( per Criteria )</span>
+          </div>
+          <span [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="orangeBorderBottom1"></span>
+          <div fxFlex fxLayoutAlign="center" class="p-12" *ngIf="SEPieChartData.length">
+            <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [options]="pieChartOptions"
+              [colors]="pieChartColors" [legend]="pieChartLegend" [chartType]="pieChartType">
+            </canvas>
+            <!-- <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+            [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType">
+          </canvas> -->
+          </div>
+        </div>
+
+        <div class="tile mx-20" fxFlex="25">
+          <div fxLayout fxLayoutAlign="center">
+            <img src="assets/images/reportImg.png">
+          </div>
+        </div>
       </div>
+
+
     </div>
     <div class="px-20 pb-20">
       <div fxLayout="row" class="mt-20" fxLayoutAlign="start center">
@@ -122,17 +136,24 @@
       </div>
 
       <table class="table" mat-table [dataSource]="tableDataSource" matSort>
-        <ng-container matColumnDef="ECriteria">
+        <ng-container matColumnDef="PatnerID">
           <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
-            Criteria </th>
+            Partner ID </th>
           <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
             <div fxLayout>
               <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
               <div fxFlex class="pl-8">
-                <span> {{element.ECriteria}} </span>
+                <span> {{element.PatnerID}} </span>
               </div>
             </div>
           </td>
+        </ng-container>
+
+        <ng-container matColumnDef="ECriteria">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Criteria </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.ECriteria}} </td>
         </ng-container>
 
         <ng-container matColumnDef="ECriteriaText">
@@ -166,7 +187,7 @@
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="tableDisplayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: tableDisplayedColumns;">
-      </tr>
+        </tr>
       </table>
       <div>
         <mat-paginator [pageSizeOptions]="[5, 10, 25,50,100,250,500,1000]"></mat-paginator>
