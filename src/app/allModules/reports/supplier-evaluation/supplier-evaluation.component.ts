@@ -5,7 +5,7 @@ import { MatTableDataSource, MatPaginator, MatMenuTrigger, MatSort, MatSnackBar,
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfigService } from '@fuse/services/config.service';
-import { BPCSE } from 'app/models/fact';
+import { BPCSE, OTIFChartDetails } from 'app/models/fact';
 import { AuthenticationDetails, AppUsage } from 'app/models/master';
 import { ActionLog } from 'app/models/OrderFulFilment';
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
@@ -16,7 +16,9 @@ import { ExcelService } from 'app/services/excel.service';
 import { FactService } from 'app/services/fact.service';
 import { MasterService } from 'app/services/master.service';
 import { PaymentService } from 'app/services/payment.service';
+import { ChartType } from 'chart.js';
 import { Guid } from 'guid-typescript';
+import { BaseChartDirective } from 'ng2-charts';
 import * as SecureLS from 'secure-ls';
 
 @Component({
@@ -27,7 +29,7 @@ import * as SecureLS from 'secure-ls';
   animations: fuseAnimations,
 })
 export class SupplierEvaluationComponent implements OnInit {
-
+  @ViewChild(BaseChartDirective) BaseChart: BaseChartDirective;
   authenticationDetails: AuthenticationDetails;
   currentUserID: Guid;
   currentUserName: string;
@@ -35,6 +37,7 @@ export class SupplierEvaluationComponent implements OnInit {
   MenuItems: string[];
   notificationSnackBarComponent: NotificationSnackBarComponent;
   IsProgressBarVisibile: boolean;
+  IsProgressBarVisibile1: boolean;
   SEs: BPCSE[] = [];
   SearchFormGroup: FormGroup;
   isDateError: boolean;
@@ -44,6 +47,7 @@ export class SupplierEvaluationComponent implements OnInit {
   SelectValue: string;
   isExpanded: boolean;
   tableDisplayedColumns: string[] = [
+    'PatnerID',
     'ECriteria',
     'ECriteriaText',
     'ParentECriteria',
@@ -63,6 +67,86 @@ export class SupplierEvaluationComponent implements OnInit {
   ActionLog: any;
   SecretKey: string;
   SecureStorage: SecureLS;
+  OTIFCircleProgressValue = 10;
+
+  // Pie chart
+  SEPieChartData: OTIFChartDetails[] = [];
+  public pieChartOptions = {
+    responsive: true,
+    // cornerRadius: 20,
+    maintainAspectRatio: false,
+    legend: {
+      position: "right",
+      // align: "end",
+      labels: {
+        fontSize: 10,
+        usePointStyle: true,
+      },
+    },
+    plugins: {
+      labels: {
+        render: 'value',
+        fontSize: 12,
+        fontColor: '#000',
+      }
+    }
+  };
+  public pieChartType: ChartType = "pie";
+  public pieChartLegend = true;
+  public pieChartLabels = [];
+  public pieChartData: any[] = [];
+  public pieChartColors: any[] = [
+    { backgroundColor: ['#34ad65', "#fb863a", '#ff414e', "#5f2cff", '#40a8e2', "#74a2f1", "#c3d8fd", '#b5f9ff', '#8076a3', '#ffde22', '#9bc400'] }
+    // { backgroundColor: ['#34ad65', '#9bc400', '#ffde22', "#fb863a", '#ff414e', '#5f255f', "#5f2cff", '#40a8e2', "#74a2f1", "#b5f9ff", "#c3d8fd"] },
+  ];
+
+  // public barChartOptions = {
+  //   responsive: true,
+  //   // cornerRadius: 20,
+  //   maintainAspectRatio: false,
+  //   legend: {
+  //     position: "top",
+  //     align: "end",
+  //     labels: {
+  //       fontSize: 10,
+  //       usePointStyle: true,
+  //     },
+  //   },
+  //   // // We use these empty structures as placeholders for dynamic theming.
+  //   scales: {
+  //     xAxes: [
+  //       {
+  //         barPercentage: 0.3,
+  //         // categoryPercentage: -0.5,
+  //         gridLines: {
+  //           display: false
+  //         }
+  //       },
+  //     ],
+  //     yAxes: [
+  //       {
+  //         ticks: {
+  //           stepSize: 20,
+  //           beginAtZero: true,
+  //         },
+  //         gridLines: {
+  //           display: false
+  //         }
+  //       },
+  //     ],
+  //   },
+
+  // };
+  // public barChartType: ChartType = "bar";
+  // public barChartLegend = true;
+  // public barChartLabels = [];
+  // public barChartData: any[] = [
+  //   { data: [], label: "Criteria" },
+  // ];
+  // public barChartColors: any[] = [
+  //   { backgroundColor: "#5f2cff" },
+  // ];
+
   constructor(
     private _fuseConfigService: FuseConfigService,
     private formBuilder: FormBuilder,
@@ -82,6 +166,7 @@ export class SupplierEvaluationComponent implements OnInit {
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.IsProgressBarVisibile = false;
+    this.IsProgressBarVisibile1 = false;
     this.isDateError = false;
     this.searchText = '';
     this.SelectValue = 'All';
@@ -115,6 +200,7 @@ export class SupplierEvaluationComponent implements OnInit {
     this.CreateAppUsage();
     this.InitializeSearchForm();
     this.GetAllSEs();
+    this.GetSEPieChartData();
     // this.GetSEByPatnerID();
     // this.SearchClicked();
   }
@@ -137,6 +223,7 @@ export class SupplierEvaluationComponent implements OnInit {
 
   InitializeSearchForm(): void {
     this.SearchFormGroup = this.formBuilder.group({
+      PartnerID: [''],
       Criteria: [''],
       ParentCriteria: [''],
       Percentage: [''],
@@ -170,6 +257,42 @@ export class SupplierEvaluationComponent implements OnInit {
       }
     );
   }
+  GetSEPieChartData(): void {
+    this.IsProgressBarVisibile1 = true;
+    this.SEPieChartData = [];
+    this._factService.GetSEPieChartData().subscribe(
+      (data) => {
+        this.SEPieChartData = data as OTIFChartDetails[];
+        this.pieChartLabels = [];
+        this.pieChartData = [];
+        setTimeout(() => {
+          this.SEPieChartData.forEach(x => {
+            this.pieChartLabels.push(x.label);
+            this.pieChartData.push(x.Value);
+            this.BaseChart.chart.config.data.labels = this.pieChartLabels;
+            this.BaseChart.chart.update();
+          }, 10);
+        });
+        // this.barChartLabels = [];
+        // this.barChartData = [
+        //   { data: [], label: "Criteria" },
+        // ];
+        // setTimeout(() => {
+        //   this.SEPieChartData.forEach(x => {
+        //     this.barChartLabels.push(x.label);
+        //     this.barChartData[0].data.push(x.Value);
+        //     this.barChartData[0].label = "Criteria";
+        //     this.BaseChart.chart.update();
+        //   }, 10);
+        // });
+        this.IsProgressBarVisibile1 = false;
+      },
+      (err) => {
+        this.IsProgressBarVisibile1 = false;
+        console.error(err);
+      }
+    );
+  }
 
   DateSelected(): void {
     const FROMDATEVAL = this.SearchFormGroup.get('FromDate').value as Date;
@@ -196,11 +319,12 @@ export class SupplierEvaluationComponent implements OnInit {
       //   if (TDate) {
       //     ToDate = this._datePipe.transform(TDate, 'yyyy-MM-dd');
       //   }
+      const PartnerID = this.SearchFormGroup.get('PartnerID').value;
       const Criteria = this.SearchFormGroup.get('Criteria').value;
       const ParentCriteria = this.SearchFormGroup.get('ParentCriteria').value;
       const Percentage = this.SearchFormGroup.get('Percentage').value;
       this.IsProgressBarVisibile = true;
-      this._factService.FilterSEs(Criteria, ParentCriteria, Percentage).subscribe(
+      this._factService.FilterSEByPartnerID(PartnerID, Criteria, ParentCriteria, Percentage).subscribe(
         (data) => {
           this.SEs = data as BPCSE[];
           // this.BPCSE=this.SEs;
@@ -216,10 +340,47 @@ export class SupplierEvaluationComponent implements OnInit {
           this.IsProgressBarVisibile = false;
         }
       );
+      this.GetSEPieChartDataByPartnerID(PartnerID, Criteria, ParentCriteria, Percentage);
       // }
     } else {
       this.ShowValidationErrors(this.SearchFormGroup);
     }
+  }
+  GetSEPieChartDataByPartnerID(PartnerID: string, Criteria: string, ParentCriteria: string, Percentage: number | string | null): void {
+    this.IsProgressBarVisibile1 = true;
+    this.SEPieChartData = [];
+    this._factService.GetSEPieChartDataByPartnerID(PartnerID, Criteria, ParentCriteria, Percentage).subscribe(
+      (data) => {
+        this.SEPieChartData = data as OTIFChartDetails[];
+        this.pieChartLabels = [];
+        this.pieChartData = [];
+        setTimeout(() => {
+          this.SEPieChartData.forEach(x => {
+            this.pieChartLabels.push(x.label);
+            this.pieChartData.push(x.Value);
+            this.BaseChart.chart.config.data.labels = this.pieChartLabels;
+            this.BaseChart.chart.update();
+          }, 10);
+        });
+        // this.barChartLabels = [];
+        // this.barChartData = [
+        //   { data: [], label: "Criteria" },
+        // ];
+        // setTimeout(() => {
+        //   this.SEPieChartData.forEach(x => {
+        //     this.barChartLabels.push(x.label);
+        //     this.barChartData[0].data.push(x.Value);
+        //     this.barChartData[0].label = "Criteria";
+        //     this.BaseChart.chart.update();
+        //   }, 10);
+        // });
+        this.IsProgressBarVisibile1 = false;
+      },
+      (err) => {
+        this.IsProgressBarVisibile1 = false;
+        console.error(err);
+      }
+    );
   }
   ShowValidationErrors(formGroup: FormGroup): void {
     Object.keys(formGroup.controls).forEach(key => {
@@ -259,6 +420,7 @@ export class SupplierEvaluationComponent implements OnInit {
     const itemsShowedd = [];
     itemsShowed.forEach(x => {
       const item = {
+        'Partner ID': x.PatnerID,
         'Criteria': x.ECriteria,
         'Criteria Text': x.ECriteriaText,
         'Parent Criteria': x.ParentECriteria,

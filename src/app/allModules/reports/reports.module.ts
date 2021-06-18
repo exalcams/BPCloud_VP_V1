@@ -153,6 +153,7 @@ const routes = [
             // showZeroOuterStroke: true,
             // animationDuration: 300,
             "radius": 75,
+            "showUnits": true,
             "space": -10,
             "outerStrokeGradient": true,
             "outerStrokeWidth": 10,
@@ -165,7 +166,6 @@ const routes = [
             "subtitleColor": "#acacac",
             "animateTitle": false,
             "animationDuration": 300,
-            "showUnits": false,
             "showBackground": false,
             "startFromZero": false,
             // "lazy": true

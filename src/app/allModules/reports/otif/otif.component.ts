@@ -15,31 +15,31 @@ import { AuthService } from 'app/services/auth.service';
 import { ExcelService } from 'app/services/excel.service';
 import { FactService } from 'app/services/fact.service';
 import { MasterService } from 'app/services/master.service';
-import { ChartType } from 'chart.js';
+import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Guid } from 'guid-typescript';
 import { ApexAxisChartSeries, ApexNonAxisChartSeries, ApexChart, ApexDataLabels, ApexPlotOptions, ApexYAxis, ApexXAxis, ApexFill, ApexTitleSubtitle, ApexGrid, ApexTooltip, ApexStroke, ApexLegend, ApexMarkers, ApexResponsive, ApexOptions } from 'ng-apexcharts';
 import { BaseChartDirective } from 'ng2-charts';
 import * as SecureLS from 'secure-ls';
-export interface ChartOptions {
-  series: ApexAxisChartSeries;
-  guageseries: ApexNonAxisChartSeries;
-  chart: ApexChart;
-  dataLabels: ApexDataLabels;
-  labels: string[];
-  plotOptions: ApexPlotOptions;
-  yaxis: ApexYAxis;
-  xaxis: ApexXAxis;
-  fill: ApexFill;
-  title: ApexTitleSubtitle;
-  grid: ApexGrid;
-  tooltip: ApexTooltip;
-  stroke: ApexStroke;
-  legend: ApexLegend;
-  markers: ApexMarkers;
-  colors: string[];
-  responsive: ApexResponsive[];
-  options: ApexOptions;
-}
+// export interface ChartOptions {
+//   series: ApexAxisChartSeries;
+//   guageseries: ApexNonAxisChartSeries;
+//   chart: ApexChart;
+//   dataLabels: ApexDataLabels;
+//   labels: string[];
+//   plotOptions: ApexPlotOptions;
+//   yaxis: ApexYAxis;
+//   xaxis: ApexXAxis;
+//   fill: ApexFill;
+//   title: ApexTitleSubtitle;
+//   grid: ApexGrid;
+//   tooltip: ApexTooltip;
+//   stroke: ApexStroke;
+//   legend: ApexLegend;
+//   markers: ApexMarkers;
+//   colors: string[];
+//   responsive: ApexResponsive[];
+//   options: ApexOptions;
+// }
 @Component({
   selector: 'app-otif',
   templateUrl: './otif.component.html',
@@ -49,7 +49,7 @@ export interface ChartOptions {
 })
 export class OTIFComponent implements OnInit {
   @ViewChild(BaseChartDirective) BaseChart: BaseChartDirective;
-  public BarchartOptions: Partial<ChartOptions>;
+  // public BarchartOptions: Partial<ChartOptions>;
   authenticationDetails: AuthenticationDetails;
   currentUserID: Guid;
   currentUserName: string;
@@ -57,6 +57,8 @@ export class OTIFComponent implements OnInit {
   MenuItems: string[];
   notificationSnackBarComponent: NotificationSnackBarComponent;
   IsProgressBarVisibile: boolean;
+  IsProgressBarVisibile1: boolean;
+  IsProgressBarVisibile2: boolean;
   OTIFs: BPCOTIF[] = [];
   SearchFormGroup: FormGroup;
   isDateError: boolean;
@@ -92,6 +94,7 @@ export class OTIFComponent implements OnInit {
   OTIFBarChartData: OTIFChartDetails[] = [];
   public barChartOptions = {
     responsive: true,
+    // cornerRadius: 20,
     maintainAspectRatio: false,
     legend: {
       position: "top",
@@ -105,77 +108,49 @@ export class OTIFComponent implements OnInit {
     scales: {
       xAxes: [
         {
-          barPercentage: 1.3,
-          categoryPercentage: -0.5,
+          barPercentage: 0.3,
+          // categoryPercentage: -0.5,
+          gridLines: {
+            display: false
+          }
         },
       ],
       yAxes: [
         {
           ticks: {
-            stepSize: 25,
+            stepSize: 20,
             beginAtZero: true,
           },
+          gridLines: {
+            display: false
+          }
         },
       ],
     },
-    plugins: {
-      labels: {
-        // tslint:disable-next-line:typedef
-        render: function (args) {
-          // return args.value + "%";
-          return args.value;
-        },
-        fontColor: "#000",
-        position: "outside",
-      },
-    },
-    // plugins: [{
-    //     // tslint:disable-next-line:typedef
-    //     beforeInit: function (chart, options) {
-    //         // tslint:disable-next-line:typedef
-    //         chart.legend.afterFit = function () {
-    //             this.height += 100; // must use `function` and not => because of `this`
-    //         };
-    //     }
-    // }]
+    
   };
-  @ViewChild("barCanvas") barCanvas: ElementRef;
-  // public barChartLabels: any[] = ['17/02/20', '18/02/20', '19/02/20', '20/02/20', '21/02/20'];
-  // barChartLabels: any[] = [];
-  date1 = new Date();
-  date2 = new Date();
-  date3 = new Date();
-  date4 = new Date();
-  date5 = new Date();
-
   public barChartType: ChartType = "bar";
   public barChartLegend = true;
-  // public barChartLabels: any[] = [];
   public barChartLabels = [];
-
-  // barChartData: any[] = [
-  //     { data: [65, 59, 80, 81, 56, 55, 40], label: "Actual" },
-  //     { data: [28, 48, 40, 19, 86, 27, 90], label: "Planned" },
-  // ];
-  // [
-  //     {
-  //       name: "Net Profit",
-  //       data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-  //     },
-  //     {
-  //       name: "Revenue",
-  //       data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-  //     }
   public barChartData: any[] = [
     { data: [], label: "OTIF" },
-    // { data: [], name: "Planned" },
   ];
-
   public barChartColors: any[] = [
     { backgroundColor: "#5f2cff" },
-    // { backgroundColor: "#fb863a" },
   ];
 
+  // public barChartOptions: ChartOptions = {
+  //   responsive: true,
+  // };
+  // public barChartLabels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+  // public barChartType: ChartType = 'bar';
+  // public barChartLegend = true;
+  // public barChartPlugins = [];
+
+  // public barChartData = [
+  //   { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
+  //   { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' }
+  // ];
 
 
   constructor(
@@ -197,6 +172,8 @@ export class OTIFComponent implements OnInit {
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.IsProgressBarVisibile = false;
+    this.IsProgressBarVisibile1 = false;
+    this.IsProgressBarVisibile2 = false;
     this.isDateError = false;
     this.searchText = '';
     this.SelectValue = 'All';
@@ -339,20 +316,23 @@ export class OTIFComponent implements OnInit {
     }
   }
   GetOTIFCircleProgressChartData(PartnerID: string, Material: string, FromDate: string, ToDate: string): void {
+    this.IsProgressBarVisibile1 = true;
     this._factService.GetOTIFCircleProgressChartData(PartnerID, Material, FromDate, ToDate).subscribe(
       (data) => {
         const dt = data as OTIFChartDetails;
         if (dt) {
           this.OTIFCircleProgressValue = dt.Value;
         }
+        this.IsProgressBarVisibile1 = false;
       },
       (err) => {
         console.error(err);
-        this.IsProgressBarVisibile = false;
+        this.IsProgressBarVisibile1 = false;
       }
     );
   }
   GetOTIFBarChartData(PartnerID: string, Material: string, FromDate: string, ToDate: string): void {
+    this.IsProgressBarVisibile2 = true;
     this._factService.GetOTIFBarChartData(PartnerID, Material, FromDate, ToDate).subscribe(
       (data) => {
         this.OTIFBarChartData = data as OTIFChartDetails[];
@@ -369,7 +349,7 @@ export class OTIFComponent implements OnInit {
             this.BaseChart.chart.update();
           }, 10);
         });
-
+        this.IsProgressBarVisibile2 = false;
         // this.BarchartOptions = {
         //   series: this.barChartData,
         //   chart: {
@@ -426,7 +406,7 @@ export class OTIFComponent implements OnInit {
       },
       (err) => {
         console.error(err);
-        this.IsProgressBarVisibile = false;
+        this.IsProgressBarVisibile2 = false;
       }
     );
   }

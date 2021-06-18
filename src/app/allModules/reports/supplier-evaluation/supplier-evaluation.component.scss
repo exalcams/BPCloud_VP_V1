@@ -54,12 +54,12 @@
     .semiBoldClass {
         font-weight: 500;
     }
-    .SaveBtn {
-        background-color: #efb577;
-        padding: 0px 40px;
-        color: white;
-        margin-top: 2rem;
-    }
+    // .SaveBtn {
+    //     background-color: #efb577;
+    //     padding: 0px 40px;
+    //     color: white;
+    //     margin-top: 2rem;
+    // }
     .subTitle {
         @extend .semiBoldClass;
         font-size: 12px;
@@ -209,7 +209,7 @@
         min-height: 60px !important;
         max-height: 250px !important;
         img {
-            height: 36px;
+            height: 200px;
         }
         cursor: pointer;
     }
@@ -218,6 +218,13 @@
     }
     .orangeBorderBottom {
         border-bottom: 2px solid #ffd15c;
+        width: 100px;
+        height: 2px;
+    }
+    .orangeBorderBottom1 {
+        border-bottom: 2px solid #ffd15c;
+        width: 150px;
+        height: 2px;
     }
     .rightCard {
         min-height: 300px !important;
@@ -389,10 +396,10 @@
         transform: translateY(-1.1em) scale(0.75);
         width: 133.33333%;
     }
-    .mat-form-field-outline-start,
-    .mat-form-field-outline-end {
-        border-radius: 0 !important;
-    }
+    // .mat-form-field-outline-start,
+    // .mat-form-field-outline-end {
+    //     border-radius: 0 !important;
+    // }
 
     .calendarImg {
         height: 20px;
@@ -402,7 +409,8 @@
         background-color: #efb577;
         padding: 0px 40px;
         color: white;
-        margin-top: -32px;
+        margin-top: 16px;
+        // margin-top: -32px;
     }
     .hrLine {
         height: 1px;
@@ -442,7 +450,7 @@
         margin-top: -16px;
         // margin-left: 32px;
     }
-    .footer{
+    .footer {
         box-shadow: 0 -5px 10px 0 rgba(0, 0, 0, 0.16);
         position: absolute;
         width: 100%;
