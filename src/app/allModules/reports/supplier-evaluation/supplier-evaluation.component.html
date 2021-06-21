@@ -195,9 +195,9 @@
     </div>
 
 
-    <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile || IsProgressBarVisibile1" class="progressBarPostion" color="accent" mode="indeterminate">
     </mat-progress-spinner>
-    <div id="overlay" *ngIf="IsProgressBarVisibile"></div>
+    <div id="overlay" *ngIf="IsProgressBarVisibile || IsProgressBarVisibile1"></div>
   </div>
   <!-- <div class="px-20 pb-20" style="position: absolute;width: 100%;
       bottom: 6rem;" fxLayout fxLayoutAlign="start center" fxLayoutGap="2.5rem">

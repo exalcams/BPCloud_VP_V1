@@ -113,7 +113,7 @@ export class ASNListComponent implements OnInit {
 
   Plants: string[] = [];
   SecretKey: string;
-    SecureStorage: SecureLS;
+  SecureStorage: SecureLS;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private formBuilder: FormBuilder,
@@ -131,7 +131,7 @@ export class ASNListComponent implements OnInit {
     private _authService: AuthService,
     private _GateService: GateService,
     private _formBuilder: FormBuilder,
-    
+
   ) {
     this.SecretKey = this._authService.SecretKey;
     this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
@@ -277,18 +277,21 @@ export class ASNListComponent implements OnInit {
     });
   }
   GateEntry(Asn: ASNListView): void {
-    this.CreateActionLogvalues("Gate Entry");
-    this._GateService.CreateGateEntryByAsnList(Asn).subscribe(
-      (data) => {
-        // this.Gate = data as BPCGateHoveringVechicles;
-        this.notificationSnackBarComponent.openSnackBar("Gate Entry Successfull", SnackBarStatus.success);
-        this.SearchBtnClicked();
-        // this.SearchClicked();
-      },
-      (err) => {
-        this.notificationSnackBarComponent.openSnackBar(err, SnackBarStatus.danger);
-      }
-    );
+    this._shareParameterService.SetASNListView(Asn);
+    this._router.navigate(["/gate/gateentry"]);
+
+    // this.CreateActionLogvalues("Gate Entry");
+    // this._GateService.CreateGateEntryByAsnList(Asn).subscribe(
+    //   (data) => {
+    //     // this.Gate = data as BPCGateHoveringVechicles;
+    //     this.notificationSnackBarComponent.openSnackBar("Gate Entry Successfull", SnackBarStatus.success);
+    //     this.SearchBtnClicked();
+    //     // this.SearchClicked();
+    //   },
+    //   (err) => {
+    //     this.notificationSnackBarComponent.openSnackBar(err, SnackBarStatus.danger);
+    //   }
+    // );
   }
   CancelGateEntry(Asn: ASNListView): void {
     this.CreateActionLogvalues("Cancel Gate Entry");
