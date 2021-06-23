@@ -9,6 +9,8 @@ import {
     BPCASNHeader, BPCASNView, BPCASNItem, DocumentCenter, BPCInvoiceAttachment,
     BPCCountryMaster, BPCCurrencyMaster, BPCDocumentCenterMaster, BPCASNPack, ASNListView, BPCASNFieldMaster, BPCASNItemBatch, BPCASNItemView, ASNListFilter, ASNListViewNewDoc
 } from 'app/models/ASN';
+import { DocumentDetails } from 'app/models/Dashboard';
+import { BPCInvoice } from 'app/models/OrderFulFilment';
 
 @Injectable({
     providedIn: 'root'
@@ -68,14 +70,14 @@ export class ASNService {
             .pipe(catchError(this.errorHandler));
     }
     // doc
-    
-    DownloadOfAttachmentOnlyName( AttachmentName: string): Observable<Blob | string> {
-    return this._httpClient.get(`${this.baseAddress}poapi/ASN/DownloadOfAttachmentOnlyName?AttachmentName=${AttachmentName}`, {
-      responseType: 'blob',
-      headers: new HttpHeaders().append('Content-Type', 'application/json')
-    })
-      .pipe(catchError(this.errorHandler));
-  }
+
+    DownloadOfAttachmentOnlyName(AttachmentName: string): Observable<Blob | string> {
+        return this._httpClient.get(`${this.baseAddress}poapi/ASN/DownloadOfAttachmentOnlyName?AttachmentName=${AttachmentName}`, {
+            responseType: 'blob',
+            headers: new HttpHeaders().append('Content-Type', 'application/json')
+        })
+            .pipe(catchError(this.errorHandler));
+    }
 
     // 
 
@@ -102,6 +104,14 @@ export class ASNService {
 
     GetASNsByDoc(DocNumber: string): Observable<BPCASNHeader[] | string> {
         return this._httpClient.get<BPCASNHeader[]>(`${this.baseAddress}poapi/ASN/GetASNsByDoc?DocNumber=${DocNumber}`)
+            .pipe(catchError(this.errorHandler));
+    }
+    GetInvoicesByASN(ASNNumber: string): Observable<BPCInvoice[] | string> {
+        return this._httpClient.get<BPCInvoice[]>(`${this.baseAddress}poapi/ASN/GetInvoicesByASN?ASNNumber=${ASNNumber}`)
+            .pipe(catchError(this.errorHandler));
+    }
+    GetASNDocumentDetails(ASNNumber: string): Observable<DocumentDetails[] | string> {
+        return this._httpClient.get<DocumentDetails[]>(`${this.baseAddress}poapi/ASN/GetASNDocumentDetails?ASNNumber=${ASNNumber}`)
             .pipe(catchError(this.errorHandler));
     }
     GetASNByDocAndPartnerID(DocNumber: string, PartnerID: string): Observable<BPCASNHeader[] | string> {

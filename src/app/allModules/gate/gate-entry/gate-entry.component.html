@@ -47,7 +47,7 @@
             </mat-form-field>
           </div>
         </div> -->
-        <form autocomplete="off" name="form" novalidate [formGroup]="SearchFormGroup" fxLayout="column"
+        <form autocomplete="off" name="form" novalidate [formGroup]="GateEntryFormGroup" fxLayout="column"
           fxLayoutAlign="start" fxFlex="100">
           <div fxFlex="100" fxLayout="row">
             <div fxFlex class="pr-20">
@@ -180,7 +180,7 @@
           </div> -->
           <div class="divider"></div>
           <div fxFlex.xs="grow">
-            <button mat-raised-button class="cl_post_btn" [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">
+            <button mat-raised-button (click)="CreateGateEntry()" class="cl_post_btn" [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">
               <img src="assets/images/send-mail.png" class="cl_post_mail"> Post</button><br>
             <button mat-raised-button class="cl_return_btn">Return
             </button>
@@ -209,7 +209,7 @@
 
             </ng-template>
 
-            <table class="table p-20" mat-table [dataSource]="dataSource" matSort>
+            <table class="table p-20" mat-table [dataSource]="dataSource" matSort #MatSort1="matSort">
               <ng-container matColumnDef="Item">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header
                   [ngClass]="BGClassName?.layout?.toolbar?.background">
@@ -285,7 +285,7 @@
               <tr mat-row *matRowDef="let row; columns: displayColumn;let even=even">
               </tr>
             </table>
-            <mat-paginator [pageSizeOptions]="[5, 10, 20,50,100,200,500,1000]"></mat-paginator>
+            <mat-paginator #MatPaginator1 [pageSizeOptions]="[5, 10, 20,50,100,200,500,1000]"></mat-paginator>
 
 
             <!-- <mat-table [dataSource]="dataSource" class="cl_mat-table" matSort>
@@ -382,7 +382,45 @@
 
               <!-- <mat-divider vertical class="cl-tab_divider"></mat-divider> -->
             </ng-template>
-            Content 2
+            <table class="table p-20" mat-table [dataSource]="documentDataSource" matSort #MatSort2="matSort">
+              <ng-container matColumnDef="ReferenceNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                  [ngClass]="BGClassName?.layout?.toolbar?.background">
+                  Reference No </th>
+                <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+                  <div fxLayout>
+                    <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                    <div fxFlex class="pl-12">{{element.ReferenceNo}} </div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="AttachmentName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                  [ngClass]="BGClassName?.layout?.toolbar?.background">Attachment Name </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.AttachmentName}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="ContentType">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                  [ngClass]="BGClassName?.layout?.toolbar?.background">Attachmentt Type </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.ContentType}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="CreatedOn">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                  [ngClass]="BGClassName?.layout?.toolbar?.background"> Date </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.CreatedOn | date : 'dd/MM/yyyy'}} </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="documentDisplayColumns;sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: documentDisplayColumns;let even=even">
+              </tr>
+            </table>
+            <mat-paginator #MatPaginator2 [pageSizeOptions]="[5, 10, 20,50,100,200,500,1000]"></mat-paginator>
           </mat-tab>
           <mat-tab>
             <ng-template mat-tab-label>
@@ -405,12 +443,56 @@
               <p class="cl_Invoice">Invoice</p>
               <mat-divider vertical class="cl-tab_divider"></mat-divider> -->
             </ng-template>
-            Content 3
+            <table class="table p-20" mat-table [dataSource]="invoiceDataSource" matSort #MatSort3="matSort">
+              <ng-container matColumnDef="InvoiceNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                  [ngClass]="BGClassName?.layout?.toolbar?.background">
+                  Invoice No </th>
+                <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+                  <div fxLayout>
+                    <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                    <div fxFlex class="pl-12">{{element.InvoiceNo}} </div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="InvoiceDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                  [ngClass]="BGClassName?.layout?.toolbar?.background"> Date </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.InvoiceDate | date : 'dd/MM/yyyy'}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="InvoiceAmount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                  [ngClass]="BGClassName?.layout?.toolbar?.background">Invoice Amount </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.InvoiceAmount}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="AWBNumber">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                  [ngClass]="BGClassName?.layout?.toolbar?.background">AWB Number </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.AWBNumber}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="PoReference">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                  [ngClass]="BGClassName?.layout?.toolbar?.background">Po Reference </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.PoReference}} </td>
+              </ng-container>
+             
+              <tr mat-header-row *matHeaderRowDef="invoiceDisplayColumns;sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: invoiceDisplayColumns;let even=even">
+              </tr>
+            </table>
+            <mat-paginator #MatPaginator3 [pageSizeOptions]="[5, 10, 20,50,100,200,500,1000]"></mat-paginator>
           </mat-tab>
-          <mat-tab>
+          <!-- <mat-tab>
             <ng-template mat-tab-label>
               <div fxLayout>
-                <!-- <div class="divider1"></div> -->
                 <div fxFlex>
                   <div class="cl_stock_outerCircle">
                     <div class="cl_stock_innerCircle">
@@ -420,15 +502,9 @@
                   <p>Stock</p>
                 </div>
               </div>
-              <!-- <div class="cl_stock_outerCircle">
-                <div class="cl_stock_innerCircle">
-                  <img src="assets/images/Stock2.png" class="cl_stock_image"><br>
-                </div>
-              </div>
-              <p class="cl_stock">Stock</p> -->
             </ng-template>
             Content 3
-          </mat-tab>
+          </mat-tab> -->
         </mat-tab-group>
       </mat-card>
     </div>
