@@ -135,7 +135,6 @@ export class ASNListComponent implements OnInit {
   ) {
     this.SecretKey = this._authService.SecretKey;
     this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
-    this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.IsProgressBarVisibile = false;
@@ -969,7 +968,16 @@ export class ASNListComponent implements OnInit {
 
   }
 
-
+  getStatus(status): string {
+    switch (status) {
+      case 'GateEntry':
+        return 'Gate Entry';
+      case 'GateEntry Completed':
+        return 'Gate Entry Completed';
+      default:
+        return status;
+    }
+  }
   SetUserPreference(): void {
     this._fuseConfigService.config
       .subscribe((config) => {

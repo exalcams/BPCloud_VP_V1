@@ -41,6 +41,10 @@ export class POService {
     return this._httpClient.get<any>(`${this.baseAddress}poapi/PO/GetPOByDoc?DocNumber=${DocNumber}`)
       .pipe(catchError(this.errorHandler));
   }
+  GetOFDocumentDetails(DocNumber: string): Observable<DocumentDetails[] | string> {
+    return this._httpClient.get<DocumentDetails[]>(`${this.baseAddress}poapi/PO/GetOFDocumentDetails?DocNumber=${DocNumber}`)
+      .pipe(catchError(this.errorHandler));
+  }
   GetPOByDocAndPartnerID(DocNumber: string, PartnerID: string): Observable<BPCOFHeader | string> {
     return this._httpClient.get<any>(`${this.baseAddress}poapi/PO/GetPOByDocAndPartnerID?DocNumber=${DocNumber}&PartnerID=${PartnerID}`)
       .pipe(catchError(this.errorHandler));
@@ -55,6 +59,10 @@ export class POService {
   }
   GetPOItemsByDoc(DocNumber: string): Observable<BPCOFItem[] | string> {
     return this._httpClient.get<BPCOFItem[]>(`${this.baseAddress}poapi/PO/GetPOItemsByDoc?DocNumber=${DocNumber}`)
+      .pipe(catchError(this.errorHandler));
+  }
+  GetInvoicesByDoc(DocNumber: string): Observable<BPCInvoice[] | string> {
+    return this._httpClient.get<BPCInvoice[]>(`${this.baseAddress}poapi/Invoice/GetInvoicesByDoc?DocNumber=${DocNumber}`)
       .pipe(catchError(this.errorHandler));
   }
   GetSupportPOItemsByDoc(DocNumber: string): Observable<BPCOFItem[] | string> {
