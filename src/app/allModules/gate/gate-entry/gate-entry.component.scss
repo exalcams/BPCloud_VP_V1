@@ -868,7 +868,8 @@
     flex-grow: 1;
     overflow: hidden;
     z-index: 1;
-    height: 100px !important;
+    padding-top: 7px;
+    height: 105px !important;
     background-color: #fff8ed;
   }
 
@@ -1273,31 +1274,24 @@
   }
 
   .cl_attachemnt_outerCircle {
-    border: 1.1px solid #edb084;
-    width: 50px;
-    height: 50px;
-    border-radius: 85px;
-    // margin-top: -43px;
-    // margin-left: 26px;
-    background-color: white;
-    margin: auto;
+    @extend .tab-round1;
+    border-color: #edb084;
+    .mat-badge-content {
+      background-color: #edb084 !important;
+    }
   }
 
   .cl_attachemnt_innerCircle {
-    border: 1px solid #e6c687;
-    width: 43.5px;
-    height: 44px;
-    border-radius: 35px;
-    margin-left: 2.5px;
-    margin-top: 2px;
+    @extend .tab-round2;
+    border-color: #e6c687;
   }
 
   .cl_attachment_img {
-    margin-top: 9px;
+    margin-top: 7px;
     width: 22px;
   }
   .cl_attachment_img:hover {
-    margin-top: 11px !important;
+    margin-top: 9px !important;
     // margin-left: -1px !important;
     width: 19px !important;
   }
@@ -1321,13 +1315,13 @@
 
   .cl_Invoice_image {
     width: 18px;
-    margin-top: 9px;
+    margin-top: 7px;
     margin-left: 2px;
   }
   .cl_Invoice_image:hover {
-    margin-top: 10px !important;
+    margin-top: 8px !important;
     // margin-left: -1px !important;
-    width: 16px !important;
+    width: 15px !important;
   }
 
   .cl_stock_image {
@@ -1341,43 +1335,29 @@
     width: 21px !important;
   }
   .cl_invoice_outerCircle {
-    border: 1.1px solid #f98bb5;
-    width: 50px;
-    height: 50px;
-    border-radius: 85px;
-    // margin-top: -43px;
-    //margin-left: 26px;
-    background-color: white;
-    margin: auto;
+    @extend .tab-round1;
+    border-color: #f98bb5;
+    .mat-badge-content {
+      background-color: #f98bb5 !important;
+    }
   }
 
   .cl_invoice_innerCircle {
-    border: 1px solid #e6b7c8;
-    width: 43.5px;
-    height: 44px;
-    border-radius: 35px;
-    margin-left: 2.5px;
-    margin-top: 2px;
+    @extend .tab-round2;
+    border-color: #e6b7c8;
   }
 
   .cl_stock_outerCircle {
-    border: 1.1px solid #3156f2;
-    width: 50px;
-    height: 50px;
-    border-radius: 85px;
-    //margin-top: -43px;
-    // margin-left: 26px;
-    background-color: white;
-    margin: auto;
+    @extend .tab-round1;
+    border-color: #3156f2;
+    .mat-badge-content {
+      background-color: #3156f2 !important;
+    }
   }
 
   .cl_stock_innerCircle {
-    border: 1px solid #bbc5f6;
-    width: 43.5px;
-    height: 44px;
-    border-radius: 35px;
-    margin-left: 2.5px;
-    margin-top: 2px;
+    @extend .tab-round2;
+    border-color: #bbc5f6;
   }
   .divider1 {
     border-left: 1px solid #25262b;

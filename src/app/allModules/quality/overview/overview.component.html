@@ -59,7 +59,8 @@
           <div fxLayout="row" fxLayoutAlign="start center">
             <mat-form-field appearance="outline" fxFlex>
               <mat-icon class="mr-12" matPrefix>search</mat-icon>
-              <input matInput placeholder="PO Number" formControlName="PONumber">
+              <mat-label>PO Number</mat-label>
+              <input matInput formControlName="PONumber">
             </mat-form-field>
           </div>
           <div fxLayout="row" fxLayoutAlign="start center" class="mb-12">
@@ -70,7 +71,8 @@
           <div fxLayout="row" fxLayoutAlign="start center">
             <mat-form-field appearance="outline" fxFlex>
               <mat-icon class="mr-12" matPrefix>search</mat-icon>
-              <input matInput placeholder="Material" formControlName="Material">
+              <mat-label>Material</mat-label>
+              <input matInput formControlName="Material">
             </mat-form-field>
           </div>
           <!-- <div fxLayout="row" fxLayoutAlign="start start">
@@ -110,16 +112,17 @@
       <div fxLayout="row" class="mt-20" fxLayoutAlign="start center">
         <mat-form-field appearance="outline" fxFlex="50">
           <mat-icon class="mr-12" matPrefix>search</mat-icon>
-          <input [(ngModel)]="searchText" matInput placeholder="Search" (keyup)="applyFilter($event)">
+          <mat-label>Search</mat-label>
+          <input [(ngModel)]="searchText" matInput (keyup)="applyFilter($event)">
         </mat-form-field>
         <div fxFlex fxLayoutAlign="end center">
-          <mat-form-field appearance="outline" style="min-width: 100px;">
+          <!-- <mat-form-field appearance="outline" style="min-width: 100px;">
             <mat-select [(ngModel)]="selectValue">
               <mat-option value="All">All</mat-option>
               <mat-option value="All">Material</mat-option>
               <mat-option value="All">PO</mat-option>
             </mat-select>
-          </mat-form-field>
+          </mat-form-field> -->
           <button (click)="exportAsXLSX()" class="excelBtn mx-24" mat-stroked-button>
             <img class="excelImg" src="assets/images/excel.png">
           </button>

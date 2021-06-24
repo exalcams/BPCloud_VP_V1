@@ -441,6 +441,7 @@ export class GRReceiptsComponent implements OnInit {
         if (TDate) {
           ToDate = this._datePipe.transform(TDate, 'yyyy-MM-dd');
         }
+        this.isProgressBarVisibile = true;
         this._reportService.FilterGRRListByPartnerID(this.currentUserName, GRNNo, Material, FromDate, ToDate).subscribe(
           (data) => {
             this.grReceiptsReports = data as BPCReportGRR[];
@@ -452,6 +453,7 @@ export class GRReceiptsComponent implements OnInit {
 
           (err) => {
             console.error(err);
+            this.isProgressBarVisibile = false;
           }
         );
       }
@@ -482,6 +484,7 @@ export class GRReceiptsComponent implements OnInit {
           ToDate = this._datePipe.transform(TDate, 'yyyy-MM-dd');
         }
         filter.ToDate = ToDate;
+        this.isProgressBarVisibile = true;
         this._reportService.FilterGRGIListByPlants(filter).subscribe(
           (data) => {
             this.grReceiptsReports = data as BPCReportGRR[];
@@ -493,6 +496,7 @@ export class GRReceiptsComponent implements OnInit {
 
           (err) => {
             console.error(err);
+            this.isProgressBarVisibile = false;
           }
         );
       }

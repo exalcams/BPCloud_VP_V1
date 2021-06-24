@@ -76,13 +76,13 @@ export class SerListComponent implements OnInit {
     this.DefaultFromDate.setDate(this.DefaultFromDate.getDate() - 30);
     this.DefaultToDate = new Date();
     this.SelectValue = 'All';
-    this.TableSelectValue = 'Action'
+    this.TableSelectValue = 'Action';
   }
 
   ngOnInit(): void {
     this.SetUserPreference();
     // Retrive authorizationData
-    const retrievedObject = this.SecureStorage.getItem('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;
@@ -106,7 +106,7 @@ export class SerListComponent implements OnInit {
     this.SearchFormGroup = this.formBuilder.group({
       ASNNumber: [''],
       DocNumber: [''],
-      Material: [''],
+      // Material: [''],
       Status: [''],
       ASNFromDate: [this.DefaultFromDate],
       ASNToDate: [this.DefaultToDate]

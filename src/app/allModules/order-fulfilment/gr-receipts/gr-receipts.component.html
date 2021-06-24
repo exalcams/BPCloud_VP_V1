@@ -43,55 +43,62 @@
         </div>
       </div> -->
     <!-- <div class="ml-10 mr-20" fxFlex="100" fxLayoutAlign="start"> -->
-    <form autocomplete="off" name="form" novalidate [formGroup]="searchFormGroup" *ngIf="!isExpanded" @expandCollapse
-     fxLayout="row wrap" fxLayoutAlign="space-around" fxFlex="100">
-      <!-- <div > -->
-      <div fxFlex="20">
-        <mat-form-field appearance="outline" style="width: 100% !important;">
-          <!-- <mat-icon class="mr-12" matPrefix>search</mat-icon> -->
-          <input matInput placeholder="GRN Number" formControlName="GRNNo">
-        </mat-form-field>
-      </div>
+    <div *ngIf="!isExpanded" @expandCollapse style="margin-left: 20px;margin-right: 20px;margin-top: 15px;">
+      <form autocomplete="off" name="form" novalidate [formGroup]="searchFormGroup"
+        fxLayout="row wrap" fxLayoutAlign="space-around" fxFlex="100">
+        <!-- <div > -->
+        <div fxFlex="20">
+          <mat-form-field appearance="outline" style="width: 100% !important;">
+            <!-- <mat-icon class="mr-12" matPrefix>search</mat-icon> -->
+            <mat-label>GRN Number</mat-label>
+            <input matInput formControlName="GRNNo">
+          </mat-form-field>
+        </div>
 
-      <div fxFlex="20">
-        <mat-form-field appearance="outline" style="width: 100% !important;">
-          <!-- <mat-icon class="mr-12" matPrefix>search</mat-icon> -->
-          <input matInput placeholder="Material" formControlName="Material">
-        </mat-form-field>
-      </div>
+        <div fxFlex="20">
+          <mat-form-field appearance="outline" style="width: 100% !important;">
+            <!-- <mat-icon class="mr-12" matPrefix>search</mat-icon> -->
+            <mat-label>Material</mat-label>
+            <input matInput formControlName="Material">
+          </mat-form-field>
+        </div>
 
-      <div fxFlex="20">
-        <mat-form-field appearance="outline" style="width: 100% !important;">
-          <input matInput type="text" placeholder="GRN From Date" [matDatepicker]="picker" formControlName="GRNDatefrom"
-            (dateChange)="fromAndToDateChanged()">
-          <mat-datepicker #picker>
-          </mat-datepicker>
-          <img src="assets/images/calendar.png" width="15px" height="15px" (click)="picker.open()" class="inp_Img_date">
-          <mat-error *ngIf="isDateError">
-            To date should not be less than from date
-          </mat-error>
-        </mat-form-field>
-      </div>
+        <div fxFlex="20">
+          <mat-form-field appearance="outline" style="width: 100% !important;">
+            <mat-label>GRN From Date</mat-label>
+            <input matInput type="text" [matDatepicker]="picker" formControlName="GRNDatefrom"
+              (dateChange)="fromAndToDateChanged()">
+            <mat-datepicker #picker>
+            </mat-datepicker>
+            <img src="assets/images/calendar.png" width="15px" height="15px" (click)="picker.open()"
+              class="inp_Img_date">
+            <mat-error *ngIf="isDateError">
+              To date should not be less than from date
+            </mat-error>
+          </mat-form-field>
+        </div>
 
-      <div fxFlex="20">
-        <mat-form-field appearance="outline" style="width: 100% !important;">
-          <input matInput type="text" placeholder="GRN To Date" [matDatepicker]="picker1" formControlName="GRNDateto"
-            (dateChange)="fromAndToDateChanged()">
-          <mat-datepicker #picker1>
-          </mat-datepicker>
-          <img src="assets/images/calendar.png" width="15px" height="15px" (click)="picker1.open()"
-            class="inp_Img_date">
-          <mat-error *ngIf="isDateError">
-            To date should not be less than from date
-          </mat-error>
-        </mat-form-field>
-      </div>
+        <div fxFlex="20">
+          <mat-form-field appearance="outline" style="width: 100% !important;">
+            <mat-label>GRN To Date</mat-label>
+            <input matInput type="text" [matDatepicker]="picker1" formControlName="GRNDateto"
+              (dateChange)="fromAndToDateChanged()">
+            <mat-datepicker #picker1>
+            </mat-datepicker>
+            <img src="assets/images/calendar.png" width="15px" height="15px" (click)="picker1.open()"
+              class="inp_Img_date">
+            <mat-error *ngIf="isDateError">
+              To date should not be less than from date
+            </mat-error>
+          </mat-form-field>
+        </div>
 
-      <div>
-        <button mat-raised-button class="SaveBtn" (click)="SearchBtnClicked()"
-          [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">Search</button>
-      </div>
-    </form>
+        <div>
+          <button mat-raised-button class="SaveBtn" (click)="SearchBtnClicked()"
+            [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">Search</button>
+        </div>
+      </form>
+    </div>
     <!-- </div> -->
     <!-- </div> -->
 
@@ -99,16 +106,17 @@
       <div fxLayout="row" class="mt-20" fxLayoutAlign="start center">
         <mat-form-field appearance="outline" fxFlex="50">
           <mat-icon class="mr-12" matPrefix>search</mat-icon>
-          <input [(ngModel)]="searchText" matInput placeholder="Search" (keyup)="applyFilter($event)">
+          <mat-label>Search</mat-label>
+          <input [(ngModel)]="searchText" matInput (keyup)="applyFilter($event)">
         </mat-form-field>
         <div fxFlex fxLayoutAlign="end center">
-          <mat-form-field appearance="outline" style="min-width: 100px;">
+          <!-- <mat-form-field appearance="outline" style="min-width: 100px;">
             <mat-select [(ngModel)]="selectValue">
               <mat-option value="All">All</mat-option>
               <mat-option value="All">Material</mat-option>
               <mat-option value="All">PO</mat-option>
             </mat-select>
-          </mat-form-field>
+          </mat-form-field> -->
           <button (click)="exportAsXLSX()" class="excelBtn mx-24" mat-stroked-button>
             <img class="excelImg" src="assets/images/excel.png">
           </button>
