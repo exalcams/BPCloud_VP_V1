@@ -43,6 +43,9 @@ export class GateEntryComponent implements OnInit {
   SelectedOFItems: BPCOFItem[] = [];
   SelectedDocuments: DocumentDetails[] = [];
   SelectedInvoices: BPCInvoice[] = [];
+  ItemsCount: number;
+  DocumentsCount: number;
+  InvoicesCount: number;
   ItemPlantDetails: BPCPlantMaster;
   actionLog: ActionLog;
   SecretKey: string;
@@ -95,6 +98,9 @@ export class GateEntryComponent implements OnInit {
     this.IsProgressBarVisibile1 = false;
     this.IsProgressBarVisibile2 = false;
     this.IsProgressBarVisibile3 = false;
+    this.ItemsCount = 0;
+    this.DocumentsCount = 0;
+    this.InvoicesCount = 0;
   }
 
   ngOnInit(): void {
@@ -203,7 +209,9 @@ export class GateEntryComponent implements OnInit {
     this._poService.GetPOItemsByDoc(this.SelectedASNListView.DocNumber).subscribe(
       (data) => {
         this.SelectedOFItems = data as BPCOFItem[];
-
+        if (this.SelectedOFItems) {
+          this.ItemsCount = this.SelectedOFItems.length;
+        }
         this.dataSource = new MatTableDataSource(this.SelectedOFItems);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -225,6 +233,9 @@ export class GateEntryComponent implements OnInit {
     this._poService.GetOFDocumentDetails(this.SelectedASNListView.DocNumber).subscribe(
       (data) => {
         this.SelectedDocuments = data as DocumentDetails[];
+        if (this.SelectedDocuments) {
+          this.DocumentsCount = this.SelectedDocuments.length;
+        }
         this.documentDataSource = new MatTableDataSource(this.SelectedDocuments);
         this.documentDataSource.paginator = this.documentPaginator;
         this.documentDataSource.sort = this.documentSort;
@@ -242,6 +253,9 @@ export class GateEntryComponent implements OnInit {
     this._poService.GetInvoicesByDoc(this.SelectedASNListView.DocNumber).subscribe(
       (data) => {
         this.SelectedInvoices = data as BPCInvoice[];
+        if (this.SelectedInvoices) {
+          this.InvoicesCount = this.SelectedInvoices.length;
+        }
         this.invoiceDataSource = new MatTableDataSource(this.SelectedInvoices);
         this.invoiceDataSource.paginator = this.invoicePaginator;
         this.invoiceDataSource.sort = this.invoiceSort;
@@ -259,6 +273,9 @@ export class GateEntryComponent implements OnInit {
     this._asnService.GetASNItemsByASN(this.SelectedASNListView.ASNNumber).subscribe(
       (data) => {
         this.SelectedASNItems = data as BPCASNItem[];
+        if (this.SelectedASNItems) {
+          this.ItemsCount = this.SelectedASNItems.length;
+        }
         this.dataSource = new MatTableDataSource(this.SelectedASNItems);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -280,6 +297,9 @@ export class GateEntryComponent implements OnInit {
     this._asnService.GetASNDocumentDetails(this.SelectedASNListView.ASNNumber).subscribe(
       (data) => {
         this.SelectedDocuments = data as DocumentDetails[];
+        if (this.SelectedDocuments) {
+          this.DocumentsCount = this.SelectedDocuments.length;
+        }
         this.documentDataSource = new MatTableDataSource(this.SelectedDocuments);
         this.documentDataSource.paginator = this.documentPaginator;
         this.documentDataSource.sort = this.documentSort;
@@ -297,6 +317,9 @@ export class GateEntryComponent implements OnInit {
     this._asnService.GetInvoicesByASN(this.SelectedASNListView.ASNNumber).subscribe(
       (data) => {
         this.SelectedInvoices = data as BPCInvoice[];
+        if (this.SelectedInvoices) {
+          this.InvoicesCount = this.SelectedInvoices.length;
+        }
         this.invoiceDataSource = new MatTableDataSource(this.SelectedInvoices);
         this.invoiceDataSource.paginator = this.invoicePaginator;
         this.invoiceDataSource.sort = this.invoiceSort;

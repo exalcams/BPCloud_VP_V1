@@ -25,12 +25,14 @@
           <div fxLayout="row" fxFlex="100%" fxLayoutAlign="center">
             <div fxFlex="30%" class="mr-32">
               <mat-form-field appearance="outline" style="width: 100%;">
-                <input matInput placeholder="UserName" formControlName="UserName">
+                <mat-label>User Name</mat-label>
+                <input matInput formControlName="UserName">
               </mat-form-field>
             </div>
             <div fxFlex="25%" class="mr-32">
               <mat-form-field appearance="outline" style="width: 100%;">
-                <input matInput placeholder="From Date" [matDatepicker]="picker1" formControlName="FromDate"
+                <mat-label>From Date</mat-label>
+                <input matInput [matDatepicker]="picker1" formControlName="FromDate"
                   (dateChange)="DateSelected()">
                 <mat-datepicker-toggle matSuffix [for]="picker1">
                   <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
@@ -40,7 +42,8 @@
             </div>
             <div fxFlex="25%" class="mr-32">
               <mat-form-field appearance="outline" style="width: 100%;">
-                <input matInput placeholder="To Date" [matDatepicker]="picker2" formControlName="ToDate"
+                <mat-label>To Date</mat-label>
+                <input matInput [matDatepicker]="picker2" formControlName="ToDate"
                   (dateChange)="DateSelected()">
                 <mat-datepicker-toggle matSuffix [for]="picker2">
                   <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
@@ -60,14 +63,15 @@
       <div fxLayout="row" class="mt-20" fxLayoutAlign="start center">
         <mat-form-field appearance="outline" fxFlex="50">
           <mat-icon class="mr-12" matPrefix>search</mat-icon>
-          <input [(ngModel)]="searchText" matInput placeholder="Search" (keyup)="applyFilter($event)">
+          <mat-label>Search</mat-label>
+          <input [(ngModel)]="searchText" matInput (keyup)="applyFilter($event)">
         </mat-form-field>
         <div fxFlex fxLayoutAlign="end center">
-          <mat-form-field appearance="outline" style="min-width: 100px;">
+          <!-- <mat-form-field appearance="outline" style="min-width: 100px;">
             <mat-select [(ngModel)]="SelectValue">
               <mat-option value="All">All</mat-option>
             </mat-select>
-          </mat-form-field>
+          </mat-form-field> -->
           <button (click)="exportAsXLSX()" class="excelBtn mx-24" mat-stroked-button>
             <img class="excelImg" src="assets/images/excel.png">
           </button>

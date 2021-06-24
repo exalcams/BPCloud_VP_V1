@@ -133,18 +133,19 @@
       <div fxLayout="row" class="mt-20" fxLayoutAlign="start center">
         <mat-form-field appearance="outline" fxFlex="30">
           <mat-icon class="mr-12" matPrefix>search</mat-icon>
-          <input [(ngModel)]="searchText" matInput placeholder="Search" (keyup)="applyFilter($event)">
+          <mat-label>Search</mat-label>
+          <input [(ngModel)]="searchText" matInput (keyup)="applyFilter($event)">
         </mat-form-field>
         <div fxFlex="20" class="ml-24">
-          <mat-form-field appearance="outline" style="min-width: 100px;">
+          <!-- <mat-form-field appearance="outline" style="min-width: 100px;">
             <mat-select [(ngModel)]="selectValue">
               <mat-option value="All">All</mat-option>
               <mat-option value="All">Material</mat-option>
               <mat-option value="All">PO</mat-option>
             </mat-select>
-          </mat-form-field>
+          </mat-form-field> -->
         </div>
-        <div fxFlex fxLayoutAlign="end center">
+        <!-- <div fxFlex fxLayoutAlign="end center">
           <button (click)="filterClicked()" class="filterBtn mr-24" mat-stroked-button>
             Filter
             <img class="filterImg" src="assets/images/adjust.png">
@@ -153,8 +154,7 @@
             <span style="color:#080808">Reset Filter</span>
             <img class="resetFilterImg"   src="assets/images/close.png">
           </button>
-          <!-- <img class="expandImg" src="assets/images/expand.png" (click)="expandClicked()"> -->
-        </div>
+        </div> -->
       </div>
 
       <table class="table" mat-table [dataSource]="fgChildPartStockReportDataSource" matSort>

@@ -28,7 +28,8 @@
           <div fxFlex fxLayout="row wrap">
             <div fxFlex="25">
               <mat-form-field style="width: 100%;" appearance="outline">
-                <input matInput placeholder="Invoice From Dt" [matDatepicker]="picker1" formControlName="FromDate"
+                <mat-label>Invoice From Date</mat-label>
+                <input matInput [matDatepicker]="picker1" formControlName="FromDate"
                   (dateChange)="DateSelected()">
                 <mat-datepicker-toggle matSuffix [for]="picker1">
                   <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
@@ -42,7 +43,8 @@
             </div>
             <div fxFlex="25">
               <mat-form-field class="pl-32" appearance="outline" style="width: 100%;">
-                <input matInput placeholder="To Dt" [matDatepicker]="picker2" formControlName="ToDate"
+                <mat-label>To Date</mat-label>
+                <input matInput [matDatepicker]="picker2" formControlName="ToDate"
                   (dateChange)="DateSelected()">
                 <mat-datepicker-toggle matSuffix [for]="picker2">
                   <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
@@ -59,7 +61,8 @@
             </div>
             <div fxFlex="25" class="pl-32">
               <mat-form-field class="pr-8" appearance="outline" style="width: 100%;">
-                <input matInput placeholder="Vendor" formControlName="VendorCode">
+                <mat-label>Vendor</mat-label>
+                <input matInput formControlName="VendorCode">
                 <mat-error
                   *ngIf="SearchFormGroup.get('VendorCode').touched && SearchFormGroup.get('VendorCode').hasError('required')">
                   Vendor is required
@@ -68,7 +71,8 @@
             </div>
             <div fxFlex="25" class="pl-32">
               <mat-form-field class="pr-8" appearance="outline" style="width: 100%;">
-                <input matInput placeholder="PO Number" formControlName="PONumber">
+                <mat-label>PO Number</mat-label>
+                <input matInput formControlName="PONumber">
                 <mat-error
                   *ngIf="SearchFormGroup.get('PONumber').touched && SearchFormGroup.get('PONumber').hasError('required')">
                   PO Number is required
@@ -78,7 +82,8 @@
             <div fxFlex="25">
               <mat-form-field style="width: 100%;" appearance="outline">
                 <!-- <input matInput placeholder="Status" formControlName="Status"> -->
-                <mat-select placeholder="Status" formControlName="Status">
+                <mat-label>Status</mat-label>
+                <mat-select formControlName="Status">
                   <mat-option *ngFor="let st of POStatuses" [value]="st.Value">{{st.Key}}</mat-option>
                 </mat-select>
                 <mat-error
@@ -118,14 +123,15 @@
       <div fxLayout="row" class="mt-20" fxLayoutAlign="start center">
         <mat-form-field appearance="outline" fxFlex="50">
           <mat-icon class="mr-12" matPrefix>search</mat-icon>
-          <input [(ngModel)]="searchText" matInput placeholder="Search" (keyup)="applyFilter($event)">
+          <mat-label>Search</mat-label>
+          <input [(ngModel)]="searchText" matInput (keyup)="applyFilter($event)">
         </mat-form-field>
         <div fxFlex fxLayoutAlign="end center">
-          <mat-form-field appearance="outline" style="min-width: 100px;">
+          <!-- <mat-form-field appearance="outline" style="min-width: 100px;">
             <mat-select [(ngModel)]="SelectValue">
               <mat-option value="All">All</mat-option>
             </mat-select>
-          </mat-form-field>
+          </mat-form-field> -->
           <button (click)="exportAsXLSX()" class="excelBtn mx-24" mat-stroked-button>
             <img class="excelImg" src="assets/images/excel.png">
           </button>

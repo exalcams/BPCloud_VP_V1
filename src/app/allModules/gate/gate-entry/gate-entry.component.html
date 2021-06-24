@@ -180,7 +180,8 @@
           </div> -->
           <div class="divider"></div>
           <div fxFlex.xs="grow">
-            <button mat-raised-button (click)="CreateGateEntry()" class="cl_post_btn" [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">
+            <button mat-raised-button (click)="CreateGateEntry()" class="cl_post_btn"
+              [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">
               <img src="assets/images/send-mail.png" class="cl_post_mail"> Post</button><br>
             <button mat-raised-button class="cl_return_btn">Return
             </button>
@@ -192,7 +193,10 @@
             <ng-template mat-tab-label>
               <div fxLayout>
                 <div fxFlex>
-                  <div class="cl_outerCircle">
+                  <div [matBadge]="ItemsCount" class="cl_outerCircle">
+                    <!-- <div style="margin-top: 3px; margin-left: 16px;">
+                      <span matBadgeColor="#8ba0f9" matBadgeOverlap="false"></span>
+                    </div> -->
                     <div class="cl_innerCircle">
                       <img src="assets/images/shopping_cart.png" class="cl_item_img">
                     </div>
@@ -371,7 +375,10 @@
               <div fxLayout fxLayoutAlign="center">
                 <!-- <div class="divider1"></div> -->
                 <div fxFlex>
-                  <div class="cl_attachemnt_outerCircle">
+                  <div [matBadge]="DocumentsCount" class="cl_attachemnt_outerCircle">
+                    <!-- <div style="margin-top: 3px; margin-left: 16px;">
+                      <span matBadgeColor="#edb084" matBadgeOverlap="false"></span>
+                    </div> -->
                     <div class="cl_attachemnt_innerCircle">
                       <img src="assets/images/attachment1.png" class="cl_attachment_img">
                     </div>
@@ -427,7 +434,10 @@
               <div fxLayout>
                 <!-- <div class="divider1"></div> -->
                 <div fxFlex>
-                  <div class="cl_invoice_outerCircle">
+                  <div [matBadge]="InvoicesCount" class="cl_invoice_outerCircle">
+                    <!-- <div style="margin-top: 3px; margin-left: 16px;">
+                      <span  matBadgeColor="#f98bb5" matBadgeOverlap="false"></span>
+                    </div> -->
                     <div class="cl_invoice_innerCircle">
                       <img src="assets/images/file.png" class="cl_Invoice_image">
                     </div>
@@ -483,7 +493,7 @@
                 <td mat-cell *matCellDef="let element">
                   {{element.PoReference}} </td>
               </ng-container>
-             
+
               <tr mat-header-row *matHeaderRowDef="invoiceDisplayColumns;sticky: true"></tr>
               <tr mat-row *matRowDef="let row; columns: invoiceDisplayColumns;let even=even">
               </tr>

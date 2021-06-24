@@ -17,18 +17,21 @@
           <div fxFlex="30">
             <mat-form-field appearance="outline" style="width: 100%;">
               <!-- <mat-icon class="mr-12" matPrefix>search</mat-icon> -->
-              <input type="text" matInput placeholder="UserName" formControlName="UserName">
+              <mat-label>User Name</mat-label>
+              <input type="text" matInput formControlName="UserName">
             </mat-form-field>
           </div>
           <div fxFlex="30">
             <mat-form-field appearance="outline" style="width: 100%;">
               <!-- <mat-icon class="mr-12" matPrefix>search</mat-icon> -->
-              <input type="text" matInput placeholder="AppName" formControlName="AppName">
+              <mat-label>App Name</mat-label>
+              <input type="text" matInput formControlName="AppName">
             </mat-form-field>
           </div>
           <div fxFlex="20">
             <mat-form-field style="width: 100%;" appearance="outline">
-              <input matInput placeholder="Used On" [matDatepicker]="picker1" formControlName="UsedOn">
+              <mat-label>Used On</mat-label>
+              <input matInput [matDatepicker]="picker1" formControlName="UsedOn">
               <mat-datepicker-toggle matSuffix [for]="picker1">
                 <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
               </mat-datepicker-toggle>
@@ -46,14 +49,15 @@
     <div fxLayout="row" class="mt-20 ml-20 mr-20" fxLayoutAlign="start center">
       <mat-form-field appearance="outline" fxFlex="50">
         <mat-icon class="mr-12" matPrefix>search</mat-icon>
-        <input matInput placeholder="Search" (keyup)="applyFilter($event)">
+        <mat-label>Search</mat-label>
+        <input matInput (keyup)="applyFilter($event)">
       </mat-form-field>
       <div fxFlex fxLayoutAlign="end center">
-        <mat-form-field appearance="outline" style="min-width: 100px;">
+        <!-- <mat-form-field appearance="outline" style="min-width: 100px;">
           <mat-select>
             <mat-option value="All" (click)="ResetFilter()">All</mat-option>
           </mat-select>
-        </mat-form-field>
+        </mat-form-field> -->
         <button (click)="exportAsXLSX()" class="excelBtn mx-24" mat-stroked-button>
           <img class="excelImg" src="assets/images/excel.png">
         </button>
