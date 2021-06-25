@@ -228,7 +228,7 @@ export class ASNListComponent implements OnInit {
           const fileType = 'application/pdf';
           const blob = new Blob([data], { type: fileType });
           const currentDateTime = this._datePipe.transform(new Date(), 'ddMMyyyyHHmmss');
-          const FileName = this.SelectedASNHeader.ASNNumber + '_' + currentDateTime + '.pdf';
+          const FileName = no + '_' + currentDateTime + '.pdf';
           this.OpenASNPrintDialog(FileName, blob);
           // FileSaver.saveAs(blob, this.SelectedASNHeader.ASNNumber + '_' + currentDateTime + '.pdf');
         } else {
@@ -726,8 +726,12 @@ export class ASNListComponent implements OnInit {
 
   ASNnumber(asn: ASNListView): void {
     // this.CreateActionLogvalues("ASNNumber");
-    this._shareParameterService.SetASNListView(asn);
-    this._router.navigate(["/asn"]);
+    if (this.currentUserRole === 'GateUser') {
+    } else {
+      this._shareParameterService.SetASNListView(asn);
+      this._router.navigate(["/asn"]);
+    }
+
     // this._router.navigate(["/asn"], { queryParams: { id: asn.DocNumber } });
   }
 

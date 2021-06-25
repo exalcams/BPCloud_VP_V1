@@ -17,11 +17,11 @@ export class BPCPIHeader extends CommonClass {
     GrossAmount: number | null;
     NetAmount: number | null;
     UOM: string;
-    Material:string;
-    Description:string;
-    Qty:number;
-    Reason:string;
-    DeliveryNote:string;
+    Material: string;
+    Description: string;
+    Qty: number;
+    Reason: string;
+    DeliveryNote: string;
 }
 
 export class BPCPIItem extends CommonClass {
@@ -43,7 +43,7 @@ export class BPCPIItem extends CommonClass {
     ReasonText: string;
     FileName: string;
     AttachmentReferenceNo: string;
-    Material:string;
+    Material: string;
 }
 
 export class BPCPIView extends CommonClass {
@@ -77,12 +77,12 @@ export class BPCRetHeader extends CommonClass {
     Date: Date | string | null;
     InvoiceDoc: string;
     Status: string;
-    TruckNumber:string;
-    Transporter:string;
-    AWBNumber:string;
-    CreditNote:string;
-    DocumentNumber:string;
-    
+    TruckNumber: string;
+    Transporter: string;
+    AWBNumber: string;
+    CreditNote: string;
+    DocumentNumber: string;
+
 }
 
 export class BPCRetItem extends CommonClass {
@@ -95,13 +95,13 @@ export class BPCRetItem extends CommonClass {
     Item: string;
     ProdcutID: string;
     MaterialText: string;
-    Material:string;
-    InvoiceNumber:string;
+    Material: string;
+    InvoiceNumber: string;
     OrderQty: number;
     RetQty: number;
     ReasonText: string;
     FileName: string;
-    AttachmentReferenceNo:string;
+    AttachmentReferenceNo: string;
 }
 export class BPCRetItemBatch extends CommonClass {
     // ID: number;
@@ -111,9 +111,9 @@ export class BPCRetItemBatch extends CommonClass {
     PatnerID: string;
     RetReqID: string;
     Item: string;
-   Batch:string;
+    Batch: string;
     RetQty: number;
-  
+
 }
 export class BPCRetItemSerial extends CommonClass {
     // ID: number;
@@ -123,9 +123,9 @@ export class BPCRetItemSerial extends CommonClass {
     PatnerID: string;
     RetReqID: string;
     Item: string;
-   Serial:string;
+    Serial: string;
     RetQty: number;
-  
+
 }
 
 // export class BPCRetView extends CommonClass {
@@ -148,17 +148,17 @@ export class BPCRetView_new extends CommonClass {
     Type: string;
     PatnerID: string;
     RetReqID: string;
-    DocumentNumber:string;
-    CreditNote:string;
-    TruckNumber:string;
-    Transporter:string;
-    AWBNumber:string;
+    DocumentNumber: string;
+    CreditNote: string;
+    TruckNumber: string;
+    Transporter: string;
+    AWBNumber: string;
     Text: string;
     Date: Date | string | null;
     InvoiceDoc: string;
     Status: string;
     Items: BPCRetItem[];
-    Batch:BPCRetItemBatch[];
+    Batch: BPCRetItemBatch[];
     Serial: BPCRetItemSerial[];
 }
 export class BPCProd extends CommonClass {
@@ -172,10 +172,10 @@ export class BPCProd extends CommonClass {
     UOM: string;
     Stock: string;
     StockUpdatedOn: Date | string | null;
-    MaterialGroup:string;
-    Material:string;
-    MaterialText:string;
-    BasePrice:string;
+    MaterialGroup: string;
+    Material: string;
+    MaterialText: string;
+    BasePrice: string;
 
 }
 export class BPCProdFav extends CommonClass {
@@ -184,9 +184,9 @@ export class BPCProdFav extends CommonClass {
     Company: string;
     Type: string;
     ProductID: string;
-    PatnerID:string;
-    Material:string;
-    Rating:number;
+    PatnerID: string;
+    Material: string;
+    Rating: number;
 
 }
 export class SODetails {
@@ -208,46 +208,46 @@ export class BPCInvoicePayment extends CommonClass {
     Client: string;
     Company: string;
     Type: string;
-    PatnerID:string;
-    FiscalYear:string;
-    InvoiceNo:string;
-    InvoiceDate:Date;
-    InvoiceAmount:number;
-    PoReference:string;
-    PaidAmount:number;
-    Currency:string;
-    DateofPayment:Date;
-    Status:string;
-    AttID:string;
-    PODDate:Date;
-    PODConfirmedBy:string;
-    AWBNumber:string;
-    BalanceAmount:number;
-    
+    PatnerID: string;
+    FiscalYear: string;
+    InvoiceNo: string;
+    InvoiceDate: Date;
+    InvoiceAmount: number;
+    PoReference: string;
+    PaidAmount: number;
+    Currency: string;
+    DateofPayment: Date;
+    Status: string;
+    AttID: string;
+    PODDate: Date;
+    PODConfirmedBy: string;
+    AWBNumber: string;
+    BalanceAmount: number;
+
 }
 export class BPCInvoicePayView extends CommonClass {
-     ID: number;
-    Invoices:BPCInvoicePayment[];
-    PayRecord:BPCPayRecord[];
-    PayPayment:BPCPayPayment[];
+    ID: number;
+    Invoices: BPCInvoicePayment[];
+    PayRecord: BPCPayRecord[];
+    PayPayment: BPCPayPayment[];
 }
 
 
-export class BPCPayRecord extends CommonClass{
+export class BPCPayRecord extends CommonClass {
     Client: string;
     Company: string;
     Type: string;
-    PartnerID:string;
-    InvoiceNumber:string;
-   DocumentNumber:string;
-    PaymentDate:Date;
-    PayRecordNo:string;
-    UOM:string;
-    PaidAmount:number;
-    Medium:string;
-    Time:string;
-    Remarks:string;
-    RefNumber:string;
-    PayDoc:string;
+    PartnerID: string;
+    InvoiceNumber: string;
+    DocumentNumber: string;
+    PaymentDate: Date;
+    PayRecordNo: string;
+    UOM: string;
+    PaidAmount: number;
+    Medium: string;
+    Time: string;
+    Remarks: string;
+    RefNumber: string;
+    PayDoc: string;
 
 }

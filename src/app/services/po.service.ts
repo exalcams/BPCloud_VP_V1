@@ -45,6 +45,13 @@ export class POService {
     return this._httpClient.get<DocumentDetails[]>(`${this.baseAddress}poapi/PO/GetOFDocumentDetails?DocNumber=${DocNumber}`)
       .pipe(catchError(this.errorHandler));
   }
+  DownloadOFAttachment(AttachmentName: string, DocNumber: string): Observable<Blob | string> {
+    return this._httpClient.get(`${this.baseAddress}poapi/PO/DownloadOFAttachment?AttachmentName=${AttachmentName}&DocNumber=${DocNumber}`, {
+      responseType: 'blob',
+      headers: new HttpHeaders().append('Content-Type', 'application/json')
+    })
+      .pipe(catchError(this.errorHandler));
+  }
   GetPOByDocAndPartnerID(DocNumber: string, PartnerID: string): Observable<BPCOFHeader | string> {
     return this._httpClient.get<any>(`${this.baseAddress}poapi/PO/GetPOByDocAndPartnerID?DocNumber=${DocNumber}&PartnerID=${PartnerID}`)
       .pipe(catchError(this.errorHandler));

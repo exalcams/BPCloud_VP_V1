@@ -276,7 +276,7 @@
                   <mat-form-field class="px-12" style="width: 100%;">
                     <!-- <input matInput placeholder="Delivery Date" formControlName="DeliveryDate"> -->
                     <input matInput placeholder="Delivery Date" [matDatepicker]="picker1"
-                      formControlName="DeliveryDate">
+                      formControlName="DeliveryDate" [min]="minDate">
                     <mat-datepicker-toggle matSuffix [for]="picker1">
                       <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon" class="mb-12"></mat-icon>
                     </mat-datepicker-toggle>
