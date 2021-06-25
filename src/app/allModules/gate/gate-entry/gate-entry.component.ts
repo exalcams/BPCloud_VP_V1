@@ -9,6 +9,8 @@ import { ASNListView, BPCASNHeader, BPCASNItem } from 'app/models/ASN';
 import { DocumentDetails } from 'app/models/Dashboard';
 import { AuthenticationDetails } from 'app/models/master';
 import { ActionLog, BPCInvoice, BPCOFHeader, BPCOFItem, BPCPlantMaster } from 'app/models/OrderFulFilment';
+import { AttachmentDetails } from 'app/models/task';
+import { AttachmentDialogComponent } from 'app/notifications/attachment-dialog/attachment-dialog.component';
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { SnackBarStatus } from 'app/notifications/snackbar-status-enum';
@@ -73,6 +75,8 @@ export class GateEntryComponent implements OnInit {
   @ViewChild('MatPaginator3') invoicePaginator: MatPaginator;
   @ViewChild('MatSort3') invoiceSort: MatSort;
 
+  IsPO: boolean;
+
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _shareParameterService: ShareParameterService,
@@ -101,6 +105,7 @@ export class GateEntryComponent implements OnInit {
     this.ItemsCount = 0;
     this.DocumentsCount = 0;
     this.InvoicesCount = 0;
+    this.IsPO = false;
   }
 
   ngOnInit(): void {
@@ -128,7 +133,7 @@ export class GateEntryComponent implements OnInit {
       this._shareParameterService.SetASNListView(null);
       this.GetASNByASN();
       this.GetPOByDoc();
-      this.GetTabData(true);
+      this.GetTabData();
     } else {
       this.notificationSnackBarComponent.openSnackBar('No ASN Selected', SnackBarStatus.danger);
       this._router.navigate(['/orderfulfilment/asnlist']);
@@ -193,8 +198,8 @@ export class GateEntryComponent implements OnInit {
       }
     );
   }
-  GetTabData(IsPO: boolean): void {
-    if (IsPO) {
+  GetTabData(): void {
+    if (this.IsPO) {
       this.GetPOItemsByDoc();
       this.GetOFDocumentDetails();
       this.GetInvoicesByDoc();
@@ -380,6 +385,73 @@ export class GateEntryComponent implements OnInit {
         this.IsProgressBarVisibile = false;
       }
     );
+  }
+  GetAttachment(fileName: string): void {
+    if (this.IsPO) {
+      this.DownloadOFAttachment(fileName);
+    } else {
+      this.GetInvoiceAttachment(fileName);
+    }
+  }
+  DownloadOFAttachment(fileName: string): void {
+    this.IsProgressBarVisibile = true;
+    this._poService.DownloadOFAttachment(fileName, this.SelectedASNListView.DocNumber).subscribe(
+      data => {
+        if (data) {
+          let fileType = 'image/jpg';
+          fileType = fileName.toLowerCase().includes('.jpg') ? 'image/jpg' :
+            fileName.toLowerCase().includes('.jpeg') ? 'image/jpeg' :
+              fileName.toLowerCase().includes('.png') ? 'image/png' :
+                fileName.toLowerCase().includes('.gif') ? 'image/gif' :
+                  fileName.toLowerCase().includes('.pdf') ? 'application/pdf' : '';
+          const blob = new Blob([data], { type: fileType });
+          this.OpenAttachmentDialog(fileName, blob);
+        }
+        this.IsProgressBarVisibile = false;
+      },
+      error => {
+        console.error(error);
+        this.IsProgressBarVisibile = false;
+      }
+    );
+  }
+
+  GetInvoiceAttachment(fileName: string): void {
+    this.IsProgressBarVisibile = true;
+    this._asnService.DowloandInvoiceAttachment(fileName, this.SelectedASNListView.ASNNumber).subscribe(
+      data => {
+        if (data) {
+          let fileType = 'image/jpg';
+          fileType = fileName.toLowerCase().includes('.jpg') ? 'image/jpg' :
+            fileName.toLowerCase().includes('.jpeg') ? 'image/jpeg' :
+              fileName.toLowerCase().includes('.png') ? 'image/png' :
+                fileName.toLowerCase().includes('.gif') ? 'image/gif' :
+                  fileName.toLowerCase().includes('.pdf') ? 'application/pdf' : '';
+          const blob = new Blob([data], { type: fileType });
+          this.OpenAttachmentDialog(fileName, blob);
+        }
+        this.IsProgressBarVisibile = false;
+      },
+      error => {
+        console.error(error);
+        this.IsProgressBarVisibile = false;
+      }
+    );
+  }
+  OpenAttachmentDialog(FileName: string, blob: Blob): void {
+    const attachmentDetails: AttachmentDetails = {
+      FileName: FileName,
+      blob: blob
+    };
+    const dialogConfig: MatDialogConfig = {
+      data: attachmentDetails,
+      panelClass: 'attachment-dialog'
+    };
+    const dialogRef = this.dialog.open(AttachmentDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+      }
+    });
   }
 
   CreateActionLogvalues(text): void {

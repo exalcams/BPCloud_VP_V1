@@ -39,8 +39,7 @@
             <div fxFlex="20">
               <mat-form-field style="width: 100%;" appearance="outline">
                 <mat-label>ASN From Date</mat-label>
-                <input matInput [matDatepicker]="picker1" formControlName="ASNFromDate"
-                  (dateChange)="DateSelected()">
+                <input matInput [matDatepicker]="picker1" formControlName="ASNFromDate" (dateChange)="DateSelected()">
                 <mat-datepicker-toggle matSuffix [for]="picker1">
                   <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
                 </mat-datepicker-toggle>
@@ -50,8 +49,7 @@
             <div fxFlex="20">
               <mat-form-field appearance="outline" style="width: 100%;">
                 <mat-label>ASN To Date</mat-label>
-                <input matInput [matDatepicker]="picker2" formControlName="ASNToDate"
-                  (dateChange)="DateSelected()">
+                <input matInput [matDatepicker]="picker2" formControlName="ASNToDate" (dateChange)="DateSelected()">
                 <mat-datepicker-toggle matSuffix [for]="picker2">
                   <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
                 </mat-datepicker-toggle>
@@ -114,8 +112,8 @@
           <ng-container matColumnDef="ASNNumber">
             <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
               ASN </th>
-            <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0 pdfLinkClass"
-              (click)="ASNnumber(element)">
+            <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0"
+              [class.pdfLinkClass]="currentUserRole!=='GateUser'" (click)="ASNnumber(element)">
               <div fxLayout>
                 <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
                 <div fxFlex class="pl-12">{{element.ASNNumber}} </div>
