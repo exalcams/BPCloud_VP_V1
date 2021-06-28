@@ -312,7 +312,7 @@ export class ReturnComponent implements OnInit {
     if (event.value) {
       const selectedProd = this.AllProducts.filter(x => x.ProductID === event.value)[0];
       if (selectedProd) {
-        this.ReturnItemFormGroup.get('MaterialText').patchValue(selectedProd.Text);
+        this.ReturnItemFormGroup.get('MaterialText').patchValue(selectedProd.MaterialText);
       }
     }
   }

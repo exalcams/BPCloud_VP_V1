@@ -74,3 +74,8 @@ export class BPCExpenseTypeMaster extends CommonClass {
     ExpenseType: string;
     MaxAmount: string;
 }
+export class ChartDetails {
+    Name: string;
+    Value: number;
+    label: string;
+}
