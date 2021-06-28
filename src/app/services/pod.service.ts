@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject, Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { AuthService } from './auth.service';
-import { BPCPODHeader, BPCPODView, BPCPODItem, BPCReasonMaster } from 'app/models/POD';
+import { BPCPODHeader, BPCPODView, BPCPODItem, BPCReasonMaster, ChartDetails } from 'app/models/POD';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({
@@ -43,6 +43,23 @@ export class PODService {
             .pipe(catchError(this.errorHandler));
     }
 
+    GetPODPieChartDataByPartnerID(PartnerID: string): Observable<ChartDetails[] | string> {
+        return this._httpClient.get<ChartDetails[]>(`${this.baseAddress}poapi/POD/GetPODPieChartDataByPartnerID?PartnerID=${PartnerID}`)
+            .pipe(catchError(this.errorHandler));
+    }
+
+    FilterPOD(PartnerID: string, InvoiceNumber: string, Status: string, FromDate: string, ToDate: string): Observable<BPCPODHeader[] | string> {
+        return this._httpClient.get<BPCPODHeader[]>
+        (`${this.baseAddress}poapi/POD/FilterPOD?PartnerID=${PartnerID}&InvoiceNumber=${InvoiceNumber}&Status=${Status}&FromDate=${FromDate}&ToDate=${ToDate}`)
+            .pipe(catchError(this.errorHandler));
+    }
+
+    FilterPODPieChartData(PartnerID: string, InvoiceNumber: string, Status: string, FromDate: string, ToDate: string): Observable<ChartDetails[] | string> {
+        return this._httpClient.get<ChartDetails[]>
+        (`${this.baseAddress}poapi/POD/FilterPODPieChartData?PartnerID=${PartnerID}&InvoiceNumber=${InvoiceNumber}&Status=${Status}&FromDate=${FromDate}&ToDate=${ToDate}`)
+            .pipe(catchError(this.errorHandler));
+    }
+
     GetPODByPartnerID(PartnerID: string): Observable<BPCPODHeader | string> {
         return this._httpClient.get<BPCPODHeader>(`${this.baseAddress}poapi/POD/GetPODByPartnerID?PartnerID=${PartnerID}`)
             .pipe(catchError(this.errorHandler));
@@ -56,13 +73,13 @@ export class PODService {
         return this._httpClient.get<BPCPODHeader[]>(`${this.baseAddress}poapi/POD/GetPODsByDocAndPartnerID?DocNumber=${DocNumber}&PartnerID=${PartnerID}`)
             .pipe(catchError(this.errorHandler));
     }
-    //madhu
+    // madhu
     GetPODByPartnerIDAndDocument(DocNumber: string, PartnerID: string): Observable<BPCPODItem[] | string> {
         return this._httpClient.get<BPCPODItem[]>(`${this.baseAddress}poapi/POD/GetPODByPartnerIDAndDocument?DocNumber=${DocNumber}&PartnerID=${PartnerID}`)
             .pipe(catchError(this.errorHandler));
     }
-   
-    //madhuend
+
+    // madhuend
     GetPODByInvAndPartnerID(InvoiceNumber: string, PartnerID: string): Observable<BPCPODHeader | string> {
         return this._httpClient.get<BPCPODHeader>
             (`${this.baseAddress}poapi/POD/GetPODByInvAndPartnerID?InvoiceNumber=${InvoiceNumber}&PartnerID=${PartnerID}`)
@@ -116,7 +133,7 @@ export class PODService {
             })
             .pipe(catchError(this.errorHandler));
     }
-    
+
     GetPODItemsByPOD(PODNumber: string): Observable<BPCPODItem[] | string> {
         return this._httpClient.get<BPCPODItem[]>(`${this.baseAddress}poapi/POD/GetPODItemsByPOD?PODNumber=${PODNumber}`)
             .pipe(catchError(this.errorHandler));

@@ -17,14 +17,14 @@ import * as SecureLS from 'secure-ls';
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
-  isProgressBarVisibile:boolean;
-  searchText='';
-  ProductsFormGroup:FormGroup;
-  AllProducts: BPCProd[]=[];
-  selectedProduct:BPCProd;
+  isProgressBarVisibile: boolean;
+  searchText = '';
+  ProductsFormGroup: FormGroup;
+  AllProducts: BPCProd[] = [];
+  selectedProduct: BPCProd;
   authenticationDetails: AuthenticationDetails;
   menuItems: string[];
-  ProductFav:BPCProdFav;
+  ProductFav: BPCProdFav;
   selectID: string;
   notificationSnackBarComponent: NotificationSnackBarComponent;
   selectedValue_star: any;
@@ -39,20 +39,20 @@ export class ProductsComponent implements OnInit {
     private dialog: MatDialog,
     private _formBuilder: FormBuilder,
     private _authService: AuthService,
-    )  {
-      this.SecretKey = this._authService.SecretKey;
+  ) {
+    this.SecretKey = this._authService.SecretKey;
     this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
-      this.selectedProduct=new BPCProd();
-      this.ProductFav=new BPCProdFav();
-      this.authenticationDetails = new AuthenticationDetails();
-      this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
-      this.isProgressBarVisibile = true;
-     }
+    this.selectedProduct = new BPCProd();
+    this.ProductFav = new BPCProdFav();
+    this.authenticationDetails = new AuthenticationDetails();
+    this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
+    this.isProgressBarVisibile = true;
+  }
 
   ngOnInit() {
     // Retrive authorizationData
     const retrievedObject = this.SecureStorage.get('authorizationData');
-    this.patnerId=this.authenticationDetails.UserName;
+    this.patnerId = this.authenticationDetails.UserName;
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.menuItems = this.authenticationDetails.MenuItemNames.split(',');
@@ -66,8 +66,8 @@ export class ProductsComponent implements OnInit {
       this._router.navigate(['/auth/login']);
     }
 
-  this.InitializeProductsFormGroup();
-  this.GetAllProducts();
+    this.InitializeProductsFormGroup();
+    this.GetAllProducts();
   }
   InitializeProductsFormGroup(): void {
     this.ProductsFormGroup = this._formBuilder.group({
@@ -76,15 +76,15 @@ export class ProductsComponent implements OnInit {
       Material: ['', Validators.required],
       Stock: ['', Validators.required],
       BasePrice: ['', Validators.required],
-      Favourite:[0]
+      Favourite: [0]
     });
   }
-  GetAllProducts(){
-    var data=this._masterService.GetAllProducts().subscribe(
+  GetAllProducts() {
+    var data = this._masterService.GetAllProducts().subscribe(
       (data) => {
         this.isProgressBarVisibile = false;
         this.AllProducts = <BPCProd[]>data;
-        console.log("prod",this.AllProducts);
+        console.log("prod", this.AllProducts);
         if (this.AllProducts && this.AllProducts.length) {
           this.loadSelectedProduct(this.AllProducts[0]);
         }
@@ -104,7 +104,7 @@ export class ProductsComponent implements OnInit {
   SetProductValues(): void {
     this.ProductsFormGroup.get('MaterialGroup').patchValue(this.selectedProduct.MaterialGroup);
     this.ProductsFormGroup.get('MaterialText').patchValue(this.selectedProduct.MaterialText);
-    this.ProductsFormGroup.get('Material').patchValue(this.selectedProduct.Material);
+    this.ProductsFormGroup.get('Material').patchValue(this.selectedProduct.ProductID);
     this.ProductsFormGroup.get('Stock').patchValue(this.selectedProduct.Stock);
     this.ProductsFormGroup.get('BasePrice').patchValue(this.selectedProduct.BasePrice);
   }
@@ -112,7 +112,7 @@ export class ProductsComponent implements OnInit {
     this.selectedProduct = new BPCProd();
     this.selectID = '';
     this.ProductsFormGroup.reset();
-    
+
     Object.keys(this.ProductsFormGroup.controls).forEach(key => {
       this.ProductsFormGroup.get(key).markAsUntouched();
     });
@@ -127,12 +127,12 @@ export class ProductsComponent implements OnInit {
   }
   CreateProduct(): void {
     this.GetProductValues();
-    this.selectedProduct.Client="001";
-    this.selectedProduct.Company="0002";
-    this.selectedProduct.ProductID="600";
-    this.selectedProduct.AttID="1";
-    this.selectedProduct.Type="C";
-    this.selectedProduct.CreatedBy= this.authenticationDetails.UserID.toString();
+    this.selectedProduct.Client = "001";
+    this.selectedProduct.Company = "0002";
+    this.selectedProduct.ProductID = "600";
+    this.selectedProduct.AttID = "1";
+    this.selectedProduct.Type = "C";
+    this.selectedProduct.CreatedBy = this.authenticationDetails.UserID.toString();
     this.isProgressBarVisibile = true;
     this._masterService.CreateProduct(this.selectedProduct).subscribe(
       (data) => {
@@ -148,22 +148,22 @@ export class ProductsComponent implements OnInit {
         this.isProgressBarVisibile = false;
       }
     );
-   this.createFav();
+    this.createFav();
   }
-createFav(){
-  this.ProductFav.CreatedBy=this.authenticationDetails.UserID.toString();
-  this.ProductFav.Rating=this.selectedValue_star;
-  this.ProductFav.Client=this.selectedProduct.Client;
-  this.ProductFav.Company=this.selectedProduct.Company;
-  this.ProductFav.Type=this.selectedProduct.Type;
-  this.ProductFav.Material=this.selectedProduct.Material;
-  this.ProductFav.ProductID=this.selectedProduct.ProductID;
-  this.ProductFav.PatnerID=this.patnerId;
-}
+  createFav() {
+    this.ProductFav.CreatedBy = this.authenticationDetails.UserID.toString();
+    this.ProductFav.Rating = this.selectedValue_star;
+    this.ProductFav.Client = this.selectedProduct.Client;
+    this.ProductFav.Company = this.selectedProduct.Company;
+    this.ProductFav.Type = this.selectedProduct.Type;
+    this.ProductFav.ProductID = this.selectedProduct.ProductID;
+    this.ProductFav.ProductID = this.selectedProduct.ProductID;
+    this.ProductFav.PatnerID = this.patnerId;
+  }
   UpdateProduct(): void {
     this.GetProductValues();
-    this.selectedProduct.ModifiedBy= this.authenticationDetails.UserID.toString();
-    
+    this.selectedProduct.ModifiedBy = this.authenticationDetails.UserID.toString();
+
     this.isProgressBarVisibile = true;
     this._masterService.UpdateProduct(this.selectedProduct).subscribe(
       (data) => {
@@ -180,18 +180,18 @@ createFav(){
       }
     );
   }
-  GetProductValues(){
-    this.selectedProduct.Material = this.ProductsFormGroup.get('Material').value;
-    this.selectedProduct.MaterialText= this.ProductsFormGroup.get('MaterialText').value;
+  GetProductValues(): void {
+    this.selectedProduct.ProductID = this.ProductsFormGroup.get('ProductID').value;
+    this.selectedProduct.MaterialText = this.ProductsFormGroup.get('MaterialText').value;
     this.selectedProduct.MaterialGroup = this.ProductsFormGroup.get('MaterialGroup').value;
     this.selectedProduct.Stock = this.ProductsFormGroup.get('Stock').value;
-    this.selectedProduct.BasePrice= this.ProductsFormGroup.get('BasePrice').value;
+    this.selectedProduct.BasePrice = this.ProductsFormGroup.get('BasePrice').value;
     console.log(this.selectedProduct);
   }
   DeleteProduct(): void {
     this.GetProductValues();
-    this.selectedProduct.ModifiedBy= this.authenticationDetails.UserID.toString();
-  
+    this.selectedProduct.ModifiedBy = this.authenticationDetails.UserID.toString();
+
     this.isProgressBarVisibile = true;
     this._masterService.DeleteProduct(this.selectedProduct).subscribe(
       (data) => {
@@ -240,9 +240,9 @@ createFav(){
           if (Actiontype === 'Create') {
             this.CreateProduct();
           } else if (Actiontype === 'Update') {
-           this.UpdateProduct();
+            this.UpdateProduct();
           } else if (Actiontype === 'Delete') {
-           this.DeleteProduct();
+            this.DeleteProduct();
           }
         }
       });
@@ -265,23 +265,23 @@ createFav(){
     console.log(this.ProductsFormGroup.get('Favourite').value);
   }
 
-addClass_fav(star) {
-  //  console.log("star", star); 
-  //  console.log("selectedvalue", this.selectedValue);
-   let ab = "";
-   for (let i = 0; i < star; i++) {
-     
-     ab = "starId" + i;
-     document.getElementById(ab).classList.add("selected");
-   }
-}
-removeClass_fav(star) {
-  //  console.log("removestar", star);
-   let ab = "";
-  for (let i = star-1; i >= this.selectedValue_star; i--) {
-    //  console.log("star i", star);
-     ab = "starId" + i;
-     document.getElementById(ab).classList.remove("selected");
-   }
-}
+  addClass_fav(star) {
+    //  console.log("star", star); 
+    //  console.log("selectedvalue", this.selectedValue);
+    let ab = "";
+    for (let i = 0; i < star; i++) {
+
+      ab = "starId" + i;
+      document.getElementById(ab).classList.add("selected");
+    }
+  }
+  removeClass_fav(star) {
+    //  console.log("removestar", star);
+    let ab = "";
+    for (let i = star - 1; i >= this.selectedValue_star; i--) {
+      //  console.log("star i", star);
+      ab = "starId" + i;
+      document.getElementById(ab).classList.remove("selected");
+    }
+  }
 }

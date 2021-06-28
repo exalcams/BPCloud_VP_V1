@@ -167,16 +167,15 @@ export class BPCProd extends CommonClass {
     Company: string;
     Type: string;
     ProductID: string;
-    Text: string;
+    MaterialText: string;
+    MaterialType: string;
+    MaterialGroup: string;
+    HSN: string;
     AttID: string;
     UOM: string;
     Stock: string;
-    StockUpdatedOn: Date | string | null;
-    MaterialGroup: string;
-    Material: string;
-    MaterialText: string;
     BasePrice: string;
-
+    StockUpdatedOn: Date | string | null;
 }
 export class BPCProdFav extends CommonClass {
     // ID: number;

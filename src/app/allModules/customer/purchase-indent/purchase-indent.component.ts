@@ -84,7 +84,7 @@ export class PurchaseIndentComponent implements OnInit {
 
     AllCountries: BPCCountryMaster[] = [];
     AllCurrencies: BPCCurrencyMaster[] = [];
-    AllProd:BPCProd[]=[];
+    AllProd: BPCProd[] = [];
     AllProducts: BPCProd[] = [];
     isWeightError: boolean;
     @ViewChild('fileInput1') fileInput: ElementRef<HTMLElement>;
@@ -94,7 +94,7 @@ export class PurchaseIndentComponent implements OnInit {
     Material_Text: any;
     i: number;
     Status_pageload: any;
-    isHidden: boolean = true;
+    isHidden = true;
     show: boolean;
     length: number;
     SecretKey: string;
@@ -113,8 +113,8 @@ export class PurchaseIndentComponent implements OnInit {
         private dialog: MatDialog,
         private _formBuilder: FormBuilder,
         private _authService: AuthService,
-        ) {
-            this.SecretKey = this._authService.SecretKey;
+    ) {
+        this.SecretKey = this._authService.SecretKey;
         this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
         this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
         this.authenticationDetails = new AuthenticationDetails();
@@ -122,9 +122,9 @@ export class PurchaseIndentComponent implements OnInit {
         this.IsProgressBarVisibile = false;
         this.PO = new BPCOFHeader();
         this.SelectedPurchaseIndentHeader = new BPCPIHeader();
-        //mchng
+        // mchng
         // this.SelectedPurchaseIndentHeader.Status = 'Open';
-        //mchng
+        // mchng
         this.SelectedPurchaseIndentView = new BPCPIView();
         this.SelectedPurchaseIndentNumber = '';
         this.invAttach = new BPCInvoiceAttachment();
@@ -134,7 +134,7 @@ export class PurchaseIndentComponent implements OnInit {
         this.isWeightError = false;
         this.selectedDocCenterMaster = new BPCDocumentCenterMaster();
         this.ArrivalDateInterval = 1;
-        
+
     }
 
     ngOnInit(): void {
@@ -165,13 +165,13 @@ export class PurchaseIndentComponent implements OnInit {
         this.GetFactByPartnerID();
         this.GetAllProducts();
         this.GetPurchaseIndentBasedOnCondition();
-    //     this.AllProd=[{Material:"001",
-    //     MaterialText:"mad",
-    //     Client:"001",
-    //     Company
-    // }]
-            
-        
+        //     this.AllProd=[{Material:"001",
+        //     MaterialText:"mad",
+        //     Client:"001",
+        //     Company
+        // }]
+
+
     }
     CreateAppUsage(): void {
         const appUsage: AppUsage = new AppUsage();
@@ -213,7 +213,7 @@ export class PurchaseIndentComponent implements OnInit {
             Item: ['', Validators.required],
             // ProdcutID: ['', Validators.required],
             MaterialText: [''],
-            
+
             HSN: ['', Validators.required],
             OrderQty: ['', [Validators.required, Validators.pattern('^([1-9][0-9]*)([.][0-9]{1,2})?$')]],
 
@@ -226,9 +226,9 @@ export class PurchaseIndentComponent implements OnInit {
 
     ResetControl(): void {
         this.SelectedPurchaseIndentHeader = new BPCPIHeader();
-        //mchng
+        // mchng
         // this.SelectedPurchaseIndentHeader.Status = 'Open';
-        //mchng
+        // mchng
         this.SelectedPurchaseIndentView = new BPCPIView();
         this.SelectedPurchaseIndentNumber = '';
         this.ResetPurchaseIndentFormGroup();
@@ -260,21 +260,19 @@ export class PurchaseIndentComponent implements OnInit {
             formArray.removeAt(0);
         }
     }
-    selectionChange(ProductId){
-    //    this. Material_Text=Materialtext
-    console.log("Materialtext",ProductId.value);
-//     const PODItemFormArray = this. AllProducts 
-//   PODItemFormArray.controls.forEach((x, i) => {})
-       for(this.i=0;this.i<=this.AllProducts.length;this.i++)
-       {
-           if(this.AllProducts[this.i].ProductID==ProductId.value)
-           {
-            this.Material_Text=this.AllProducts[this.i].MaterialText
-           }
-       }
-    
+    selectionChange(ProductId) {
+        //    this. Material_Text=Materialtext
+        console.log("Materialtext", ProductId.value);
+        //     const PODItemFormArray = this. AllProducts 
+        //   PODItemFormArray.controls.forEach((x, i) => {})
+        for (this.i = 0; this.i <= this.AllProducts.length; this.i++) {
+            if (this.AllProducts[this.i].ProductID === ProductId.value) {
+                this.Material_Text = this.AllProducts[this.i].MaterialText;
+            }
+        }
+
     }
- 
+
     ResetAttachments(): void {
         this.fileToUpload = null;
         this.fileToUploadList = [];
@@ -292,9 +290,9 @@ export class PurchaseIndentComponent implements OnInit {
     }
     GetPurchaseIndentBasedOnCondition(): void {
         if (this.SelectedPIRNumber) {
-          
+
             this.GetPurchaseIndentByPIAndPartnerID();
-           
+
         }
     }
 
@@ -364,7 +362,14 @@ export class PurchaseIndentComponent implements OnInit {
         if (event.value) {
             const selectedProd = this.AllProducts.filter(x => x.ProductID === event.value)[0];
             if (selectedProd) {
-                this.PurchaseIndentItemFormGroup.get('MaterialText').patchValue(selectedProd.Text);
+                this.PurchaseIndentItemFormGroup.get('MaterialText').patchValue(selectedProd.MaterialText);
+                this.PurchaseIndentItemFormGroup.get('MaterialText').disable();
+                if (selectedProd.HSN) {
+                    this.PurchaseIndentItemFormGroup.get('HSN').patchValue(selectedProd.HSN);
+                    this.PurchaseIndentItemFormGroup.get('HSN').disable();
+                } else {
+                    this.PurchaseIndentItemFormGroup.get('HSN').enable();
+                }
             }
         }
     }
@@ -414,7 +419,7 @@ export class PurchaseIndentComponent implements OnInit {
         this._ASNService.GetAllBPCCountryMasters().subscribe(
             (data) => {
                 this.AllCountries = data as BPCCountryMaster[];
-                
+
             },
             (err) => {
                 console.error(err);
@@ -462,9 +467,9 @@ export class PurchaseIndentComponent implements OnInit {
         this._CustomerService.GetPurchaseIndentByPIAndPartnerID(this.SelectedPIRNumber, this.currentUserName).subscribe(
             (data) => {
                 this.SelectedPurchaseIndentHeader = data as BPCPIHeader;
-                this.status_show = this.SelectedPurchaseIndentHeader.Status
+                this.status_show = this.SelectedPurchaseIndentHeader.Status;
                 console.log("status", this.status_show);
-                if(this.status_show=="submitted"){
+                if (this.status_show === "submitted") {
                     this.PurchaseIndentFormGroup.get('PIRNumber').disable();
                     this.PurchaseIndentFormGroup.get('Date').disable();
                     this.PurchaseIndentFormGroup.get('ReferenceDoc').disable();
@@ -472,11 +477,11 @@ export class PurchaseIndentComponent implements OnInit {
                     this.PurchaseIndentFormGroup.get('Date').disable();
                     this.show = true;
                 }
-                else   if(this.status_show=="saved"){
+                else if (this.status_show === "saved") {
                     this.PurchaseIndentFormGroup.get('PIRNumber').disable();
                     this.PurchaseIndentFormGroup.get('Status').disable();
                 }
-    
+
 
                 if (this.SelectedPurchaseIndentHeader) {
                     this.LoadSelectedPurchaseIndent(this.SelectedPurchaseIndentHeader);
@@ -556,10 +561,10 @@ export class PurchaseIndentComponent implements OnInit {
         else {
             // this.SelectedPurchaseIndentHeader.Client = this.SelectedPurchaseIndentView.Client = this.SelectedPurchaseIndentHeader.Client;
             // this.SelectedPurchaseIndentHeader.Company = this.SelectedPurchaseIndentView.Company = this.SelectedPurchaseIndentHeader.Company;
-            if(action=="submitted")
-            this.SelectedPurchaseIndentHeader.Status = this.SelectedPurchaseIndentView.Status = "20";
-            else if(action=="saved")
-            {
+            if (action === "submitted") {
+                this.SelectedPurchaseIndentHeader.Status = this.SelectedPurchaseIndentView.Status = "20";
+            }
+            else if (action === "saved") {
                 this.SelectedPurchaseIndentHeader.Status = this.SelectedPurchaseIndentView.Status = "10";
             }
         }
@@ -574,16 +579,17 @@ export class PurchaseIndentComponent implements OnInit {
 
     GetPurchaseIndentItemValues(): void {
         this.SelectedPurchaseIndentView.Items = [];
-        if(this.AllPurchaseIndentItems!= null)
-        this.AllPurchaseIndentItems.forEach(x => {
-            if (this.SelectedBPCFact) {
-                x.Client = this.SelectedBPCFact.Client;
-                x.Company = this.SelectedBPCFact.Company;
-                x.Type = this.SelectedBPCFact.Type;
-                x.PatnerID = this.SelectedBPCFact.PatnerID;
-            }
-            this.SelectedPurchaseIndentView.Items.push(x);
-        });
+        if (this.AllPurchaseIndentItems != null) {
+            this.AllPurchaseIndentItems.forEach(x => {
+                if (this.SelectedBPCFact) {
+                    x.Client = this.SelectedBPCFact.Client;
+                    x.Company = this.SelectedBPCFact.Company;
+                    x.Type = this.SelectedBPCFact.Type;
+                    x.PatnerID = this.SelectedBPCFact.PatnerID;
+                }
+                this.SelectedPurchaseIndentView.Items.push(x);
+            });
+        }
     }
 
     SaveClicked(): void {
@@ -621,24 +627,31 @@ export class PurchaseIndentComponent implements OnInit {
                 // this.GetInvoiceDetailValues();
                 // this.GetDocumentCenterValues();
                 // this.SelectedPurchaseIndentView.IsSubmitted = true;
-                if(!this.SelectedPIRNumber){
-                  this.length=0
-                }
-                else if(this.SelectedPIRNumber){
-                this.length=this.PurchaseIndentItemDataSource.data.length
-                }
+                // if (!this.SelectedPIRNumber) {
+                //     this.length = 0;
+                // }
+                // else if (this.SelectedPIRNumber) {
+                //     this.length = this.PurchaseIndentItemDataSource.data.length;
+                // }
 
-                if((this.PurchaseIndentItemFormGroup.status =="VALID" || this.AllPurchaseIndentItems.length ) &&  this.length!=0){
+                if (this.AllPurchaseIndentItems.length && this.AllPurchaseIndentItems.length !== 0) {
                     this.SetActionToOpenConfirmation('Submit');
                 }
-                else if( this.PurchaseIndentItemFormGroup.status =="INVALID" &&  this.length==0){
-                    // this.ShowValidationErrors(this.PurchaseIndentItemFormGroup);
-                    this.ShowValidationErrors(this.PurchaseIndentItemFormGroup);
+                else if (this.AllPurchaseIndentItems.length === 0) {
+                    this.notificationSnackBarComponent.openSnackBar('Minimum one item should be in table', SnackBarStatus.danger);
                 }
-                else if( this.PurchaseIndentItemFormGroup.status =="VALID" &&  this.length==0){
-                    this.notificationSnackBarComponent.openSnackBar('Maximum one item should be in table', SnackBarStatus.danger);
 
-                }
+                // if ((this.PurchaseIndentItemFormGroup.status === "VALID" || this.AllPurchaseIndentItems.length) && this.length !== 0) {
+                //     this.SetActionToOpenConfirmation('Submit');
+                // }
+                // else if (this.PurchaseIndentItemFormGroup.status === "INVALID" && this.length === 0) {
+                //     // this.ShowValidationErrors(this.PurchaseIndentItemFormGroup);
+                //     this.ShowValidationErrors(this.PurchaseIndentItemFormGroup);
+                // }
+                // else if (this.PurchaseIndentItemFormGroup.status === "VALID" && this.length === 0) {
+                //     this.notificationSnackBarComponent.openSnackBar('Maximum one item should be in table', SnackBarStatus.danger);
+
+                // }
 
                 //     } else {
                 //         this.ShowValidationErrors(this.InvoiceDetailsFormGroup);
@@ -709,14 +722,14 @@ export class PurchaseIndentComponent implements OnInit {
         // this.GetBPPurchaseIndentSubItemValues();
         // this.SelectedPurchaseIndentView.CreatedBy = this.authenticationDetails.UserID.toString();
         this.IsProgressBarVisibile = false;
-        if(Actiontype=='Submit'){
-            this.SelectedPurchaseIndentView.Status='20'
-          }
-          else if(Actiontype=='Save'){
-            this.SelectedPurchaseIndentView.Status='10'
-          }
-        console.log("SelectedPurchaseIndentView" + this.SelectedPurchaseIndentView)
-        //mchng
+        if (Actiontype === 'Submit') {
+            this.SelectedPurchaseIndentView.Status = '20';
+        }
+        else if (Actiontype === 'Save') {
+            this.SelectedPurchaseIndentView.Status = '10';
+        }
+        console.log("SelectedPurchaseIndentView" + this.SelectedPurchaseIndentView);
+        // mchng
         this._CustomerService.CreatePurchaseIndent(this.SelectedPurchaseIndentView).subscribe(
             (data) => {
                 this.SelectedPurchaseIndentHeader.PIRNumber = (data as BPCPIHeader).PIRNumber;
@@ -775,13 +788,13 @@ export class PurchaseIndentComponent implements OnInit {
         // this.SelectedBPPurchaseIndentView.TransID = this.SelectedBPPurchaseIndent.TransID;
         // this.SelectedPurchaseIndentView.ModifiedBy = this.authenticationDetails.UserID.toString();
         this.IsProgressBarVisibile = false;
-        if(Actiontype=='Submit'){
-            this.SelectedPurchaseIndentView.Status='20'
-          }
-          else if(Actiontype=='Save'){
-            this.SelectedPurchaseIndentView.Status='10'
-          }
-        console.log("SelectedPurchaseIndentView" + this.SelectedPurchaseIndentView)
+        if (Actiontype === 'Submit') {
+            this.SelectedPurchaseIndentView.Status = '20';
+        }
+        else if (Actiontype === 'Save') {
+            this.SelectedPurchaseIndentView.Status = '10';
+        }
+        console.log("SelectedPurchaseIndentView" + this.SelectedPurchaseIndentView);
         // mchng
         this._CustomerService.UpdatePurchaseIndent(this.SelectedPurchaseIndentView).subscribe(
             (data) => {
@@ -941,25 +954,25 @@ export class PurchaseIndentComponent implements OnInit {
                 return this.SelectedPurchaseIndentHeader.Status === 'saved' ? '#34ad65' :
                     this.SelectedPurchaseIndentHeader.Status === 'submitted' ? '#34ad65' :
                         this.SelectedPurchaseIndentHeader.Status === 'created' ? '#34ad65' :
-                            this.SelectedPurchaseIndentHeader.Status === 'cancelled' ? '#34ad65' :'gray';
-                  
+                            this.SelectedPurchaseIndentHeader.Status === 'cancelled' ? '#34ad65' : 'gray';
+
 
             case 'submitted':
                 return this.SelectedPurchaseIndentHeader.Status === 'saved' ? 'gray' :
-                this.SelectedPurchaseIndentHeader.Status === 'submitted' ? '#34ad65' :
-                    this.SelectedPurchaseIndentHeader.Status === 'created' ? '#34ad65' :
-                        this.SelectedPurchaseIndentHeader.Status === 'cancelled' ? '#34ad65' :'gray';
+                    this.SelectedPurchaseIndentHeader.Status === 'submitted' ? '#34ad65' :
+                        this.SelectedPurchaseIndentHeader.Status === 'created' ? '#34ad65' :
+                            this.SelectedPurchaseIndentHeader.Status === 'cancelled' ? '#34ad65' : 'gray';
 
             case 'created':
                 return this.SelectedPurchaseIndentHeader.Status === 'saved' ? 'gray' :
-                this.SelectedPurchaseIndentHeader.Status === 'submitted' ? 'gray' :
-                    this.SelectedPurchaseIndentHeader.Status === 'created' ? '#34ad65' :
-                        this.SelectedPurchaseIndentHeader.Status === 'cancelled' ? '#34ad65' :'gray';
+                    this.SelectedPurchaseIndentHeader.Status === 'submitted' ? 'gray' :
+                        this.SelectedPurchaseIndentHeader.Status === 'created' ? '#34ad65' :
+                            this.SelectedPurchaseIndentHeader.Status === 'cancelled' ? '#34ad65' : 'gray';
             case 'cancelled':
                 return this.SelectedPurchaseIndentHeader.Status === 'saved' ? 'gray' :
-                this.SelectedPurchaseIndentHeader.Status === 'submitted' ? 'gray' :
-                    this.SelectedPurchaseIndentHeader.Status === 'created' ? 'gray' :
-                        this.SelectedPurchaseIndentHeader.Status === 'cancelled' ? '#34ad65' :'gray';
+                    this.SelectedPurchaseIndentHeader.Status === 'submitted' ? 'gray' :
+                        this.SelectedPurchaseIndentHeader.Status === 'created' ? 'gray' :
+                            this.SelectedPurchaseIndentHeader.Status === 'cancelled' ? '#34ad65' : 'gray';
             default:
                 return '';
         }
