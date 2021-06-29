@@ -26,6 +26,7 @@ import { PODItemAttachmentDialogComponent } from '../poditem-attachment-dialog/p
 import { BPCFact } from 'app/models/fact';
 import * as SecureLS from 'secure-ls';
 import { AuthService } from 'app/services/auth.service';
+import { ActionLog } from 'app/models/OrderFulFilment';
 
 @Component({
   selector: 'app-poddetails',
@@ -591,7 +592,6 @@ export class PODDetailsComponent implements OnInit {
           this.GetPODValues();
           this.GetPODItemValues();
           this.GetPODItemAttachments();
-          this.SelectedPODHeader.Status = this.SelectedPODView.Status = 'Partially Accepted';
           this.SetActionToOpenConfirmation('Save');
 
         } else {
@@ -660,55 +660,89 @@ export class PODDetailsComponent implements OnInit {
     const PODItemFormArray = this.PODItemFormGroup.get('PODItems') as FormArray;
 
     PODItemFormArray.controls.forEach((x, i) => {
+      const Qty = +this.PODItemFormArray.controls[i].get('Qty').value;
+      const ReceivedQty = +this.PODItemFormArray.controls[i].get('ReceivedQty').value;
+      const MissingQty = +this.PODItemFormArray.controls[i].get('MissingQty').value;
+      const BreakageQty = +this.PODItemFormArray.controls[i].get('BreakageQty').value;
+      const AcceptedQty = +this.PODItemFormArray.controls[i].get('AcceptedQty').value;
+
+      if (Qty !== (ReceivedQty + MissingQty)) {
+        this.PODItemFormArray.controls[i].get('ReceivedQty').setErrors({ qty1: true });
+        this.PODItemFormArray.controls[i].get('ReceivedQty').markAsTouched();
+        this.PODItemFormArray.controls[i].get('MissingQty').setErrors({ qty1: true });
+        this.PODItemFormArray.controls[i].get('MissingQty').markAsTouched();
+      }
+      else {
+        this.PODItemFormArray.controls[i].get('ReceivedQty').setErrors({ qty1: null });
+        this.PODItemFormArray.controls[i].get('ReceivedQty').updateValueAndValidity();
+        this.PODItemFormArray.controls[i].get('ReceivedQty').markAsTouched();
+        this.PODItemFormArray.controls[i].get('MissingQty').setErrors({ qty1: null });
+        this.PODItemFormArray.controls[i].get('MissingQty').updateValueAndValidity();
+        this.PODItemFormArray.controls[i].get('MissingQty').markAsTouched();
+      }
+      if (ReceivedQty !== (BreakageQty + AcceptedQty)) {
+        this.PODItemFormArray.controls[i].get('BreakageQty').setErrors({ qty1: true });
+        this.PODItemFormArray.controls[i].get('BreakageQty').markAsTouched();
+        this.PODItemFormArray.controls[i].get('AcceptedQty').setErrors({ qty1: true });
+        this.PODItemFormArray.controls[i].get('AcceptedQty').markAsTouched();
+      }
+      else {
+        this.PODItemFormArray.controls[i].get('BreakageQty').setErrors({ qty1: null });
+        this.PODItemFormArray.controls[i].get('BreakageQty').updateValueAndValidity();
+        this.PODItemFormArray.controls[i].get('BreakageQty').markAsTouched();
+        this.PODItemFormArray.controls[i].get('AcceptedQty').setErrors({ qty1: null });
+        this.PODItemFormArray.controls[i].get('AcceptedQty').updateValueAndValidity();
+        this.PODItemFormArray.controls[i].get('AcceptedQty').markAsTouched();
+      }
+
+
       // this.PODItemFormGroup.get('PODItems').get('ReceivedQty').hasError;
       //  (<FormArray>this.PODItemFormGroup.get('PODItems')).controls[i].markAsTouched();
       //  (<FormArray>this.PODItemFormGroup.get('PODItems')).controls[i].setErrors;
       //  this.PODItemFormArray.controls[i].get('ReceivedQty').markAsTouched();
-      this.a = Number(this.PODItemFormArray.controls[i].get('ReceivedQty').value);
-      this.b = Number(this.PODItemFormArray.controls[i].get('MissingQty').value);
-      this.c = this.a + this.b;
-      this.Qtty = this.PODItemFormArray.controls[i].get('Qty').value;
-      if (this.Qtty !== this.c) {
-        if (this.Qtty !== this.c) {
-          this.PODItemFormArray.controls[i].get('ReceivedQty').setErrors({ qty1: true });
-          this.PODItemFormArray.controls[i].get('MissingQty').setErrors({ out: true });
-        }
+      // this.a = Number(this.PODItemFormArray.controls[i].get('ReceivedQty').value);
+      // this.b = Number(this.PODItemFormArray.controls[i].get('MissingQty').value);
+      // this.c = this.a + this.b;
+      // this.Qtty = this.PODItemFormArray.controls[i].get('Qty').value;
+      // if (this.Qtty !== this.c) {
+      //   if (this.Qtty !== this.c) {
+      //     this.PODItemFormArray.controls[i].get('ReceivedQty').setErrors({ qty1: true });
+      //     this.PODItemFormArray.controls[i].get('MissingQty').setErrors({ out: true });
+      //   }
+      //   console.log(this.PODItemFormArray);
+      //   if (this.PODItemFormArray.controls[i].get('Qty').value === this.c) {
+      //     this.PODItemFormArray.controls[i].get('MissingQty').setErrors({ miss: true });
+      //   }
+      //   this.PODItemFormArray.controls[i].get('ReceivedQty').setErrors({ recive: true });
+      // }
 
+      // //  .setValidators( [Validators.max(this.a+this.b),Validators.min(this.a+this.b)])
+      // console.log(this.PODItemFormArray);
+      // this.d = Number(this.PODItemFormArray.controls[i].get('BreakageQty').value);
+      // this.e = Number(this.PODItemFormArray.controls[i].get('AcceptedQty').value);
+      // this.f = this.d + this.e;
+      // this.recive = this.PODItemFormArray.controls[i].get('ReceivedQty').value;
+      // if (this.recive !== this.f) {
+      //   if (this.recive !== this.f) {
+      //     this.PODItemFormArray.controls[i].get('BreakageQty').setErrors({ invalid: true });
+      //   }
+      //   console.log(this.PODItemFormArray);
+      //   this.PODItemFormArray.controls[i].get('AcceptedQty').setErrors({ invalid: true });
 
-        console.log(this.PODItemFormArray);
-        if (this.PODItemFormArray.controls[i].get('Qty').value === this.c) {
-          this.PODItemFormArray.controls[i].get('MissingQty').setErrors({ miss: true });
-        }
-        this.PODItemFormArray.controls[i].get('ReceivedQty').setErrors({ recive: true });
-      }
+      //   if (this.PODItemFormArray.controls[i].get('ReceivedQty').value === this.f) {
 
-      //  .setValidators( [Validators.max(this.a+this.b),Validators.min(this.a+this.b)])
-      console.log(this.PODItemFormArray);
-      this.d = Number(this.PODItemFormArray.controls[i].get('BreakageQty').value);
-      this.e = Number(this.PODItemFormArray.controls[i].get('AcceptedQty').value);
-      this.f = this.d + this.e;
-      this.recive = this.PODItemFormArray.controls[i].get('ReceivedQty').value;
-      if (this.recive !== this.f) {
-        if (this.recive !== this.f) {
-          this.PODItemFormArray.controls[i].get('BreakageQty').setErrors({ invalid: true });
-        }
-        console.log(this.PODItemFormArray);
-        this.PODItemFormArray.controls[i].get('AcceptedQty').setErrors({ invalid: true });
-
-        if (this.PODItemFormArray.controls[i].get('ReceivedQty').value === this.f) {
-
-          console.log(this.PODItemFormArray);
-        }
-        this.PODItemFormArray.controls[i].get('AcceptedQty').setErrors({ invalid: true });
-        this.PODItemFormArray.controls[i].get('BreakageQty').setErrors({ invalid: true });
-        //  this.PODItemFormArray.controls[i].get('ReceivedQty').('required');
-      }
-      if ((this.PODItemFormArray.controls[i].get('Qty').value) === (this.PODItemFormArray.controls[i].get('AcceptedQty').value)) {
-        this.recivedStatus1_eq = this.recivedStatus1_eq + 1;
-      }
-      else if ((this.PODItemFormArray.controls[i].get('Qty').value) !== (this.PODItemFormArray.controls[i].get('AcceptedQty').value)) {
-        this.recivedStatus2_noteq = this.recivedStatus2_noteq + 1;
-      }
+      //     console.log(this.PODItemFormArray);
+      //   }
+      //   this.PODItemFormArray.controls[i].get('AcceptedQty').setErrors({ invalid: true });
+      //   this.PODItemFormArray.controls[i].get('BreakageQty').setErrors({ invalid: true });
+      //   //  this.PODItemFormArray.controls[i].get('ReceivedQty').('required');
+      // }
+      // if ((this.PODItemFormArray.controls[i].get('Qty').value) === (this.PODItemFormArray.controls[i].get('AcceptedQty').value)) {
+      //   this.recivedStatus1_eq = this.recivedStatus1_eq + 1;
+      // }
+      // else if ((this.PODItemFormArray.controls[i].get('Qty').value) !== (this.PODItemFormArray.controls[i].get('AcceptedQty').value)) {
+      //   this.recivedStatus2_noteq = this.recivedStatus2_noteq + 1;
+      // }
     });
     // if (this.recivedStatus2_noteq >= 1) {
     //   this.Recived_status = "40"
@@ -716,8 +750,8 @@ export class PODDetailsComponent implements OnInit {
     // else if (this.recivedStatus2_noteq == 0) {
     //   this.Recived_status = "50"
     // }
-    console.log("   this.recivedStatus1_eq", this.recivedStatus1_eq);
-    console.log("   this.recivedStatus2_noteq", this.recivedStatus2_noteq);
+    // console.log("   this.recivedStatus1_eq", this.recivedStatus1_eq);
+    // console.log("   this.recivedStatus2_noteq", this.recivedStatus2_noteq);
     this.PODFormGroup.enable();
     if (this.PODFormGroup.valid) {
       if (!this.isWeightError) {
@@ -725,7 +759,7 @@ export class PODDetailsComponent implements OnInit {
           this.GetPODValues();
           this.GetPODItemValues();
           this.GetPODItemAttachments();
-          this.SelectedPODHeader.Status = this.SelectedPODView.Status = 'Submitted';
+
           this.SetActionToOpenConfirmation('Submit');
 
         } else {
@@ -769,13 +803,19 @@ export class PODDetailsComponent implements OnInit {
       result => {
         if (result) {
           if (Actiontype === 'Save' || Actiontype === 'Submit') {
-            if (this.SelectedPODHeader.InvoiceNumber) {
-              this.UpdatePOD(Actiontype);
+            // if (this.SelectedPODHeader.InvoiceNumber) {
+            //   this.UpdatePOD(Actiontype);
+            // } else {
+            //   this.CreatePOD(Actiontype);
+            // }
+            if (Actiontype === 'Submit') {
+              this.SelectedPODHeader.Status = this.SelectedPODView.Status = 'Confirmed';
             } else {
-              this.CreatePOD(Actiontype);
+              this.SelectedPODHeader.Status = this.SelectedPODView.Status = 'Saved';
             }
+            this.UpdatePOD(Actiontype);
           } else if (Actiontype === 'Delete') {
-            this.DeletePOD();
+            // this.DeletePOD();
           }
         } else {
           this.PODFormGroup.disable();
@@ -813,7 +853,7 @@ export class PODDetailsComponent implements OnInit {
   }
 
   AddPODItemAttachment(Actiontype: string): void {
-    this._PODService.AddPODItemAttachment(this.SelectedPODHeader.DocNumber, this.SelectedPODHeader.InvoiceNumber, this.currentUserID.toString(), this.fileToUploadList).subscribe(
+    this._PODService.AddPODItemAttachment(this.SelectedPODHeader.PatnerID, this.SelectedPODHeader.DocNumber, this.SelectedPODHeader.InvoiceNumber, this.currentUserID.toString(), this.fileToUploadList).subscribe(
       (dat) => {
         this.ResetControl();
         this.notificationSnackBarComponent.openSnackBar(`POD ${Actiontype === 'Submit' ? 'submitted' : 'saved'} successfully`, SnackBarStatus.success);

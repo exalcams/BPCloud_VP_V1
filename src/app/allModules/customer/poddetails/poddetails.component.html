@@ -1,5 +1,5 @@
 <div id="poddetail" class="page-layout carded fullwidth">
-  <div class="center">BreakageQty
+  <div class="center">
     <div class="outer" fxLayout>
       <div class="bg"></div>
       <div>
@@ -393,16 +393,16 @@
             <button mat-stroked-button class="SaveBtn" (click)="SaveClicked()">Save</button>
           </div>
         </div> -->
-        <mat-card-actions class="m-0 pl-12 pr-16 cardActions">
+        <mat-card-actions class="m-0 mb-4 pl-12 pr-16 cardActions">
           <div fxLayout fxLayoutAlign="space-between center">
             <div fxFlex>
-              <button *ngIf="SelectedPODHeader?.InvoiceNumber && SelectedPODHeader?.Status!='Submitted' " mat-stroked-button class="DeleteBtn mr-4 mb-8"
-                (click)="DeleteClicked()">Delete</button>
+              <!-- <button *ngIf="SelectedPODHeader?.InvoiceNumber && SelectedPODHeader?.Status!='Submitted' " mat-stroked-button class="DeleteBtn mr-4 mb-8"
+                (click)="DeleteClicked()">Delete</button> -->
             </div>
             <div fxFlex align="end">
-              <button *ngIf="SelectedPODHeader?.InvoiceNumber && SelectedPODHeader?.Status!='Submitted'" mat-stroked-button class="SaveBtn mr-8"
+              <button *ngIf="SelectedPODHeader?.InvoiceNumber && SelectedPODHeader?.Status!='Confirmed' && SelectedPODHeader?.Status!='PartiallyConfirmed'" mat-stroked-button class="SaveBtn mr-8"
                 (click)="SaveClicked()">Save</button>
-              <button *ngIf="SelectedPODHeader?.InvoiceNumber" mat-raised-button class="SubmitBtn"
+              <button *ngIf="SelectedPODHeader?.InvoiceNumber && SelectedPODHeader?.Status!='Confirmed' && SelectedPODHeader?.Status!='PartiallyConfirmed'" mat-raised-button class="SubmitBtn"
                 (click)="SubmitClicked()">Submit</button>
             </div>
           </div>

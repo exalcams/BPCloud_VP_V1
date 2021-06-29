@@ -127,7 +127,7 @@ export class OTIFComponent implements OnInit {
         },
       ],
     },
-    
+
   };
   public barChartType: ChartType = "bar";
   public barChartLegend = true;
@@ -410,6 +410,27 @@ export class OTIFComponent implements OnInit {
       }
     );
   }
+
+  barChartClicked(e: any): void {
+    // console.log(e);
+    if (e.active.length > 0) {
+      const chart = e.active[0]._chart;
+      const activePoints = chart.getElementAtEvent(e.event);
+      if (activePoints.length > 0) {
+        // get the internal index of slice in pie chart
+        const clickedElementIndex = activePoints[0]._index;
+        const label = chart.data.labels[clickedElementIndex] as String;
+        // get value by index
+        const value = chart.data.datasets[0].data[clickedElementIndex];
+        // console.log(clickedElementIndex, label, value);
+        if (label) {
+          console.log(label);
+        }
+      }
+    }
+  }
+
+
   ShowValidationErrors(formGroup: FormGroup): void {
     Object.keys(formGroup.controls).forEach(key => {
       if (!formGroup.get(key).valid) {

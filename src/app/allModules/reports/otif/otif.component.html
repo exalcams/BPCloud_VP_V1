@@ -95,7 +95,7 @@
           <span [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="orangeBorderBottom1"></span>
           <div fxFlex fxLayoutAlign="center" class="p-12" *ngIf="OTIFBarChartData.length">
             <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-              [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType">
+              [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType" (chartClick)="barChartClicked($event)">
             </canvas>
           </div>
         </div>

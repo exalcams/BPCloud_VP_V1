@@ -73,7 +73,6 @@ import { InvoicePaymentComponent } from './invoice-payment/invoice-payment.compo
 import { PaymentDailogComponent } from './payment-dailog/payment-dailog.component';
 import { PaymentHistoryDialogComponent } from './payment-history-dialog/payment-history-dialog.component';
 import { CustomerHomeComponent } from './customer-home/customer-home.component';
-import { HomeComponent } from '../pages/home/home.component';
 import { CustomerPurchaseListComponent } from './customer-purchase-list/customer-purchase-list.component';
 import { CustomerReturnListComponent } from './customer-return-list/customer-return-list.component';
 import { CustomerReturnComponent } from './customer-return/customer-return.component';
@@ -210,11 +209,12 @@ const routes = [
     declarations: [CustomerDashboardComponent, CustomerFactComponent,
         CustomerOrderfulfilmentComponent, CustomerPolookupComponent,
         PurchaseIndentComponent, ReturnComponent, PODComponent, PODDetailsComponent,
-        SupportChatComponent, SupportDeskComponent, SupportTicketComponent, NotesDialogComponent, PODItemAttachmentDialogComponent, InvoicePaymentComponent, PaymentDailogComponent, PaymentHistoryDialogComponent,
+        SupportChatComponent, SupportDeskComponent, SupportTicketComponent, NotesDialogComponent, PODItemAttachmentDialogComponent, InvoicePaymentComponent, 
+        PaymentDailogComponent, PaymentHistoryDialogComponent,
         CustomerHomeComponent, CustomerPurchaseListComponent, CustomerReturnListComponent, CustomerReturnComponent, BatchDialogComponent, SerialDialogComponent],
     providers: [
         DecimalPipe
     ],
-    entryComponents: [NotesDialogComponent, PODItemAttachmentDialogComponent,PaymentDailogComponent,PaymentHistoryDialogComponent,BatchDialogComponent, SerialDialogComponent]
+    entryComponents: [NotesDialogComponent, PODItemAttachmentDialogComponent, PaymentDailogComponent, PaymentHistoryDialogComponent, BatchDialogComponent, SerialDialogComponent]
 })
 export class CustomerModule { }

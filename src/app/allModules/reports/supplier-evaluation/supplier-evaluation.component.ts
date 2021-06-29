@@ -39,6 +39,7 @@ export class SupplierEvaluationComponent implements OnInit {
   IsProgressBarVisibile: boolean;
   IsProgressBarVisibile1: boolean;
   SEs: BPCSE[] = [];
+  FilteredSEs: BPCSE[] = [];
   SearchFormGroup: FormGroup;
   isDateError: boolean;
   DefaultFromDate: Date;
@@ -72,26 +73,59 @@ export class SupplierEvaluationComponent implements OnInit {
   // Pie chart
   SEPieChartData: OTIFChartDetails[] = [];
   public pieChartOptions = {
+    // responsive: true,
+    // // cornerRadius: 20,
+    // maintainAspectRatio: false,
+    // legend: {
+    //   position: "right",
+    //   // align: "end",
+    //   labels: {
+    //     fontSize: 10,
+    //     usePointStyle: true,
+    //   },
+    // },
+    // plugins: {
+    //   labels: {
+    //     render: 'value',
+    //     fontSize: 12,
+    //     fontColor: '#000',
+    //   }
+    // }
     responsive: true,
-    // cornerRadius: 20,
+    // centertext: "9",
     maintainAspectRatio: false,
+
     legend: {
       position: "right",
-      // align: "end",
       labels: {
         fontSize: 10,
+        padding: 20,
         usePointStyle: true,
+        // centertext: "123",
       },
+      // centertext: "123",
+    },
+    cutoutPercentage: 70,
+    elements: {
+      arc: {
+        borderWidth: 0,
+      },
+      // centertext: "123",
     },
     plugins: {
       labels: {
-        render: 'value',
-        fontSize: 12,
-        fontColor: '#000',
-      }
-    }
+        // tslint:disable-next-line:typedef
+        render: function (args) {
+          // return args.value + "%";
+          return args.value;
+        },
+        fontColor: "#000",
+        // position: "outside",
+        // centertext: "123"
+      },
+    },
   };
-  public pieChartType: ChartType = "pie";
+  public pieChartType: ChartType = "doughnut";
   public pieChartLegend = true;
   public pieChartLabels = [];
   public pieChartData: any[] = [];
@@ -246,7 +280,8 @@ export class SupplierEvaluationComponent implements OnInit {
       (data) => {
         this.SEs = data as BPCSE[];
         this.BPCSE = this.SEs;
-        this.tableDataSource = new MatTableDataSource<BPCSE>(this.SEs);
+        this.FilteredSEs = this.SEs.filter(x => x.IsActive);
+        this.tableDataSource = new MatTableDataSource(this.FilteredSEs);
         this.tableDataSource.paginator = this.tablePaginator;
         this.tableDataSource.sort = this.tableSort;
         this.IsProgressBarVisibile = false;
@@ -328,7 +363,8 @@ export class SupplierEvaluationComponent implements OnInit {
         (data) => {
           this.SEs = data as BPCSE[];
           // this.BPCSE=this.SEs;
-          this.tableDataSource = new MatTableDataSource(this.SEs);
+          this.FilteredSEs = this.SEs.filter(x => x.IsActive);
+          this.tableDataSource = new MatTableDataSource(this.FilteredSEs);
           this.tableDataSource.paginator = this.tablePaginator;
           this.tableDataSource.sort = this.tableSort;
           this.render = true;
@@ -382,6 +418,29 @@ export class SupplierEvaluationComponent implements OnInit {
       }
     );
   }
+  pieChartClicked(e: any): void {
+    // console.log(e);
+    if (e.active.length > 0) {
+      const chart = e.active[0]._chart;
+      const activePoints = chart.getElementAtEvent(e.event);
+      if (activePoints.length > 0) {
+        // get the internal index of slice in pie chart
+        const clickedElementIndex = activePoints[0]._index;
+        const label = chart.data.labels[clickedElementIndex] as String;
+        // get value by index
+        const value = chart.data.datasets[0].data[clickedElementIndex];
+        // console.log(clickedElementIndex, label, value);
+        if (label) {
+          this.FilteredSEs = this.SEs.filter(x => x.ECriteria === label);
+          this.tableDataSource = new MatTableDataSource(this.FilteredSEs);
+          this.tableDataSource.paginator = this.tablePaginator;
+          this.tableDataSource.sort = this.tableSort;
+
+        }
+      }
+    }
+  }
+
   ShowValidationErrors(formGroup: FormGroup): void {
     Object.keys(formGroup.controls).forEach(key => {
       if (!formGroup.get(key).valid) {
@@ -416,7 +475,7 @@ export class SupplierEvaluationComponent implements OnInit {
     const PageSize = this.tableDataSource.paginator.pageSize;
     const startIndex = currentPageIndex * PageSize;
     const endIndex = startIndex + PageSize;
-    const itemsShowed = this.SEs.slice(startIndex, endIndex);
+    const itemsShowed = this.FilteredSEs.slice(startIndex, endIndex);
     const itemsShowedd = [];
     itemsShowed.forEach(x => {
       const item = {

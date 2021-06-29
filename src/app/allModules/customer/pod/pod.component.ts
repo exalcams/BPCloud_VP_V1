@@ -55,6 +55,7 @@ export class PODComponent implements OnInit {
   IsProgressBarVisibile1: boolean;
   SelectedBPCFact: BPCFact;
   AllPODHeaders: BPCPODHeader[] = [];
+  FilteredPODHeaders: BPCPODHeader[] = [];
   StatusOptions = [
     { Value: "All", Name: "All" },
     { Value: "Open", Name: "Open" },
@@ -77,8 +78,9 @@ export class PODComponent implements OnInit {
   // @ViewChild(MatPaginator) PODItemPaginator: MatPaginator;
   // @ViewChild(MatSort) PODItemSort: MatSort;
   PODataSource: MatTableDataSource<BPCPODHeader>;
-  @ViewChild(MatPaginator) PODDetails: MatPaginator;
+  // @ViewChild(MatPaginator) PODDetails: MatPaginator;
   @ViewChild(MatPaginator) POPaginator: MatPaginator;
+  @ViewChild(MatSort) PODSort: MatSort;
   SecretKey: string;
   SecureStorage: SecureLS;
 
@@ -220,8 +222,10 @@ export class PODComponent implements OnInit {
     this.SearchFormGroup = this._formBuilder.group({
       InvoiceNumber: [''],
       Status: [''],
-      FromDate: [this.DefaultFromDate],
-      ToDate: [this.DefaultToDate],
+      FromDate: [''],
+      ToDate: [''],
+      // FromDate: [this.DefaultFromDate],
+      // ToDate: [this.DefaultToDate],
     });
   }
   GetFactByPartnerID(): void {
@@ -236,11 +240,14 @@ export class PODComponent implements OnInit {
   }
   GetAllPODByPartnerID(): void {
     this.IsProgressBarVisibile = true;
+    // this.FilteredPODHeaders = [];
     this._PODService.GetAllPODByPartnerID(this.currentUserName).subscribe(
       (data) => {
         this.AllPODHeaders = data as BPCPODHeader[];
-        this.PODataSource = new MatTableDataSource(this.AllPODHeaders);
+        this.FilteredPODHeaders = this.AllPODHeaders.filter(x => x.IsActive);
+        this.PODataSource = new MatTableDataSource(this.FilteredPODHeaders);
         this.PODataSource.paginator = this.POPaginator;
+        this.PODataSource.sort = this.PODSort;
         this.IsProgressBarVisibile = false;
       },
       (err) => {
@@ -309,8 +316,10 @@ export class PODComponent implements OnInit {
         this._PODService.FilterPOD(this.currentUserName, InvoiceNumber, Status, FromDate, ToDate).subscribe(
           (data) => {
             this.AllPODHeaders = data as BPCPODHeader[];
-            this.PODataSource = new MatTableDataSource(this.AllPODHeaders);
+            this.FilteredPODHeaders = this.AllPODHeaders.filter(x => x.IsActive);
+            this.PODataSource = new MatTableDataSource(this.FilteredPODHeaders);
             this.PODataSource.paginator = this.POPaginator;
+            this.PODataSource.sort = this.PODSort;
             this.IsProgressBarVisibile = false;
           },
           (err) => {
@@ -348,6 +357,29 @@ export class PODComponent implements OnInit {
       }
     );
   }
+
+  pieChartClicked(e: any): void {
+    // console.log(e);
+    if (e.active.length > 0) {
+      const chart = e.active[0]._chart;
+      const activePoints = chart.getElementAtEvent(e.event);
+      if (activePoints.length > 0) {
+        // get the internal index of slice in pie chart
+        const clickedElementIndex = activePoints[0]._index;
+        const label = chart.data.labels[clickedElementIndex] as String;
+        // get value by index
+        const value = chart.data.datasets[0].data[clickedElementIndex];
+        // console.log(clickedElementIndex, label, value);
+        if (label) {
+          this.FilteredPODHeaders = this.AllPODHeaders.filter(x => x.Status === label);
+          this.PODataSource = new MatTableDataSource(this.FilteredPODHeaders);
+          this.PODataSource.paginator = this.POPaginator;
+          this.PODataSource.sort = this.PODSort;
+        }
+      }
+    }
+  }
+
   ShowValidationErrors(formGroup: FormGroup): void {
     Object.keys(formGroup.controls).forEach(key => {
       if (!formGroup.get(key).valid) {
@@ -382,7 +414,7 @@ export class PODComponent implements OnInit {
     const PageSize = this.PODataSource.paginator.pageSize;
     const startIndex = currentPageIndex * PageSize;
     const endIndex = startIndex + PageSize;
-    const itemsShowed = this.AllPODHeaders.slice(startIndex, endIndex);
+    const itemsShowed = this.FilteredPODHeaders.slice(startIndex, endIndex);
     const itemsShowedd = [];
     itemsShowed.forEach(x => {
       const item = {
