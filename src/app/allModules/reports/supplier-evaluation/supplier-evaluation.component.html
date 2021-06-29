@@ -94,12 +94,12 @@
 
         <div class="tile mx-20" fxFlex="25" fxLayout="column" fxLayoutAlign="start">
           <div fxLayoutAlign="start center" class="pt-8">
-            <span class="boldClass pl-8">Evaluation ( per Criteria )</span>
+            <span class="boldClass pl-8">Evaluation % ( per Criteria )</span>
           </div>
           <span [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="orangeBorderBottom1"></span>
           <div fxFlex fxLayoutAlign="center" class="p-12" *ngIf="SEPieChartData.length">
             <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [options]="pieChartOptions"
-              [colors]="pieChartColors" [legend]="pieChartLegend" [chartType]="pieChartType">
+              [colors]="pieChartColors" [legend]="pieChartLegend" [chartType]="pieChartType" (chartClick)="pieChartClicked($event)">
             </canvas>
             <!-- <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
             [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType">

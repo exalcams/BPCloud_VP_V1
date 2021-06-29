@@ -1,4 +1,4 @@
-<div id="pod" class="page-layout carded fullwidth" fusePerfectScrollbar>
+<div id="pod12" class="page-layout carded" fusePerfectScrollbar>
   <div class="center" fxLayout="column" fxLayoutGap="10px">
     <div class="outer" fxLayout>
       <div class="bg"></div>
@@ -67,14 +67,11 @@
           <div fxLayoutAlign="start center" class="pt-8">
             <span class="boldClass pl-8">Invoices</span>
           </div>
-          <span [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="orangeBorderBottom1"></span>
+          <span [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="orangeBorderBottom"></span>
           <div fxFlex fxLayoutAlign="center" class="p-12" *ngIf="PODPieChartData.length">
             <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [options]="pieChartOptions"
-              [colors]="pieChartColors" [legend]="pieChartLegend" [chartType]="pieChartType">
+              [colors]="pieChartColors" [legend]="pieChartLegend" [chartType]="pieChartType" (chartClick)="pieChartClicked($event)">
             </canvas>
-            <!-- <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-            [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType">
-          </canvas> -->
           </div>
         </div>
 
@@ -107,14 +104,14 @@
         </div>
       </div>
 
-      <table *ngIf="AllPODHeaders?.length" mat-table [dataSource]="PODataSource" matSort>
+      <table mat-table [dataSource]="PODataSource" matSort>
         <ng-container matColumnDef="InvoiceNumber">
           <th mat-header-cell *matHeaderCellDef> Invoice Number </th>
           <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
             <div fxLayout>
               <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
               <div fxFlex class="pl-4">
-                <span class="cursorPointer"
+                <span class="pdfLinkClass"
                   (click)="GotoPODDetails(element.InvoiceNumber)">{{element.InvoiceNumber}}</span>
               </div>
             </div>

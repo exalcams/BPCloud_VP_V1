@@ -50,13 +50,13 @@ export class PODService {
 
     FilterPOD(PartnerID: string, InvoiceNumber: string, Status: string, FromDate: string, ToDate: string): Observable<BPCPODHeader[] | string> {
         return this._httpClient.get<BPCPODHeader[]>
-        (`${this.baseAddress}poapi/POD/FilterPOD?PartnerID=${PartnerID}&InvoiceNumber=${InvoiceNumber}&Status=${Status}&FromDate=${FromDate}&ToDate=${ToDate}`)
+            (`${this.baseAddress}poapi/POD/FilterPOD?PartnerID=${PartnerID}&InvoiceNumber=${InvoiceNumber}&Status=${Status}&FromDate=${FromDate}&ToDate=${ToDate}`)
             .pipe(catchError(this.errorHandler));
     }
 
     FilterPODPieChartData(PartnerID: string, InvoiceNumber: string, Status: string, FromDate: string, ToDate: string): Observable<ChartDetails[] | string> {
         return this._httpClient.get<ChartDetails[]>
-        (`${this.baseAddress}poapi/POD/FilterPODPieChartData?PartnerID=${PartnerID}&InvoiceNumber=${InvoiceNumber}&Status=${Status}&FromDate=${FromDate}&ToDate=${ToDate}`)
+            (`${this.baseAddress}poapi/POD/FilterPODPieChartData?PartnerID=${PartnerID}&InvoiceNumber=${InvoiceNumber}&Status=${Status}&FromDate=${FromDate}&ToDate=${ToDate}`)
             .pipe(catchError(this.errorHandler));
     }
 
@@ -143,13 +143,14 @@ export class PODService {
             .pipe(catchError(this.errorHandler));
     }
 
-    AddPODItemAttachment(DocNumber: string, InvoiceNumber: string, CreatedBy: string, selectedFiles: File[]): Observable<any> {
+    AddPODItemAttachment(PartnerID: string, DocNumber: string, InvoiceNumber: string, CreatedBy: string, selectedFiles: File[]): Observable<any> {
         const formData: FormData = new FormData();
         if (selectedFiles && selectedFiles.length) {
             selectedFiles.forEach(x => {
                 formData.append(x.name, x, x.name);
             });
         }
+        formData.append('PartnerID', PartnerID);
         formData.append('DocNumber', DocNumber);
         formData.append('InvoiceNumber', InvoiceNumber);
         // formData.append('Item', Item);
