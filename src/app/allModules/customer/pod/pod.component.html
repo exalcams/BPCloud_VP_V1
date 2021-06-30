@@ -112,7 +112,7 @@
               <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
               <div fxFlex class="pl-4">
                 <span class="pdfLinkClass"
-                  (click)="GotoPODDetails(element.InvoiceNumber)">{{element.InvoiceNumber}}</span>
+                  (click)="GotoPODDetails(element.InvoiceNumber)">{{element.InvoiceNumber | removeLeadingZero}}</span>
               </div>
             </div>
           </td>
@@ -140,7 +140,7 @@
         <ng-container matColumnDef="DocNumber">
           <th mat-header-cell *matHeaderCellDef> Document Number </th>
           <td mat-cell *matCellDef="let element">
-            {{element.DocNumber}}
+            {{element.DocNumber | removeLeadingZero}}
           </td>
         </ng-container>
 

@@ -403,7 +403,7 @@ export class PurchaseIndentComponent implements OnInit {
             this.ResetPurchaseIndentItemFormGroup();
             this.selectedDocCenterMaster = new BPCDocumentCenterMaster();
         } else {
-            this.ShowValidationErrors(this.DocumentCenterFormGroup);
+            this.ShowValidationErrors(this.PurchaseIndentItemFormGroup);
         }
     }
 
@@ -721,7 +721,7 @@ export class PurchaseIndentComponent implements OnInit {
         // this.GetPurchaseIndentValues();
         // this.GetBPPurchaseIndentSubItemValues();
         // this.SelectedPurchaseIndentView.CreatedBy = this.authenticationDetails.UserID.toString();
-        this.IsProgressBarVisibile = false;
+        this.IsProgressBarVisibile = true;
         if (Actiontype === 'Submit') {
             this.SelectedPurchaseIndentView.Status = '20';
         }
@@ -736,8 +736,6 @@ export class PurchaseIndentComponent implements OnInit {
                 this.ResetControl();
                 this.notificationSnackBarComponent.openSnackBar(`PurchaseIndent ${Actiontype === 'Submit' ? 'submitted' : 'saved'} successfully`, SnackBarStatus.success);
                 this.IsProgressBarVisibile = false;
-
-
             },
             (err) => {
                 this.showErrorNotificationSnackBar(err);
@@ -787,7 +785,7 @@ export class PurchaseIndentComponent implements OnInit {
         // this.GetBPPurchaseIndentSubItemValues();
         // this.SelectedBPPurchaseIndentView.TransID = this.SelectedBPPurchaseIndent.TransID;
         // this.SelectedPurchaseIndentView.ModifiedBy = this.authenticationDetails.UserID.toString();
-        this.IsProgressBarVisibile = false;
+        this.IsProgressBarVisibile = true;
         if (Actiontype === 'Submit') {
             this.SelectedPurchaseIndentView.Status = '20';
         }
@@ -802,8 +800,6 @@ export class PurchaseIndentComponent implements OnInit {
                 this.ResetControl();
                 this.notificationSnackBarComponent.openSnackBar(`PurchaseIndent ${Actiontype === 'Submit' ? 'submitted' : 'saved'} successfully`, SnackBarStatus.success);
                 this.IsProgressBarVisibile = false;
-
-
             },
             (err) => {
                 console.error(err);

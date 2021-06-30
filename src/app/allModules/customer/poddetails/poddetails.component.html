@@ -224,7 +224,7 @@
                     <th mat-header-cell *matHeaderCellDef> Material </th>
                     <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index">
                       <!-- <input matInput formControlName="MaterialText">  -->
-                      {{PODItemFormGroup.get('PODItems')?.controls[index]?.get('Material')?.value}}
+                      {{PODItemFormGroup.get('PODItems')?.controls[index]?.get('Material')?.value | removeLeadingZero}}
                     </td>
                   </ng-container>
 
@@ -232,7 +232,7 @@
                     <th mat-header-cell *matHeaderCellDef> Material Text </th>
                     <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index">
                       <!-- <input matInput formControlName="MaterialText">  -->
-                      {{PODItemFormGroup.get('PODItems')?.controls[index]?.get('MaterialText')?.value}}
+                      {{PODItemFormGroup.get('PODItems')?.controls[index]?.get('MaterialText')?.value | removeLeadingZero}}
                     </td>
                   </ng-container>
 
@@ -355,12 +355,14 @@
                     <th mat-header-cell *matHeaderCellDef> Attach</th>
                     <td mat-cell *matCellDef="let element; let index = index" [formGroupName]="index"
                       style="text-align: center;cursor: pointer;" (click)="CheckPODItemAttachment(index)">
-                      <div style="margin-top: 3px; margin-left: 15px;">
+                      <span class="errorAstrix" *ngIf="PODItemFormGroup.get('PODItems')?.controls[index]?.get('AttachmentName')?.invalid">*</span>
+                      <!-- <div style="margin-top: 3px; margin-left: 15px;">
                         <span
                           [matBadge]="PODItemFormGroup.get('PODItems')?.controls[index]?.get('AttachmentName')?.value?'1':'0'"
                           matBadgeColor="accent" matBadgeOverlap="false"></span>
-                      </div>
-                      <img style="height: 30px;cursor: pointer;" src="assets/images/attachment.png">
+                      </div> -->
+                      <mat-icon [matBadge]="PODItemFormGroup.get('PODItems')?.controls[index]?.get('AttachmentName')?.value?'1':'0'"
+                      matBadgeColor="accent" >attach_file</mat-icon>
                       <input hidden type="file" #fileInput1 id="file" (change)="handleFileInput($event,index)" />
                     </td>
                   </ng-container>

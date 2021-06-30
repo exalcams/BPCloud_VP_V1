@@ -448,10 +448,10 @@ export class PODDetailsComponent implements OnInit {
       Material: [PODItem.Material],
       MaterialText: [PODItem.MaterialText],
       Qty: [PODItem.Qty],
-      ReceivedQty: [PODItem.ReceivedQty, [Validators.required, Validators.pattern('^([1-9][0-9]*)([.][0-9]{1,3})?$')]],
+      ReceivedQty: [PODItem.ReceivedQty, [Validators.required, Validators.pattern('^([0-9][0-9]*)([.][0-9]{1,3})?$')]],
       BreakageQty: [PODItem.BreakageQty, [Validators.max(PODItem.Qty), Validators.pattern('^([0-9][0-9]*)([.][0-9]{1,3})?$')]],
       MissingQty: [PODItem.MissingQty, [Validators.max(PODItem.Qty), Validators.pattern('^([0-9][0-9]*)([.][0-9]{1,3})?$')]],
-      AcceptedQty: [PODItem.AcceptedQty, [Validators.required, Validators.max(PODItem.Qty), Validators.pattern('^([1-9][0-9]*)([.][0-9]{1,3})?$')]],
+      AcceptedQty: [PODItem.AcceptedQty, [Validators.required, Validators.max(PODItem.Qty), Validators.pattern('^([0-9][0-9]*)([.][0-9]{1,3})?$')]],
       Reason: [PODItem.Reason],
       Remarks: [PODItem.Remarks],
       AttachmentName: [PODItem.AttachmentName]
@@ -463,6 +463,7 @@ export class PODDetailsComponent implements OnInit {
       row.get('BreakageQty').disable();
       row.get('AcceptedQty').disable();
       row.get('Remarks').enable();
+      row.get('AttachmentName').enable();
     }
     else {
       row.get('ReceivedQty').enable();
@@ -471,6 +472,7 @@ export class PODDetailsComponent implements OnInit {
       row.get('AcceptedQty').enable();
       row.get('Reason').enable();
       row.get('Remarks').enable();
+      row.get('AttachmentName').enable();
     }
 
     this.PODItemFormArray.push(row);
@@ -657,6 +659,7 @@ export class PODDetailsComponent implements OnInit {
   SubmitClicked(): void {
     this.recivedStatus1_eq = 0;
     this.recivedStatus2_noteq = 0;
+    this.Recived_status = "50";
     const PODItemFormArray = this.PODItemFormGroup.get('PODItems') as FormArray;
 
     PODItemFormArray.controls.forEach((x, i) => {
@@ -694,7 +697,18 @@ export class PODDetailsComponent implements OnInit {
         this.PODItemFormArray.controls[i].get('AcceptedQty').updateValueAndValidity();
         this.PODItemFormArray.controls[i].get('AcceptedQty').markAsTouched();
       }
-
+      if (Qty !== AcceptedQty) {
+        this.Recived_status = "40";
+        this.PODItemFormArray.controls[i].get('Reason').setValidators(Validators.required);
+        this.PODItemFormArray.controls[i].get('Reason').updateValueAndValidity();
+        this.PODItemFormArray.controls[i].get('AttachmentName').setValidators(Validators.required);
+        this.PODItemFormArray.controls[i].get('AttachmentName').updateValueAndValidity();
+      } else {
+        this.PODItemFormArray.controls[i].get('Reason').clearValidators();
+        this.PODItemFormArray.controls[i].get('Reason').updateValueAndValidity();
+        this.PODItemFormArray.controls[i].get('AttachmentName').clearValidators();
+        this.PODItemFormArray.controls[i].get('AttachmentName').updateValueAndValidity();
+      }
 
       // this.PODItemFormGroup.get('PODItems').get('ReceivedQty').hasError;
       //  (<FormArray>this.PODItemFormGroup.get('PODItems')).controls[i].markAsTouched();
@@ -759,9 +773,7 @@ export class PODDetailsComponent implements OnInit {
           this.GetPODValues();
           this.GetPODItemValues();
           this.GetPODItemAttachments();
-
           this.SetActionToOpenConfirmation('Submit');
-
         } else {
           this.ShowValidationErrors(this.PODItemFormGroup);
         }
@@ -832,7 +844,12 @@ export class PODDetailsComponent implements OnInit {
     // this.GetPODValues();
     // this.GetBPPODSubItemValues();
     // this.SelectedPODView.CreatedBy = this.authenticationDetails.UserID.toString();
-
+    if (Actiontype === 'Submit') {
+      if (this.fileToUploadList && this.fileToUploadList.length) {
+      } else {
+        this.SelectedPODView.IsSendToFTP = true;
+      }
+    }
     this.IsProgressBarVisibile = true;
     this._PODService.CreatePOD(this.SelectedPODView).subscribe(
       (data) => {
@@ -841,7 +858,16 @@ export class PODDetailsComponent implements OnInit {
           this.AddPODItemAttachment(Actiontype);
         } else {
           this.ResetControl();
-          this.notificationSnackBarComponent.openSnackBar(`POD ${Actiontype === 'Submit' ? 'submitted' : 'saved'} successfully`, SnackBarStatus.success);
+          if (Actiontype === 'Submit') {
+            if (this.Recived_status === '40') {
+              this.notificationSnackBarComponent.openSnackBar(`We have noted the quantity difference, we will process your order again`, SnackBarStatus.success, 5000);
+            } else {
+              this.notificationSnackBarComponent.openSnackBar(`POD submitted successfully`, SnackBarStatus.success);
+            }
+          } else {
+            this.notificationSnackBarComponent.openSnackBar(`POD saved successfully`, SnackBarStatus.success);
+          }
+          // this.notificationSnackBarComponent.openSnackBar(`POD ${Actiontype === 'Submit' ? 'submitted' : 'saved'} successfully`, SnackBarStatus.success);
           this.IsProgressBarVisibile = false;
           this.GetPODBasedOnCondition();
         }
@@ -856,7 +882,16 @@ export class PODDetailsComponent implements OnInit {
     this._PODService.AddPODItemAttachment(this.SelectedPODHeader.PatnerID, this.SelectedPODHeader.DocNumber, this.SelectedPODHeader.InvoiceNumber, this.currentUserID.toString(), this.fileToUploadList).subscribe(
       (dat) => {
         this.ResetControl();
-        this.notificationSnackBarComponent.openSnackBar(`POD ${Actiontype === 'Submit' ? 'submitted' : 'saved'} successfully`, SnackBarStatus.success);
+        if (Actiontype === 'Submit') {
+          if (this.Recived_status === '40') {
+            this.notificationSnackBarComponent.openSnackBar(`We have noted the quantity difference, we will process your order again`, SnackBarStatus.success, 5000);
+          } else {
+            this.notificationSnackBarComponent.openSnackBar(`POD submitted successfully`, SnackBarStatus.success);
+          }
+        } else {
+          this.notificationSnackBarComponent.openSnackBar(`POD saved successfully`, SnackBarStatus.success);
+        }
+        // this.notificationSnackBarComponent.openSnackBar(`POD ${Actiontype === 'Submit' ? 'submitted' : 'saved'} successfully`, SnackBarStatus.success);
         this.IsProgressBarVisibile = false;
         this.GetPODBasedOnCondition();
       },
@@ -880,6 +915,12 @@ export class PODDetailsComponent implements OnInit {
     // if(Actiontype=="Submit"){
 
     // }
+    if (Actiontype === 'Submit') {
+      if (this.fileToUploadList && this.fileToUploadList.length) {
+      } else {
+        this.SelectedPODView.IsSendToFTP = true;
+      }
+    }
     this.IsProgressBarVisibile = true;
 
     this._PODService.UpdatePOD(this.SelectedPODView).subscribe(
@@ -892,7 +933,16 @@ export class PODDetailsComponent implements OnInit {
           this.AddPODItemAttachment(Actiontype);
         } else {
           this.ResetControl();
-          this.notificationSnackBarComponent.openSnackBar(`POD ${Actiontype === 'Submit' ? 'submitted' : 'saved'} successfully`, SnackBarStatus.success);
+          if (Actiontype === 'Submit') {
+            if (this.Recived_status === '40') {
+              this.notificationSnackBarComponent.openSnackBar(`We have noted the quantity difference, we will process your order again`, SnackBarStatus.success, 5000);
+            } else {
+              this.notificationSnackBarComponent.openSnackBar(`POD submitted successfully`, SnackBarStatus.success);
+            }
+          } else {
+            this.notificationSnackBarComponent.openSnackBar(`POD saved successfully`, SnackBarStatus.success);
+          }
+          // this.notificationSnackBarComponent.openSnackBar(`POD ${Actiontype === 'Submit' ? 'submitted' : 'saved'} successfully`, SnackBarStatus.success);
           this.IsProgressBarVisibile = false;
           this.GetPODBasedOnCondition();
         }
