@@ -78,6 +78,7 @@ import { CustomerReturnListComponent } from './customer-return-list/customer-ret
 import { CustomerReturnComponent } from './customer-return/customer-return.component';
 import { BatchDialogComponent } from './batch-dialog/batch-dialog.component';
 import { SerialDialogComponent } from './serial-dialog/serial-dialog.component';
+import { SharedModule } from 'app/shared/shared-module';
 
 const routes = [
     {
@@ -204,7 +205,8 @@ const routes = [
 
         FormsModule,
         ChartsModule,
-        CKEditorModule
+        CKEditorModule,
+        SharedModule
     ],
     declarations: [CustomerDashboardComponent, CustomerFactComponent,
         CustomerOrderfulfilmentComponent, CustomerPolookupComponent,

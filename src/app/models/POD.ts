@@ -57,8 +57,9 @@ export class BPCPODView extends CommonClass {
     Plant: string;
     Status: string;
     PODItems: BPCPODItem[];
-    Recived_status: string
+    Recived_status: string;
     Doc: string;
+    IsSendToFTP: boolean;
 }
 export class BPCReasonMaster extends CommonClass {
     ID: number;

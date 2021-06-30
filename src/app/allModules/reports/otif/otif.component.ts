@@ -1,6 +1,5 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { text } from '@angular/core/src/render3/instructions';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { MatTableDataSource, MatPaginator, MatMenuTrigger, MatSort, MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
 import { Router } from '@angular/router';
@@ -60,6 +59,7 @@ export class OTIFComponent implements OnInit {
   IsProgressBarVisibile1: boolean;
   IsProgressBarVisibile2: boolean;
   OTIFs: BPCOTIF[] = [];
+  FilteredOTIFs: BPCOTIF[] = [];
   SearchFormGroup: FormGroup;
   isDateError: boolean;
   DefaultFromDate: Date;
@@ -208,7 +208,7 @@ export class OTIFComponent implements OnInit {
     this.InitializeSearchForm();
     // this.GetAllOTIFs();
     // this.GetOTIFByPatnerID();
-    this.SearchClicked();
+    this.SearchClicked('');
   }
 
   CreateAppUsage(): void {
@@ -237,6 +237,7 @@ export class OTIFComponent implements OnInit {
   }
   ResetControl(): void {
     this.OTIFs = [];
+    this.FilteredOTIFs = [];
     this.ResetFormGroup(this.SearchFormGroup);
   }
   ResetFormGroup(formGroup: FormGroup): void {
@@ -251,8 +252,9 @@ export class OTIFComponent implements OnInit {
     this._factService.GetAllOTIFs().subscribe(
       (data) => {
         this.OTIFs = data as BPCOTIF[];
+        this.FilteredOTIFs = this.OTIFs.filter(x => x.IsActive);
         this.BPCOTIF = this.OTIFs;
-        this.tableDataSource = new MatTableDataSource<BPCOTIF>(this.OTIFs);
+        this.tableDataSource = new MatTableDataSource<BPCOTIF>(this.FilteredOTIFs);
         this.tableDataSource.paginator = this.tablePaginator;
         this.tableDataSource.sort = this.tableSort;
         this.IsProgressBarVisibile = false;
@@ -273,9 +275,9 @@ export class OTIFComponent implements OnInit {
       this.isDateError = false;
     }
   }
-  SearchClicked(text = null): void {
+  SearchClicked(text: string): void {
     if (this.SearchFormGroup.valid) {
-      if (text != null) {
+      if (text) {
         this.CreateActionLogvalues(text);
       }
       if (!this.isDateError) {
@@ -295,8 +297,9 @@ export class OTIFComponent implements OnInit {
         this._factService.FilterOTIFs(PartnerID, Material, FromDate, ToDate).subscribe(
           (data) => {
             this.OTIFs = data as BPCOTIF[];
+            this.FilteredOTIFs = this.OTIFs.filter(x => x.IsActive);
             // this.BPCOTIF=this.OTIFs;
-            this.tableDataSource = new MatTableDataSource(this.OTIFs);
+            this.tableDataSource = new MatTableDataSource(this.FilteredOTIFs);
             this.tableDataSource.paginator = this.tablePaginator;
             this.tableDataSource.sort = this.tableSort;
             this.render = true;
@@ -425,6 +428,11 @@ export class OTIFComponent implements OnInit {
         // console.log(clickedElementIndex, label, value);
         if (label) {
           console.log(label);
+          this.FilteredOTIFs = this.OTIFs.filter(x => this._datePipe.transform(x.Date, "EEEE") === label);
+          this.tableDataSource = new MatTableDataSource(this.FilteredOTIFs);
+          this.tableDataSource.paginator = this.tablePaginator;
+          this.tableDataSource.sort = this.tableSort;
+          
         }
       }
     }
@@ -530,7 +538,7 @@ export class OTIFComponent implements OnInit {
       });
   }
 
-  CreateActionLogvalues(text): void {
+  CreateActionLogvalues(text: string): void {
     this.ActionLog = new ActionLog();
     this.ActionLog.UserID = this.currentUserID;
     this.ActionLog.AppName = "Supplier Evaluation";
