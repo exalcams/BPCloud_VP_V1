@@ -14,6 +14,7 @@ import { AuthService } from 'app/services/auth.service';
 import { ExcelService } from 'app/services/excel.service';
 import { FactService } from 'app/services/fact.service';
 import { MasterService } from 'app/services/master.service';
+import * as Chart from 'chart.js';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Guid } from 'guid-typescript';
 import { ApexAxisChartSeries, ApexNonAxisChartSeries, ApexChart, ApexDataLabels, ApexPlotOptions, ApexYAxis, ApexXAxis, ApexFill, ApexTitleSubtitle, ApexGrid, ApexTooltip, ApexStroke, ApexLegend, ApexMarkers, ApexResponsive, ApexOptions } from 'ng-apexcharts';
@@ -90,6 +91,92 @@ export class OTIFComponent implements OnInit {
   SecureStorage: SecureLS;
   OTIFCircleProgressValue: number;
 
+  // Gauge chart
+  gaugeType = "arch";
+  gaugeAppendText = "%";
+
+  TotalStockPer = 95;
+  TotalStockValue = 256;
+  OutOfStockPer = 20;
+  OutOfStockValue = 256;
+  OTIFPer = 95;
+  OTIFValue = 256;
+  TurnOverPer = 20;
+  TurnOverValue = 256;
+
+  // Progress bar
+  AvgSellTime = 35;
+  AvgSubcon = 50;
+
+  // Pie chart
+  SEPieChartData: OTIFChartDetails[] = [];
+  public pieChartOptions = {
+    // responsive: true,
+    // // cornerRadius: 20,
+    // maintainAspectRatio: false,
+    // legend: {
+    //   position: "right",
+    //   // align: "end",
+    //   labels: {
+    //     fontSize: 10,
+    //     usePointStyle: true,
+    //   },
+    // },
+    // plugins: {
+    //   labels: {
+    //     render: 'value',
+    //     fontSize: 12,
+    //     fontColor: '#000',
+    //   }
+    // }
+    responsive: true,
+    // centertext: "9",
+    maintainAspectRatio: false,
+    circumference: 1.5 * Math.PI,
+    rotation: 0.75 * Math.PI,
+    legend: {
+      position: "right",
+      labels: {
+        fontSize: 10,
+        padding: 20,
+        usePointStyle: true,
+        // centertext: "123",
+      },
+      // centertext: "123",
+    },
+    cutoutPercentage: 75,
+    elements: {
+      arc: {
+        borderWidth: 0,
+      },
+      // centertext: "123",
+    },
+    plugins: {
+      labels: {
+        // tslint:disable-next-line:typedef
+        render: function (args) {
+          // return args.value + "%";
+          return args.value;
+        },
+        fontColor: "#000",
+        // position: "outside",
+        // centertext: "123"
+      },
+    },
+  };
+  public pieChartType = "RoundedDoughnut";
+  public pieChartLegend = true;
+  public pieChartLabels = [];
+  public pieChartData: any[] = [300, 500];
+  public pieChartColors: any[] = [
+    { backgroundColor: ['#34ad65', "#d8deff"] }
+    // { backgroundColor: ['#34ad65', '#9bc400', '#ffde22', "#fb863a", '#ff414e', '#5f255f', "#5f2cff", '#40a8e2', "#74a2f1", "#b5f9ff", "#c3d8fd"] },
+  ];
+  // public pieChartColors: any[] = [
+  //   { backgroundColor: ['#34ad65', "#fb863a", '#ff414e', "#5f2cff", '#40a8e2', "#74a2f1", "#c3d8fd", '#b5f9ff', '#8076a3', '#ffde22', '#9bc400'] }
+  //   // { backgroundColor: ['#34ad65', '#9bc400', '#ffde22', "#fb863a", '#ff414e', '#5f255f', "#5f2cff", '#40a8e2', "#74a2f1", "#b5f9ff", "#c3d8fd"] },
+  // ];
+
   // Bar chart
   OTIFBarChartData: OTIFChartDetails[] = [];
   public barChartOptions = {
@@ -108,7 +195,7 @@ export class OTIFComponent implements OnInit {
     scales: {
       xAxes: [
         {
-          barPercentage: 0.3,
+          barPercentage: 0.2,
           // categoryPercentage: -0.5,
           gridLines: {
             display: false
@@ -118,7 +205,7 @@ export class OTIFComponent implements OnInit {
       yAxes: [
         {
           ticks: {
-            stepSize: 20,
+            stepSize: 50,
             beginAtZero: true,
           },
           gridLines: {
@@ -131,12 +218,14 @@ export class OTIFComponent implements OnInit {
   };
   public barChartType: ChartType = "bar";
   public barChartLegend = true;
-  public barChartLabels = [];
+  public barChartLabels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
   public barChartData: any[] = [
-    { data: [], label: "OTIF" },
+    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A', stack: 'a' },
+    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B', stack: 'a' }
   ];
   public barChartColors: any[] = [
-    { backgroundColor: "#5f2cff" },
+    { backgroundColor: "#435cfc" }, { backgroundColor: "#280bc7" }
+    // { backgroundColor: ["#435cfc", '#280bc7'] },
   ];
 
   // public barChartOptions: ChartOptions = {
@@ -183,6 +272,77 @@ export class OTIFComponent implements OnInit {
     this.DefaultToDate = new Date();
     this.BCHeader = new BPCOTIF();
     this.OTIFCircleProgressValue = 0;
+
+    Chart.defaults.RoundedDoughnut = Chart.helpers.clone(Chart.defaults.doughnut);
+    Chart.controllers.RoundedDoughnut = Chart.controllers.doughnut.extend({
+      draw: function (ease) {
+        let ctx = this.chart.ctx;
+        let easingDecimal = ease || 1;
+        let arcs = this.getMeta().data;
+        Chart.helpers.each(arcs, function (arc, i) {
+          arc.transition(easingDecimal).draw();
+
+          const pArc = arcs[i === 0 ? arcs.length - 1 : i - 1];
+          const pColor = pArc._view.backgroundColor;
+
+          const vm = arc._view;
+          const radius = (vm.outerRadius + vm.innerRadius) / 2;
+          const thickness = (vm.outerRadius - vm.innerRadius) / 2;
+          const startAngle = Math.PI - vm.startAngle - Math.PI / 2;
+          const angle = Math.PI - vm.endAngle - Math.PI / 2;
+
+          ctx.save();
+          ctx.translate(vm.x, vm.y);
+
+          ctx.fillStyle = i === 0 ? vm.backgroundColor : pColor;
+          ctx.beginPath();
+          ctx.arc(radius * Math.sin(startAngle), radius * Math.cos(startAngle), thickness, 0, 2 * Math.PI);
+          ctx.fill();
+
+          ctx.fillStyle = vm.backgroundColor;
+          ctx.beginPath();
+          ctx.arc(radius * Math.sin(angle), radius * Math.cos(angle), thickness, 0, 2 * Math.PI);
+          ctx.fill();
+
+          ctx.restore();
+        });
+      }
+    });
+
+    // Chart.pluginService.register({
+    //   afterUpdate: function (chart) {
+    //     if (chart.config.options.elements.arc.roundedCornersFor !== undefined) {
+    //       var arc = chart.getDatasetMeta(0).data[chart.config.options.elements.arc.roundedCornersFor];
+    //       arc.round = {
+    //         x: (chart.chartArea.left + chart.chartArea.right) / 2,
+    //         y: (chart.chartArea.top + chart.chartArea.bottom) / 2,
+    //         radius: (chart.outerRadius + chart.innerRadius) / 2,
+    //         thickness: (chart.outerRadius - chart.innerRadius) / 2 - 1,
+    //         backgroundColor: arc._model.backgroundColor
+    //       }
+    //     }
+    //   },
+
+    //   afterDraw: function (chart) {
+    //     if (chart.config.options.elements.arc.roundedCornersFor !== undefined) {
+    //       var ctx = chart.chart.ctx;
+    //       var arc = chart.getDatasetMeta(0).data[chart.config.options.elements.arc.roundedCornersFor];
+    //       var startAngle = Math.PI / 2 - arc._view.startAngle;
+    //       var endAngle = Math.PI / 2 - arc._view.endAngle;
+
+    //       ctx.save();
+    //       ctx.translate(arc.round.x, arc.round.y);
+    //       console.log(arc.round.startAngle)
+    //       ctx.fillStyle = arc.round.backgroundColor;
+    //       ctx.beginPath();
+    //       ctx.arc(arc.round.radius * Math.sin(startAngle), arc.round.radius * Math.cos(startAngle), arc.round.thickness, 0, 2 * Math.PI);
+    //       ctx.arc(arc.round.radius * Math.sin(endAngle), arc.round.radius * Math.cos(endAngle), arc.round.thickness, 0, 2 * Math.PI);
+    //       ctx.closePath();
+    //       ctx.fill();
+    //       ctx.restore();
+    //     }
+    //   },
+    // });
   }
 
   ngOnInit(): void {
@@ -338,20 +498,20 @@ export class OTIFComponent implements OnInit {
     this.IsProgressBarVisibile2 = true;
     this._factService.GetOTIFBarChartData(PartnerID, Material, FromDate, ToDate).subscribe(
       (data) => {
-        this.OTIFBarChartData = data as OTIFChartDetails[];
-        this.barChartLabels = [];
-        this.barChartData = [
-          { data: [], label: "OTIF" },
-          // { data: [], name: "Planned" },
-        ];
-        setTimeout(() => {
-          this.OTIFBarChartData.forEach(x => {
-            this.barChartLabels.push(x.label);
-            this.barChartData[0].data.push(x.Value);
-            this.barChartData[0].label = x.Name ? x.Name : "OTIF";
-            this.BaseChart.chart.update();
-          }, 10);
-        });
+        // this.OTIFBarChartData = data as OTIFChartDetails[];
+        // this.barChartLabels = [];
+        // this.barChartData = [
+        //   { data: [], label: "OTIF" },
+        //   // { data: [], name: "Planned" },
+        // ];
+        // setTimeout(() => {
+        //   this.OTIFBarChartData.forEach(x => {
+        //     this.barChartLabels.push(x.label);
+        //     this.barChartData[0].data.push(x.Value);
+        //     this.barChartData[0].label = x.Name ? x.Name : "OTIF";
+        //     this.BaseChart.chart.update();
+        //   }, 10);
+        // });
         this.IsProgressBarVisibile2 = false;
         // this.BarchartOptions = {
         //   series: this.barChartData,
@@ -432,7 +592,7 @@ export class OTIFComponent implements OnInit {
           this.tableDataSource = new MatTableDataSource(this.FilteredOTIFs);
           this.tableDataSource.paginator = this.tablePaginator;
           this.tableDataSource.sort = this.tableSort;
-          
+
         }
       }
     }

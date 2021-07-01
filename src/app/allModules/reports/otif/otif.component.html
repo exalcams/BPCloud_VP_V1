@@ -88,42 +88,121 @@
             </canvas>
           </div>
         </div> -->
-        <div class="tile mx-20" fxFlex="50" fxLayout="column" fxLayoutAlign="start">
+        <div class="tile mx-20" fxFlex="25" fxLayout="column" fxLayoutAlign="start">
           <div fxLayoutAlign="start center" class="pt-8">
-            <span class="boldClass pl-8">OTIF ( per days )</span>
+            <span class="boldClass pl-8">Total Stock</span>
           </div>
-          <span [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="orangeBorderBottom1"></span>
-          <div fxFlex fxLayoutAlign="center" class="p-12" *ngIf="OTIFBarChartData.length">
-            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+          <span class="orangeBorderBottom"></span>
+          <div fxFlex fxLayoutAlign="center" class="p-12">
+            <!-- <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
               [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType" (chartClick)="barChartClicked($event)">
-            </canvas>
+            </canvas> -->
+            <!-- <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [options]="pieChartOptions"
+              [colors]="pieChartColors" [legend]="pieChartLegend" [chartType]="pieChartType" (chartClick)="pieChartClicked($event)">
+            </canvas> -->
+            <div fxFlex fxLayoutAlign="center">
+              <ngx-gauge [type]="gaugeType" [value]="TotalStockPer" [append]="gaugeAppendText" cap="round" size="140"
+                thick="10" [foregroundColor]="'#0e0ec7'">
+              </ngx-gauge>
+            </div>
+            <div fxFlex="50" class="pl-36" fxLayout="column" fxLayoutAlign="center">
+              <div>No. Of Total Stocks</div>
+              <div class="valueClass">{{TotalStockValue}}</div>
+            </div>
           </div>
         </div>
 
-        <!-- <div class="tile mx-20" fxFlex="25">
-          <div fxLayout fxLayoutAlign="start center" class="p-12">
-            <div fxFlex>
-              <div class="title mr-32">OTIF</div>
-              <circle-progress [percent]="OTIFCircleProgressValue">
-              </circle-progress>
+        <div class="tile mx-20" fxFlex="25" fxLayout="column" fxLayoutAlign="start">
+          <div fxLayoutAlign="start center" class="pt-8">
+            <span class="boldClass pl-8">Out of Stock</span>
+          </div>
+          <span class="orangeBorderBottom"></span>
+          <div fxFlex fxLayoutAlign="center" class="pt-12">
+            <!-- <circle-progress [percent]="OTIFCircleProgressValue">
+            </circle-progress> -->
+            <div fxFlex fxLayoutAlign="center">
+              <ngx-gauge [type]="gaugeType" [value]="OutOfStockPer" [append]="gaugeAppendText" cap="round" size="140"
+                thick="10" [foregroundColor]="'#435cfc'">
+              </ngx-gauge>
+            </div>
+            <div fxFlex="50" class="pl-36" fxLayout="column" fxLayoutAlign="center">
+              <div>No. Of Out of Stocks Average</div>
+              <div class="valueClass">{{OutOfStockValue}}</div>
             </div>
           </div>
-        </div> -->
+        </div>
 
+        <div class="tile mx-20" fxFlex="50">
+          <div fxLayout fxLayoutAlign="center">
+            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+              [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType"
+              (chartClick)="barChartClicked($event)">
+            </canvas>
+          </div>
+        </div>
+      </div>
+      <div fxFlex fxLayout fxLayoutGap="0px" class="mt-12">
+        <!-- <div class="tile mx-20" fxFlex="50">
+          <div fxLayout fxLayoutAlign="start center" class="p-12" *ngIf="OTIFBarChartData.length">
+            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+              [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType">
+            </canvas>
+          </div>
+        </div> -->
         <div class="tile mx-20" fxFlex="25" fxLayout="column" fxLayoutAlign="start">
           <div fxLayoutAlign="start center" class="pt-8">
             <span class="boldClass pl-8">OTIF</span>
           </div>
-          <span [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="orangeBorderBottom"></span>
-          <div fxFlex fxLayoutAlign="center" class="pt-12">
-            <circle-progress [percent]="OTIFCircleProgressValue">
-            </circle-progress>
+          <span class="orangeBorderBottom"></span>
+          <div fxFlex fxLayoutAlign="center" class="p-12">
+            <!-- <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+              [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType" (chartClick)="barChartClicked($event)">
+            </canvas> -->
+            <!-- <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [options]="pieChartOptions"
+              [colors]="pieChartColors" [legend]="pieChartLegend" [chartType]="pieChartType" (chartClick)="pieChartClicked($event)">
+            </canvas> -->
+            <div fxFlex fxLayoutAlign="center">
+              <ngx-gauge [type]="gaugeType" [value]="OTIFPer" [append]="gaugeAppendText" cap="round" size="140"
+                thick="10" [foregroundColor]="'#54c4f5'">
+              </ngx-gauge>
+            </div>
+            <div fxFlex="50" class="pl-36" fxLayout="column" fxLayoutAlign="center">
+              <div>On Time In Full Deliveries</div>
+              <div class="valueClass">{{OTIFValue}}</div>
+            </div>
           </div>
         </div>
 
-        <div class="tile mx-20" fxFlex="25">
-          <div fxLayout fxLayoutAlign="center">
-            <img src="assets/images/reportImg.png">
+        <div class="tile mx-20" fxFlex="25" fxLayout="column" fxLayoutAlign="start">
+          <div fxLayoutAlign="start center" class="pt-8">
+            <span class="boldClass pl-8">Turn Over</span>
+          </div>
+          <span class="orangeBorderBottom"></span>
+          <div fxFlex fxLayoutAlign="center" class="pt-12">
+            <!-- <circle-progress [percent]="OTIFCircleProgressValue">
+            </circle-progress> -->
+            <div fxFlex fxLayoutAlign="center">
+              <ngx-gauge [type]="gaugeType" [value]="TurnOverPer" [append]="gaugeAppendText" cap="round" size="140"
+                thick="10" [foregroundColor]="'#e043fc'">
+              </ngx-gauge>
+            </div>
+            <div fxFlex="50" class="pl-36" fxLayout="column" fxLayoutAlign="center">
+              <div>Average TurnOver</div>
+              <div class="valueClass">{{TurnOverValue}}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tile mx-20 px-20" fxFlex="50">
+          <div fxLayout="column" fxLayoutAlign="space-evenly">
+            <div fxFlex class="pt-20">
+              <div class="pb-4 endText">Average Time to Sell</div>
+              <mat-progress-bar mode="determinate" class="sell" [value]="AvgSellTime"></mat-progress-bar>
+            </div>
+            <div fxFlex class="pt-20">
+              <div class="pb-4 endText">Average No. of Subcon</div>
+              <mat-progress-bar mode="determinate" class="subcon" [value]="AvgSubcon"></mat-progress-bar>
+            </div>
           </div>
         </div>
       </div>
