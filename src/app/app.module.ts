@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -13,8 +13,10 @@ import 'hammerjs';
 
 import { FuseModule } from '@fuse/fuse.module';
 import { FuseSharedModule } from '@fuse/shared.module';
-import { FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule, FuseCountdownModule, 
-    FuseHighlightModule, FuseMaterialColorPickerModule, FuseWidgetModule } from '@fuse/components';
+import {
+    FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule, FuseCountdownModule,
+    FuseHighlightModule, FuseMaterialColorPickerModule, FuseWidgetModule
+} from '@fuse/components';
 
 import { fuseConfig } from 'app/fuse-config';
 
@@ -32,12 +34,12 @@ import { ASNReleaseDialogComponent } from './notifications/asnrelease-dialog/asn
 import { FormsModule } from '@angular/forms';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { NgxDonutChartModule } from 'ngx-doughnut-chart';
+// import { NgxGaugeModule } from 'ngx-gauge';
 import { ChartsModule } from 'ng2-charts';
 import { AttachmentViewDialogComponent } from './notifications/attachment-view-dialog/attachment-view-dialog.component';
 import { AttachmentDialogComponent } from './notifications/attachment-dialog/attachment-dialog.component';
 import { NotificationDialog1Component } from './notifications/notification-dialog1/notification-dialog1.component';
 import { UploadInvoiceComponent } from './allModules/upload-invoice/upload-invoice.component';
-
 // import { ASNItemBatchDialogComponent } from './allModules/asn/asnitem-batch-dialog/asnitem-batch-dialog.component';
 // import { InvoiceCreationComponent } from './allModules/invoice-creation/invoice-creation.component';
 // import { ChatModule } from './allModules/chat/chat.module';
@@ -140,8 +142,8 @@ const appRoutes: Routes = [
         loadChildren: './allModules/balance-confirmation/balance-confirmation.module#BalanceConfirmationModule'
     },
     {
-        path:'discount',
-        loadChildren:'./allModules/discount/discount.module#DiscountModule'
+        path: 'discount',
+        loadChildren: './allModules/discount/discount.module#DiscountModule'
     },
     {
         path: '**',
@@ -160,7 +162,7 @@ const appRoutes: Routes = [
         ASNReleaseDialogComponent,
         NotificationDialog1Component,
         UploadInvoiceComponent,
-      
+
     ],
     imports: [
         BrowserModule,
@@ -234,6 +236,7 @@ const appRoutes: Routes = [
 
         NgxChartsModule,
         NgxDonutChartModule,
+        //NgxGaugeModule,
 
         ChartsModule,
 
@@ -252,6 +255,7 @@ const appRoutes: Routes = [
         // ChatModule,
         // BalanceConfirmationModule
     ],
+    // schemas: [CUSTOM_ELEMENTS_SCHEMA],
     providers: [
         DatePipe,
         WINDOW_PROVIDERS,

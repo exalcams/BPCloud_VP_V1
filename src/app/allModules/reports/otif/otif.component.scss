@@ -1,6 +1,7 @@
 @import "src/@fuse/scss/fuse";
 #otif {
     background-color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     .topbarClass {
         background: url("/assets/images/backgrounds/header 2.png") no-repeat;
         background-repeat: no-repeat;
@@ -18,6 +19,7 @@
         background-color: white;
     }
     .outer {
+        margin-bottom: 2px !important;
         border-bottom: 1px solid rgba(255, 85, 0, 0.1);
         position: relative;
         z-index: 1;
@@ -28,7 +30,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background-image: url("../../../../assets/images/header_2.png");
+            background-image: url("assets/images/header_2.png");
             opacity: 0.1;
             background-repeat: no-repeat;
         }
@@ -212,7 +214,7 @@
     .tile {
         @include mat-elevation(2);
         min-height: 60px !important;
-        max-height: 250px !important;
+        max-height: 170px !important;
         img {
             height: 200px;
         }
@@ -401,7 +403,7 @@
         transform: translateY(-1.1em) scale(0.75);
         width: 133.33333%;
     }
-     // .mat-form-field-outline-start,
+    // .mat-form-field-outline-start,
     // .mat-form-field-outline-end {
     //     border-radius: 0 !important;
     // }
@@ -454,11 +456,31 @@
         margin-top: -16px;
         // margin-left: 32px;
     }
-    .footer{
+    .footer {
         box-shadow: 0 -5px 10px 0 rgba(0, 0, 0, 0.16);
         position: absolute;
         width: 100%;
         bottom: 0;
         height: 6rem;
+    }
+    .valueClass {
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .mat-progress-bar {
+        height: 20px;
+    }
+    .sell {
+        .mat-progress-bar-fill::after {
+            background-color: #54c4f5;
+        }
+    }
+    .subcon {
+        .mat-progress-bar-fill::after {
+            background-color: #0a85ba;
+        }
+    }
+    .endText {
+        text-align: end;
     }
 }
