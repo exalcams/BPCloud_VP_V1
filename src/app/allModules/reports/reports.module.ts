@@ -61,8 +61,6 @@ import { ReportComponent } from './report/report.component';
 import { SupplierEvaluationComponent } from './supplier-evaluation/supplier-evaluation.component';
 import { OTIFComponent } from './otif/otif.component';
 import { NgApexchartsModule } from "ng-apexcharts";
-import { NgxGaugeModule } from 'ngx-gauge';
-
 // import 'chart.piecelabel.js';
 
 const routes = [
@@ -127,7 +125,6 @@ const routes = [
 
         NgxChartsModule,
         NgxDonutChartModule,
-        NgxGaugeModule,
 
         ChartsModule,
 
@@ -183,6 +180,7 @@ const routes = [
         SupplierEvaluationComponent,
         OTIFComponent,
     ],
+    // schemas: [CUSTOM_ELEMENTS_SCHEMA],
     providers: [DecimalPipe],
     entryComponents: [],
 })

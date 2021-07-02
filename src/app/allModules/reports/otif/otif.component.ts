@@ -15,11 +15,21 @@ import { ExcelService } from 'app/services/excel.service';
 import { FactService } from 'app/services/fact.service';
 import { MasterService } from 'app/services/master.service';
 import * as Chart from 'chart.js';
-import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
+import { ChartDataSets, ChartType } from 'chart.js';
 import { Guid } from 'guid-typescript';
+import { AnyKindOfDictionary } from 'lodash';
 import { ApexAxisChartSeries, ApexNonAxisChartSeries, ApexChart, ApexDataLabels, ApexPlotOptions, ApexYAxis, ApexXAxis, ApexFill, ApexTitleSubtitle, ApexGrid, ApexTooltip, ApexStroke, ApexLegend, ApexMarkers, ApexResponsive, ApexOptions } from 'ng-apexcharts';
 import { BaseChartDirective } from 'ng2-charts';
 import * as SecureLS from 'secure-ls';
+
+export interface ChartOptions {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  labels: string[];
+  plotOptions: ApexPlotOptions;
+  fill: ApexFill;
+  stroke: ApexStroke;
+}
 // export interface ChartOptions {
 //   series: ApexAxisChartSeries;
 //   guageseries: ApexNonAxisChartSeries;
@@ -48,6 +58,11 @@ import * as SecureLS from 'secure-ls';
   animations: fuseAnimations,
 })
 export class OTIFComponent implements OnInit {
+  public chartOptions: Partial<ChartOptions>;
+  public TotalStockChartOptions: Partial<ChartOptions>;
+  public OutOfStockChartOptions: Partial<ChartOptions>;
+  public OTIFChartOptions: Partial<ChartOptions>;
+  public TurnOverChartOptions: Partial<ChartOptions>;
   @ViewChild(BaseChartDirective) BaseChart: BaseChartDirective;
   // public BarchartOptions: Partial<ChartOptions>;
   authenticationDetails: AuthenticationDetails;
@@ -98,84 +113,17 @@ export class OTIFComponent implements OnInit {
   TotalStockPer = 95;
   TotalStockValue = 256;
   OutOfStockPer = 20;
-  OutOfStockValue = 256;
+  OutOfStockValue = 60;
   OTIFPer = 95;
   OTIFValue = 256;
   TurnOverPer = 20;
-  TurnOverValue = 256;
+  TurnOverValue = 60;
 
   // Progress bar
   AvgSellTime = 35;
   AvgSubcon = 50;
 
-  // Pie chart
-  SEPieChartData: OTIFChartDetails[] = [];
-  public pieChartOptions = {
-    // responsive: true,
-    // // cornerRadius: 20,
-    // maintainAspectRatio: false,
-    // legend: {
-    //   position: "right",
-    //   // align: "end",
-    //   labels: {
-    //     fontSize: 10,
-    //     usePointStyle: true,
-    //   },
-    // },
-    // plugins: {
-    //   labels: {
-    //     render: 'value',
-    //     fontSize: 12,
-    //     fontColor: '#000',
-    //   }
-    // }
-    responsive: true,
-    // centertext: "9",
-    maintainAspectRatio: false,
-    circumference: 1.5 * Math.PI,
-    rotation: 0.75 * Math.PI,
-    legend: {
-      position: "right",
-      labels: {
-        fontSize: 10,
-        padding: 20,
-        usePointStyle: true,
-        // centertext: "123",
-      },
-      // centertext: "123",
-    },
-    cutoutPercentage: 75,
-    elements: {
-      arc: {
-        borderWidth: 0,
-      },
-      // centertext: "123",
-    },
-    plugins: {
-      labels: {
-        // tslint:disable-next-line:typedef
-        render: function (args) {
-          // return args.value + "%";
-          return args.value;
-        },
-        fontColor: "#000",
-        // position: "outside",
-        // centertext: "123"
-      },
-    },
-  };
-  public pieChartType = "RoundedDoughnut";
-  public pieChartLegend = true;
-  public pieChartLabels = [];
-  public pieChartData: any[] = [300, 500];
-  public pieChartColors: any[] = [
-    { backgroundColor: ['#34ad65', "#d8deff"] }
-    // { backgroundColor: ['#34ad65', '#9bc400', '#ffde22', "#fb863a", '#ff414e', '#5f255f', "#5f2cff", '#40a8e2', "#74a2f1", "#b5f9ff", "#c3d8fd"] },
-  ];
-  // public pieChartColors: any[] = [
-  //   { backgroundColor: ['#34ad65', "#fb863a", '#ff414e', "#5f2cff", '#40a8e2', "#74a2f1", "#c3d8fd", '#b5f9ff', '#8076a3', '#ffde22', '#9bc400'] }
-  //   // { backgroundColor: ['#34ad65', '#9bc400', '#ffde22', "#fb863a", '#ff414e', '#5f255f', "#5f2cff", '#40a8e2', "#74a2f1", "#b5f9ff", "#c3d8fd"] },
-  // ];
+
 
   // Bar chart
   OTIFBarChartData: OTIFChartDetails[] = [];
@@ -184,11 +132,12 @@ export class OTIFComponent implements OnInit {
     // cornerRadius: 20,
     maintainAspectRatio: false,
     legend: {
-      position: "top",
+      position: "right",
       align: "end",
       labels: {
         fontSize: 10,
         usePointStyle: true,
+        padding: 20
       },
     },
     // // We use these empty structures as placeholders for dynamic theming.
@@ -218,29 +167,84 @@ export class OTIFComponent implements OnInit {
   };
   public barChartType: ChartType = "bar";
   public barChartLegend = true;
-  public barChartLabels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+  public barChartLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   public barChartData: any[] = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A', stack: 'a' },
-    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B', stack: 'a' }
+    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Out of Stock', stack: 'a' },
+    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Total Stock', stack: 'a' }
   ];
   public barChartColors: any[] = [
     { backgroundColor: "#435cfc" }, { backgroundColor: "#280bc7" }
     // { backgroundColor: ["#435cfc", '#280bc7'] },
   ];
 
-  // public barChartOptions: ChartOptions = {
-  //   responsive: true,
-  // };
-  // public barChartLabels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
-  // public barChartType: ChartType = 'bar';
-  // public barChartLegend = true;
-  // public barChartPlugins = [];
+  // Line chart
 
-  // public barChartData = [
-  //   { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-  //   { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' }
-  // ];
-
+  public lineChartData: ChartDataSets[] = [
+    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Turn Over' },
+    { data: [28, 48, 40, 19, 86, 27, 90], label: 'On Time In Full' },
+    { data: [120, 80, 70, 90, 100, 67, 85], label: 'Out Of stock' },
+  ];
+  public lineChartLabels: any[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public lineChartOptions = {
+    responsive: true,
+    // cornerRadius: 20,
+    maintainAspectRatio: false,
+    legend: {
+      // position: "right",
+      // align: "end",
+      labels: {
+        fontSize: 10,
+        usePointStyle: true,
+        padding: 20
+      },
+    },
+    // // We use these empty structures as placeholders for dynamic theming.
+    scales: {
+      xAxes: [
+        {
+          // barPercentage: 0.2,
+          // categoryPercentage: -0.5,
+          gridLines: {
+            display: false
+          }
+        },
+      ],
+      yAxes: [
+        {
+          ticks: {
+            stepSize: 25,
+            beginAtZero: true,
+          },
+          gridLines: {
+            display: false
+          }
+        },
+      ],
+    },
+  };
+  public lineChartColors: AnyKindOfDictionary[] = [
+    {
+      borderColor: '#54c4f5',
+      backgroundColor: '#ebfafe',
+      pointBackgroundColor: '#54c4f5',
+      pointBorderColor: '#54c4f5',
+    },
+    {
+      borderColor: '#ffffff00',
+      backgroundColor: '#ffffff00',
+      pointBackgroundColor: '#e043fc',
+      pointBorderColor: '#e043fc',
+    },
+    {
+      borderColor: '#ffffff00',
+      backgroundColor: '#ffffff00',
+      pointBackgroundColor: '#435cfc',
+      pointBorderColor: '#435cfc',
+    },
+  ];
+  public lineChartLegend = true;
+  public lineChartType = 'line';
+  public lineChartPlugins = [];
 
   constructor(
     private _fuseConfigService: FuseConfigService,
@@ -273,76 +277,74 @@ export class OTIFComponent implements OnInit {
     this.BCHeader = new BPCOTIF();
     this.OTIFCircleProgressValue = 0;
 
-    Chart.defaults.RoundedDoughnut = Chart.helpers.clone(Chart.defaults.doughnut);
-    Chart.controllers.RoundedDoughnut = Chart.controllers.doughnut.extend({
-      draw: function (ease) {
-        let ctx = this.chart.ctx;
-        let easingDecimal = ease || 1;
-        let arcs = this.getMeta().data;
-        Chart.helpers.each(arcs, function (arc, i) {
-          arc.transition(easingDecimal).draw();
-
-          const pArc = arcs[i === 0 ? arcs.length - 1 : i - 1];
-          const pColor = pArc._view.backgroundColor;
-
-          const vm = arc._view;
-          const radius = (vm.outerRadius + vm.innerRadius) / 2;
-          const thickness = (vm.outerRadius - vm.innerRadius) / 2;
-          const startAngle = Math.PI - vm.startAngle - Math.PI / 2;
-          const angle = Math.PI - vm.endAngle - Math.PI / 2;
-
-          ctx.save();
-          ctx.translate(vm.x, vm.y);
-
-          ctx.fillStyle = i === 0 ? vm.backgroundColor : pColor;
-          ctx.beginPath();
-          ctx.arc(radius * Math.sin(startAngle), radius * Math.cos(startAngle), thickness, 0, 2 * Math.PI);
-          ctx.fill();
-
-          ctx.fillStyle = vm.backgroundColor;
-          ctx.beginPath();
-          ctx.arc(radius * Math.sin(angle), radius * Math.cos(angle), thickness, 0, 2 * Math.PI);
-          ctx.fill();
-
-          ctx.restore();
-        });
-      }
-    });
-
-    // Chart.pluginService.register({
-    //   afterUpdate: function (chart) {
-    //     if (chart.config.options.elements.arc.roundedCornersFor !== undefined) {
-    //       var arc = chart.getDatasetMeta(0).data[chart.config.options.elements.arc.roundedCornersFor];
-    //       arc.round = {
-    //         x: (chart.chartArea.left + chart.chartArea.right) / 2,
-    //         y: (chart.chartArea.top + chart.chartArea.bottom) / 2,
-    //         radius: (chart.outerRadius + chart.innerRadius) / 2,
-    //         thickness: (chart.outerRadius - chart.innerRadius) / 2 - 1,
-    //         backgroundColor: arc._model.backgroundColor
-    //       }
-    //     }
-    //   },
-
-    //   afterDraw: function (chart) {
-    //     if (chart.config.options.elements.arc.roundedCornersFor !== undefined) {
-    //       var ctx = chart.chart.ctx;
-    //       var arc = chart.getDatasetMeta(0).data[chart.config.options.elements.arc.roundedCornersFor];
-    //       var startAngle = Math.PI / 2 - arc._view.startAngle;
-    //       var endAngle = Math.PI / 2 - arc._view.endAngle;
-
-    //       ctx.save();
-    //       ctx.translate(arc.round.x, arc.round.y);
-    //       console.log(arc.round.startAngle)
-    //       ctx.fillStyle = arc.round.backgroundColor;
-    //       ctx.beginPath();
-    //       ctx.arc(arc.round.radius * Math.sin(startAngle), arc.round.radius * Math.cos(startAngle), arc.round.thickness, 0, 2 * Math.PI);
-    //       ctx.arc(arc.round.radius * Math.sin(endAngle), arc.round.radius * Math.cos(endAngle), arc.round.thickness, 0, 2 * Math.PI);
-    //       ctx.closePath();
-    //       ctx.fill();
-    //       ctx.restore();
-    //     }
-    //   },
-    // });
+    this.chartOptions = {
+      chart: {
+        height: 200,
+        type: "radialBar"
+      },
+      series: [67],
+      plotOptions: {
+        radialBar: {
+          startAngle: -125,
+          endAngle: 125,
+          track: {
+            background: "#d8deff"
+          },
+          hollow: {
+            margin: 5,
+            size: "65%",
+            // background: "#d8deff",
+          },
+          dataLabels: {
+            name: {
+              show: false,
+            },
+            value: {
+              offsetY: 5,
+              color: "#111",
+              fontSize: "30px",
+              show: true
+            }
+          }
+        }
+      },
+      fill: {
+        colors: ['#0e0ec7'],
+        type: 'solid'
+      },
+      stroke: {
+        lineCap: "round",
+      },
+      labels: [""]
+    };
+    this.TotalStockChartOptions = {
+      series: [this.TotalStockPer],
+      fill: {
+        colors: ['#0e0ec7'],
+        type: 'solid'
+      },
+    };
+    this.OutOfStockChartOptions = {
+      series: [this.OutOfStockPer],
+      fill: {
+        colors: ['#435cfc'],
+        type: 'solid'
+      },
+    };
+    this.OTIFChartOptions = {
+      series: [this.OTIFPer],
+      fill: {
+        colors: ['#54c4f5'],
+        type: 'solid'
+      },
+    };
+    this.TurnOverChartOptions = {
+      series: [this.TurnOverPer],
+      fill: {
+        colors: ['#e043fc'],
+        type: 'solid'
+      },
+    };
   }
 
   ngOnInit(): void {

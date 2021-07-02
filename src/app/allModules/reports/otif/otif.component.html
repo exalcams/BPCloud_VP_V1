@@ -3,7 +3,7 @@
     <div class="outer" fxLayout>
       <div class="bg"></div>
       <div>
-        <h3 style="margin: 0px;padding-left: 10px;"><b>OTIF</b></h3>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>OTIF Screen</b></h3>
       </div>
       <div fxFlex align="end">
         <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
@@ -81,202 +81,276 @@
         </form>
       </div>
       <div fxFlex fxLayout fxLayoutGap="0px">
-        <!-- <div class="tile mx-20" fxFlex="50">
+        <!-- <div class="px-12" fxFlex="50">
           <div fxLayout fxLayoutAlign="start center" class="p-12" *ngIf="OTIFBarChartData.length">
             <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
               [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType">
             </canvas>
           </div>
         </div> -->
-        <div class="tile mx-20" fxFlex="25" fxLayout="column" fxLayoutAlign="start">
-          <div fxLayoutAlign="start center" class="pt-8">
-            <span class="boldClass pl-8">Total Stock</span>
-          </div>
-          <span class="orangeBorderBottom"></span>
-          <div fxFlex fxLayoutAlign="center" class="p-12">
-            <!-- <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-              [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType" (chartClick)="barChartClicked($event)">
-            </canvas> -->
-            <!-- <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [options]="pieChartOptions"
-              [colors]="pieChartColors" [legend]="pieChartLegend" [chartType]="pieChartType" (chartClick)="pieChartClicked($event)">
-            </canvas> -->
-            <div fxFlex fxLayoutAlign="center">
-              <ngx-gauge [type]="gaugeType" [value]="TotalStockPer" [append]="gaugeAppendText" cap="round" size="140"
-                thick="10" [foregroundColor]="'#0e0ec7'">
-              </ngx-gauge>
+        <div class="px-12" fxFlex="25" fxLayout="column" fxLayoutAlign="start">
+          <div class="tile" fxLayout="column" fxLayoutAlign="start">
+            <div fxLayoutAlign="start center" class="pt-8">
+              <span class="boldClass pl-8">Total Stock</span>
             </div>
-            <div fxFlex="50" class="pl-36" fxLayout="column" fxLayoutAlign="center">
-              <div>No. Of Total Stocks</div>
-              <div class="valueClass">{{TotalStockValue}}</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="tile mx-20" fxFlex="25" fxLayout="column" fxLayoutAlign="start">
-          <div fxLayoutAlign="start center" class="pt-8">
-            <span class="boldClass pl-8">Out of Stock</span>
-          </div>
-          <span class="orangeBorderBottom"></span>
-          <div fxFlex fxLayoutAlign="center" class="pt-12">
-            <!-- <circle-progress [percent]="OTIFCircleProgressValue">
-            </circle-progress> -->
-            <div fxFlex fxLayoutAlign="center">
-              <ngx-gauge [type]="gaugeType" [value]="OutOfStockPer" [append]="gaugeAppendText" cap="round" size="140"
-                thick="10" [foregroundColor]="'#435cfc'">
-              </ngx-gauge>
-            </div>
-            <div fxFlex="50" class="pl-36" fxLayout="column" fxLayoutAlign="center">
-              <div>No. Of Out of Stocks Average</div>
-              <div class="valueClass">{{OutOfStockValue}}</div>
+            <span class="orangeBorderBottom"></span>
+            <div fxFlex fxLayoutAlign="center" class="p-12">
+              <div fxFlex fxLayoutAlign="center">
+                <div class="cchart">
+                  <apx-chart [series]="TotalStockChartOptions.series" [chart]="chartOptions.chart"
+                    [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
+                    [stroke]="chartOptions.stroke" [fill]="TotalStockChartOptions.fill">
+                  </apx-chart>
+                </div>
+              </div>
+              <div fxFlex="50" class="pl-36 chartLeftText" fxLayout="column" fxLayoutAlign="center">
+                <div>No. Of Total Stocks</div>
+                <div class="valueClass">{{TotalStockValue}}</div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="tile mx-20" fxFlex="50">
-          <div fxLayout fxLayoutAlign="center">
-            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-              [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType"
-              (chartClick)="barChartClicked($event)">
-            </canvas>
+        <div class="px-12" fxFlex="25" fxLayout="column" fxLayoutAlign="start">
+          <div class="tile" fxLayout="column" fxLayoutAlign="start">
+            <div fxLayoutAlign="start center" class="pt-8">
+              <span class="boldClass pl-8">Out of Stock</span>
+            </div>
+            <span class="orangeBorderBottom"></span>
+            <div fxFlex fxLayoutAlign="center" class="p-12">
+              <div fxFlex fxLayoutAlign="center">
+                <div class="cchart">
+                  <apx-chart [series]="OutOfStockChartOptions.series" [chart]="chartOptions.chart"
+                    [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
+                    [stroke]="chartOptions.stroke" [fill]="OutOfStockChartOptions.fill">
+                  </apx-chart>
+                </div>
+              </div>
+              <div fxFlex="50" class="pl-36 chartLeftText" fxLayout="column" fxLayoutAlign="center">
+                <div>No. Of Out of Stocks Average</div>
+                <div class="valueClass">{{OutOfStockValue}}</div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="tile" fxLayout="column" fxLayoutAlign="start">
+            <div fxLayoutAlign="start center" class="pt-8">
+              <span class="boldClass pl-8">Out of Stock</span>
+            </div>
+            <span class="orangeBorderBottom"></span>
+            <div fxFlex fxLayoutAlign="center" class="pt-12">
+              <div fxFlex fxLayoutAlign="center">
+                <div class="cchart">
+                  <apx-chart [series]="OutOfStockChartOptions.series" [chart]="chartOptions.chart"
+                    [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
+                    [stroke]="chartOptions.stroke" [fill]="OutOfStockChartOptions.fill">
+                  </apx-chart>
+                </div>
+              </div>
+              <div fxFlex="50" class="pl-36" fxLayout="column" fxLayoutAlign="center">
+                <div>No. Of Out of Stocks Average</div>
+                <div class="valueClass">{{OutOfStockValue}}</div>
+              </div>
+            </div>
+          </div> -->
+        </div>
+
+        <div class="px-12" fxFlex="50">
+          <div class="tile1" fxLayout="column" fxLayoutAlign="start">
+            <div fxLayout fxLayoutAlign="center" class="p-12">
+              <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+                [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType"
+                (chartClick)="barChartClicked($event)">
+              </canvas>
+            </div>
           </div>
         </div>
       </div>
       <div fxFlex fxLayout fxLayoutGap="0px" class="mt-12">
-        <!-- <div class="tile mx-20" fxFlex="50">
-          <div fxLayout fxLayoutAlign="start center" class="p-12" *ngIf="OTIFBarChartData.length">
-            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-              [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType">
-            </canvas>
-          </div>
-        </div> -->
-        <div class="tile mx-20" fxFlex="25" fxLayout="column" fxLayoutAlign="start">
-          <div fxLayoutAlign="start center" class="pt-8">
-            <span class="boldClass pl-8">OTIF</span>
-          </div>
-          <span class="orangeBorderBottom"></span>
-          <div fxFlex fxLayoutAlign="center" class="p-12">
-            <!-- <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-              [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType" (chartClick)="barChartClicked($event)">
-            </canvas> -->
-            <!-- <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [options]="pieChartOptions"
-              [colors]="pieChartColors" [legend]="pieChartLegend" [chartType]="pieChartType" (chartClick)="pieChartClicked($event)">
-            </canvas> -->
-            <div fxFlex fxLayoutAlign="center">
-              <ngx-gauge [type]="gaugeType" [value]="OTIFPer" [append]="gaugeAppendText" cap="round" size="140"
-                thick="10" [foregroundColor]="'#54c4f5'">
-              </ngx-gauge>
+        <div class="px-12" fxFlex="25" fxLayout="column" fxLayoutAlign="start">
+          <div class="tile" fxLayout="column" fxLayoutAlign="start">
+            <div fxLayoutAlign="start center" class="pt-8">
+              <span class="boldClass pl-8">OTIF</span>
             </div>
-            <div fxFlex="50" class="pl-36" fxLayout="column" fxLayoutAlign="center">
-              <div>On Time In Full Deliveries</div>
-              <div class="valueClass">{{OTIFValue}}</div>
+            <span class="orangeBorderBottom"></span>
+            <div fxFlex fxLayoutAlign="center" class="p-12">
+              <div fxFlex fxLayoutAlign="center">
+                <div class="cchart">
+                  <apx-chart [series]="OTIFChartOptions.series" [chart]="chartOptions.chart"
+                    [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
+                    [stroke]="chartOptions.stroke" [fill]="OTIFChartOptions.fill">
+                  </apx-chart>
+                </div>
+              </div>
+              <div fxFlex="50" class="pl-36 chartLeftText" fxLayout="column" fxLayoutAlign="center">
+                <div>On Time In Full Deliveries</div>
+                <div class="valueClass">{{OTIFValue}}</div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="tile mx-20" fxFlex="25" fxLayout="column" fxLayoutAlign="start">
-          <div fxLayoutAlign="start center" class="pt-8">
-            <span class="boldClass pl-8">Turn Over</span>
-          </div>
-          <span class="orangeBorderBottom"></span>
-          <div fxFlex fxLayoutAlign="center" class="pt-12">
-            <!-- <circle-progress [percent]="OTIFCircleProgressValue">
-            </circle-progress> -->
-            <div fxFlex fxLayoutAlign="center">
-              <ngx-gauge [type]="gaugeType" [value]="TurnOverPer" [append]="gaugeAppendText" cap="round" size="140"
-                thick="10" [foregroundColor]="'#e043fc'">
-              </ngx-gauge>
+        <div class="px-12" fxFlex="25" fxLayout="column" fxLayoutAlign="start">
+
+          <div class="tile" fxLayout="column" fxLayoutAlign="start">
+            <div fxLayoutAlign="start center" class="pt-8">
+              <span class="boldClass pl-8">Turn Over</span>
             </div>
-            <div fxFlex="50" class="pl-36" fxLayout="column" fxLayoutAlign="center">
-              <div>Average TurnOver</div>
-              <div class="valueClass">{{TurnOverValue}}</div>
+            <span class="orangeBorderBottom"></span>
+            <div fxFlex fxLayoutAlign="center" class="p-12">
+              <div fxFlex fxLayoutAlign="center">
+                <div class="cchart">
+                  <apx-chart [series]="TurnOverChartOptions.series" [chart]="chartOptions.chart"
+                    [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
+                    [stroke]="chartOptions.stroke" [fill]="TurnOverChartOptions.fill">
+                  </apx-chart>
+                </div>
+              </div>
+              <div fxFlex="50" class="pl-36 chartLeftText" fxLayout="column" fxLayoutAlign="center">
+                <div>Average TurnOver</div>
+                <div class="valueClass">{{TurnOverValue}}</div>
+              </div>
             </div>
           </div>
+
+          <!-- <div class="tile" fxLayout="column" fxLayoutAlign="start">
+            <div fxLayoutAlign="start center" class="pt-8">
+              <span class="boldClass pl-8">Turn Over</span>
+            </div>
+            <span class="orangeBorderBottom"></span>
+            <div fxFlex fxLayoutAlign="center" class="pt-12">
+              <div fxFlex fxLayoutAlign="center">
+                <div class="cchart">
+                  <apx-chart [series]="TurnOverChartOptions.series" [chart]="chartOptions.chart"
+                    [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
+                    [stroke]="chartOptions.stroke" [fill]="TurnOverChartOptions.fill">
+                  </apx-chart>
+                </div>
+              </div>
+              <div fxFlex="50" class="pl-36" fxLayout="column" fxLayoutAlign="center">
+                <div>Average TurnOver</div>
+                <div class="valueClass">{{TurnOverValue}}</div>
+              </div>
+            </div>
+          </div> -->
         </div>
 
-        <div class="tile mx-20 px-20" fxFlex="50">
-          <div fxLayout="column" fxLayoutAlign="space-evenly">
-            <div fxFlex class="pt-20">
-              <div class="pb-4 endText">Average Time to Sell</div>
-              <mat-progress-bar mode="determinate" class="sell" [value]="AvgSellTime"></mat-progress-bar>
-            </div>
-            <div fxFlex class="pt-20">
-              <div class="pb-4 endText">Average No. of Subcon</div>
-              <mat-progress-bar mode="determinate" class="subcon" [value]="AvgSubcon"></mat-progress-bar>
+        <div class="px-12" fxFlex="50">
+          <div class="tile1 lightBlueBg" fxLayout="column" fxLayoutAlign="start">
+            <div class="px-20" fxLayout="column" fxLayoutAlign="start">
+              <div fxFlex class="pt-20">
+                <div class="pb-8 endText">Average Time to Sell</div>
+                <mat-progress-bar mode="determinate" class="sell" [value]="AvgSellTime"></mat-progress-bar>
+              </div>
+              <div fxFlex class="pt-20">
+                <div class="pb-8 endText">Average No. of Subcon</div>
+                <mat-progress-bar mode="determinate" class="subcon" [value]="AvgSubcon"></mat-progress-bar>
+              </div>
             </div>
           </div>
+          <!-- <div class="tile" fxLayout="column" fxLayoutAlign="start">
+            <div class="px-20" fxLayout="column" fxLayoutAlign="start">
+              <div fxFlex class="pt-20">
+                <div class="pb-4 endText">Average Time to Sell</div>
+                <mat-progress-bar mode="determinate" class="sell" [value]="AvgSellTime"></mat-progress-bar>
+              </div>
+              <div fxFlex class="pt-20">
+                <div class="pb-4 endText">Average No. of Subcon</div>
+                <mat-progress-bar mode="determinate" class="subcon" [value]="AvgSubcon"></mat-progress-bar>
+              </div>
+            </div>
+          </div> -->
         </div>
       </div>
     </div>
-    <div class="px-20 pb-20">
-      <div fxLayout="row" class="mt-20" fxLayoutAlign="start center">
-        <mat-form-field appearance="outline" fxFlex="50">
-          <mat-icon class="mr-12" matPrefix>search</mat-icon>
-          <mat-label>Search</mat-label>
-          <input [(ngModel)]="searchText" matInput (keyup)="applyFilter($event)">
-        </mat-form-field>
-        <div fxFlex fxLayoutAlign="end center">
-          <!-- <mat-form-field appearance="outline" style="min-width: 100px;">
-            <mat-select [(ngModel)]="SelectValue">
-              <mat-option value="All">All</mat-option>
-            </mat-select>
-          </mat-form-field> -->
-          <button (click)="exportAsXLSX()" class="excelBtn mx-24" mat-stroked-button>
-            <img class="excelImg" src="assets/images/excel.png">
-          </button>
-          <img class="expandImg" src="assets/images/expand.png" (click)="expandClicked()">
+    <div>
+      <div fxLayout="row" class="mt-4" fxLayoutAlign="start start">
+        <div fxFlex="50" class="px-12">
+          <div class="tile2" fxLayout="column" fxLayoutAlign="start">
+            <div fxLayout fxLayoutAlign="start start" class="p-12 px-32">
+              <canvas baseChart [datasets]="lineChartData" height="300" [labels]="lineChartLabels"
+                [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend"
+                [chartType]="lineChartType"></canvas>
+            </div>
+          </div>
+        </div>
+        <div fxFlex="50" class="px-12" fxLayout="column" fxLayoutAlign="start">
+          <div fxLayout="row" fxLayoutAlign="start start">
+            <mat-form-field appearance="outline" fxFlex="50">
+              <mat-icon class="mr-12" matPrefix>search</mat-icon>
+              <mat-label>Search</mat-label>
+              <input [(ngModel)]="searchText" matInput (keyup)="applyFilter($event)">
+            </mat-form-field>
+            <div fxFlex fxLayoutAlign="end center">
+              <!-- <mat-form-field appearance="outline" style="min-width: 100px;">
+                <mat-select [(ngModel)]="SelectValue">
+                  <mat-option value="All">All</mat-option>
+                </mat-select>
+              </mat-form-field> -->
+              <button (click)="exportAsXLSX()" class="excelBtn mx-24" mat-stroked-button>
+                <img class="excelImg" src="assets/images/excel.png">
+              </button>
+              <img class="expandImg" src="assets/images/expand.png" (click)="expandClicked()">
+            </div>
+          </div>
+
+          <table fxFlex class="table" mat-table [dataSource]="tableDataSource" matSort>
+            <ng-container matColumnDef="PatnerID">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header
+                [ngClass]="BGClassName?.layout?.toolbar?.background">
+                PatnerID </th>
+              <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+                <div fxLayout>
+                  <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                  <div fxFlex class="pl-8">
+                    <span> {{element.PatnerID}} </span>
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Material">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header
+                [ngClass]="BGClassName?.layout?.toolbar?.background">
+                Material </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.Material}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Date">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header
+                [ngClass]="BGClassName?.layout?.toolbar?.background">
+                Date</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.Date | date :'dd/MM/yyyy'}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Text">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header
+                [ngClass]="BGClassName?.layout?.toolbar?.background">
+                Text </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.Text}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Value">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header
+                [ngClass]="BGClassName?.layout?.toolbar?.background">
+                Value </th>
+              <td mat-cell *matCellDef="let element" class="QtyClass"> {{element.Value}}
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="tableDisplayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: tableDisplayedColumns;">
+            </tr>
+          </table>
+          <div>
+            <mat-paginator [pageSizeOptions]="[5, 10, 25,50,100,250,500,1000]"></mat-paginator>
+          </div>
         </div>
       </div>
 
-      <table class="table" mat-table [dataSource]="tableDataSource" matSort>
-        <ng-container matColumnDef="PatnerID">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
-            PatnerID </th>
-          <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
-            <div fxLayout>
-              <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
-              <div fxFlex class="pl-8">
-                <span> {{element.PatnerID}} </span>
-              </div>
-            </div>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Material">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
-            Material </th>
-          <td mat-cell *matCellDef="let element">
-            {{element.Material}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Date">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
-            Date</th>
-          <td mat-cell *matCellDef="let element">
-            {{element.Date | date :'dd/MM/yyyy'}}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Text">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
-            Text </th>
-          <td mat-cell *matCellDef="let element">
-            {{element.Text}}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Value">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
-            Value </th>
-          <td mat-cell *matCellDef="let element" class="QtyClass"> {{element.Value}}
-          </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="tableDisplayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: tableDisplayedColumns;">
-        </tr>
-      </table>
-      <div>
-        <mat-paginator [pageSizeOptions]="[5, 10, 25,50,100,250,500,1000]"></mat-paginator>
-      </div>
     </div>
 
 
