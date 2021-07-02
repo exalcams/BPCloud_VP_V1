@@ -93,8 +93,6 @@
     "ngx-cookie-service": "1.0.10",
     "ngx-doughnut-chart": "0.0.4",
     "ngx-dropzone": "2.2.2",
-    "ngx-gauge": "1.0.0-beta.11",
-    "ngx-gauge-fix": "1.1.0",
     "ngx-material-timepicker": "3.3.1",
     "npm": "6.14.10",
     "path": "0.12.7",

@@ -1,7 +1,7 @@
 @import "src/@fuse/scss/fuse";
 #otif {
-    background-color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f8;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     .topbarClass {
         background: url("/assets/images/backgrounds/header 2.png") no-repeat;
         background-repeat: no-repeat;
@@ -16,7 +16,7 @@
     }
     .center {
         // padding: 5px !important;
-        background-color: white;
+        background-color: #f4f6f8;
     }
     .outer {
         margin-bottom: 2px !important;
@@ -212,13 +212,36 @@
         color: white;
     }
     .tile {
-        @include mat-elevation(2);
-        min-height: 60px !important;
-        max-height: 170px !important;
+        @include mat-elevation(0.5);
+        background-color: white;
+        // min-height: 60px !important;
+        height: 160px !important;
         img {
-            height: 200px;
+            height: 140px;
         }
         cursor: pointer;
+        min-width: 50px;
+    }
+    .tile:hover {
+        background-color: #eaeafe;
+    }
+    .lightBlueBg {
+        background-color: #ebfafe;
+    }
+    .tile1 {
+        @extend .tile;
+        pointer-events: none;
+    }
+    .tile2 {
+        @include mat-elevation(0.5);
+        background-color: white;
+        // min-height: 60px !important;
+        min-height: 250px !important;
+        img {
+            height: 140px;
+        }
+        cursor: pointer;
+        min-width: 50px;
     }
     .redBorderBottom {
         border-bottom: 2px solid #f3705a;
@@ -295,7 +318,7 @@
         background-color: #ffffff;
         border-color: #ffffff;
         // border-color: rgba(0, 0, 0, 0.12);
-        @include mat-elevation(1);
+        @include mat-elevation(0.5);
         border: 1px solid #c3c3c3;
         mat-icon.s-16 {
             color: rgba(0, 0, 0, 0.54) !important;
@@ -430,11 +453,11 @@
     }
     .expandImg {
         height: 36px;
-        margin-top: -16px;
+        // margin-top: -16px;
         cursor: pointer;
     }
     .excelBtn {
-        margin-top: -16px;
+        // margin-top: -16px;
         min-width: 0px;
         background-color: white;
         color: rgb(46, 125, 50);
@@ -482,5 +505,17 @@
     }
     .endText {
         text-align: end;
+    }
+    .ngx-gauge-meter {
+        height: 115px !important;
+    }
+    .cchart {
+        margin-top: -25px;
+        padding: 0;
+        max-width: 450px;
+        // margin: 35px auto;
+    }
+    .chartLeftText {
+        margin-top: -25px;
     }
 }
