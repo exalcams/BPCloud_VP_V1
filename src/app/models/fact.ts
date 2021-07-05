@@ -231,16 +231,38 @@ export class BPCAttach {
     AttachmentName: string;
     Catogery: string;
 }
-export class BPCOTIF extends CommonClass {
+// export class BPCOTIF extends CommonClass {
+//     Client: string;
+//     Company: string;
+//     Type: string;
+//     PatnerID: string;
+//     KRA: string;
+//     Material: string;
+//     Date: Date | string;
+//     Text: string;
+//     Value: number;
+// }
+export class BPCOTIFView extends CommonClass {
     Client: string;
     Company: string;
     Type: string;
     PatnerID: string;
-    KRA: string;
-    Material: string;
     Date: Date | string;
-    Text: string;
-    Value: number;
+    TurnOver: number;
+    OTIF: number;
+    OutOfStock: number;
+    TotalStock: number;
+    TurnOverPercentage: number;
+    OTIFPercentage: number;
+    OutOfStockPercentage: number;
+    TotalStockPercentage: number;
+    AverageTimeToSell: number;
+    AverageNoOfSubcon: number;
+    KRAText: string;
+    KRAValue: number;
+    Plant: string;
+    Material: string;
+    Month: string;
 }
 export class OTIFChartDetails {
     Name: string;
