@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpEvent, HttpResponse } f
 import { AuthService } from './auth.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { BPCFactContactPerson, BPCFactBank, BPCKRA, BPCAIACT, BPCFactView, BPCFact, BPCCertificate, BPCFactXLSX, BPCFactBankXLSX, FactViewSupport, BPCCertificateAttachment, BPCAttachments, BPCAttach, BPCSE, BPCOTIF, OTIFChartDetails } from 'app/models/fact';
+import { BPCFactContactPerson, BPCFactBank, BPCKRA, BPCAIACT, BPCFactView, BPCFact, BPCCertificate, BPCFactXLSX, BPCFactBankXLSX, FactViewSupport, BPCCertificateAttachment, BPCAttachments, BPCAttach, BPCSE, BPCOTIFView, OTIFChartDetails } from 'app/models/fact';
 import { AnimationKeyframesSequenceMetadata } from '@angular/animations';
 // import { BPCFactContactPerson, BPCFactBank, BPCKRA, BPCAIACT, BPCFactView, BPCFact, BPCFactBankXLSX, BPCFactXLSX } from 'app/models/fact';
 
@@ -446,40 +446,47 @@ export class FactService {
       )
       .pipe(catchError(this.errorHandler));
   }
-  GetAllOTIFs(): Observable<BPCOTIF[] | string> {
+  GetAllOTIFs(): Observable<BPCOTIFView[] | string> {
     return this._httpClient
-      .get<BPCOTIF[]>(
+      .get<BPCOTIFView[]>(
         `${this.baseAddress}factapi/Fact/GetAllOTIFs`
       )
       .pipe(catchError(this.errorHandler));
   }
 
-  GetOTIFsByPartnerID(PartnerID: string): Observable<BPCOTIF[] | string> {
+  GetOTIFsByPartnerID(PartnerID: string): Observable<BPCOTIFView[] | string> {
     return this._httpClient
-      .get<BPCOTIF[]>(
+      .get<BPCOTIFView[]>(
         `${this.baseAddress}factapi/Fact/GetOTIFsByPartnerID?PartnerID=${PartnerID}`
       )
       .pipe(catchError(this.errorHandler));
   }
 
-  FilterOTIFs(PartnerID: string, Material: string, FromDate: string, ToDate: string): Observable<BPCOTIF[] | string> {
+  FilterOTIFs(PartnerID: string, Year: string): Observable<BPCOTIFView[] | string> {
     return this._httpClient
-      .get<BPCOTIF[]>(
-        `${this.baseAddress}factapi/Fact/FilterOTIFs?PartnerID=${PartnerID}&Material=${Material}&FromDate=${FromDate}&ToDate=${ToDate}`
+      .get<BPCOTIFView[]>(
+        `${this.baseAddress}factapi/Fact/FilterOTIFs?PartnerID=${PartnerID}&Year=${Year}`
       )
       .pipe(catchError(this.errorHandler));
   }
-  GetOTIFCircleProgressChartData(PartnerID: string, Material: string, FromDate: string, ToDate: string): Observable<OTIFChartDetails | string> {
+  GetOTIFCircleProgressChartData(PartnerID: string, Year: string): Observable<BPCOTIFView | string> {
     return this._httpClient
-      .get<OTIFChartDetails>(
-        `${this.baseAddress}factapi/Fact/GetOTIFCircleProgressChartData?PartnerID=${PartnerID}&Material=${Material}&FromDate=${FromDate}&ToDate=${ToDate}`
+      .get<BPCOTIFView>(
+        `${this.baseAddress}factapi/Fact/GetOTIFCircleProgressChartData?PartnerID=${PartnerID}&Year=${Year}`
       )
       .pipe(catchError(this.errorHandler));
   }
-  GetOTIFBarChartData(PartnerID: string, Material: string, FromDate: string, ToDate: string): Observable<OTIFChartDetails[] | string> {
+  GetOTIFBarChartData(PartnerID: string, Year: string): Observable<OTIFChartDetails[] | string> {
     return this._httpClient
       .get<OTIFChartDetails[]>(
-        `${this.baseAddress}factapi/Fact/GetOTIFBarChartData?PartnerID=${PartnerID}&Material=${Material}&FromDate=${FromDate}&ToDate=${ToDate}`
+        `${this.baseAddress}factapi/Fact/GetOTIFBarChartData?PartnerID=${PartnerID}&Year=${Year}`
+      )
+      .pipe(catchError(this.errorHandler));
+  }
+  GetOTIFLineChartData(PartnerID: string, Year: string): Observable<BPCOTIFView[] | string> {
+    return this._httpClient
+      .get<BPCOTIFView[]>(
+        `${this.baseAddress}factapi/Fact/GetOTIFLineChartData?PartnerID=${PartnerID}&Year=${Year}`
       )
       .pipe(catchError(this.errorHandler));
   }

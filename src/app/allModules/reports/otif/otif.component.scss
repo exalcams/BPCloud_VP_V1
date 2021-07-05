@@ -1,6 +1,7 @@
 @import "src/@fuse/scss/fuse";
 #otif {
     background-color: #f4f6f8;
+    // background-color: white !important;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     .topbarClass {
         background: url("/assets/images/backgrounds/header 2.png") no-repeat;
@@ -17,9 +18,10 @@
     .center {
         // padding: 5px !important;
         background-color: #f4f6f8;
+        // background-color: white !important;
     }
     .outer {
-        margin-bottom: 2px !important;
+        // margin-bottom: 2px !important;
         border-bottom: 1px solid rgba(255, 85, 0, 0.1);
         position: relative;
         z-index: 1;
@@ -212,7 +214,7 @@
         color: white;
     }
     .tile {
-        @include mat-elevation(0.5);
+        @include mat-elevation(1);
         background-color: white;
         // min-height: 60px !important;
         height: 160px !important;
@@ -230,10 +232,10 @@
     }
     .tile1 {
         @extend .tile;
-        pointer-events: none;
+        // pointer-events: none;
     }
     .tile2 {
-        @include mat-elevation(0.5);
+        @include mat-elevation(1);
         background-color: white;
         // min-height: 60px !important;
         min-height: 250px !important;
@@ -242,6 +244,9 @@
         }
         cursor: pointer;
         min-width: 50px;
+    }
+    .tile2:hover {
+        background-color: #eaeafe;
     }
     .redBorderBottom {
         border-bottom: 2px solid #f3705a;
@@ -318,7 +323,7 @@
         background-color: #ffffff;
         border-color: #ffffff;
         // border-color: rgba(0, 0, 0, 0.12);
-        @include mat-elevation(0.5);
+        @include mat-elevation(1);
         border: 1px solid #c3c3c3;
         mat-icon.s-16 {
             color: rgba(0, 0, 0, 0.54) !important;
@@ -493,14 +498,36 @@
     .mat-progress-bar {
         height: 20px;
     }
+    .bar {
+        background-color: #c5c6cbed;
+        height: 20px;
+        width: 100%;
+    }
+    .sellBarCompleted {
+        @extend .bar;
+        background-color: #54c4f5;
+        text-align: center;
+        color: white;
+    }
+    .subconBarCompleted {
+        @extend .bar;
+        background-color: #0a85ba;
+        text-align: center;
+        color: white;
+    }
     .sell {
+        // --myVar: "";
         .mat-progress-bar-fill::after {
             background-color: #54c4f5;
+            text-align: center;
+            content: attr(data-before-content);
         }
     }
     .subcon {
         .mat-progress-bar-fill::after {
             background-color: #0a85ba;
+            text-align: center;
+            content: "Hello";
         }
     }
     .endText {
