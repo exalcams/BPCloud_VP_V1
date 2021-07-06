@@ -12,9 +12,15 @@
     <!-- <div fxFlex fxLayout *ngIf="!isExpanded" [@animate]="{value:'*',params:{x:'100%'}}"> -->
     <div fxFlex fxLayout="column" *ngIf="!isExpanded" @expandCollapse>
       <div class="mx-16 mt-12" fxFlex="100">
-        <!-- <form autocomplete="off" name="form" novalidate [formGroup]="SearchFormGroup">
+        <form autocomplete="off" name="form" novalidate [formGroup]="SearchFormGroup">
           <div fxLayout="row" fxLayoutAlign="start center">
             <mat-form-field appearance="outline" fxFlex="20" class="mr-8">
+              <mat-label>Year</mat-label>
+              <mat-select (selectionChange)="YearSelected($event)" formControlName="Year">
+                <mat-option *ngFor="let ye of YearsList" [value]="ye">{{ye}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <!-- <mat-form-field appearance="outline" fxFlex="20" class="mr-8">
               <mat-label>Partner ID</mat-label>
               <input matInput formControlName="PartnerID">
             </mat-form-field>
@@ -48,12 +54,10 @@
             <div fxFlex align="end">
               <button mat-raised-button class="SaveBtn" (click)="SearchClicked('Search')"
                 [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">Search</button>
-            </div>
-            
-          </div>
+            </div> -->
 
-         
-        </form> -->
+          </div>
+        </form>
       </div>
       <div fxFlex fxLayout fxLayoutGap="0px">
         <!-- <div class="px-8" fxFlex="50">
@@ -71,7 +75,7 @@
             <span class="orangeBorderBottom"></span>
             <div fxFlex fxLayoutAlign="center" class="p-12">
               <div fxFlex fxLayoutAlign="center">
-                <div class="cchart">
+                <div class="cchart" *ngIf="TotalStockChartOptions?.series">
                   <apx-chart [series]="TotalStockChartOptions?.series" [chart]="chartOptions.chart"
                     [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
                     [stroke]="chartOptions.stroke" [fill]="TotalStockChartOptions?.fill">
@@ -94,7 +98,7 @@
             <span class="orangeBorderBottom"></span>
             <div fxFlex fxLayoutAlign="center" class="p-12">
               <div fxFlex fxLayoutAlign="center">
-                <div class="cchart">
+                <div class="cchart" *ngIf="OutOfStockChartOptions?.series">
                   <apx-chart [series]="OutOfStockChartOptions?.series" [chart]="chartOptions.chart"
                     [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
                     [stroke]="chartOptions.stroke" [fill]="OutOfStockChartOptions?.fill">
@@ -149,7 +153,7 @@
             <span class="orangeBorderBottom"></span>
             <div fxFlex fxLayoutAlign="center" class="p-12">
               <div fxFlex fxLayoutAlign="center">
-                <div class="cchart">
+                <div class="cchart" *ngIf="OTIFChartOptions?.series">
                   <apx-chart [series]="OTIFChartOptions?.series" [chart]="chartOptions.chart"
                     [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
                     [stroke]="chartOptions.stroke" [fill]="OTIFChartOptions?.fill">
@@ -173,7 +177,7 @@
             <span class="orangeBorderBottom"></span>
             <div fxFlex fxLayoutAlign="center" class="p-12">
               <div fxFlex fxLayoutAlign="center">
-                <div class="cchart">
+                <div class="cchart"  *ngIf="TurnOverChartOptions?.series">
                   <apx-chart [series]="TurnOverChartOptions?.series" [chart]="chartOptions.chart"
                     [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
                     [stroke]="chartOptions.stroke" [fill]="TurnOverChartOptions?.fill">
@@ -335,10 +339,12 @@
     </div>
 
 
-    <mat-progress-spinner *ngIf="IsProgressBarVisibile || IsProgressBarVisibile1 || IsProgressBarVisibile2 || IsProgressBarVisibile3"
+    <mat-progress-spinner
+      *ngIf="IsProgressBarVisibile || IsProgressBarVisibile1 || IsProgressBarVisibile2 || IsProgressBarVisibile3"
       class="progressBarPostion" color="accent" mode="indeterminate">
     </mat-progress-spinner>
-    <div id="overlay" *ngIf="IsProgressBarVisibile || IsProgressBarVisibile1 || IsProgressBarVisibile2 || IsProgressBarVisibile3"></div>
+    <div id="overlay"
+      *ngIf="IsProgressBarVisibile || IsProgressBarVisibile1 || IsProgressBarVisibile2 || IsProgressBarVisibile3"></div>
   </div>
   <!-- <div class="px-20 pb-20" style="position: absolute;width: 100%;
       bottom: 6rem;" fxLayout fxLayoutAlign="start center" fxLayoutGap="2.5rem">
