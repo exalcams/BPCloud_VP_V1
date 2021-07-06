@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, HostBinding, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ClassDirective } from '@angular/flex-layout';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { MatTableDataSource, MatPaginator, MatMenuTrigger, MatSort, MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
@@ -23,7 +24,7 @@ import { ApexAxisChartSeries, ApexNonAxisChartSeries, ApexChart, ApexDataLabels,
 import { BaseChartDirective } from 'ng2-charts';
 import * as SecureLS from 'secure-ls';
 
-export interface ChartOptions {
+export class ChartOptions {
   series: ApexNonAxisChartSeries;
   chart: ApexChart;
   labels: string[];
@@ -60,10 +61,10 @@ export interface ChartOptions {
 })
 export class OTIFComponent implements OnInit {
   public chartOptions: Partial<ChartOptions>;
-  public TotalStockChartOptions: Partial<ChartOptions>;
-  public OutOfStockChartOptions: Partial<ChartOptions>;
-  public OTIFChartOptions: Partial<ChartOptions>;
-  public TurnOverChartOptions: Partial<ChartOptions>;
+  public TotalStockChartOptions: Partial<ChartOptions> = new ChartOptions();
+  public OutOfStockChartOptions: Partial<ChartOptions> = new ChartOptions();
+  public OTIFChartOptions: Partial<ChartOptions> = new ChartOptions();
+  public TurnOverChartOptions: Partial<ChartOptions> = new ChartOptions();
   @ViewChild(BaseChartDirective) BaseChart: BaseChartDirective;
   // public BarchartOptions: Partial<ChartOptions>;
   authenticationDetails: AuthenticationDetails;
@@ -83,6 +84,7 @@ export class OTIFComponent implements OnInit {
   isDateError: boolean;
   DefaultFromDate: Date;
   DefaultToDate: Date;
+  YearsList: number[] = [];
   searchText: string;
   SelectValue: string;
   isExpanded: boolean;
@@ -129,7 +131,7 @@ export class OTIFComponent implements OnInit {
 
 
   // Bar chart
-  OTIFBarChartData: OTIFChartDetails[] = [];
+  OTIFBarChartData: BPCOTIFView[] = [];
   public barChartOptions = {
     responsive: true,
     // cornerRadius: 20,
@@ -182,7 +184,7 @@ export class OTIFComponent implements OnInit {
 
   // Line chart
 
-  public lineChartData: ChartDataSets[] = [
+  public lineChartData: any[] = [
     { data: [], label: 'Turn Over' },
     { data: [], label: 'On Time In Full' },
     { data: [], label: 'Out Of stock' },
@@ -280,6 +282,12 @@ export class OTIFComponent implements OnInit {
     this.DefaultFromDate = new Date();
     this.DefaultFromDate.setDate(this.DefaultFromDate.getDate() - 30);
     this.DefaultToDate = new Date();
+    const currentyear = +(this._datePipe.transform(this.DefaultFromDate, "yyyy"));
+    for (let i = 0; i < 3; i++) {
+      this.YearsList.push(currentyear - i);
+    }
+
+
     this.BCHeader = new BPCOTIFView();
     this.OTIFCircleProgressValue = 0;
     this.chartOptions = {
@@ -368,9 +376,9 @@ export class OTIFComponent implements OnInit {
   }
 
   InitializeSearchForm(): void {
-    const year = this._datePipe.transform(this.DefaultFromDate, "yyyy");
+    const year = +(this._datePipe.transform(this.DefaultFromDate, "yyyy"));
     this.SearchFormGroup = this.formBuilder.group({
-      PartnerID: [''],
+      // PartnerID: [''],
       Year: [year],
       // Material: [''],
       // FromDate: [this.DefaultFromDate],
@@ -416,6 +424,10 @@ export class OTIFComponent implements OnInit {
     } else {
       this.isDateError = false;
     }
+  }
+  YearSelected(event): void {
+    console.log(event.log);
+    this.SearchClicked('');
   }
   SearchClicked(text: string): void {
     if (this.SearchFormGroup.valid) {
@@ -525,25 +537,28 @@ export class OTIFComponent implements OnInit {
     this.IsProgressBarVisibile2 = true;
     this._factService.GetOTIFBarChartData(PartnerID, Year).subscribe(
       (data) => {
-        this.OTIFBarChartData = data as OTIFChartDetails[];
+        this.OTIFBarChartData = data as BPCOTIFView[];
         this.barChartLabels = [];
         // this.barChartData = [
         //   { data: [], label: 'Out of Stock', stack: 'a' },
         //   { data: [], label: 'Total Stock', stack: 'a' }
         // ];
-        setTimeout(() => {
-          this.OTIFBarChartData.forEach(x => {
-            this.barChartLabels.push(x.label);
-            // this.barChartData[0].data.push(x.Value);
-            // this.barChartData[0].label = x.Name ? x.Name : "OTIF";
+        // setTimeout(() => {
+        //   this.OTIFBarChartData.forEach(x => {
+        //     this.barChartLabels.push(x.label);
+        //     this.barChartData[0].data.push(x.Value);
+        //     // this.barChartData[0].label = x.Name ? x.Name : "OTIF";
 
-          });
-          this.barChartData[0].data = this.OTIFBarChartData.map(x => x.Value);
-          // this.barChartData[0].label[0] = this.OTIFBarChartData.map(x => x.label);
-          this.barChartData[1].data = this.OTIFBarChartData.map(x => x.Value);
-          // this.barChartData[0].label[1] = this.OTIFBarChartData.map(x => x.label);
-          this.BaseChart.chart.update();
-        }, 10);
+        //   });
+        //   // this.barChartData[0].data = this.OTIFBarChartData.map(x => x.Value);
+        //   // this.barChartData[0].label[0] = this.OTIFBarChartData.map(x => x.label);
+        //   // this.barChartData[1].data = this.OTIFBarChartData.map(x => x.Value);
+        //   // this.barChartData[0].label[1] = this.OTIFBarChartData.map(x => x.label);
+        //   this.BaseChart.chart.update();
+        // }, 10);
+        this.barChartLabels = this.OTIFBarChartData.map(x => x.Day);
+        this.barChartData[0].data = this.OTIFBarChartData.map(x => x.OutOfStock);
+        this.barChartData[1].data = this.OTIFBarChartData.map(x => x.TotalStock);
         this.IsProgressBarVisibile2 = false;
         // this.BarchartOptions = {
         //   series: this.barChartData,
@@ -618,19 +633,20 @@ export class OTIFComponent implements OnInit {
         //   { data: [], label: 'On Time In Full' },
         //   { data: [], label: 'Out Of stock' },
         // ];
-        setTimeout(() => {
-          this.OTIFLineChartData.forEach(x => {
-            this.lineChartLabels.push(x.Month);
-          });
-          // this.lineChartData[0].data = this.OTIFLineChartData.map(y => y.TurnOver);
-          // this.lineChartData[1].data = this.OTIFLineChartData.map(y => y.OTIF);
-          // this.lineChartData[2].data = this.OTIFLineChartData.map(y => y.OutOfStock);
-          this.lineChartData[0].data = [1, 23, 56, 7, 9, 0];
-          this.lineChartData[1].data = [1, 23, 56, 7, 9, 0];
-          this.lineChartData[2].data = [1, 23, 56, 7, 9, 0];
-          this.BaseChart.chart.update();
-
-        }, 10);
+        // setTimeout(() => {
+        //   this.OTIFLineChartData.forEach(x => {
+        //     this.lineChartLabels.push(x.Month);
+        //     // this.lineChartData[0].data.push(x.TurnOver);
+        //     // this.lineChartData[1].data.push(x.OTIF);
+        //     // this.lineChartData[2].data.push(x.OutOfStock);
+        //   });
+        //   this.lineChartData[1].data = [28, 48, 140, 19, 86, 27, 90];
+        //   this.BaseChart.chart.update();
+        // }, 10);
+        this.lineChartLabels = this.OTIFLineChartData.map(x => x.Month);
+        this.lineChartData[0].data = this.OTIFLineChartData.map(x => x.TurnOver);
+        this.lineChartData[1].data = this.OTIFLineChartData.map(x => x.OTIF);
+        this.lineChartData[2].data = this.OTIFLineChartData.map(x => x.OutOfStock);
         this.IsProgressBarVisibile3 = false;
       },
       (err) => {

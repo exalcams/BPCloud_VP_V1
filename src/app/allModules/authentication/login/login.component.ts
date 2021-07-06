@@ -1308,7 +1308,7 @@ export class LoginComponent implements OnInit {
             });
         }
         if (
-            this.menuItems.indexOf("SupplierEvaluation") >= 0) {
+            this.menuItems.indexOf("SupplierEvaluation") >= 0 || this.menuItems.indexOf("OTIF") >= 0 || true) {
             this.children.push({
                 id: "report",
                 title: "Report",

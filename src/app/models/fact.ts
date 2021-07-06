@@ -263,6 +263,7 @@ export class BPCOTIFView extends CommonClass {
     Plant: string;
     Material: string;
     Month: string;
+    Day: string;
 }
 export class OTIFChartDetails {
     Name: string;

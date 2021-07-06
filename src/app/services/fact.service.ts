@@ -476,9 +476,9 @@ export class FactService {
       )
       .pipe(catchError(this.errorHandler));
   }
-  GetOTIFBarChartData(PartnerID: string, Year: string): Observable<OTIFChartDetails[] | string> {
+  GetOTIFBarChartData(PartnerID: string, Year: string): Observable<BPCOTIFView[] | string> {
     return this._httpClient
-      .get<OTIFChartDetails[]>(
+      .get<BPCOTIFView[]>(
         `${this.baseAddress}factapi/Fact/GetOTIFBarChartData?PartnerID=${PartnerID}&Year=${Year}`
       )
       .pipe(catchError(this.errorHandler));
