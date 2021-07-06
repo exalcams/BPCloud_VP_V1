@@ -365,6 +365,17 @@ export class BPCInvoice extends CommonClass {
     Currency: string
 
 }
+
+export class InvoiceVendor  {
+    // name:string;
+    InvoiceNo:string;
+    InvoiceDate: Date  | null;
+    InvoiceAmount: number;
+      BalanceAmount: number;
+      ReasonCode: string;
+  }
+  
+
 export class BPCRetNew extends CommonClass {
     ReturnOrder: string;
     Date: Date | string | null;

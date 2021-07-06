@@ -3,8 +3,13 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { AuthService } from './auth.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { BPCOFHeader, BPCOFItem, BPCOFHeaderXLSX, BPCOFItemXLSX, BPCOFScheduleLineXLSX, BPCOFGRGIXLSX, BPCOFQMXLSX, BPCOFGRGI, SOItemCount, BPCOFItemView, BPCInvoice, BPCRetNew, BPCOFHeaderView } from 'app/models/OrderFulFilment';
-import { BPCCEOMessage, BPCSCOCMessage ,BPCWelcomeMessage} from 'app/models/Message.model';
+// import { BPCOFHeader, BPCOFItem, BPCOFHeaderXLSX, BPCOFItemXLSX, BPCOFScheduleLineXLSX, BPCOFGRGIXLSX, BPCOFQMXLSX, BPCOFGRGI, SOItemCount, 
+// BPCOFItemView, BPCInvoice, BPCRetNew, BPCOFHeaderView } from 'app/models/OrderFulFilment';
+import {
+  BPCOFHeader, BPCOFItem, BPCOFHeaderXLSX, BPCOFItemXLSX, BPCOFScheduleLineXLSX, BPCOFGRGIXLSX, BPCOFQMXLSX, BPCOFGRGI, SOItemCount,
+  BPCOFItemView, BPCInvoice, BPCRetNew, InvoiceVendor, BPCOFHeaderView
+} from 'app/models/OrderFulFilment';
+import { BPCCEOMessage, BPCSCOCMessage, BPCWelcomeMessage } from 'app/models/Message.model';
 import { BPCFact } from 'app/models/fact';
 import { OverviewReportOption } from 'app/models/ReportModel';
 import { BPCInvoicePayment, BPCInvoicePayView, BPCPayRecord } from 'app/models/customer';
@@ -20,7 +25,7 @@ export class POService {
 
   constructor(private _httpClient: HttpClient, private _authService: AuthService) {
     this.baseAddress = _authService.baseAddress;
-   
+
   }
 
   // Error Handler
@@ -103,21 +108,21 @@ export class POService {
       .pipe(catchError(this.errorHandler));
   }
   // Data Migration
-//madhu
-GetInvoiceByPartnerIdAnDocumentNo( PatnerID: string): Observable<BPCInvoice | any> {
-  return this._httpClient.get<BPCInvoice>(`${this.baseAddress}poapi/Invoice/GetInvoiceByPartnerIdAnDocumentNo?PatnerID=${PatnerID}`)
-    .pipe(catchError(this.errorHandler));
-}
-GetPartnerAndRequestIDByPartnerId( PatnerID: string): Observable<BPCRetNew | any> {
-  return this._httpClient.get<BPCRetNew>(`${this.baseAddress}poapi/Return/GetPartnerAndRequestIDByPartnerId?PatnerID=${PatnerID}`)
-    .pipe(catchError(this.errorHandler));
-}
-GetAttachmentByPatnerIdAndDocNum( DocNumber:string,PatnerID: string,): Observable<DocumentDetails[] | string> {
-  return this._httpClient.get<DocumentDetails[]>(`${this.baseAddress}poapi/Dashboard/GetAttachmentByPatnerIdAndDocNum?PatnerID=${PatnerID}&DocNumber=${DocNumber}`)
-    .pipe(catchError(this.errorHandler));
-}
+  //madhu
+  GetInvoiceByPartnerIdAnDocumentNo(PatnerID: string): Observable<BPCInvoice | any> {
+    return this._httpClient.get<BPCInvoice>(`${this.baseAddress}poapi/Invoice/GetInvoiceByPartnerIdAnDocumentNo?PatnerID=${PatnerID}`)
+      .pipe(catchError(this.errorHandler));
+  }
+  GetPartnerAndRequestIDByPartnerId(PatnerID: string): Observable<BPCRetNew | any> {
+    return this._httpClient.get<BPCRetNew>(`${this.baseAddress}poapi/Return/GetPartnerAndRequestIDByPartnerId?PatnerID=${PatnerID}`)
+      .pipe(catchError(this.errorHandler));
+  }
+  GetAttachmentByPatnerIdAndDocNum(DocNumber: string, PatnerID: string,): Observable<DocumentDetails[] | string> {
+    return this._httpClient.get<DocumentDetails[]>(`${this.baseAddress}poapi/Dashboard/GetAttachmentByPatnerIdAndDocNum?PatnerID=${PatnerID}&DocNumber=${DocNumber}`)
+      .pipe(catchError(this.errorHandler));
+  }
 
-//
+  //
   CreateOFHeaders(OFHeaders: BPCOFHeaderXLSX[]): Observable<any> {
     return this._httpClient.post<any>(`${this.baseAddress}poapi/PO/CreateOFHeaders`,
       OFHeaders,
@@ -183,7 +188,7 @@ GetAttachmentByPatnerIdAndDocNum( DocNumber:string,PatnerID: string,): Observabl
   }
   GetQMReportByDate(overViewData: OverviewReportOption): Observable<any> {
     return this._httpClient.post<any>(`${this.baseAddress}poapi/PO/GetQMReportByDate`,
-    overViewData,
+      overViewData,
       // {
       //   headers: new HttpHeaders({
       //     'Content-Type': 'application/json'
@@ -193,7 +198,7 @@ GetAttachmentByPatnerIdAndDocNum( DocNumber:string,PatnerID: string,): Observabl
   }
   GetQMReportByOption(overViewData: OverviewReportOption): Observable<any> {
     return this._httpClient.post<any>(`${this.baseAddress}poapi/PO/GetQMReportByOption`,
-    overViewData,
+      overViewData,
       // {
       //   headers: new HttpHeaders({
       //     'Content-Type': 'application/json'
@@ -203,7 +208,7 @@ GetAttachmentByPatnerIdAndDocNum( DocNumber:string,PatnerID: string,): Observabl
   }
   GetQMReportByStatus(overViewData: OverviewReportOption): Observable<any> {
     return this._httpClient.post<any>(`${this.baseAddress}poapi/PO/GetQMReportByStatus`,
-    overViewData,
+      overViewData,
       // {
       //   headers: new HttpHeaders({
       //     'Content-Type': 'application/json'
@@ -299,7 +304,7 @@ GetAttachmentByPatnerIdAndDocNum( DocNumber:string,PatnerID: string,): Observabl
       )
       .pipe(catchError(this.errorHandler));
   }
-  
+
 
   DeleteSCOCMessage(SCOCMessage: BPCSCOCMessage): Observable<any> {
     return this._httpClient
@@ -314,116 +319,186 @@ GetAttachmentByPatnerIdAndDocNum( DocNumber:string,PatnerID: string,): Observabl
       )
       .pipe(catchError(this.errorHandler));
   }
-//Welcome Message
-CreateWelcomeMessage(WelcomeMessage: BPCWelcomeMessage): Observable<any> {
-  return this._httpClient
-    .post<any>(
-      `${this.baseAddress}poapi/Message/CreateWelcomeMessage`,
-      WelcomeMessage,
-      {
-        headers: new HttpHeaders({
-          "Content-Type": "application/json",
-        }),
-      }
-    )
-    .pipe(catchError(this.errorHandler));
-}
+  //Welcome Message
+  CreateWelcomeMessage(WelcomeMessage: BPCWelcomeMessage): Observable<any> {
+    return this._httpClient
+      .post<any>(
+        `${this.baseAddress}poapi/Message/CreateWelcomeMessage`,
+        WelcomeMessage,
+        {
+          headers: new HttpHeaders({
+            "Content-Type": "application/json",
+          }),
+        }
+      )
+      .pipe(catchError(this.errorHandler));
+  }
 
-GetWelcomeMessage(): Observable<BPCWelcomeMessage | string> {
-  return this._httpClient
-    .get<BPCWelcomeMessage>(
-      `${this.baseAddress}poapi/Message/GetWelcomeMessage`
-    )
-    .pipe(catchError(this.errorHandler));
-}
+  GetWelcomeMessage(): Observable<BPCWelcomeMessage | string> {
+    return this._httpClient
+      .get<BPCWelcomeMessage>(
+        `${this.baseAddress}poapi/Message/GetWelcomeMessage`
+      )
+      .pipe(catchError(this.errorHandler));
+  }
 
-UpdateWelcomeMessage(WelcomeMessage: BPCWelcomeMessage): Observable<any> {
-  return this._httpClient
-    .post<any>(
-      `${this.baseAddress}poapi/Message/UpdateWelcomeMessage`,
-      WelcomeMessage,
-      {
-        headers: new HttpHeaders({
-          "Content-Type": "application/json",
-        }),
-      }
-    )
-    .pipe(catchError(this.errorHandler));
-}
+  UpdateWelcomeMessage(WelcomeMessage: BPCWelcomeMessage): Observable<any> {
+    return this._httpClient
+      .post<any>(
+        `${this.baseAddress}poapi/Message/UpdateWelcomeMessage`,
+        WelcomeMessage,
+        {
+          headers: new HttpHeaders({
+            "Content-Type": "application/json",
+          }),
+        }
+      )
+      .pipe(catchError(this.errorHandler));
+  }
 
-DeleteWelcomeMessage(WelcomeMessage: BPCWelcomeMessage): Observable<any> {
-  return this._httpClient
-    .post<any>(
-      `${this.baseAddress}poapi/Message/DeleteCEOMessage`,
-      WelcomeMessage,
-      {
-        headers: new HttpHeaders({
-          "Content-Type": "application/json",
-        }),
-      }
-    )
-    .pipe(catchError(this.errorHandler));
-}
-
-
-//invoice payment
-GetAllInvoices(): Observable<BPCInvoicePayment[] | string> {
-  return this._httpClient.get<BPCInvoicePayment[]>(`${this.baseAddress}poapi/Invoice/GetAllInvoices`)
-    .pipe(catchError(this.errorHandler));
-}
-
-UpdateInvoice(InvoicePayment: BPCInvoicePayment): Observable<any> {
-  return this._httpClient
-    .post<any>(
-      `${this.baseAddress}poapi/Invoice/UpdateInvoice`,
-      InvoicePayment,
-      {
-        headers: new HttpHeaders({
-          "Content-Type": "application/json",
-        }),
-      }
-    )
-    .pipe(catchError(this.errorHandler));
-}
-//invoice payment end
-//payment history
-GetAllPaymentRecord(): Observable<BPCPayRecord[] | string> {
-  return this._httpClient.get<BPCPayRecord[]>(`${this.baseAddress}poapi/Invoice/GetAllPaymentRecord`)
-    .pipe(catchError(this.errorHandler));
-}
-GetAllRecordDateFilter(): Observable<BPCPayRecord[] | string> {
-  return this._httpClient.get<BPCPayRecord[]>(`${this.baseAddress}poapi/Invoice/GetAllRecordDateFilter`)
-    .pipe(catchError(this.errorHandler));
-}
-CreatePaymentRecord(InvoicePaymentRcrd: BPCPayRecord): Observable<any> {
-  return this._httpClient
-    .post<any>(
-      `${this.baseAddress}poapi/Invoice/CreatePaymentRecord`,
-      InvoicePaymentRcrd,
-      {
-        headers: new HttpHeaders({
-          "Content-Type": "application/json",
-        }),
-      }
-    )
-    .pipe(catchError(this.errorHandler));
-}
+  DeleteWelcomeMessage(WelcomeMessage: BPCWelcomeMessage): Observable<any> {
+    return this._httpClient
+      .post<any>(
+        `${this.baseAddress}poapi/Message/DeleteCEOMessage`,
+        WelcomeMessage,
+        {
+          headers: new HttpHeaders({
+            "Content-Type": "application/json",
+          }),
+        }
+      )
+      .pipe(catchError(this.errorHandler));
+  }
 
 
-//inv with payrecord,payment,invoice
+  //invoice payment
+  GetAllInvoices(): Observable<BPCInvoicePayment[] | string> {
+    return this._httpClient.get<BPCInvoicePayment[]>(`${this.baseAddress}poapi/Invoice/GetAllInvoices`)
+      .pipe(catchError(this.errorHandler));
+  }
+  // (`${this.baseAddress}poapi/Invoice/GetExcel_VendorReconciliation?Excel_val=${Excel_val}&Selectedvendor=${Selectedvendor}`)
+  //#region GetExcel_VendorReconciliation
+  GetExcel_VendorReconciliationMismatch(Excel_val: InvoiceVendor, Selectedvendor): Observable<InvoiceVendor[]> {
+    return this._httpClient
+      .post<any>(
+        `${this.baseAddress}poapi/Invoice/GetExcel_VendorReconciliationMismatch?Selectedvendor=${Selectedvendor}`,
+        Excel_val,
+        {
+          headers: new HttpHeaders({
+            "Content-Type": "application/json",
+          }
+          ),
+        }
+      )
+      .pipe(catchError(this.errorHandler));
+  }
 
-UpdateInvoicePay(InvoicePayment: BPCInvoicePayView): Observable<any> {
-  return this._httpClient
-    .post<any>(
-      `${this.baseAddress}poapi/Invoice/UpdateInvoicePay`,
-      InvoicePayment,
-      {
-        headers: new HttpHeaders({
-          "Content-Type": "application/json",
-        }),
-      }
-    )
-    .pipe(catchError(this.errorHandler));
-}
-//end
+  GetExcel_VendorReconciliationPartialMatch(Excel_val: InvoiceVendor, Selectedvendor): Observable<InvoiceVendor[]> {
+    return this._httpClient
+      .post<any>(
+        `${this.baseAddress}poapi/Invoice/GetExcel_VendorReconciliationPartialMatch?Selectedvendor=${Selectedvendor}`,
+        Excel_val,
+        {
+          headers: new HttpHeaders({
+            "Content-Type": "application/json",
+          }),
+        }
+      )
+      .pipe(catchError(this.errorHandler));
+  }
+  GetExcel_VendorReconciliationMatched(Excel_val: InvoiceVendor, Selectedvendor): Observable<InvoiceVendor[]> {
+    return this._httpClient
+      .post<any>(
+        `${this.baseAddress}poapi/Invoice/GetExcel_VendorReconciliationMatched?Selectedvendor=${Selectedvendor}`,
+        Excel_val,
+        {
+          headers: new HttpHeaders({
+            "Content-Type": "application/json",
+          }),
+        }
+      )
+      .pipe(catchError(this.errorHandler));
+  }
+  GetExcel_VendorReconciliationAll(Excel_val: InvoiceVendor, Selectedvendor): Observable<InvoiceVendor[]> {
+    return this._httpClient
+      .post<any>(
+        `${this.baseAddress}poapi/Invoice/GetExcel_VendorReconciliationAll?Selectedvendor=${Selectedvendor}`,
+        Excel_val,
+        {
+          headers: new HttpHeaders({
+            "Content-Type": "application/json",
+          }),
+        }
+      )
+      .pipe(catchError(this.errorHandler));
+  }
+  SendMail_VendorReconciliation(Excel_val: InvoiceVendor[], Selectedvendor, TextAreaValue, mailId): Observable<boolean> {
+    return this._httpClient
+      .post<any>(
+        `${this.baseAddress}poapi/Invoice/SendMail_VendorReconciliation?Selectedvendor=${Selectedvendor}&TextAreaValue=${TextAreaValue}&mailId=${mailId}`,
+        Excel_val,
+        {
+          headers: new HttpHeaders({
+            "Content-Type": "application/json",
+          }),
+        }
+      )
+      .pipe(catchError(this.errorHandler));
+  }
+  //#endregion
+
+  UpdateInvoice(InvoicePayment: BPCInvoicePayment): Observable<any> {
+    return this._httpClient
+      .post<any>(
+        `${this.baseAddress}poapi/Invoice/UpdateInvoice`,
+        InvoicePayment,
+        {
+          headers: new HttpHeaders({
+            "Content-Type": "application/json",
+          }),
+        }
+      )
+      .pipe(catchError(this.errorHandler));
+  }
+  //invoice payment end
+  //payment history
+  GetAllPaymentRecord(): Observable<BPCPayRecord[] | string> {
+    return this._httpClient.get<BPCPayRecord[]>(`${this.baseAddress}poapi/Invoice/GetAllPaymentRecord`)
+      .pipe(catchError(this.errorHandler));
+  }
+  GetAllRecordDateFilter(): Observable<BPCPayRecord[] | string> {
+    return this._httpClient.get<BPCPayRecord[]>(`${this.baseAddress}poapi/Invoice/GetAllRecordDateFilter`)
+      .pipe(catchError(this.errorHandler));
+  }
+  CreatePaymentRecord(InvoicePaymentRcrd: BPCPayRecord): Observable<any> {
+    return this._httpClient
+      .post<any>(
+        `${this.baseAddress}poapi/Invoice/CreatePaymentRecord`,
+        InvoicePaymentRcrd,
+        {
+          headers: new HttpHeaders({
+            "Content-Type": "application/json",
+          }),
+        }
+      )
+      .pipe(catchError(this.errorHandler));
+  }
+
+
+  //inv with payrecord,payment,invoice
+
+  UpdateInvoicePay(InvoicePayment: BPCInvoicePayView): Observable<any> {
+    return this._httpClient
+      .post<any>(
+        `${this.baseAddress}poapi/Invoice/UpdateInvoicePay`,
+        InvoicePayment,
+        {
+          headers: new HttpHeaders({
+            "Content-Type": "application/json",
+          }),
+        }
+      )
+      .pipe(catchError(this.errorHandler));
+  }
+  //end
 }

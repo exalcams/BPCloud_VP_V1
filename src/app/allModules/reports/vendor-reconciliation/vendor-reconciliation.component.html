@@ -1,0 +1,318 @@
+<div id="accStat" class="page-layout carded center" style="height:100vh" fusePerfectScrollbar>
+  <div class="center" fxLayout="column" fxLayoutGap="10px">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Vendor Reconciliation </b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+
+    <!-- HEADER -->
+
+    <div fxFlex fxLayout>
+      <div fxFlex="100" class="File_Outerflex">
+        <div fxFlex="32" style="margin: 0px;padding-left: 10px;">
+          <div fxFlex=12>
+            <div [class]="Round_color('File')">
+              <mat-icon [ngClass]="Icon_color('File')">attach_file</mat-icon>
+            </div>
+          </div>
+          <div fxFlex=13>
+            <p style="color: #040404;">File</p>
+          </div>
+          <mat-divider [ngClass]="Divider_color('File')"></mat-divider>
+        </div>
+        <div fxFlex="35">
+          <div fxFlex=13>
+            <div [class]="Round_color('Details')">
+              <img *ngIf="details_bool" src="assets/images/white spec2.png"
+                style="width: 55px; mix-blend-mode: overlay;">
+              <img *ngIf="!details_bool" src="assets/images/specs 2.jpg"
+                style="width: 18px; margin-left: 6px;margin-top: 5px;">
+            </div>
+          </div>
+          <div fxFlex=9 style="margin-right: 26px;">
+            <p style="color: #040404;">Details</p>
+          </div>
+          <mat-divider [ngClass]="Divider_color('Details')"></mat-divider>
+        </div>
+
+        <div fxFlex="40">
+          <div fxFlex=11>
+            <div [class]="Round_color('Overview')">
+              <mat-icon [ngClass]="Icon_color('Overview')">input</mat-icon>
+            </div>
+          </div>
+          <div fxFlex=18 style="margin-left: 7px;">
+            <p style="color: #040404;">Overview</p>
+          </div>
+          <mat-divider [ngClass]="Divider_color('Overview')"></mat-divider>
+        </div>
+
+        <div fxFlex="8">
+          <div fxFlex=45>
+            <div [class]="Round_color('Submit')">
+              <mat-icon [ngClass]="Icon_color('Submit')">launch</mat-icon>
+            </div>
+          </div>
+          <div fxFlex=17>
+            <p style="color: #040404;">Submit</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--  -->
+
+    <div class="ml-20 mr-20" fxFlex="100">
+      <form fxLayout="column" autocomplete="off" name="form" novalidate [formGroup]="VendorExcelFormGroup">
+        <div fxFlex=1.5>
+          <p style="font-size: 18px;">1.File</p>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" class="border_out ">
+          <mat-form-field appearance="outline" fxFlex="25" style="font-size: 12px;margin-top: 14px;"
+            class=" ml-20 mr-8 ">
+            <input matInput placeholder="Vendor" formControlName="Vendor" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" #auto="matAutocomplete"
+              (optionSelected)='getPosts($event.option.value)' autoActiveFirstOption>
+              <mat-option *ngFor="let vendor of vendorList " [value]="vendor">
+                {{vendor}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="25" style="font-size: 12px;margin-top: 14px;" class="ml-20 mr-8">
+            <input matInput placeholder="Choose an Excel sheet" formControlName="Excel">
+          </mat-form-field>
+          <button mat-raised-button color="primary" style="height: 39px; " class="ml-20 mr-8"
+            (click)="fileInput1.click()">Browse File
+          </button>
+          <input hidden type="file" #fileInput1 id="file" (change)="handleFileInput($event)"
+            accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+        </div>
+        <div *ngIf="FileNextBtnVisible_Bool" flex fxLayoutAlign="end center" class="mt-20">
+          <button mat-raised-button color="primary" style="height: 39px;" (click)="fileNextBtn()">Next
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- DETAILS -->
+
+
+    <div *ngIf="DeatilsVisible_Bool==true" class=" ml-20 mr-20 center " >
+      <p style="font-size: 18px;">
+        2. Details
+      </p>
+    </div>
+
+
+    <div *ngIf="DeatilsVisible_Bool==true" fxLayout="row" fxLayoutAlign="start center"
+      class="border_div  ml-20 mr-20  center">
+      <div style="height: 37px;width:12%" class="mr-10" fxLayout="row">
+        <button mat-button (click)="Mismatched()">
+          <mat-icon style="font-size: 32px;
+        margin-right: 12px;
+        vertical-align: text-bottom;">highlight_off</mat-icon>
+          Mismatched
+        </button>
+      </div>
+      <mat-icon>arrow_forward_ios</mat-icon>
+      <div style="height: 37px;width:16%" class="mr-10" fxLayout="row">
+        <button mat-button (click)="PartiallyMatched()">
+
+          <div fxLayout="row">
+            <div fxFlex class="round_whiteDetails">
+              <mat-icon svgIcon="mismatch2Icon"></mat-icon>
+            </div>
+            <div fxFlex>
+              Partially Matched
+            </div>
+          </div>
+        </button>
+      </div>
+      <mat-icon>arrow_forward_ios</mat-icon>
+      <div style="height: 37px;width:12%" class="mr-10 " fxLayout="row">
+        <button mat-button (click)="Matched()">
+          <div fxLayout="row">
+            <div fxFlex class="round_whiteDetails">
+              <mat-icon>done</mat-icon>
+            </div>
+            <div fxFlex>
+              Matched
+            </div>
+          </div>
+        </button>
+      </div>
+      <mat-icon>arrow_forward_ios</mat-icon>
+      <div style="height: 37px;width:16%" class="mr-10 " fxLayout="row">
+        <button mat-button (click)="All()">
+          <div fxLayout="row">
+            <div fxFlex class="round_whiteDetails">
+              <mat-icon style="font-size: 17px;">done_all</mat-icon>
+            </div>
+            <div fxFlex>
+              All
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+
+    <div class="table-wrapper mx-16 center" *ngIf="tableVisible_bool">
+      <table class="table" mat-table [dataSource]="VendorMatchDataSource" matSort style="margin-top: 32px;" matSort>
+        <ng-container matColumnDef="InvoiceNo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Invoice No </th>
+          <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+            <div fxLayout>
+              <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+              <div fxFlex class="pl-8">{{element.InvoiceNo}} </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="InvoiceDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Invoice Date </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.InvoiceDate | date : 'dd/MM/yyyy'}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="InvoiceAmount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Invoice Amount </th>
+          <td mat-cell *matCellDef="let element;" class="QtyClass">
+            {{element.InvoiceAmount}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="BalanceAmount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Balance Amount</th>
+          <td mat-cell *matCellDef="let element;let i= index;" class="QtyClass">
+            {{element.BalanceAmount}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="ReasonCode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Reason Code</th>
+          <td mat-cell *matCellDef="let element;let i= index;">
+            {{element.ReasonCode}}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="VendorMatchColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: VendorMatchColumns;">
+        </tr>
+      </table>
+      <div flex fxLayoutAlign="center center" class="TableFooter" style="margin-top: 20px;"
+        *ngIf="!VendorMatchData?.length">
+        <mat-icon svgIcon="infoIcon" style="color: #1b56ca;">
+        </mat-icon>
+        <span style="margin-left: 10px;">The table does not contain any records</span>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 2% !important;" *ngIf="DetailNxtBtn_VisibleBool" flex fxLayoutAlign="end center"
+      class="ml-20 mr-20">
+      <button mat-raised-button color="primary" style="height: 39px;margin-bottom: 2% !important;"
+        (click)="Deatils_Nextbtn()">Next
+      </button>
+    </div>
+
+    <!-- Overview -->
+
+    <div *ngIf="overviewTableVisible" class=" ml-20 mr-20 center">
+      <p style="font-size: 18px;">
+        3. Overview
+      </p>
+    </div>
+
+    <div class="table-wrapper mx-16 center" *ngIf="overviewTableVisible center">
+      <table class="table" mat-table [dataSource]="OverViewDataSource" matSort style=" margin-bottom: 2% !important;"
+        matSort>
+
+        <ng-container matColumnDef="Type">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Type </th>
+          <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+            <div fxLayout>
+
+              <div fxFlex class="pl-8">{{element.Type}} </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Occurance">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="BGClassName?.layout?.toolbar?.background">
+            Occurance </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.Occurance}}
+          </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="OverviewColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: OverviewColumns;">
+        </tr>
+      </table>
+      <div flex fxLayoutAlign="end center" style="margin-bottom: 2% !important;" class="TableFooter">
+        <button mat-raised-button color="primary" style="height: 39px;" (click)="openNotificationDialog1()">Confrim
+        </button>
+      </div>
+    </div>
+
+    <!-- Submit -->
+
+    <div class="mt-27 center" fxFlex fxLayout style="margin-bottom: 2% !important;" *ngIf="subbmit_visibleBool">
+      <div class="ml-20 mr-20 mt-10" fxFlex="100" fxLayout="column" style="margin-top: 10px;">
+        <div fxFlex>
+          <div fxFlex=1.5>
+            <p style="font-size: 18px;">4.</p>
+          </div>
+          <div class="ml-15" fxFlex>
+            <p style="font-size: 18px;">Submit</p>
+          </div>
+        </div>
+
+        <div class="ml-20 center" fxFlex>
+          <p style="font-size: 14px;">Comment:</p>
+        </div>
+
+        <div fxFlex class="ml-20 center">
+          <mat-form-field class="TextArea" style="width: 100% !important;" appearance="outline">
+
+            <textarea matInput matTextareaAutosize [matAutosizeMinRows]="TextAreaMinRow"
+              [matAutosizeMaxRows]="TextAreaMaxRow" [(ngModel)]="TextAreaValue"></textarea>
+          </mat-form-field>
+        </div>
+        <div width="100%" class="center" style="margin-bottom: 2% !important;">
+          <div fxFlex class="ml-20 center">
+            <div fxFlex=98>
+              <button mat-raised-button color="primary" style="height: 39px;">Draft
+              </button>
+            </div>
+            <div fxFlex>
+              <button mat-raised-button color="primary" style="height: 39px;" (click)="EmailToVendor()">Mail To
+                Vendor
+              </button>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
+  
+<mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+</mat-progress-spinner>
+<div id="overlay" *ngIf="IsProgressBarVisibile"></div>
+</div>

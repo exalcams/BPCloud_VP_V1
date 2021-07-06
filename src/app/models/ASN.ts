@@ -329,7 +329,16 @@ export class ASNItemXLSX {
     // ExpiryDate: Date | string | null;
 }
 
-
+export class ASNItemXLSXdup {
+    Item: string;
+    Material: string;
+    MaterialText: string;
+    UnitPrice: number;
+   
+    // Batch: string;
+    // ManufactureDate: Date | string | null;
+    // ExpiryDate: Date | string | null;
+}
 export class ASNListView {
     Client: string;
     Company: string;
