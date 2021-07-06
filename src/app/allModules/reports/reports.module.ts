@@ -61,6 +61,8 @@ import { ReportComponent } from './report/report.component';
 import { SupplierEvaluationComponent } from './supplier-evaluation/supplier-evaluation.component';
 import { OTIFComponent } from './otif/otif.component';
 import { NgApexchartsModule } from "ng-apexcharts";
+import { VendorReconciliationComponent } from './vendor-reconciliation/vendor-reconciliation.component';
+// import { VendorComponent } from './vendor/vendor.component';
 // import 'chart.piecelabel.js';
 
 const routes = [
@@ -75,6 +77,10 @@ const routes = [
     {
         path: "otif",
         component: OTIFComponent,
+    },
+    {
+        path: "vendor-reconciliation",
+        component: VendorReconciliationComponent,
     },
     {
         path: "**",
@@ -179,6 +185,8 @@ const routes = [
         ReportComponent,
         SupplierEvaluationComponent,
         OTIFComponent,
+        VendorReconciliationComponent,
+        // VendorComponent,
     ],
     // schemas: [CUSTOM_ELEMENTS_SCHEMA],
     providers: [DecimalPipe],

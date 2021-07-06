@@ -1297,6 +1297,16 @@ export class LoginComponent implements OnInit {
                 url: "/reports/otif",
             });
         }
+        if (this.menuItems.indexOf("VendorReconciliation") >= 0) {
+            this.buyerReportChildren.push({
+                id: "reconciliation",
+                title: "Vendor Reconciliation",
+                // translate: "NAV.VENDOR.CAPACreate",
+                type: "item",
+                // icon: 'dashboard',
+                url: "/reports/vendor-reconciliation",
+            });
+        }
         if (
             this.menuItems.indexOf("SupplierEvaluation") >= 0) {
             this.children.push({

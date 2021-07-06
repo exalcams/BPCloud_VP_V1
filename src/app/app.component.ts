@@ -153,6 +153,10 @@ export class AppComponent implements OnInit, OnDestroy {
         mdIconRegistry.addSvgIcon('rfxIcon', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/custom/rfx.svg'));
 
         mdIconRegistry.addSvgIcon('unlockIcon', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/custom/whiteUnlock.svg'));
+        mdIconRegistry.addSvgIcon('SpecsIcon', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/custom/specs.svg'));
+        mdIconRegistry.addSvgIcon('WhiteSpecsIcon', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/custom/white-specs.svg'));
+        mdIconRegistry.addSvgIcon('mismatch2Icon', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/custom/mismatch2.svg'));
+         
 
         /**
          * ------------------------------------------------------------------

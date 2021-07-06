@@ -461,6 +461,27 @@ export class MasterService {
             )
             .pipe(catchError(this.errorHandler));
     }
+    //#region VendorReconciliation 
+    GetVendor(): Observable<string[] | any> {
+        return this._httpClient
+            .get<string[]>(
+                `${this.baseAddress}authenticationapi/Master/GetVendor`
+            )
+            .pipe(catchError(this.errorHandler));
+    }
+    GetMail(Selectedvendor): Observable<string[] | any> {
+        return this._httpClient
+        .post<string[]>(
+          `${this.baseAddress}authenticationapi/Master/GetMail?Selectedvendor=${Selectedvendor}`,   
+          {
+            headers: new HttpHeaders({
+              "Content-Type": "application/json",
+            }),
+          }
+        )
+        .pipe(catchError(this.errorHandler));
+    }
+    //#endregion
     // UserPreferences
     CreateUserPreference(role: UserPreference): Observable<any> {
         return this._httpClient.post<any>(
