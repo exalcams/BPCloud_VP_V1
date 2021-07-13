@@ -943,7 +943,7 @@ export class OrderFulFilmentCenterComponent implements OnInit {
                 const value = chart.data.datasets[0].data[clickedElementIndex];
                 console.log(clickedElementIndex, label, value);
                 if (label !== null) {
-                    var string = "Chart " + label;
+                    const string = "Chart " + label;
                     this.CreateActionLogvalues(string);
                     this.loadOfDetailsByOfStatusChartLabel(label);
                 }

@@ -98,16 +98,16 @@
       </div>
       <div fxLayout>
         <div fxFlex fxLayoutAlign="end">
-          <button *ngIf="supports[0]?.PatnerID===this.authenticationDetails.UserName" class="float-add-button" mat-fab
+          <button *ngIf="supports?.length" class="float-add-button" mat-fab
             style="background-color: #f6b570" (click)="addSupportTicketClicked()">
             <mat-icon style="color: white;">add</mat-icon>
           </button>
         </div>
       </div>
     </div>
-    <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    <mat-progress-spinner *ngIf="isProgressBarVisibile || isProgressBarVisibile1" class="progressBarPostion" color="accent" mode="indeterminate">
     </mat-progress-spinner>
-    <div id="overlay" *ngIf="isProgressBarVisibile">
+    <div id="overlay" *ngIf="isProgressBarVisibile || isProgressBarVisibile1">
     </div>
   </div>
 </div>

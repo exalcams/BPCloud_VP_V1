@@ -57,15 +57,17 @@
                             <form autocomplete="off" class="normal" fxLayout="column" fxLayoutGap="0px"
                                 fxLayoutAlign="start" name="form" novalidate [formGroup]="userMainFormGroup">
 
-                                <div fxFlex fxLayout="row" fxLayoutGap="40px">
+                                <div fxFlex fxLayout="row" fxLayoutGap="40px" class="mb-16">
 
                                     <div fxFlex="50">
                                         <mat-form-field class="pl-8 pr-12" style="width: 100%;">
                                             <input matInput placeholder="User Name" formControlName="userName">
                                             <mat-error
                                                 *ngIf="userMainFormGroup.get('userName').touched &&  userMainFormGroup.get('userName').hasError('required')">
-                                                User
-                                                Name required</mat-error>
+                                                User Name required</mat-error>
+                                            <mat-error *ngIf="userMainFormGroup.get('userName').touched &&  !userMainFormGroup.get('userName').hasError('required') &&
+                                                userMainFormGroup.get('userName').hasError('maxlength')">
+                                                Maximum 12 characters are allowed</mat-error>
                                         </mat-form-field>
                                     </div>
 
@@ -85,7 +87,7 @@
 
                                 </div>
 
-                                <div fxFlex fxLayout="row" fxLayoutGap="40px">
+                                <div fxFlex fxLayout="row" fxLayoutGap="40px" class="mb-16">
 
                                     <div fxFlex="50">
                                         <mat-form-field class="pl-8 pr-12" style="width: 100%;">
@@ -122,7 +124,7 @@
 
                                 </div>
 
-                                <div fxFlex fxLayout="row" fxLayoutGap="40px">
+                                <div fxFlex fxLayout="row" fxLayoutGap="40px" class="mb-16">
 
                                     <div fxFlex="50">
                                         <mat-form-field class="pl-8 pr-12" style="width: 100%;">
@@ -146,10 +148,10 @@
                                                 <mat-option *ngFor="let mp of AllPlant" [value]="mp.PlantCode">
                                                     {{mp.PlantCode}}-{{mp.PlantText}}
                                                 </mat-option>
-                                                <mat-error
-                                                    *ngIf="userMainFormGroup.get('displayName').touched &&  userMainFormGroup.get('displayName').hasError('required')">
-                                                    Plant is required</mat-error>
                                             </mat-select>
+                                            <mat-error
+                                                *ngIf="userMainFormGroup.get('Plant').touched &&  userMainFormGroup.get('Plant').hasError('required')">
+                                                Plant is required</mat-error>
                                         </mat-form-field>
                                     </div>
 
@@ -176,15 +178,15 @@
                             <div fxLayout="row" class="mt-20" fxLayoutAlign="start center">
                                 <mat-form-field appearance="outline" fxFlex="50">
                                     <mat-icon class="mr-12" matPrefix>search</mat-icon>
-                                    <input [(ngModel)]="searchTextTwo" matInput placeholder="Search"
-                                        (keyup)="applyFilter($event)">
+                                    <mat-label>Search</mat-label>
+                                    <input [(ngModel)]="searchTextTwo" matInput (keyup)="applyFilter($event)">
                                 </mat-form-field>
                                 <div fxFlex fxLayoutAlign="end center">
-                                    <mat-form-field appearance="outline" style="min-width: 100px;">
+                                    <!-- <mat-form-field appearance="outline" style="min-width: 100px;">
                                         <mat-select [(ngModel)]="SelectValue">
                                             <mat-option value="All">All</mat-option>
                                         </mat-select>
-                                    </mat-form-field>
+                                    </mat-form-field> -->
                                     <button (click)="exportAsXLSX()" class="excelBtn mx-24" mat-stroked-button>
                                         <img class="excelImg" src="assets/images/excel.png">
                                     </button>

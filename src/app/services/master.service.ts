@@ -29,12 +29,14 @@ import { Guid } from "guid-typescript";
 import { BPCExpenseTypeMaster } from "app/models/POD";
 import { BPCProd } from "app/models/customer";
 import { BPCHSNMaster } from "app/models/po-flip";
+import { BPCPlantMaster, CBPLocation } from "app/models/OrderFulFilment";
 
 @Injectable({
     providedIn: "root",
 })
 export class MasterService {
     baseAddress: string;
+    regBaseAddress: string;
     NotificationEvent: Subject<any>;
 
     GetNotification(): Observable<any> {
@@ -50,6 +52,7 @@ export class MasterService {
         private _authService: AuthService
     ) {
         this.baseAddress = _authService.baseAddress;
+        this.regBaseAddress = _authService.regBaseAddress;
         this.NotificationEvent = new Subject();
     }
 
@@ -173,9 +176,16 @@ export class MasterService {
             )
             .pipe(catchError(this.errorHandler));
     }
+    GetHelpDeskAdminPlants(UserID: Guid): Observable<string[] | string> {
+        return this._httpClient
+            .get<string[]>(
+                `${this.baseAddress}authenticationapi/Master/GetHelpDeskAdminPlants?UserID=${UserID}`
+            )
+            .pipe(catchError(this.errorHandler));
+    }
     GetBuyerPlants(UserID: Guid): Observable<string[] | string> {
         return this._httpClient.get<string[]>(`${this.baseAddress}authenticationapi/Master/GetBuyerPlants?UserID=${UserID}`)
-        .pipe(catchError(this.errorHandler));
+            .pipe(catchError(this.errorHandler));
     }
 
     GetAppUsagesByUser(UserID: Guid): Observable<AppUsageView[] | string> {
@@ -258,7 +268,7 @@ export class MasterService {
             )
             .pipe(catchError(this.errorHandler));
     }
-    //plant map with user
+    // plant map with user
     GetAllPlant_auth(): Observable<any> {
         return this._httpClient
             .get<any>(
@@ -298,6 +308,42 @@ export class MasterService {
             .pipe(catchError(this.errorHandler));
     }
     //#endregion
+
+    CreatePlantMaster(plant: BPCPlantMaster): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseAddress}poapi/Master/CreatePlantMaster`,
+            plant,
+            // {
+            //   headers: new HttpHeaders({
+            //     'Content-Type': 'application/json'
+            //   })
+            // }
+        ).pipe(catchError(this.errorHandler));
+    }
+    UpdatePlantMaster(plant: BPCPlantMaster): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseAddress}poapi/Master/UpdatePlantMaster`,
+            plant,
+            // {
+            //   headers: new HttpHeaders({
+            //     'Content-Type': 'application/json'
+            //   })
+            // }
+        ).pipe(catchError(this.errorHandler));
+    }
+    DeletePlantMaster(plant: BPCPlantMaster): Observable<any> {
+        return this._httpClient.post<any>(`${this.baseAddress}poapi/Master/DeletePlantMaster`,
+            plant,
+            // {
+            //   headers: new HttpHeaders({
+            //     'Content-Type': 'application/json'
+            //   })
+            // }
+        ).pipe(catchError(this.errorHandler));
+    }
+
+    GetLocationByPincode(Pincode: string): Observable<CBPLocation | string> {
+        return this._httpClient.get<any>(`${this.regBaseAddress}vendormasterapi/Master/GetLocationByPincode?Pincode=${Pincode}`)
+            .pipe(catchError(this.errorHandler));
+    }
 
     UpdateRole(role: RoleWithApp): Observable<any> {
         return this._httpClient
@@ -471,15 +517,15 @@ export class MasterService {
     }
     GetMail(Selectedvendor): Observable<string[] | any> {
         return this._httpClient
-        .post<string[]>(
-          `${this.baseAddress}authenticationapi/Master/GetMail?Selectedvendor=${Selectedvendor}`,   
-          {
-            headers: new HttpHeaders({
-              "Content-Type": "application/json",
-            }),
-          }
-        )
-        .pipe(catchError(this.errorHandler));
+            .post<string[]>(
+                `${this.baseAddress}authenticationapi/Master/GetMail?Selectedvendor=${Selectedvendor}`,
+                {
+                    headers: new HttpHeaders({
+                        "Content-Type": "application/json",
+                    }),
+                }
+            )
+            .pipe(catchError(this.errorHandler));
     }
     //#endregion
     // UserPreferences
@@ -710,7 +756,7 @@ export class MasterService {
             )
             .pipe(catchError(this.errorHandler));
     }
-    //product end
+    // product end
     // SessionMaster
 
     GetSessionMasterByProject(

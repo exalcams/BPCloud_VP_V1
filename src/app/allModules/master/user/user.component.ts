@@ -13,8 +13,8 @@ import { DatePipe } from '@angular/common';
 import { ExcelService } from 'app/services/excel.service';
 import { BPCPlantMaster } from 'app/models/OrderFulFilment';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import * as SecureLS from 'secure-ls';
 import { AuthService } from 'app/services/auth.service';
+import * as SecureLS from 'secure-ls';
 
 @Component({
   selector: 'app-user',
@@ -50,7 +50,7 @@ export class UserComponent implements OnInit {
   @ViewChild(MatMenuTrigger) matMenuTrigger: MatMenuTrigger;
   @ViewChild(MatSort) tableSort: MatSort;
   role_name: any;
-  bool_role: boolean = true;
+  bool_role = true;
   AllPlantForAllUsers: any[] = [];
   SelectedPlant: string[];
   SecretKey: string;
@@ -60,13 +60,14 @@ export class UserComponent implements OnInit {
     private _masterService: MasterService,
     private _router: Router,
     public snackBar: MatSnackBar,
-    private _authService: AuthService,
     private dialog: MatDialog,
     private _formBuilder: FormBuilder,
     private _datePipe: DatePipe,
-    private _excelService: ExcelService,) {
-      this.SecretKey = this._authService.SecretKey;
-      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
+    private _excelService: ExcelService,
+    private _authService: AuthService) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
+
     this.selectedUser = new UserWithRole();
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -88,7 +89,7 @@ export class UserComponent implements OnInit {
       }
 
       this.userMainFormGroup = this._formBuilder.group({
-        userName: ['', Validators.required],
+        userName: ['', [Validators.required, Validators.maxLength(12)]],
         roleID: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         contactNumber: ['', [Validators.required, Validators.pattern]],
@@ -121,16 +122,16 @@ export class UserComponent implements OnInit {
   GetAllPlant(): void {
     this._masterService.GetAllPlant_auth().subscribe(
       (data) => {
-        // console.log("Getplant", data);
+        // // console.log("Getplant", data);
         this.AllPlantForAllUsers = data;
-        // console.log("this.AllPlantForAllUsers", this.AllPlantForAllUsers)
+        // // console.log("this.AllPlantForAllUsers", this.AllPlantForAllUsers)
         if (data) {
           this.GetAllUsers();
         }
 
       },
       (err) => {
-        console.log(err);
+        console.error(err);
       }
     );
   }
@@ -138,10 +139,10 @@ export class UserComponent implements OnInit {
     this._masterService.GetAllPlant().subscribe(
       (data) => {
         this.AllPlant = <BPCPlantMaster[]>data;
-        // console.log("plant", data);
+        // // console.log("plant", data);
       },
       (err) => {
-        console.log(err);
+        console.error(err);
       }
     );
   }
@@ -149,11 +150,11 @@ export class UserComponent implements OnInit {
     this._masterService.GetAllRoles().subscribe(
       (data) => {
         this.AllRoles = <RoleWithApp[]>data;
-        // console.log("allroles", this.AllRoles);
-        // console.log(this.AllMenuApps);
+        // // console.log("allroles", this.AllRoles);
+        // // console.log(this.AllMenuApps);
       },
       (err) => {
-        console.log(err);
+        console.error(err);
       }
     );
   }
@@ -164,7 +165,7 @@ export class UserComponent implements OnInit {
       (data) => {
         this.isProgressBarVisibile = false;
         this.AllUsers = <UserWithRole[]>data;
-        // console.log("users", this.AllUsers);
+        // // console.log("users", this.AllUsers);
         if (this.AllUsers && this.AllUsers.length) {
           this.loadSelectedUser(this.AllUsers[0]);
         }
@@ -181,28 +182,28 @@ export class UserComponent implements OnInit {
     this.bool_role = true;
     this._masterService.GetAllPlant_auth().subscribe(
       (data) => {
-        // console.log("Getplant", data);
+        // // console.log("Getplant", data);
         this.AllPlantForAllUsers = data;
-        // console.log("this.AllPlantForAllUsers", this.AllPlantForAllUsers)
+        // // console.log("this.AllPlantForAllUsers", this.AllPlantForAllUsers)
         // if(data){
         //   this.GetAllUsers()
         // }
       },
       (err) => {
-        console.log(err);
+        console.error(err);
       }
     );
     this.selected = [];
     // this.selected.push("2000")
     this.selectID = selectedUser.UserID;
-    // console.log("selectID", this.selectID);
+    // // console.log("selectID", this.selectID);
     this.selectedUser = selectedUser;
-    // console.log("selectedUser", this.selectedUser);
+    // // console.log("selectedUser", this.selectedUser);
     this.SetUserValues();
-    // console.log("roleid", this.userMainFormGroup.get('roleID').value);
+    // // console.log("roleid", this.userMainFormGroup.get('roleID').value);
     const rolID = this.userMainFormGroup.get('roleID').value;
     const rolName = this.GetUserRoleName(rolID);
-    if (rolName === "Buyer" || rolName === "GateUser") {
+    if (rolName === "Buyer" || rolName === "GateUser" || (rolName && rolName.includes("Help Desk") || rolName.includes("HelpDesk"))) {
       this.bool_role = false;
     }
     this.GetAppUsagesByUser();
@@ -210,7 +211,7 @@ export class UserComponent implements OnInit {
       if (element.UserID === this.selectID && element.UserName === selectedUser.UserName && element.Email === selectedUser.Email) {
         this.selected.push(element.PlantID);
       }
-      // console.log("selected", this.selected);
+      // // console.log("selected", this.selected);
     });
     this.userMainFormGroup.get('Plant').setValue(this.selected);
   }
@@ -294,7 +295,7 @@ export class UserComponent implements OnInit {
     this.isProgressBarVisibile = true;
     this._masterService.CreateUser(this.selectedUser).subscribe(
       (data) => {
-        // console.log(data);
+        // // console.log(data);
         this.ResetControl();
         this.notificationSnackBarComponent.openSnackBar('User created successfully', SnackBarStatus.success);
         this.isProgressBarVisibile = false;
@@ -313,11 +314,11 @@ export class UserComponent implements OnInit {
     this.GetUserValues();
     this.selectedUser.ModifiedBy = this.authenticationDetails.UserID.toString();
     this.isProgressBarVisibile = true;
-    // console.log("selected", this.selectedUser);
+    // // console.log("selected", this.selectedUser);
 
     this._masterService.UpdateUser(this.selectedUser).subscribe(
       (data) => {
-        // console.log(data);
+        // // console.log(data);
         this.ResetControl();
         this.notificationSnackBarComponent.openSnackBar('User updated successfully', SnackBarStatus.success);
         this.isProgressBarVisibile = false;
@@ -337,7 +338,7 @@ export class UserComponent implements OnInit {
     this.isProgressBarVisibile = true;
     this._masterService.DeleteUser(this.selectedUser).subscribe(
       (data) => {
-        // console.log(data);
+        // // console.log(data);
         this.ResetControl();
         this.notificationSnackBarComponent.openSnackBar('User deleted successfully', SnackBarStatus.success);
         this.isProgressBarVisibile = false;
@@ -359,22 +360,22 @@ export class UserComponent implements OnInit {
 
   }
   Roleselect(eve): void {
-    // console.log("eveofid", eve);
+    // // console.log("eveofid", eve);
     this.AllRoles.forEach(element => {
       if (element.RoleID === eve.value) {
         this.role_name = element.RoleName;
       }
     });
-    // console.log(this.role_name);
-    if (this.role_name === "Buyer" || this.role_name === "GateUser" || this.role_name === "Expenditor") {
+    // // console.log(this.role_name);
+    if (this.role_name === "Buyer" || this.role_name === "GateUser" || (this.role_name && this.role_name.includes("Help Desk") || this.role_name.includes("HelpDesk"))) {
       this.bool_role = false;
       // this._masterService.GetAllPlant().subscribe(
       //   (data) => {
       //     this.AllPlant = <BPCPlantMaster[]>data;
-      //     console.log("plant", data);
+      //     // console.log("plant", data);
       //   },
       //   (err) => {
-      //     console.log(err);
+      //     console.error(err);
       //   }
       // );
     }

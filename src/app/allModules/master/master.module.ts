@@ -17,6 +17,7 @@ import { ReasonComponent } from './reason/reason.component';
 import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
 import { FuseMaterialColorPickerModule } from '@fuse/components';
 import { ExpenseTypeComponent } from './expense-type/expense-type.component';
+import { PlantMasterComponent } from './plant-master/plant-master.component';
 
 
 const menuRoutes: Routes = [
@@ -37,12 +38,16 @@ const menuRoutes: Routes = [
         component: ReasonComponent,
     },
     {
-        path:'userpreferences',
-        component:UserPreferencesComponent
+        path: 'userpreferences',
+        component: UserPreferencesComponent
     },
     {
-        path:'expensetype',
-        component:ExpenseTypeComponent
+        path: 'expensetype',
+        component: ExpenseTypeComponent
+    },
+    {
+        path: 'plantMaster',
+        component: PlantMasterComponent,
     }
 ];
 @NgModule({
@@ -52,7 +57,8 @@ const menuRoutes: Routes = [
         MenuAppComponent,
         ReasonComponent,
         UserPreferencesComponent,
-        ExpenseTypeComponent
+        ExpenseTypeComponent,
+        PlantMasterComponent
     ],
     imports: [
         MatButtonModule,

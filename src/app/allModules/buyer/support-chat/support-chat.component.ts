@@ -50,20 +50,21 @@ export class SupportChatComponent implements OnInit {
   IsReOpen: boolean;
   SecretKey: string;
   SecureStorage: SecureLS;
+
   constructor(
     private route: ActivatedRoute,
     public _supportDeskService: SupportDeskService,
     private _masterService: MasterService,
     private _FactService: FactService,
+    private _authService: AuthService,
     private _router: Router,
     public snackBar: MatSnackBar,
     private _dialog: MatDialog,
-    private _formBuilder: FormBuilder,
-    private _authService: AuthService,
-
+    private _formBuilder: FormBuilder
   ) {
     this.SecretKey = this._authService.SecretKey;
     this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
+
     this.TicketResolved = false;
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.SelectedSupportLog = new SupportLog();
@@ -80,7 +81,7 @@ export class SupportChatComponent implements OnInit {
       this.PartnerID = this.authenticationDetails.UserName;
       this.currentUserRole = this.authenticationDetails.UserRole;
       // this.MenuItems = this.authenticationDetails.MenuItemNames.split(',');
-      // // console.log(this.authenticationDetails);
+      // // // console.log(this.authenticationDetails);
       // if (this.MenuItems.indexOf('Dashboard') < 0) {
       //     this.notificationSnackBarComponent.openSnackBar('You do not have permission to visit this page', SnackBarStatus.danger
       //     );
@@ -139,10 +140,10 @@ export class SupportChatComponent implements OnInit {
           this.SupportDetails = data as SupportDetails;
           this.SupportHeader = this.SupportDetails.supportHeader;
           if (this.SupportHeader.ReasonCode === "1236" && this.SupportHeader.IsResolved) {
-            console.log("Success", this.SupportHeader.PatnerID);
+            // console.log("Success", this.SupportHeader.PatnerID);
             this._FactService.UpdateFactSupportDataToMasterData(this.SupportHeader.PatnerID).subscribe(
               (msg) => {
-                console.log("Success", msg);
+                // console.log("Success", msg);
               }
             );
           }
@@ -289,7 +290,7 @@ export class SupportChatComponent implements OnInit {
     if (evt.target.files && evt.target.files.length > 0) {
       this.fileToUpload = evt.target.files[0];
       this.fileToUploadList.push(this.fileToUpload);
-      console.log(this.fileToUploadList);
+      // console.log(this.fileToUploadList);
     }
   }
 
@@ -332,11 +333,11 @@ export class SupportChatComponent implements OnInit {
   ReOpenSupportTicket(): void {
     this.IsProgressBarVisibile = true;
     this.GetSupportLogValues();
-    console.log("SelectedSupportLogView", this.SelectedSupportLogView);
+    // console.log("SelectedSupportLogView", this.SelectedSupportLogView);
     this._supportDeskService.ReOpenSupportTicket(this.SelectedSupportLogView).subscribe(
       (data) => {
         this.SelectedSupportLog = (data as SupportLog);
-        console.log("SelectedSupportLog", this.SelectedSupportLog);
+        // console.log("SelectedSupportLog", this.SelectedSupportLog);
         if (this.fileToUploadList && this.fileToUploadList.length) {
           this.AddSupportLogAttachment();
         }
@@ -453,7 +454,7 @@ export class SupportChatComponent implements OnInit {
   ShowFormValidationErrors(formGroup: FormGroup): void {
     Object.keys(formGroup.controls).forEach(key => {
       if (!formGroup.get(key).valid) {
-        console.log(key);
+        // console.log(key);
       }
       formGroup.get(key).markAsTouched();
       formGroup.get(key).markAsDirty();
