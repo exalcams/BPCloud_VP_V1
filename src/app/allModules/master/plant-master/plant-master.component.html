@@ -1,0 +1,174 @@
+<div id="plantMaster" class="page-layout carded fullwidth">
+  <div class="center">
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Plant Configuration</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+    <div fxLayout class="content-card1">
+      <div fxFlex="23" class="side-bar" style="background-color: #f5f5f5">
+        <div class="sidenav-header">
+          <mat-toolbar>
+            <mat-toolbar-row fxLayout="row" class="px-8" fxLayoutAlign="space-between center">
+              <div class="search-wrapper" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                  <input [(ngModel)]="searchText" type="text" placeholder="Search" fxFlex>
+                  <mat-icon class="s-16">search</mat-icon>
+                </div>
+              </div>
+            </mat-toolbar-row>
+          </mat-toolbar>
+        </div>
+        <div class="sidenav-content" fusePerfectScrollbar fxFlex>
+          <div *ngFor="let PlantMaster  of AllPlantMasters  | filter: searchText">
+            <div>
+              <div class="mx-8 mb-8 mt-0 p-8 leftCard" (click)="loadSelectedPlantMaster(PlantMaster )"
+                [style.border-left-color]="selectedPlantCode ==PlantMaster.PlantCode?'#efb577':'#cccccc'">
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex><strong>{{PlantMaster.PlantCode}}</strong></div>
+                  <div fxFlex align="end">{{PlantMaster.CreatedOn | date :'dd/MM/yyyy'}}</div>
+                </div>
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex><strong></strong>{{PlantMaster.PlantText}}</div>
+                </div>
+                <!-- <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex><strong>AWB : </strong>{{PlantMaster .PatnerID}}</div>
+                </div>
+                <div fxLayout class="pb-4" fxLayoutAlign="space-between center">
+                  <div fxFlex>{{PlantMaster .Client}}</div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+          <div *ngIf="(AllPlantMasters  | filter: searchText)?.length === 0" class="no-results-message">
+            <span class="pl-12"> No results..</span>
+          </div>
+        </div>
+        <div class="borderRight1"></div>
+      </div>
+      <mat-card fxFlex="77" class="side-bar p-0">
+        <div class="sidenav-content" fxFlex fxLayout="column">
+          <div fxFlex fxLayout="column" class="p-0 pt-8">
+            <div fxFlex class="px-12 mt-4">
+              <form autocomplete="off" class="normal" fxLayout="column" fxLayoutAlign="start"
+                name="form" novalidate [formGroup]="PlantMasterFormGroup">
+
+                <div fxFlex fxLayout="row" fxLayoutGap="40px">
+
+                  <div fxFlex="50">
+                    <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                      <input matInput placeholder="Plant Code" formControlName="PlantCode">
+                      <mat-error
+                        *ngIf="PlantMasterFormGroup.get('PlantCode').touched &&  PlantMasterFormGroup.get('PlantCode').hasError('required')">
+                        Plant Code required</mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="50">
+                    <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                      <input matInput placeholder="Plant Text" formControlName="PlantText">
+                      <mat-error
+                        *ngIf="PlantMasterFormGroup.get('PlantText').touched &&  PlantMasterFormGroup.get('PlantText').hasError('required')">
+                        Plant Text is required</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex fxLayout="row" fxLayoutGap="40px">
+
+                  <div fxFlex="50">
+                    <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                      <input matInput placeholder="Pin Code" formControlName="PinCode" maxlength="10"
+                        (blur)="OnPincodeKeyEnter($event)" (keydown)="numberOnly($event)"
+                        (keyup.enter)="OnPincodeKeyEnter($event)">
+                      <mat-error
+                        *ngIf="PlantMasterFormGroup.get('PinCode').touched && PlantMasterFormGroup.get('PinCode').hasError('required')">
+                        PinCode is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="50">
+                    <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                      <input matInput placeholder="City" formControlName="City">
+                      <mat-error
+                        *ngIf="PlantMasterFormGroup.get('City').touched && PlantMasterFormGroup.get('City').hasError('required')">
+                        City is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                </div>
+
+                <div fxFlex fxLayout="row" fxLayoutGap="40px">
+                  <div fxFlex="50">
+                    <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                      <input matInput placeholder="State" formControlName="State">
+                      <mat-error
+                        *ngIf="PlantMasterFormGroup.get('State').touched && PlantMasterFormGroup.get('State').hasError('required')">
+                        State is required</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="50">
+                    <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                      <input matInput placeholder="Country" formControlName="Country">
+                      <mat-error
+                        *ngIf="PlantMasterFormGroup.get('Country').touched && PlantMasterFormGroup.get('Country').hasError('required')">
+                        Country is required</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex fxLayout="row" fxLayoutGap="40px">
+                  <div fxFlex="50">
+                    <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                      <input matInput placeholder="Address Line 1" formControlName="AddressLine1">
+                      <mat-error
+                        *ngIf="PlantMasterFormGroup.get('AddressLine1').touched && PlantMasterFormGroup.get('AddressLine1').hasError('required')">
+                        Address Line 1 is required</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="50">
+                    <mat-form-field class="pl-8 pr-12" style="width: 100%;">
+                      <input matInput placeholder="Address Line 2" formControlName="AddressLine2">
+                      <mat-error
+                        *ngIf="PlantMasterFormGroup.get('AddressLine2').touched && PlantMasterFormGroup.get('AddressLine2').hasError('required')">
+                        Address Line 2 is required</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+              </form>
+              <div fxLayout>
+                <div fxFlex fxLayoutAlign="end">
+                  <button class="floatBtn" mat-fab style="background-color: #f6b570" (click)="ResetControl()">
+                    <mat-icon style="color: white;">add</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <mat-card-actions class="m-0 pl-12 pr-16 cardActions">
+          <div fxLayout fxFlex fxLayoutAlign="end">
+            <button *ngIf="selectedPlantMaster?.CreatedOn" mat-stroked-button class="DeleteBtn mr-4 mb-8"
+              (click)="DeleteClicked()">Delete</button>
+            <button mat-raised-button class="mr-4 mb-8" (click)="ResetControl()" *ngIf="!selectedPlantMaster.CreatedOn">
+              Clear
+            </button>
+            <button (click)="SaveClicked()" class="SaveBtn" mat-raised-button>
+              {{selectedPlantMaster.CreatedOn ? 'Update':'Create'}}</button>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <mat-progress-spinner *ngIf="isProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+    <div id="overlay" *ngIf="isProgressBarVisibile">
+    </div>
+  </div>
+</div>

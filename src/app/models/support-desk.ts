@@ -115,3 +115,10 @@ export class SupportAppMaster extends CommonClass {
     AppID: string;
     AppName: string;
 }
+export class HelpDeskAdminDetails {
+    PatnerID: string;
+    Plants: string[];
+    constructor() {
+        this.Plants = [];
+    }
+}

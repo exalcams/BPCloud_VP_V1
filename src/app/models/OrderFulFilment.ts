@@ -350,6 +350,16 @@ export class BPCPlantMaster extends CommonClass {
     Country: string;
     PinCode: string;
 }
+export class CBPLocation extends CommonClass {
+    Pincode: string;
+    Location: string;
+    Taluk: string;
+    District: string;
+    State: string;
+    StateCode: string;
+    Country: string;
+    CountryCode: string;
+}
 export class ActionLog extends CommonClass {
     ID: number;
     UserID: Guid;
@@ -361,20 +371,20 @@ export class ActionLog extends CommonClass {
 export class BPCInvoice extends CommonClass {
     InvoiceNo: string;
     InvoiceDate: Date | string | null;
-    InvoiceAmount: number
-    Currency: string
+    InvoiceAmount: number;
+    Currency: string;
 
 }
 
-export class InvoiceVendor  {
+export class InvoiceVendor {
     // name:string;
-    InvoiceNo:string;
-    InvoiceDate: Date  | null;
+    InvoiceNo: string;
+    InvoiceDate: Date | null;
     InvoiceAmount: number;
-      BalanceAmount: number;
-      ReasonCode: string;
-  }
-  
+    BalanceAmount: number;
+    ReasonCode: string;
+}
+
 
 export class BPCRetNew extends CommonClass {
     ReturnOrder: string;

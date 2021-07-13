@@ -54,13 +54,14 @@ export class SupportTicketComponent implements OnInit {
   ActionLog: any;
   SecretKey: string;
   SecureStorage: SecureLS;
+
   constructor(
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
     public snackBar: MatSnackBar,
     private dialog: MatDialog,
     private _formBuilder: FormBuilder,
-    private _authService:AuthService,
+    private _authService: AuthService,
     public _supportDeskService: SupportDeskService,
     private _masterService: MasterService,
     private _FactService: FactService,
@@ -68,18 +69,18 @@ export class SupportTicketComponent implements OnInit {
     private _datePipe: DatePipe,
     private _location: Location
   ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.authenticationDetails = new AuthenticationDetails();
     this.dateOfCreation = new Date();
     this.SupportTicketView = new SupportHeaderView();
     this.SupportTicket = new SupportHeader();
     this.SelectedBPCFact = new BPCFact();
-    this.SecretKey = this._authService.SecretKey;
-    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
   }
 
   ngOnInit(): void {
-    const retrievedObject =this.SecureStorage.get('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;
@@ -87,7 +88,7 @@ export class SupportTicketComponent implements OnInit {
       this.PartnerID = this.authenticationDetails.UserName;
       this.currentUserRole = this.authenticationDetails.UserRole;
       // this.MenuItems = this.authenticationDetails.MenuItemNames.split(',');
-      // // console.log(this.authenticationDetails);
+      // // // console.log(this.authenticationDetails);
       // if (this.MenuItems.indexOf('SupportDesk') < 0) {
       //     this.notificationSnackBarComponent.openSnackBar('You do not have permission to visit this page', SnackBarStatus.danger
       //     );
@@ -103,7 +104,7 @@ export class SupportTicketComponent implements OnInit {
       this.reason = params['reason'];
       this.navigator_page = params["navigator_page"];
     });
-    console.log(this.navigator_page);
+    // console.log(this.navigator_page);
     if (!this.docRefNo) {
       this.docRefNo = '';
     }
@@ -255,17 +256,18 @@ export class SupportTicketComponent implements OnInit {
         this.OFItems = data as BPCOFItem[];
         let message = '';
         this.OFItems.forEach(x => {
-          let delDate = x.DeliveryDate as Date;
-          let actDelDate = x.AckDeliveryDate as Date;
+          const delDate = x.DeliveryDate as Date;
+          const actDelDate = x.AckDeliveryDate as Date;
           if (delDate && actDelDate && actDelDate !== delDate) {
-            message = message + `Delivery date changed from ${this._datePipe.transform(delDate, 'dd/MM/yyyy')} to ${this._datePipe.transform(actDelDate, 'dd/MM/yyyy')} for Item ${x.Item}, `;
+            message = message + `Delivery date changed from ${this._datePipe.transform(delDate, 'dd/MM/yyyy')} to ` +
+              `${this._datePipe.transform(actDelDate, 'dd/MM/yyyy')} for Item ${x.Item}, `;
           }
         });
         // this.SupportTicketFormGroup.get('Remarks').patchValue(message);
         // this.SupportTicketFormGroup.get('Remarks').disable();
       },
       (err) => {
-        console.log(err);
+        console.error(err);
       }
     );
   }
@@ -322,7 +324,7 @@ export class SupportTicketComponent implements OnInit {
   ShowValidationErrors(formGroup: FormGroup): void {
     Object.keys(formGroup.controls).forEach(key => {
       if (!formGroup.get(key).valid) {
-        console.log(key);
+        // console.log(key);
       }
       formGroup.get(key).markAsTouched();
       formGroup.get(key).markAsDirty();
@@ -333,7 +335,7 @@ export class SupportTicketComponent implements OnInit {
     if (evt.target.files && evt.target.files.length > 0) {
       this.fileToUpload = evt.target.files[0];
       this.fileToUploadList.push(this.fileToUpload);
-      console.log(this.fileToUploadList);
+      // console.log(this.fileToUploadList);
       // this.CreateActionLogvalues("SupportTicketFile");
     }
   }
@@ -343,8 +345,8 @@ export class SupportTicketComponent implements OnInit {
       this.SupportTicket.Client = this.SupportTicketView.Client = this.SelectedBPCFact.Client;
       this.SupportTicket.Company = this.SupportTicketView.Company = this.SelectedBPCFact.Company;
       this.SupportTicket.Type = this.SupportTicketView.Type = this.SelectedBPCFact.Type;
-      this.SupportTicket.PatnerID = this.SupportTicketView.PatnerID = this.SelectedBPCFact.PatnerID;
     }
+    this.SupportTicket.PatnerID = this.SupportTicketView.PatnerID = this.currentUserName;
     this.SupportTicket.ReasonCode = this.SupportTicketView.ReasonCode = this.SupportTicketFormGroup.get('ReasonCode').value;
     this.SupportTicket.Remarks = this.SupportTicketView.Remarks = this.SupportTicketFormGroup.get('Remarks').value;
     this.SupportTicket.DocumentRefNo = this.SupportTicketView.DocumentRefNo = this.SupportTicketFormGroup.get('DocumentRefNo').value;
@@ -357,7 +359,7 @@ export class SupportTicketComponent implements OnInit {
     // if (supportMaster) {
     //   this.GetFilteredUsers(supportMaster);
     // }
-    // console.log(this.FilteredUsers);
+    // // console.log(this.FilteredUsers);
   }
 
   // GetFilteredUsers(supportMaster: SupportMaster): any {
@@ -488,10 +490,10 @@ export class SupportTicketComponent implements OnInit {
     this.ActionLog.CreatedBy = this.currentUserName;
     this._authService.CreateActionLog(this.ActionLog).subscribe(
       (data) => {
-        console.log(data);
+        // console.log(data);
       },
       (err) => {
-        console.log(err);
+        console.error(err);
       }
     );
   }

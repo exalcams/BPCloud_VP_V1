@@ -56,6 +56,7 @@ export class SupportChatComponent implements OnInit {
   ActionLog: any;
   SecretKey: string;
   SecureStorage: SecureLS;
+
   constructor(
     private route: ActivatedRoute,
     public _supportDeskService: SupportDeskService,
@@ -65,12 +66,11 @@ export class SupportChatComponent implements OnInit {
     private _router: Router,
     public snackBar: MatSnackBar,
     private _dialog: MatDialog,
-    private _formBuilder: FormBuilder,
-    
+    private _formBuilder: FormBuilder
   ) {
+    this.TicketResolved = false;
     this.SecretKey = this._authService.SecretKey;
     this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
-    this.TicketResolved = false;
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.SelectedSupportLog = new SupportLog();
     this.SelectedSupportLogView = new SupportLog();
@@ -87,7 +87,7 @@ export class SupportChatComponent implements OnInit {
       this.PartnerID = this.authenticationDetails.UserName;
       this.currentUserRole = this.authenticationDetails.UserRole;
       // this.MenuItems = this.authenticationDetails.MenuItemNames.split(',');
-      // // console.log(this.authenticationDetails);
+      // // // console.log(this.authenticationDetails);
       // if (this.MenuItems.indexOf('Dashboard') < 0) {
       //     this.notificationSnackBarComponent.openSnackBar('You do not have permission to visit this page', SnackBarStatus.danger
       //     );
@@ -147,12 +147,12 @@ export class SupportChatComponent implements OnInit {
           this.SupportDetails = data as SupportDetails;
 
           this.SupportHeader = this.SupportDetails.supportHeader;
-          console.log("GetSupportDetailsBySupportID", this.SupportHeader);
+          // console.log("GetSupportDetailsBySupportID", this.SupportHeader);
           if (this.SupportHeader.ReasonCode === "1236" && this.SupportHeader.Status === "Closed") {
-            console.log("Success", this.SupportHeader.PatnerID);
+            // console.log("Success", this.SupportHeader.PatnerID);
             this._FactService.UpdateFactSupportDataToMasterData(this.SupportHeader.PatnerID).subscribe(
               (msg) => {
-                console.log("Success", msg);
+                // console.log("Success", msg);
               }
             );
           }
@@ -305,7 +305,7 @@ export class SupportChatComponent implements OnInit {
     if (evt.target.files && evt.target.files.length > 0) {
       this.fileToUpload = evt.target.files[0];
       this.fileToUploadList.push(this.fileToUpload);
-      console.log(this.fileToUploadList);
+      // console.log(this.fileToUploadList);
     }
   }
 
@@ -317,7 +317,7 @@ export class SupportChatComponent implements OnInit {
       this.SelectedSupportLog.PatnerID = this.SelectedSupportLogView.PatnerID = this.SelectedBPCFact.PatnerID;
     }
     this.SelectedSupportLog.SupportID = this.SelectedSupportLogView.SupportID = this.SupportID;
-    // this.SelectedSupportLog.PatnerID = this.SelectedSupportLogView.PatnerID = this.PartnerID;
+    this.SelectedSupportLog.PatnerID = this.SelectedSupportLogView.PatnerID = this.PartnerID;
     this.SelectedSupportLog.Remarks = this.SelectedSupportLogView.Remarks = this.SupportLogFormGroup.get('Comments').value;
     this.SelectedSupportLog.CreatedBy = this.SelectedSupportLogView.CreatedBy = this.authenticationDetails.UserName;
     // let user = new UserWithRole();
@@ -349,11 +349,11 @@ export class SupportChatComponent implements OnInit {
   UpdateSupportLog(): void {
     this.IsProgressBarVisibile = true;
     this.GetSupportLogValues();
-    console.log("SelectedSupportLogView", this.SelectedSupportLogView);
+    // console.log("SelectedSupportLogView", this.SelectedSupportLogView);
     this._supportDeskService.UpdateSupportLog(this.SelectedSupportLogView).subscribe(
       (data) => {
         this.SelectedSupportLog = (data as SupportLog);
-        console.log("SelectedSupportLog", this.SelectedSupportLog);
+        // console.log("SelectedSupportLog", this.SelectedSupportLog);
         if (this.fileToUploadList && this.fileToUploadList.length) {
           this.AddSupportLogAttachment();
         }
@@ -373,11 +373,11 @@ export class SupportChatComponent implements OnInit {
   ReOpenSupportTicket(): void {
     this.IsProgressBarVisibile = true;
     this.GetSupportLogValues();
-    console.log("SelectedSupportLogView", this.SelectedSupportLogView);
+    // console.log("SelectedSupportLogView", this.SelectedSupportLogView);
     this._supportDeskService.ReOpenSupportTicket(this.SelectedSupportLogView).subscribe(
       (data) => {
         this.SelectedSupportLog = (data as SupportLog);
-        console.log("SelectedSupportLog", this.SelectedSupportLog);
+        // console.log("SelectedSupportLog", this.SelectedSupportLog);
         if (this.fileToUploadList && this.fileToUploadList.length) {
           this.AddSupportLogAttachment();
         }
@@ -485,7 +485,7 @@ export class SupportChatComponent implements OnInit {
   ShowFormValidationErrors(formGroup: FormGroup): void {
     Object.keys(formGroup.controls).forEach(key => {
       if (!formGroup.get(key).valid) {
-        console.log(key);
+        // console.log(key);
       }
       formGroup.get(key).markAsTouched();
       formGroup.get(key).markAsDirty();
@@ -540,10 +540,10 @@ export class SupportChatComponent implements OnInit {
     this.ActionLog.CreatedBy = this.currentUserName;
     this._authService.CreateActionLog(this.ActionLog).subscribe(
       (data) => {
-        console.log(data);
+        // console.log(data);
       },
       (err) => {
-        console.log(err);
+        console.error(err);
       }
     );
   }

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation, AfterViewInit } from '@angular/core';
-import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
-import { SupportHeader, SupportHeaderView, SupportMaster } from 'app/models/support-desk';
+import { MatTableDataSource, MatPaginator, MatSort, MatSnackBar } from '@angular/material';
+import { HelpDeskAdminDetails, SupportHeader, SupportHeaderView, SupportMaster } from 'app/models/support-desk';
 import { SupportDeskService } from 'app/services/support-desk.service';
 import { AuthenticationDetails } from 'app/models/master';
 import { Guid } from 'guid-typescript';
@@ -12,7 +12,7 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { ActionLog } from 'app/models/OrderFulFilment';
 import { AuthService } from 'app/services/auth.service';
 import * as SecureLS from 'secure-ls';
-
+import { MasterService } from 'app/services/master.service';
 @Component({
   selector: 'app-support-desk',
   templateUrl: './support-desk.component.html',
@@ -32,6 +32,7 @@ export class SupportDeskComponent implements OnInit {
   partnerID: string;
   notificationSnackBarComponent: NotificationSnackBarComponent;
   isProgressBarVisibile: boolean;
+  isProgressBarVisibile1: boolean;
   docRefNo: any;
   supports: SupportHeaderView[] = [];
   selectedSupport: SupportHeader = new SupportHeader();
@@ -45,20 +46,25 @@ export class SupportDeskComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  Plants: string[] = [];
   supportMasters: SupportMaster[] = [];
   isSupport: boolean;
   ActionLog: any;
   currentUserName: string;
   SecretKey: string;
   SecureStorage: SecureLS;
+
   constructor(
     private _fuseConfigService: FuseConfigService,
     public _supportdeskService: SupportDeskService,
     private _authService: AuthService,
+    public snackBar: MatSnackBar,
+    private _masterService: MasterService,
     private _router: Router,
     private _activatedRoute: ActivatedRoute) {
-      this.SecretKey = this._authService.SecretKey;
-      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
+    this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.partnerID = '';
     this.isSupport = false;
   }
@@ -66,7 +72,7 @@ export class SupportDeskComponent implements OnInit {
 
   ngOnInit(): void {
     this.SetUserPreference();
-    const retrievedObject =  this.SecureStorage.get('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;
@@ -79,7 +85,7 @@ export class SupportDeskComponent implements OnInit {
         this._router.navigate(['/auth/login']);
       }
       this.GetSupportMasters();
-      this.GetSupportTicketsByPartnerID();
+      this.GetSupportTicketsByPartnerIDAndRole();
     } else {
       this._router.navigate(['/auth/login']);
     }
@@ -120,8 +126,63 @@ export class SupportDeskComponent implements OnInit {
     }
     else {
       this.GetSupportMasters();
+      this.GetSupportTicketsByPartnerIDAndRole();
+    }
+  }
+  GetSupportTicketsByPartnerIDAndRole(): void {
+    const rolName = this.authenticationDetails.UserRole;
+    if ((rolName && rolName.includes("Help Desk") || rolName.includes("HelpDesk"))) {
+      this.GetHelpDeskAdminPlants();
+    } else {
       this.GetSupportTicketsByPartnerID();
     }
+
+  }
+  GetHelpDeskAdminPlants(): void {
+    this._masterService
+      .GetHelpDeskAdminPlants(this.currentUserID)
+      .subscribe((data) => {
+        if (data) {
+          this.Plants = data as string[];
+        } else {
+          this.Plants = ['1000'];
+        }
+        this.GetHelpDeskAdminSupportTickets();
+      },
+        (err) => {
+          console.error(err);
+        });
+  }
+
+  GetHelpDeskAdminSupportTickets(): void {
+    const helpDeskAdminDetails: HelpDeskAdminDetails = new HelpDeskAdminDetails();
+    helpDeskAdminDetails.PatnerID = this.authenticationDetails.UserName;
+    if (this.Plants && this.Plants.length) {
+      this.Plants.forEach(x => {
+        helpDeskAdminDetails.Plants.push(x);
+      });
+    } else {
+      helpDeskAdminDetails.Plants = ['1000'];
+    }
+    this.isProgressBarVisibile = true;
+    this._supportdeskService
+      .GetHelpDeskAdminSupportTickets(helpDeskAdminDetails)
+      .subscribe((data) => {
+        if (data) {
+          this.supports = <SupportHeaderView[]>data;
+          if (this.supports && this.supports.length === 0) {
+            this.isSupport = true;
+          }
+          this.supportDataSource = new MatTableDataSource(this.supports);
+          this.supportDataSource.paginator = this.paginator;
+          this.supportDataSource.sort = this.sort;
+        }
+        this.isProgressBarVisibile = false;
+      },
+        (err) => {
+          console.error(err);
+          this.isProgressBarVisibile = false;
+        });
   }
 
   GetSupportTicketsByPartnerID(): void {
@@ -147,18 +208,18 @@ export class SupportDeskComponent implements OnInit {
   }
 
   GetSupportMasters(): void {
-    this.isProgressBarVisibile = true;
+    this.isProgressBarVisibile1 = true;
     this._supportdeskService
       .GetSupportMasters()
       .subscribe((data) => {
         if (data) {
           this.supportMasters = <SupportMaster[]>data;
         }
-        this.isProgressBarVisibile = false;
+        this.isProgressBarVisibile1 = false;
       },
         (err) => {
           console.error(err);
-          this.isProgressBarVisibile = false;
+          this.isProgressBarVisibile1 = false;
         });
   }
 
@@ -180,10 +241,10 @@ export class SupportDeskComponent implements OnInit {
     this.ActionLog.CreatedBy = this.currentUserName;
     this._authService.CreateActionLog(this.ActionLog).subscribe(
       (data) => {
-        console.log(data);
+        // console.log(data);
       },
       (err) => {
-        console.log(err);
+        console.error(err);
       }
     );
   }

@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { catchError } from 'rxjs/operators';
-import { SupportHeader, SupportLog, SupportHeaderView, SupportMaster, SupportMasterView, SupportAppMaster } from 'app/models/support-desk';
+import { SupportHeader, SupportLog, SupportHeaderView, SupportMaster, SupportMasterView, SupportAppMaster, HelpDeskAdminDetails } from 'app/models/support-desk';
 import { UserWithRole } from 'app/models/master';
 
 @Injectable({
@@ -113,6 +113,17 @@ export class SupportDeskService {
 
     GetBuyerSupportTickets(PartnerID: any, Plant: string): Observable<any | string> {
         return this._httpClient.get<any>(`${this.baseAddress}supportapi/SupportDesk/GetBuyerSupportTickets?PartnerID=${PartnerID}&Plant=${Plant}`)
+            .pipe(catchError(this.errorHandler));
+    }
+
+    GetHelpDeskAdminSupportTickets(helpDeskAdminDetails: HelpDeskAdminDetails): Observable<SupportHeaderView[] | string> {
+        return this._httpClient.post<SupportHeaderView[]>(`${this.baseAddress}supportapi/SupportDesk/GetHelpDeskAdminSupportTickets`,
+            helpDeskAdminDetails,
+            {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json'
+                })
+            })
             .pipe(catchError(this.errorHandler));
     }
 

@@ -298,7 +298,8 @@ export class LoginComponent implements OnInit {
         if (data.UserRole === "Customer") {
             this._router.navigate(["customer/home"]);
         } else if (data.UserRole === "Administrator") {
-            this._router.navigate(["configuration/datamigration"]);
+            // this._router.navigate(["configuration/datamigration"]);
+            this._router.navigate(["auth/log"]);
         } else if (data.UserRole === "HelpDeskAdmin") {
             this._router.navigate(["support/supportdesk"]);
         } else if (data.UserRole === "CustomerHelpDeskAdmin") {
@@ -893,7 +894,7 @@ export class LoginComponent implements OnInit {
             });
         }
 
-        //VendorCAPA
+        // VendorCAPA
         if (this.menuItems.indexOf("CAPAVendorDashboard") >= 0) {
             this.VendorCAPASubChildren.push({
                 id: "CAPAVendorDashboard",
@@ -1241,7 +1242,7 @@ export class LoginComponent implements OnInit {
                 url: "/discount/buyer-discount",
             });
         }
-        //CAPA
+        // CAPA
         if (this.menuItems.indexOf("CAPABuyerDashboard") >= 0) {
             this.buyerCAPASubChildren.push({
                 id: "Dashboard",
@@ -1363,18 +1364,18 @@ export class LoginComponent implements OnInit {
     }
 
     GetAdminMenus(): void {
-        if (this.menuItems.indexOf("DataMigration") >= 0) {
-            this.children.push({
-                id: "datamigration",
-                title: "Data Migration",
-                translate: "NAV.VENDOR.DATA_MIGRATION",
-                type: "item",
-                icon: "receiptIcon",
-                isSvgIcon: true,
-                // icon: 'receipt',
-                url: "/configuration/datamigration",
-            });
-        }
+        // if (this.menuItems.indexOf("DataMigration") >= 0) {
+        //     this.children.push({
+        //         id: "datamigration",
+        //         title: "Data Migration",
+        //         translate: "NAV.VENDOR.DATA_MIGRATION",
+        //         type: "item",
+        //         icon: "receiptIcon",
+        //         isSvgIcon: true,
+        //         // icon: 'receipt',
+        //         url: "/configuration/datamigration",
+        //     });
+        // }
         if (this.menuItems.indexOf("Log") >= 0) {
             this.children.push({
                 id: "log",
@@ -1414,10 +1415,20 @@ export class LoginComponent implements OnInit {
                 url: "/master/user",
             });
         }
+        if (this.menuItems.indexOf("PlantMaster") >= 0) {
+            this.subChildren.push({
+                id: "plantMaster",
+                title: "Plant",
+                translate: "NAV.ADMIN.USER",
+                type: "item",
+                url: "/master/plantMaster",
+            });
+        }
         if (
             this.menuItems.indexOf("App") >= 0 ||
             this.menuItems.indexOf("Role") >= 0 ||
-            this.menuItems.indexOf("User") >= 0
+            this.menuItems.indexOf("User") >= 0 ||
+            this.menuItems.indexOf("PlantMaster") >= 0
         ) {
             this.children.push({
                 id: "master",

@@ -8,8 +8,8 @@ import { SupportDeskService } from 'app/services/support-desk.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { MasterService } from 'app/services/master.service';
-import * as SecureLS from 'secure-ls';
 import { AuthService } from 'app/services/auth.service';
+import * as SecureLS from 'secure-ls';
 
 @Component({
   selector: 'app-support-desk',
@@ -27,6 +27,7 @@ export class SupportDeskComponent implements OnInit {
   partnerID: string;
   notificationSnackBarComponent: NotificationSnackBarComponent;
   isProgressBarVisibile: boolean;
+  isProgressBarVisibile1: boolean;
   docRefNo: any;
   supports: SupportHeaderView[] = [];
   selectedSupport: SupportHeader = new SupportHeader();
@@ -51,8 +52,9 @@ export class SupportDeskComponent implements OnInit {
     private _router: Router,
     public snackBar: MatSnackBar,
     private _activatedRoute: ActivatedRoute) {
-      this.SecretKey = this._authService.SecretKey;
-      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
+
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.partnerID = '';
     this.isSupport = false;
@@ -60,7 +62,7 @@ export class SupportDeskComponent implements OnInit {
 
 
   ngOnInit(): void {
-    const retrievedObject =this.SecureStorage.get('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;
@@ -73,7 +75,8 @@ export class SupportDeskComponent implements OnInit {
         this._router.navigate(['/auth/login']);
       }
       this.GetSupportMasters();
-      this.GetBuyerPlant();
+      this.GetSupportTicketsByPartnerID();
+      // this.GetBuyerPlant();
       // this.GetBuyerSupportTickets();
     } else {
       this._router.navigate(['/auth/login']);
@@ -89,7 +92,8 @@ export class SupportDeskComponent implements OnInit {
     }
     else {
       this.GetSupportMasters();
-      this.GetBuyerPlant();
+      this.GetSupportTicketsByPartnerID();
+      // this.GetBuyerPlant();
       // this.GetBuyerSupportTickets();
     }
   }
@@ -115,25 +119,46 @@ export class SupportDeskComponent implements OnInit {
   //         this.isProgressBarVisibile = false;
   //       });
   // }
-  GetBuyerPlant(): void {
-    this._masterService
-      .GetBuyerPlant(this.currentUserID)
-      .subscribe((data) => {
-        if (data) {
-          this.Plant = data as string;
-        } else {
-          this.Plant = '1000';
-        }
-        this.GetBuyerSupportTickets();
-      },
-        (err) => {
-          console.error(err);
-        });
-  }
-  GetBuyerSupportTickets(): void {
+  // GetBuyerPlant(): void {
+  //   this._masterService
+  //     .GetBuyerPlant(this.currentUserID)
+  //     .subscribe((data) => {
+  //       if (data) {
+  //         this.Plant = data as string;
+  //       } else {
+  //         this.Plant = '1000';
+  //       }
+  //       this.GetBuyerSupportTickets();
+  //     },
+  //       (err) => {
+  //         console.error(err);
+  //       });
+  // }
+  // GetBuyerSupportTickets(): void {
+  //   this.isProgressBarVisibile = true;
+  //   this._supportdeskService
+  //     .GetBuyerSupportTickets(this.CurrentUserName, this.Plant)
+  //     .subscribe((data) => {
+  //       if (data) {
+  //         this.supports = <SupportHeaderView[]>data;
+  //         if (this.supports && this.supports.length === 0) {
+  //           this.isSupport = true;
+  //         }
+  //         this.supportDataSource = new MatTableDataSource(this.supports);
+  //         this.supportDataSource.paginator = this.paginator;
+  //         this.supportDataSource.sort = this.sort;
+  //       }
+  //       this.isProgressBarVisibile = false;
+  //     },
+  //       (err) => {
+  //         console.error(err);
+  //         this.isProgressBarVisibile = false;
+  //       });
+  // }
+  GetSupportTicketsByPartnerID(): void {
     this.isProgressBarVisibile = true;
     this._supportdeskService
-      .GetBuyerSupportTickets(this.CurrentUserName, this.Plant)
+      .GetSupportTicketsByPartnerID(this.authenticationDetails.UserName)
       .subscribe((data) => {
         if (data) {
           this.supports = <SupportHeaderView[]>data;
@@ -151,20 +176,19 @@ export class SupportDeskComponent implements OnInit {
           this.isProgressBarVisibile = false;
         });
   }
-
   GetSupportMasters(): void {
-    this.isProgressBarVisibile = true;
+    this.isProgressBarVisibile1 = true;
     this._supportdeskService
       .GetSupportMasters()
       .subscribe((data) => {
         if (data) {
           this.supportMasters = <SupportMaster[]>data;
         }
-        this.isProgressBarVisibile = false;
+        this.isProgressBarVisibile1 = false;
       },
         (err) => {
           console.error(err);
-          this.isProgressBarVisibile = false;
+          this.isProgressBarVisibile1 = false;
         });
   }
 

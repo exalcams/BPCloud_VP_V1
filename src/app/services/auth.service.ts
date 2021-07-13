@@ -25,9 +25,11 @@ import * as SecureLS from 'secure-ls';
 })
 export class AuthService {
     baseAddress: string;
+    regBaseAddress: string;
     clientId: string;
     constructor(private _httpClient: HttpClient) {
         this.baseAddress = environment.baseAddress;
+        this.regBaseAddress = environment.regBaseAddress;
         this.clientId = environment.clientId;
         this.SecretKey = environment.SecretKey;
     }
@@ -112,12 +114,12 @@ export class AuthService {
     CreateActionLog(log: ActionLog): Observable<any> {
         return this._httpClient.post<ActionLog>(`${this.baseAddress}authenticationapi/Master/CreateActionLog`,
             log,
-                {
-                    headers: new HttpHeaders({
-                        "Content-Type": "application/json",
-                    }),
-                }
-            )
+            {
+                headers: new HttpHeaders({
+                    "Content-Type": "application/json",
+                }),
+            }
+        )
             .pipe(catchError(this.errorHandler1));
     }
     GetAllActionLogs(): Observable<any> {
