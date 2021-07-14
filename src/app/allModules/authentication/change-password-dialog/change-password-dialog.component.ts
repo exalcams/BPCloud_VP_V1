@@ -29,7 +29,7 @@ export class ChangePasswordDialogComponent implements OnInit {
     this.resetPasswordForm = this._formBuilder.group({
       currentPassword: ['', Validators.required],
       newPassword: ['', [Validators.required,
-        Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')]],
+      Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[`~!@#\$%\^\&*\)\(\\+=.,_-])[A-Za-z\d`~!@#\$%\^\&*\)\(\\+=.,_-].{9,}")]],
       confirmPassword: ['', [Validators.required, CustomValidator.confirmPasswordValidator]]
     });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -44,14 +44,14 @@ export class ChangePasswordDialogComponent implements OnInit {
       this.changePassword.CurrentPassword = this.resetPasswordForm.get('currentPassword').value;
       this.changePassword.NewPassword = this.resetPasswordForm.get('newPassword').value;
 
-      var NewPassword = this.changePassword.NewPassword.toLocaleLowerCase();
-      var username=this.data.UserName.toLocaleLowerCase();
+      const NewPassword = this.changePassword.NewPassword.toLocaleLowerCase();
+      const username = this.data.UserName.toLocaleLowerCase();
 
       if (NewPassword.search('emami') >= 0 || NewPassword.search('admin') >= 0 || NewPassword.search('administrator') >= 0) {
         this.notificationSnackBarComponent.openSnackBar('Passwords Should Not Have Keywords ‘emami’, ‘admin’ And ‘administrator’', SnackBarStatus.danger);
       }
-      else if (NewPassword.search(username) >=0 ){
-        this.notificationSnackBarComponent.openSnackBar('Passwords Should Not Be Same As Username', SnackBarStatus.danger);
+      else if (NewPassword.search(username) >= 0) {
+        this.notificationSnackBarComponent.openSnackBar('Passwords Should Not Contain Username', SnackBarStatus.danger);
       }
       else if (this.changePassword.CurrentPassword === this.changePassword.NewPassword) {
         this.notificationSnackBarComponent.openSnackBar('New Password Should Be Different From Old Password', SnackBarStatus.danger);
@@ -68,7 +68,7 @@ export class ChangePasswordDialogComponent implements OnInit {
   }
 
   CloseClicked(): void {
-    // console.log('Called');
+    // // console.log('Called');
     this.matDialogRef.close(null);
   }
 

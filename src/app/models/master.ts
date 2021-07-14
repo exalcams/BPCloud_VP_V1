@@ -52,7 +52,7 @@ export class PO {
     AfterDunning1: number;
     AfterDunning2: number;
     AfterDunning3: number;
-    Interval:number
+    Interval: number;
     CreatedOn: Date;
     CreatedBy: string;
     ModifiedOn?: Date;
@@ -132,6 +132,7 @@ export class LoginModel {
 }
 export class EMailModel {
     EmailAddress: string;
+    UserName: string;
     siteURL: string;
 }
 export class ForgotPassword {

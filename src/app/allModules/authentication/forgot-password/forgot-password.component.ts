@@ -23,6 +23,24 @@ export class ForgotPasswordComponent implements OnInit {
   forgotPassword: ForgotPassword;
   notificationSnackBarComponent: NotificationSnackBarComponent;
   IsProgressBarVisibile: boolean;
+  setIntervalID: any;
+  currentIndex: number;
+  cookieLength: string[] = [];
+  allTexts: string[] = [];
+  currentText: string;
+  fuseConfig: any;
+  Username = "";
+  messages = [
+    "Partner Collaboration",
+    "Order fulfilment",
+    "Payment Tracking",
+    "Shipment Tracking",
+    "Document Collection",
+    "Digital Signature",
+    "Payment Gateway",
+    "RFQ process",
+  ];
+  currentMessage = 0;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _formBuilder: FormBuilder,
@@ -48,18 +66,67 @@ export class ForgotPasswordComponent implements OnInit {
         }
       }
     };
-    // console.log(this._activatedRoute.snapshot.queryParamMap.get('Id'));
-    // console.log(this._activatedRoute.snapshot.queryParamMap.get('token'));
+    // // console.log(this._activatedRoute.snapshot.queryParamMap.get('Id'));
+    // // console.log(this._activatedRoute.snapshot.queryParamMap.get('token'));
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.IsProgressBarVisibile = false;
+    this.currentIndex = 0;
+    this.allTexts = ["Scalability", "Reliability"];
   }
 
   ngOnInit(): void {
+    this.typeMessage();
     this.resetPasswordForm = this._formBuilder.group({
       newPassword: ['', [Validators.required,
-      Validators.pattern('(?=.*[a-z].*[a-z].*[a-z])(?=.*[A-Z])(?=.*[0-9].*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')]],
+      Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[`~!@#\$%\^\&*\)\(\\+=.,_-])[A-Za-z\d`~!@#\$%\^\&*\)\(\\+=.,_-].{9,}')]],
       confirmPassword: ['', [Validators.required, CustomValidator.confirmPasswordValidator]]
     });
+  }
+  setCurrentText(): void {
+    if (this.currentIndex >= this.allTexts.length) {
+      this.currentIndex = 0;
+    }
+    this.currentText = this.allTexts[this.currentIndex];
+    this.currentIndex++;
+  }
+  typeMessage(): void {
+    if (!this.messages[this.currentMessage]) {
+      this.currentMessage = 0;
+    }
+    const currentStr = this.messages[this.currentMessage];
+    // currentStr.split();
+    let part = "";
+    let currentLetter = 0;
+    const int1 = setInterval(() => {
+      if (!currentStr[currentLetter]) {
+        this.currentMessage++;
+        setTimeout(() => {
+          this.deleteMessage(part);
+        }, 4000);
+        clearInterval(int1);
+      } else {
+        part += currentStr[currentLetter++];
+        // mHTML.innerHTML = part;
+        this.currentText = part;
+      }
+    }, 100);
+  }
+
+  deleteMessage(str): void {
+    const int = setInterval(() => {
+      if (str.length === 0) {
+        setTimeout(() => {
+          this.typeMessage();
+        }, 500);
+        clearInterval(int);
+      } else {
+        str = str.split("");
+        str.pop();
+        str = str.join("");
+        // mHTML.innerHTML = str;
+        this.currentText = str;
+      }
+    }, 150);
   }
   ResetControl(): void {
     this.resetPasswordForm.get('newPassword').patchValue('');
@@ -72,7 +139,7 @@ export class ForgotPasswordComponent implements OnInit {
       // control.setErrors(null);
       // this.menuAppMainFormGroup.get(key).markAsUntouched();
       // this.menuAppMainFormGroup.get(key).updateValueAndValidity();
-      // console.log(this.menuAppMainFormGroup.get(key).setErrors(Validators.required)
+      // // console.log(this.menuAppMainFormGroup.get(key).setErrors(Validators.required)
     });
 
   }
@@ -93,7 +160,8 @@ export class ForgotPasswordComponent implements OnInit {
         (err) => {
           console.error(err);
           this.IsProgressBarVisibile = false;
-          this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);        }
+          this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
+        }
       );
     }
     else {
