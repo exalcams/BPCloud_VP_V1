@@ -166,6 +166,10 @@
   .boldClass {
     font-weight: bold;
   }
+  .statusFont{
+    @extend .boldClass;
+    font-size: medium;
+  }
   .orangeBorderBottom {
     border-bottom: 2px solid #efb577;
   }

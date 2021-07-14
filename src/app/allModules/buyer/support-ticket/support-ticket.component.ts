@@ -326,8 +326,8 @@ export class SupportTicketComponent implements OnInit {
       this.SupportTicket.Client = this.SupportTicketView.Client = this.SelectedBPCFact.Client;
       this.SupportTicket.Company = this.SupportTicketView.Company = this.SelectedBPCFact.Company;
       this.SupportTicket.Type = this.SupportTicketView.Type = this.SelectedBPCFact.Type;
-      this.SupportTicket.PatnerID = this.SupportTicketView.PatnerID = this.SelectedBPCFact.PatnerID;
     }
+    this.SupportTicket.PatnerID = this.SupportTicketView.PatnerID = this.currentUserName;
     this.SupportTicket.ReasonCode = this.SupportTicketView.ReasonCode = this.SupportTicketFormGroup.get('ReasonCode').value;
     this.SupportTicket.Remarks = this.SupportTicketView.Remarks = this.SupportTicketFormGroup.get('Remarks').value;
     this.SupportTicket.DocumentRefNo = this.SupportTicketView.DocumentRefNo = this.SupportTicketFormGroup.get('DocumentRefNo').value;

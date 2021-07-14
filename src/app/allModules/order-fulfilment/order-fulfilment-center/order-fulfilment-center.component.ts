@@ -122,6 +122,9 @@ export class OrderFulFilmentCenterComponent implements OnInit {
     notificationSnackBarComponent: NotificationSnackBarComponent;
     attachmentViewDialogComponent: AttachmentViewDialogComponent;
     isProgressBarVisibile: boolean;
+    isProgressBarVisibile1: boolean;
+    isProgressBarVisibile2: boolean;
+    isProgressBarVisibile3: boolean;
     isDateError: boolean;
     ofDetails: BPCOFHeaderView[] = [];
     filteredOfDetails: BPCOFHeaderView[] = [];
@@ -340,7 +343,7 @@ export class OrderFulFilmentCenterComponent implements OnInit {
         private _factService: FactService,
         private datePipe: DatePipe,
         private dialog: MatDialog,
-        
+
     ) {
         this.SecretKey = this._authService.SecretKey;
         this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
@@ -734,7 +737,7 @@ export class OrderFulFilmentCenterComponent implements OnInit {
         );
     }
     GetVendorKRAProcessCircle(): void {
-        this.isProgressBarVisibile = true;
+        this.isProgressBarVisibile1 = true;
         this._dashboardService
             .GetVendorKRAProcessCircle(this.partnerID)
             .subscribe(
@@ -745,16 +748,16 @@ export class OrderFulFilmentCenterComponent implements OnInit {
                             this.progress1(+KRAProcessCircle.KRAValue);
                         }
                     }
-                    this.isProgressBarVisibile = false;
+                    this.isProgressBarVisibile1 = false;
                 },
                 (err) => {
                     console.error(err);
-                    this.isProgressBarVisibile = false;
+                    this.isProgressBarVisibile1 = false;
                 }
             );
     }
     GetVendorPPMProcessCircle(): void {
-        this.isProgressBarVisibile = true;
+        this.isProgressBarVisibile2 = true;
         this._dashboardService
             .GetVendorPPMProcessCircle(this.partnerID)
             .subscribe(
@@ -765,17 +768,17 @@ export class OrderFulFilmentCenterComponent implements OnInit {
                             this.progress2(+PPMProcessCircle.KRAValue);
                         }
                     }
-                    this.isProgressBarVisibile = false;
+                    this.isProgressBarVisibile2 = false;
                 },
                 (err) => {
                     console.error(err);
-                    this.isProgressBarVisibile = false;
+                    this.isProgressBarVisibile2 = false;
                 }
             );
     }
 
     GetVendorDoughnutChartData(): void {
-        this.isProgressBarVisibile = true;
+        this.isProgressBarVisibile3 = true;
         this._dashboardService
             .GetVendorDoughnutChartData(this.partnerID)
             .subscribe(
@@ -789,11 +792,11 @@ export class OrderFulFilmentCenterComponent implements OnInit {
                             (x) => +x.Value
                         );
                     }
-                    this.isProgressBarVisibile = false;
+                    this.isProgressBarVisibile3 = false;
                 },
                 (err) => {
                     console.error(err);
-                    this.isProgressBarVisibile = false;
+                    this.isProgressBarVisibile3 = false;
                 }
             );
     }
