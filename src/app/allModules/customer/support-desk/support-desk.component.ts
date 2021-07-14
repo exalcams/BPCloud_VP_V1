@@ -25,14 +25,15 @@ export class SupportDeskComponent implements OnInit {
   partnerID: string;
   notificationSnackBarComponent: NotificationSnackBarComponent;
   isProgressBarVisibile: boolean;
+  isProgressBarVisibile1: boolean;
   docRefNo: any;
   supports: SupportHeader[] = [];
   selectedSupport: SupportHeader = new SupportHeader();
   supportDisplayedColumns: string[] = [
+    'SupportID',
     'Reason',
     'Date',
     'Status',
-    'AssignTo',
   ];
   supportDataSource: MatTableDataSource<SupportHeader>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -48,7 +49,7 @@ export class SupportDeskComponent implements OnInit {
     public snackBar: MatSnackBar,
     private _activatedRoute: ActivatedRoute,
     private _authService: AuthService,
-    ) {
+  ) {
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.partnerID = '';
     this.isSupport = false;
@@ -58,7 +59,7 @@ export class SupportDeskComponent implements OnInit {
 
 
   ngOnInit(): void {
-    const retrievedObject =this.SecureStorage.get('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;
@@ -70,7 +71,8 @@ export class SupportDeskComponent implements OnInit {
         this._router.navigate(['/auth/login']);
       }
       this.GetSupportMasters();
-      this.GetSupportTicketsByPartnerIDAndType();
+      this.GetSupportTicketsByPartnerID();
+      // this.GetSupportTicketsByPartnerIDAndType();
     } else {
       this._router.navigate(['/auth/login']);
     }
@@ -85,14 +87,36 @@ export class SupportDeskComponent implements OnInit {
     }
     else {
       this.GetSupportMasters();
-      this.GetSupportTicketsByPartnerIDAndType();
+      this.GetSupportTicketsByPartnerID();
+      // this.GetSupportTicketsByPartnerIDAndType();
     }
   }
 
-  GetSupportTicketsByPartnerIDAndType(): void {
+  // GetSupportTicketsByPartnerIDAndType(): void {
+  //   this.isProgressBarVisibile = true;
+  //   this._supportdeskService
+  //     .GetSupportTicketsByPartnerIDAndType(this.authenticationDetails.UserName, 'C')
+  //     .subscribe((data) => {
+  //       if (data) {
+  //         this.supports = <SupportHeader[]>data;
+  //         if (this.supports && this.supports.length === 0) {
+  //           this.isSupport = true;
+  //         }
+  //         this.supportDataSource = new MatTableDataSource(this.supports);
+  //         this.supportDataSource.paginator = this.paginator;
+  //         this.supportDataSource.sort = this.sort;
+  //       }
+  //       this.isProgressBarVisibile = false;
+  //     },
+  //       (err) => {
+  //         console.error(err);
+  //         this.isProgressBarVisibile = false;
+  //       });
+  // }
+  GetSupportTicketsByPartnerID(): void {
     this.isProgressBarVisibile = true;
     this._supportdeskService
-      .GetSupportTicketsByPartnerIDAndType(this.authenticationDetails.UserName, 'C')
+      .GetSupportTicketsByPartnerID(this.authenticationDetails.UserName)
       .subscribe((data) => {
         if (data) {
           this.supports = <SupportHeader[]>data;
@@ -112,18 +136,18 @@ export class SupportDeskComponent implements OnInit {
   }
 
   GetSupportMasters(): void {
-    this.isProgressBarVisibile = true;
+    this.isProgressBarVisibile1 = true;
     this._supportdeskService
       .GetSupportMasters()
       .subscribe((data) => {
         if (data) {
           this.supportMasters = <SupportMaster[]>data;
         }
-        this.isProgressBarVisibile = false;
+        this.isProgressBarVisibile1 = false;
       },
         (err) => {
           console.error(err);
-          this.isProgressBarVisibile = false;
+          this.isProgressBarVisibile1 = false;
         });
   }
 
@@ -133,5 +157,22 @@ export class SupportDeskComponent implements OnInit {
 
   onSupportRowClicked(row: any): void {
     this._router.navigate(['/customer/supportchat'], { queryParams: { SupportID: row.SupportID } });
+  }
+  getStatusColor(status): string {
+    if (status) {
+      switch (status) {
+        case 'Open':
+          return '#000000';
+        case 'Resolved':
+          return '#2605a8';
+        case 'ReOpen':
+          return '#efb577';
+        case 'Closed':
+          return '#34ad65';
+        default:
+          return '#000000';
+      }
+    }
+    return '#000000';
   }
 }

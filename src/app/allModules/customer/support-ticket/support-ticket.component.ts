@@ -16,6 +16,7 @@ import { BPCFact } from 'app/models/fact';
 import { FactService } from 'app/services/fact.service';
 import * as SecureLS from 'secure-ls';
 import { AuthService } from 'app/services/auth.service';
+import { POService } from 'app/services/po.service';
 
 @Component({
   selector: 'app-support-ticket',
@@ -44,8 +45,10 @@ export class SupportTicketComponent implements OnInit {
   dateOfCreation: Date;
   docRefNo: string;
   notificationSnackBarComponent: NotificationSnackBarComponent;
+  reason: string;
+  navigator_page: any;
   SecretKey: string;
-    SecureStorage: SecureLS;
+  SecureStorage: SecureLS;
   constructor(
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
@@ -56,7 +59,7 @@ export class SupportTicketComponent implements OnInit {
     private _masterService: MasterService,
     private _FactService: FactService,
     private _authService: AuthService,
-
+    private _POService: POService
   ) {
     this.SecretKey = this._authService.SecretKey;
     this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
@@ -68,7 +71,7 @@ export class SupportTicketComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const retrievedObject =this.SecureStorage.get('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;
@@ -89,6 +92,8 @@ export class SupportTicketComponent implements OnInit {
 
     this._activatedRoute.queryParams.subscribe(params => {
       this.docRefNo = params['id'];
+      this.reason = params['reason'];
+      this.navigator_page = params["navigator_page"];
     });
     if (!this.docRefNo) {
       this.docRefNo = '';
@@ -97,6 +102,7 @@ export class SupportTicketComponent implements OnInit {
     this.InitializeSupportTicketFormGroup();
     this.GetSupportMasters();
     this.GetUsers();
+    this.GetPlantBasedOnCondition();
     this.GetFactByPartnerID();
   }
   CreateAppUsage(): void {
@@ -117,6 +123,8 @@ export class SupportTicketComponent implements OnInit {
   InitializeSupportTicketFormGroup(): void {
     this.SupportTicketFormGroup = this._formBuilder.group({
       ReasonCode: ['', Validators.required],
+      AppID: [''],
+      Plant: [''],
       DocumentRefNo: [this.docRefNo, Validators.required],
       Remarks: ['', Validators.required]
     });
@@ -161,7 +169,53 @@ export class SupportTicketComponent implements OnInit {
           this.IsProgressBarVisibile = false;
         });
   }
+  GetPlantBasedOnCondition(): void {
+    if (this.navigator_page) {
+      if (this.navigator_page === 'PO') {
+        this.GetPlantByDocNmber(this.docRefNo);
+      }
+      else if (this.navigator_page === 'ASN') {
+        this.GetPlantByASNNmber(this.docRefNo);
+      }
+      else if (this.navigator_page === 'Payment') {
 
+      } else {
+        this.SupportTicketFormGroup.get('Plant').patchValue('1000');
+      }
+    } else {
+      this.SupportTicketFormGroup.get('Plant').patchValue('1000');
+    }
+  }
+  GetPlantByDocNmber(docRefNo): void {
+    this._POService.GetPlantByDocNmber(docRefNo, this.currentUserName).subscribe(
+      (data) => {
+        const plant = data as string;
+        if (plant) {
+          this.SupportTicketFormGroup.get('Plant').patchValue(plant);
+        } else {
+          this.SupportTicketFormGroup.get('Plant').patchValue('1000');
+        }
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
+  }
+  GetPlantByASNNmber(docRefNo): void {
+    this._POService.GetPlantByASNNmber(docRefNo, this.currentUserName).subscribe(
+      (data) => {
+        const plant = data as string;
+        if (plant) {
+          this.SupportTicketFormGroup.get('Plant').patchValue(plant);
+        } else {
+          this.SupportTicketFormGroup.get('Plant').patchValue('1000');
+        }
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
+  }
   GetUsers(): void {
     this.IsProgressBarVisibile = true;
     this._masterService.GetAllUsers().subscribe(
@@ -209,11 +263,15 @@ export class SupportTicketComponent implements OnInit {
       this.SupportTicket.Client = this.SupportTicketView.Client = this.SelectedBPCFact.Client;
       this.SupportTicket.Company = this.SupportTicketView.Company = this.SelectedBPCFact.Company;
       this.SupportTicket.Type = this.SupportTicketView.Type = this.SelectedBPCFact.Type;
-      this.SupportTicket.PatnerID = this.SupportTicketView.PatnerID = this.SelectedBPCFact.PatnerID;
     }
+    this.SupportTicket.PatnerID = this.SupportTicketView.PatnerID = this.currentUserName;
     this.SupportTicket.ReasonCode = this.SupportTicketView.ReasonCode = this.SupportTicketFormGroup.get('ReasonCode').value;
     this.SupportTicket.Remarks = this.SupportTicketView.Remarks = this.SupportTicketFormGroup.get('Remarks').value;
     this.SupportTicket.DocumentRefNo = this.SupportTicketView.DocumentRefNo = this.SupportTicketFormGroup.get('DocumentRefNo').value;
+    this.SupportTicket.ReasonCode = this.SupportTicketView.ReasonCode = this.SupportTicketFormGroup.get('ReasonCode').value;
+    this.SupportTicket.Plant = this.SupportTicketView.Plant = this.SupportTicketFormGroup.get('Plant').value;
+    this.SupportTicket.AppID = this.SupportTicketView.AppID = this.SupportTicketFormGroup.get('AppID').value;
+    this.SupportTicket.CreatedBy = this.SupportTicketView.CreatedBy = this.currentUserName;
     // this.SupportTicket.PatnerID = this.SupportTicketView.PatnerID = this.PartnerID;
     // this.SupportTicket.Type = this.SupportTicketView.Type = 'Customer';
     // let supportMaster = new SupportMaster();
