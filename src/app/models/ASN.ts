@@ -359,7 +359,18 @@ export class ASNListView {
     // Material: string;
     // MaterialText: string;
     // ASNQty: number;
+    InvoiceNumber: string;
+    InvoiceAttachmentName: string;
     Status: string;
+    DocCount: number;
+}
+export class BPCASNAttachment {
+    ASNNumber: string;
+    AttachmentID: number;
+    AttachmentName: string;
+    Type: string;
+    DocumentType: string;
+    Title: string;
 }
 export class ASNListViewNewDoc {
     Client: string;

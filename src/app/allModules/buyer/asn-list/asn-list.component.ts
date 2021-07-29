@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AuthenticationDetails } from 'app/models/master';
 import { Guid } from 'guid-typescript';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
-import { ASNListFilter, ASNListView, ASNListViewNewDoc } from 'app/models/ASN';
+import { ASNListFilter, ASNListView, BPCASNAttachment } from 'app/models/ASN';
 import { MatTableDataSource, MatPaginator, MatSort, MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { FuseConfigService } from '@fuse/services/config.service';
@@ -18,8 +18,9 @@ import { AuthService } from 'app/services/auth.service';
 import { GateService } from 'app/services/gate.service';
 import { AsnlistPrintDialogComponent } from './asnlist-print-dialogue/asnlist-print-dialog/asnlist-print-dialog.component';
 import { AttachmentDetails } from 'app/models/task';
-import { AttachmentDialogComponent } from 'app/notifications/attachment-dialog/attachment-dialog.component';
 import * as SecureLS from 'secure-ls';
+import { AttachmentDialogComponent } from 'app/notifications/attachment-dialog/attachment-dialog.component';
+import { ASNAttachmentViewDialogComponent } from 'app/notifications/asnattachment-view-dialog/asnattachment-view-dialog.component';
 
 @Component({
   selector: 'app-asn-list',
@@ -40,8 +41,20 @@ export class AsnListComponent implements OnInit {
   BGClassName: any;
   fuseConfig: any;
   AllASNList: ASNListView[] = [];
-  displayColumn: string[] = ['PatnerID', 'ASNNumber', 'ASNDate', 'DocNumber', 'AWBNumber', 'VessleNumber', 'DepartureDate',
-    'ArrivalDate','AttachmentName', 'Status', 'Action'];
+  displayColumn: string[] = [
+    'PatnerID',
+    'ASNNumber',
+    'DocNumber',
+    'ASNDate',
+    'AWBNumber',
+    'VessleNumber',
+    'DepartureDate',
+    'ArrivalDate',
+    // 'InvoiceAttachmentName',
+    'Attachments',
+    'Status',
+    'Action'
+  ];
   TableDetailsDataSource: MatTableDataSource<ASNListView>;
   @ViewChild(MatPaginator) tablePaginator: MatPaginator;
   @ViewChild(MatSort) tableSort: MatSort;
@@ -68,6 +81,7 @@ export class AsnListComponent implements OnInit {
   Plants: string[] = [];
   SecretKey: string;
   SecureStorage: SecureLS;
+
   constructor(
     private _fuseConfigService: FuseConfigService,
     private formBuilder: FormBuilder,
@@ -84,7 +98,6 @@ export class AsnListComponent implements OnInit {
     this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.authenticationDetails = new AuthenticationDetails();
-    this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.IsProgressBarVisibile = false;
     this.isExpanded = false;
     this.DefaultFromDate = new Date();
@@ -97,7 +110,7 @@ export class AsnListComponent implements OnInit {
   ngOnInit(): void {
     this.SetUserPreference();
     // Retrive authorizationData
-    const retrievedObject =  this.SecureStorage.get('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;
@@ -128,7 +141,7 @@ export class AsnListComponent implements OnInit {
       ASNNumber: [''],
       DocNumber: [''],
       Material: [''],
-      Status: [''],
+      Status: ['GateEntry'],
       ASNFromDate: [this.DefaultFromDate],
       ASNToDate: [this.DefaultToDate]
     });
@@ -139,43 +152,6 @@ export class AsnListComponent implements OnInit {
     this.AllASNList = [];
     this.ResetFormGroup(this.SearchFormGroup);
   }
-  
-  Attachmentclk(filename): void{
-
-    this._asnService.DownloadOfAttachmentOnlyName(filename).subscribe(
-      data => {
-        if (data) {
-          const FileName = filename;
-    let fileType = 'image/jpg';
-    fileType = FileName.toLowerCase().includes('.jpg') ? 'image/jpg' :
-      FileName.toLowerCase().includes('.jpeg') ? 'image/jpeg' :
-        FileName.toLowerCase().includes('.png') ? 'image/png' :
-          FileName.toLowerCase().includes('.gif') ? 'image/gif' :
-            FileName.toLowerCase().includes('.pdf') ? 'application/pdf' : '';
-    const blob = new Blob([data], { type: fileType });
-    const attachmentDetails: AttachmentDetails = {
-      FileName: FileName,
-      blob: blob
-    };
-    const dialogConfig: MatDialogConfig = {
-      data: attachmentDetails,
-      panelClass: 'attachment-dialog'
-    };
-    const dialogRef = this.dialog.open(AttachmentDialogComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-      }
-    });
-        }
-    
-      },
-      error => {
-        console.error(error);
-      
-      }
-    );
-  }
- 
   ResetFormGroup(formGroup: FormGroup): void {
     formGroup.reset();
     Object.keys(formGroup.controls).forEach(key => {
@@ -220,7 +196,7 @@ export class AsnListComponent implements OnInit {
     );
   }
   SearchBtnClicked(): void {
-    if (this.currentUserRole === 'GateUser') {
+    if (this.currentUserRole === 'GateUser' || this.currentUserRole === 'Buyer') {
       this.Search1Clicked();
     } else {
       this.SearchClicked();
@@ -243,7 +219,7 @@ export class AsnListComponent implements OnInit {
         const ASNNumber = this.SearchFormGroup.get('ASNNumber').value;
         const DocNumber = this.SearchFormGroup.get('DocNumber').value;
         const Material = this.SearchFormGroup.get('Material').value;
-        var Status = this.SearchFormGroup.get('Status').value;
+        let Status = this.SearchFormGroup.get('Status').value;
         if (!Status) {
           Status = "";
         }
@@ -312,7 +288,7 @@ export class AsnListComponent implements OnInit {
   ShowValidationErrors(formGroup: FormGroup): void {
     Object.keys(formGroup.controls).forEach(key => {
       if (!formGroup.get(key).valid) {
-        console.log(key);
+        // console.log(key);
       }
       formGroup.get(key).markAsTouched();
       formGroup.get(key).markAsDirty();
@@ -325,7 +301,7 @@ export class AsnListComponent implements OnInit {
               FormGroupControls.get(key2).markAsTouched();
               FormGroupControls.get(key2).markAsDirty();
               if (!FormGroupControls.get(key2).valid) {
-                console.log(key2);
+                // console.log(key2);
               }
             });
           } else {
@@ -336,6 +312,84 @@ export class AsnListComponent implements OnInit {
       }
     });
 
+  }
+
+  viewASNAttachmentClicked(element: ASNListView): void {
+    this.CreateActionLogvalues("view ASN Attachment Clicked");
+    // const attachments = this.ofAttachments.filter(x => x.AttachmentID.toString() === element.RefDoc);
+    this.GetASNAttachmentsASNNumber(element);
+  }
+  GetASNAttachmentsASNNumber(element: ASNListView): void {
+    this.IsProgressBarVisibile = true;
+    this._asnService
+      .GetASNAttachmentsASNNumber(element.ASNNumber)
+      .subscribe(
+        (data) => {
+          // console.log(data);
+          const dt = data as BPCASNAttachment[];
+          this.openASNViewDialog(dt);
+          this.IsProgressBarVisibile = false;
+        },
+        (err) => {
+          console.error(err);
+          this.IsProgressBarVisibile = false;
+        }
+      );
+  }
+
+  openASNViewDialog(ASNAttachment: BPCASNAttachment[]): void {
+    const dialogConfig: MatDialogConfig = {
+      data: ASNAttachment,
+      panelClass: "asn-view-dialog",
+    };
+    const dialogRef = this.dialog.open(
+      ASNAttachmentViewDialogComponent,
+      dialogConfig
+    );
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // this.GetOfDetails();
+      }
+    });
+  }
+
+  GetInvoiceAttachment(element: ASNListView): void {
+    const fileName = element.InvoiceAttachmentName;
+    this.IsProgressBarVisibile = true;
+    this._asnService.DowloandInvoiceAttachment(fileName, element.ASNNumber).subscribe(
+      data => {
+        if (data) {
+          let fileType = 'image/jpg';
+          fileType = fileName.toLowerCase().includes('.jpg') ? 'image/jpg' :
+            fileName.toLowerCase().includes('.jpeg') ? 'image/jpeg' :
+              fileName.toLowerCase().includes('.png') ? 'image/png' :
+                fileName.toLowerCase().includes('.gif') ? 'image/gif' :
+                  fileName.toLowerCase().includes('.pdf') ? 'application/pdf' : '';
+          const blob = new Blob([data], { type: fileType });
+          this.OpenAttachmentDialog(fileName, blob);
+        }
+        this.IsProgressBarVisibile = false;
+      },
+      error => {
+        console.error(error);
+        this.IsProgressBarVisibile = false;
+      }
+    );
+  }
+  OpenAttachmentDialog(FileName: string, blob: Blob): void {
+    const attachmentDetails: AttachmentDetails = {
+      FileName: FileName,
+      blob: blob
+    };
+    const dialogConfig: MatDialogConfig = {
+      data: attachmentDetails,
+      panelClass: 'attachment-dialog'
+    };
+    const dialogRef = this.dialog.open(AttachmentDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+      }
+    });
   }
 
   Pdfdownload(no: any): void {
@@ -387,9 +441,19 @@ export class AsnListComponent implements OnInit {
       // this.GetASNBasedOnCondition();
     });
   }
+  getStatus(status): string {
+    switch (status) {
+      case 'GateEntry':
+        return 'Gate Entry';
+      case 'GateEntry Completed':
+        return 'Gate Entry Completed';
+      default:
+        return status;
+    }
+  }
   help(po: string): void {
     this.CreateActionLogvalues("Help Desk");
-    this._router.navigate(["/support/supportticket"], {
+    this._router.navigate(["/buyer/supportticket"], {
       queryParams: { id: po, navigator_page: "ASN" },
     });
   }
@@ -429,10 +493,10 @@ export class AsnListComponent implements OnInit {
     actionLog.CreatedBy = this.currentUserName;
     this._authService.CreateActionLog(actionLog).subscribe(
       (data) => {
-        console.log(data);
+        // console.log(data);
       },
       (err) => {
-        console.log(err);
+        console.error(err);
       }
     );
   }

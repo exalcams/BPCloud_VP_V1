@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationDetails, AppUsage } from 'app/models/master';
 import { Guid } from 'guid-typescript';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
-import { FormGroup, FormBuilder, Validators, AbstractControl, FormArray, FormControl, ValidationErrors } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl, ValidationErrors } from '@angular/forms';
 import { MatTableDataSource, MatPaginator, MatSort, MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -10,13 +10,12 @@ import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notific
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
 import { AttachmentDialogComponent } from 'app/notifications/attachment-dialog/attachment-dialog.component';
 import { AttachmentDetails } from 'app/models/task';
-import { fuseAnimations } from '@fuse/animations';
 import { BPCFLIPHeader, BPCFLIPHeaderView, BPCFLIPCost, BPCFLIPItem, BPCExpenseTypeMaster, BPCTaxTypeMaster, BPCHSNMaster } from 'app/models/po-flip';
 import { POFlipService } from 'app/services/po-flip.service';
 import { ActionLog, BPCOFHeader, BPCOFItem } from 'app/models/OrderFulFilment';
 import { POService } from 'app/services/po.service';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { BPCInvoiceAttachment, BPCCurrencyMaster, BPCCountryMaster } from 'app/models/ASN';
+import { Observable } from 'rxjs';
+import { BPCCurrencyMaster, BPCCountryMaster } from 'app/models/ASN';
 import { ASNService } from 'app/services/asn.service';
 import { MasterService } from 'app/services/master.service';
 import { FuseConfigService } from '@fuse/services/config.service';
@@ -27,7 +26,6 @@ import { map, startWith } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 // import * as Tesseract from 'tesseract.js';
 import { DomSanitizer } from '@angular/platform-browser';
-import { T } from '@angular/core/src/render3';
 import * as SecureLS from 'secure-ls';
 
 // import { PdfReaderService } from 'app/services/pdf-reader.service';
@@ -284,8 +282,8 @@ export class UploadInvoiceComponent implements OnInit {
           this.selectedFlipView.FLIPItems.forEach(x => {
             this.flipItems.push(x);
           });
-          this.flipItemDataSource = new MatTableDataSource<BPCFLIPItem>(this.flipItems);
         }
+        this.flipItemDataSource = new MatTableDataSource<BPCFLIPItem>(this.flipItems);
       },
       (err) => {
         console.error(err);
@@ -914,7 +912,7 @@ export class UploadInvoiceComponent implements OnInit {
           else {
             this.isProgressBarVisibile = false;
             this.fileToUpload = evt.target.files[0];
-            this.flipFormGroup.get('InvoiceNumber').setErrors({ qty1: null })
+            this.flipFormGroup.get('InvoiceNumber').setErrors({ qty1: null });
             this.flipFormGroup.get('InvoiceNumber').updateValueAndValidity();
             this.flipFormGroup.get('InvoiceNumber').markAsTouched();
             this.event_file = evt;
@@ -1042,8 +1040,8 @@ export class UploadInvoiceComponent implements OnInit {
   }
 
   Tesseract(url, invoicenum): any {
-    let x = 0;
-    let y = 0;
+    const x = 0;
+    const y = 0;
     // tslint:disable-next-line:typedef
     return Tesseract.recognize(url).then(function (result) {
       // alert(result.text)

@@ -6,7 +6,12 @@ import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import {
     MatButtonModule, MatIconModule, MatSnackBar, MatSnackBarModule, MatDialogModule, MatToolbarModule,
-    MAT_DATE_LOCALE, MatProgressSpinnerModule, MatProgressBarModule, MatExpansionModule, MatTableModule, MatDatepickerModule, MatFormFieldModule, MatAutocompleteModule, MatBadgeModule, MatBottomSheetModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatStepperModule, MatDividerModule, MatGridListModule, MatInputModule, MatListModule, MatMenuModule, MatNativeDateModule, MatPaginatorModule, MatRadioModule, MatRippleModule, MatSelectModule, MatSidenavModule, MatSliderModule, MatSlideToggleModule, MatSortModule, MatTabsModule, MatTooltipModule, MatTreeModule
+    MAT_DATE_LOCALE, MatProgressSpinnerModule, MatProgressBarModule, MatExpansionModule, MatTableModule, 
+    MatDatepickerModule, MatFormFieldModule, MatAutocompleteModule, MatBadgeModule, MatBottomSheetModule, 
+    MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatStepperModule, MatDividerModule, 
+    MatGridListModule, MatInputModule, MatListModule, MatMenuModule, MatNativeDateModule, MatPaginatorModule, 
+    MatRadioModule, MatRippleModule, MatSelectModule, MatSidenavModule, MatSliderModule, MatSlideToggleModule, 
+    MatSortModule, MatTabsModule, MatTooltipModule, MatTreeModule
 } from '@angular/material';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import 'hammerjs';
@@ -40,6 +45,7 @@ import { AttachmentViewDialogComponent } from './notifications/attachment-view-d
 import { AttachmentDialogComponent } from './notifications/attachment-dialog/attachment-dialog.component';
 import { NotificationDialog1Component } from './notifications/notification-dialog1/notification-dialog1.component';
 import { UploadInvoiceComponent } from './allModules/upload-invoice/upload-invoice.component';
+import { ASNAttachmentViewDialogComponent } from './notifications/asnattachment-view-dialog/asnattachment-view-dialog.component';
 
 
 // import { ASNItemBatchDialogComponent } from './allModules/asn/asnitem-batch-dialog/asnitem-batch-dialog.component';
@@ -164,7 +170,7 @@ const appRoutes: Routes = [
         ASNReleaseDialogComponent,
         NotificationDialog1Component,
         UploadInvoiceComponent,
-
+        ASNAttachmentViewDialogComponent
     ],
     imports: [
         BrowserModule,
@@ -238,7 +244,7 @@ const appRoutes: Routes = [
 
         NgxChartsModule,
         NgxDonutChartModule,
-        //NgxGaugeModule,
+        // NgxGaugeModule,
 
         ChartsModule,
 
@@ -276,7 +282,8 @@ const appRoutes: Routes = [
         AttachmentDialogComponent,
         AttachmentViewDialogComponent,
         InformationDialogComponent,
-        ASNReleaseDialogComponent
+        ASNReleaseDialogComponent,
+        ASNAttachmentViewDialogComponent
     ]
 })
 export class AppModule {

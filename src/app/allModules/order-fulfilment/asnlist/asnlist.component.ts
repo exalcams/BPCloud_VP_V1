@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatSnackBar, MatDialog, MatPaginator, MatSort, MatDialogConfig } from '@angular/material';
 import { FuseConfigService } from '@fuse/services/config.service';
-import { ASNListFilter, ASNListView, BPCASNItem, BPCASNPack, BPCASNView, BPCInvoiceAttachment, DocumentCenter } from 'app/models/ASN';
+import { ASNListFilter, ASNListView, BPCASNAttachment, BPCASNView } from 'app/models/ASN';
 import { ASNService } from 'app/services/asn.service';
 import { AuthenticationDetails } from 'app/models/master';
 import { Guid } from 'guid-typescript';
@@ -10,10 +10,8 @@ import { Router } from '@angular/router';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import { fuseAnimations } from '@fuse/animations';
 import { ExcelService } from 'app/services/excel.service';
-import { FormGroup, FormBuilder, FormArray, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { DatePipe, formatDate, SlicePipe } from '@angular/common';
-import { BPCPayAccountStatement } from 'app/models/Payment.model';
-import { AsnFieldMasterComponent } from 'app/allModules/configurationn/asn-field-master/asn-field-master.component';
+import { FormGroup, FormBuilder, FormArray, ValidationErrors } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 import { BPCASNHeader } from 'app/models/ASN';
 import { AttachmentDetails } from 'app/models/task';
 import { AsnlistPrintDialogComponent } from './asnlist-print-dialogue/asnlist-print-dialog/asnlist-print-dialog.component';
@@ -21,9 +19,6 @@ import { ActivatedRoute } from '@angular/router';
 import { POService } from 'app/services/po.service';
 import { ActionLog, BPCOFHeader, BPCOFItem, BPCOFSubconView } from 'app/models/OrderFulFilment';
 import { SubconService } from 'app/services/subcon.service';
-import { BehaviorSubject } from 'rxjs';
-import { NumberFormat } from 'xlsx/types';
-import { slice } from 'lodash';
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
 import { GateService } from 'app/services/gate.service';
 import { BPCGateHoveringVechicles } from 'app/models/Gate';
@@ -31,6 +26,7 @@ import { AuthService } from 'app/services/auth.service';
 import { OfStatus } from 'app/models/Dashboard';
 import { ShareParameterService } from 'app/services/share-parameters.service';
 import * as SecureLS from 'secure-ls';
+import { ASNAttachmentViewDialogComponent } from 'app/notifications/asnattachment-view-dialog/asnattachment-view-dialog.component';
 
 @Component({
   selector: 'app-asnlist',
@@ -59,7 +55,7 @@ export class ASNListComponent implements OnInit {
   SelectedASNNumber: string;
   ASNPackFormArray: FormArray = this._formBuilder.array([]);
   displayColumn: string[] = ['ASNNumber', 'ASNDate', 'DocNumber', 'Plant', 'AWBNumber', 'VessleNumber', 'DepartureDate',
-    'ArrivalDate', 'Status', 'Action'];
+    'ArrivalDate', 'Attachments', 'Status', 'Action'];
   TableDetailsDataSource: MatTableDataSource<ASNListView>;
   @ViewChild(MatPaginator) tablePaginator: MatPaginator;
   @ViewChild(MatSort) tableSort: MatSort;
@@ -114,6 +110,7 @@ export class ASNListComponent implements OnInit {
   Plants: string[] = [];
   SecretKey: string;
   SecureStorage: SecureLS;
+
   constructor(
     private _fuseConfigService: FuseConfigService,
     private formBuilder: FormBuilder,
@@ -130,8 +127,7 @@ export class ASNListComponent implements OnInit {
     private _POService: POService,
     private _authService: AuthService,
     private _GateService: GateService,
-    private _formBuilder: FormBuilder,
-
+    private _formBuilder: FormBuilder
   ) {
     this.SecretKey = this._authService.SecretKey;
     this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
@@ -181,7 +177,7 @@ export class ASNListComponent implements OnInit {
       this.SearchClicked();
     }
 
-    console.log("predicate" + this.TableDetailsDataSource);
+    // console.log("predicate" + this.TableDetailsDataSource);
   }
 
   // applyFilter(filterValue: string) {
@@ -189,7 +185,7 @@ export class ASNListComponent implements OnInit {
   //   filterValue = filterValue.trim(); // Remove whitespace
 
   //   filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-  //   console.log(filterValue)
+  //   // console.log(filterValue)
   //   this.num_present = 0;
   //   this.count = slice(filterValue)
 
@@ -228,7 +224,7 @@ export class ASNListComponent implements OnInit {
           const fileType = 'application/pdf';
           const blob = new Blob([data], { type: fileType });
           const currentDateTime = this._datePipe.transform(new Date(), 'ddMMyyyyHHmmss');
-          const FileName = no + '_' + currentDateTime + '.pdf';
+          const FileName = this.SelectedASNHeader.ASNNumber + '_' + currentDateTime + '.pdf';
           this.OpenASNPrintDialog(FileName, blob);
           // FileSaver.saveAs(blob, this.SelectedASNHeader.ASNNumber + '_' + currentDateTime + '.pdf');
         } else {
@@ -269,6 +265,16 @@ export class ASNListComponent implements OnInit {
   //     }
   //   );
   // }
+  getStatus(status): string {
+    switch (status) {
+      case 'GateEntry':
+        return 'Gate Entry';
+      case 'GateEntry Completed':
+        return 'Gate Entry Completed';
+      default:
+        return status;
+    }
+  }
   help(po: string): void {
     this.CreateActionLogvalues("Help Desk");
     this._router.navigate(["/support/supportticket"], {
@@ -276,21 +282,18 @@ export class ASNListComponent implements OnInit {
     });
   }
   GateEntry(Asn: ASNListView): void {
-    this._shareParameterService.SetASNListView(Asn);
-    this._router.navigate(["/gate/gateentry"]);
-
-    // this.CreateActionLogvalues("Gate Entry");
-    // this._GateService.CreateGateEntryByAsnList(Asn).subscribe(
-    //   (data) => {
-    //     // this.Gate = data as BPCGateHoveringVechicles;
-    //     this.notificationSnackBarComponent.openSnackBar("Gate Entry Successfull", SnackBarStatus.success);
-    //     this.SearchBtnClicked();
-    //     // this.SearchClicked();
-    //   },
-    //   (err) => {
-    //     this.notificationSnackBarComponent.openSnackBar(err, SnackBarStatus.danger);
-    //   }
-    // );
+    this.CreateActionLogvalues("Gate Entry");
+    this._GateService.CreateGateEntryByAsnList(Asn).subscribe(
+      (data) => {
+        // this.Gate = data as BPCGateHoveringVechicles;
+        this.notificationSnackBarComponent.openSnackBar("Gate Entry Successfull", SnackBarStatus.success);
+        this.SearchBtnClicked();
+        // this.SearchClicked();
+      },
+      (err) => {
+        this.notificationSnackBarComponent.openSnackBar(err, SnackBarStatus.danger);
+      }
+    );
   }
   CancelGateEntry(Asn: ASNListView): void {
     this.CreateActionLogvalues("Cancel Gate Entry");
@@ -307,7 +310,7 @@ export class ASNListComponent implements OnInit {
   }
   // cancel(asnnumber: any): void {
   //   this.newAllASNList = this.AllASNList;
-  //   console.log(this.newAllASNList);
+  //   // console.log(this.newAllASNList);
   //   const Actiontype = 'Cancel';
   //   const Catagory = 'ASN';
   //   this.OpenConfirmationDialog(Actiontype, Catagory);
@@ -726,12 +729,8 @@ export class ASNListComponent implements OnInit {
 
   ASNnumber(asn: ASNListView): void {
     // this.CreateActionLogvalues("ASNNumber");
-    if (this.currentUserRole === 'GateUser') {
-    } else {
-      this._shareParameterService.SetASNListView(asn);
-      this._router.navigate(["/asn"]);
-    }
-
+    this._shareParameterService.SetASNListView(asn);
+    this._router.navigate(["/asn"]);
     // this._router.navigate(["/asn"], { queryParams: { id: asn.DocNumber } });
   }
 
@@ -741,8 +740,8 @@ export class ASNListComponent implements OnInit {
       DocNumber: [''],
       Material: [''],
       Status: ['GateEntry'],
-      ASNFromDate: [],
-      ASNToDate: []
+      ASNFromDate: [this.DefaultFromDate],
+      ASNToDate: [this.DefaultToDate]
     });
   }
   ResetControl(): void {
@@ -760,10 +759,10 @@ export class ASNListComponent implements OnInit {
     // this.CreateActionLogvalues("Filter-All")
     this._asnService.GetAllASNListByPartnerID(this.currentUserName).subscribe(
       (data) => {
-        // console.log("data" + data)
+        // // console.log("data" + data)
         this.DateTime = new Date();
         this.AllASNList = data as ASNListView[];
-        console.log("asnlist" + this.AllASNList);
+        // console.log("asnlist" + this.AllASNList);
         this.AllASNList.forEach(ASN => {
           ASN.CancelDuration = new Date(ASN.CancelDuration);
           ASN.Time = new Date(ASN.CancelDuration).getTime();
@@ -841,11 +840,11 @@ export class ASNListComponent implements OnInit {
             });
 
             // var temp=new Date().getTime();
-            // console.log(temp,this.AllASNList[19].Time);
-            // console.log(new Date(temp),new Date(this.AllASNList[19].Time));
+            // // console.log(temp,this.AllASNList[19].Time);
+            // // console.log(new Date(temp),new Date(this.AllASNList[19].Time));
 
             this.TableDetailsDataSource = new MatTableDataSource(this.AllASNList);
-            // console.log("AllASNList",this.AllASNList);
+            // // console.log("AllASNList",this.AllASNList);
             this.DateTime = new Date();
             // this.DateTime=this.DateTime.getTime();
             this.TableDetailsDataSource.paginator = this.tablePaginator;
@@ -946,7 +945,7 @@ export class ASNListComponent implements OnInit {
   ShowValidationErrors(formGroup: FormGroup): void {
     Object.keys(formGroup.controls).forEach(key => {
       if (!formGroup.get(key).valid) {
-        console.log(key);
+        // console.log(key);
       }
       formGroup.get(key).markAsTouched();
       formGroup.get(key).markAsDirty();
@@ -959,7 +958,7 @@ export class ASNListComponent implements OnInit {
               FormGroupControls.get(key2).markAsTouched();
               FormGroupControls.get(key2).markAsDirty();
               if (!FormGroupControls.get(key2).valid) {
-                console.log(key2);
+                // console.log(key2);
               }
             });
           } else {
@@ -971,17 +970,45 @@ export class ASNListComponent implements OnInit {
     });
 
   }
-
-  getStatus(status): string {
-    switch (status) {
-      case 'GateEntry':
-        return 'Gate Entry';
-      case 'GateEntry Completed':
-        return 'Gate Entry Completed';
-      default:
-        return status;
-    }
+  viewASNAttachmentClicked(element: ASNListView): void {
+    this.CreateActionLogvalues("view ASN Attachment Clicked");
+    // const attachments = this.ofAttachments.filter(x => x.AttachmentID.toString() === element.RefDoc);
+    this.GetASNAttachmentsASNNumber(element);
   }
+  GetASNAttachmentsASNNumber(element: ASNListView): void {
+    this.IsProgressBarVisibile = true;
+    this._asnService
+      .GetASNAttachmentsASNNumber(element.ASNNumber)
+      .subscribe(
+        (data) => {
+          // console.log(data);
+          const dt = data as BPCASNAttachment[];
+          this.openASNViewDialog(dt);
+          this.IsProgressBarVisibile = false;
+        },
+        (err) => {
+          console.error(err);
+          this.IsProgressBarVisibile = false;
+        }
+      );
+  }
+
+  openASNViewDialog(ASNAttachment: BPCASNAttachment[]): void {
+    const dialogConfig: MatDialogConfig = {
+      data: ASNAttachment,
+      panelClass: "asn-view-dialog",
+    };
+    const dialogRef = this.dialog.open(
+      ASNAttachmentViewDialogComponent,
+      dialogConfig
+    );
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // this.GetOfDetails();
+      }
+    });
+  }
+
   SetUserPreference(): void {
     this._fuseConfigService.config
       .subscribe((config) => {
@@ -1031,10 +1058,10 @@ export class ASNListComponent implements OnInit {
     this.ActionLog.CreatedBy = this.currentUserName;
     this._authService.CreateActionLog(this.ActionLog).subscribe(
       (data) => {
-        console.log(data);
+        // console.log(data);
       },
       (err) => {
-        console.log(err);
+        console.error(err);
       }
     );
   }

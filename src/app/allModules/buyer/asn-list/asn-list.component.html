@@ -10,7 +10,7 @@
       </div>
     </div>
     <div fxLayout="column" class="content-card1">
-      <div *ngIf="!isExpanded" @expandCollapse  style="margin-left: 20px;margin-right: 20px;margin-top: 15px;">
+      <div *ngIf="!isExpanded" @expandCollapse style="margin-left: 20px;margin-right: 20px;margin-top: 15px;">
         <form autocomplete="off" name="form" novalidate [formGroup]="SearchFormGroup" fxLayout="column"
           fxLayoutAlign="start" fxFlex="100">
           <!-- First Row -->
@@ -37,8 +37,7 @@
             <div fxFlex="20">
               <mat-form-field style="width: 100%;" appearance="outline">
                 <mat-label>ASN From Date</mat-label>
-                <input matInput [matDatepicker]="picker1" formControlName="ASNFromDate"
-                  (dateChange)="DateSelected()">
+                <input matInput [matDatepicker]="picker1" formControlName="ASNFromDate" (dateChange)="DateSelected()">
                 <mat-datepicker-toggle matSuffix [for]="picker1">
                   <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
                 </mat-datepicker-toggle>
@@ -48,8 +47,7 @@
             <div fxFlex="20">
               <mat-form-field appearance="outline" style="width: 100%;">
                 <mat-label>ASN To Date</mat-label>
-                <input matInput [matDatepicker]="picker2" formControlName="ASNToDate"
-                  (dateChange)="DateSelected()">
+                <input matInput [matDatepicker]="picker2" formControlName="ASNToDate" (dateChange)="DateSelected()">
                 <mat-datepicker-toggle matSuffix [for]="picker2">
                   <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
                 </mat-datepicker-toggle>
@@ -100,11 +98,11 @@
           <input matInput (keyup)="applyFilter($event)">
         </mat-form-field>
         <div fxFlex fxLayoutAlign="end center">
-          <!-- <mat-form-field appearance="outline" style="min-width: 100px;">
+          <mat-form-field appearance="outline" style="min-width: 100px;">
             <mat-select [(ngModel)]="SelectValue">
               <mat-option value="All">All</mat-option>
             </mat-select>
-          </mat-form-field> -->
+          </mat-form-field>
           <button (click)="exportAsXLSX()" class="excelBtn mx-24" mat-stroked-button>
             <img class="excelImg" src="assets/images/excel.png">
           </button>
@@ -127,90 +125,103 @@
             </ng-container>
 
             <ng-container matColumnDef="ASNNumber">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;"
+              <th mat-header-cell *matHeaderCellDef mat-sort-header
                 [ngClass]="BGClassName?.layout?.toolbar?.background"> ASN </th>
               <td mat-cell *matCellDef="let element">
                 {{element.ASNNumber}} </td>
             </ng-container>
 
-            <ng-container matColumnDef="ASNDate">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%;"
-                [ngClass]="BGClassName?.layout?.toolbar?.background"> ASN Date </th>
-              <td mat-cell *matCellDef="let element">
-                {{element.ASNDate | date:'dd/MM/yyyy'}} </td>
-            </ng-container>
-
             <ng-container matColumnDef="DocNumber">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;"
+              <th mat-header-cell *matHeaderCellDef mat-sort-header
                 [ngClass]="BGClassName?.layout?.toolbar?.background"> PO </th>
               <td mat-cell *matCellDef="let element">
                 {{element.DocNumber}} </td>
             </ng-container>
 
+            <ng-container matColumnDef="ASNDate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header
+                [ngClass]="BGClassName?.layout?.toolbar?.background"> ASN Date </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.ASNDate | date:'dd/MM/yyyy'}} </td>
+            </ng-container>
+
             <ng-container matColumnDef="AWBNumber">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%;"
+              <th mat-header-cell *matHeaderCellDef mat-sort-header
                 [ngClass]="BGClassName?.layout?.toolbar?.background"> AWB </th>
               <td mat-cell *matCellDef="let element">
                 {{element.AWBNumber}} </td>
             </ng-container>
 
             <ng-container matColumnDef="VessleNumber">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%;"
+              <th mat-header-cell *matHeaderCellDef mat-sort-header
                 [ngClass]="BGClassName?.layout?.toolbar?.background"> Truck </th>
               <td mat-cell *matCellDef="let element">
                 {{element.VessleNumber}} </td>
             </ng-container>
 
             <!-- <ng-container matColumnDef="Material">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%;"
+              <th mat-header-cell *matHeaderCellDef mat-sort-header 
                 [ngClass]="BGClassName?.layout?.toolbar?.background"> Material </th>
               <td mat-cell *matCellDef="let element"> {{element.Material}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="MaterialText">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%;"
+              <th mat-header-cell *matHeaderCellDef mat-sort-header 
                 [ngClass]="BGClassName?.layout?.toolbar?.background"> Material Text </th>
               <td mat-cell *matCellDef="let element">
                 {{element.MaterialText}} </td>
             </ng-container>
 
             <ng-container matColumnDef="ASNQty">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%;"
+              <th mat-header-cell *matHeaderCellDef mat-sort-header 
                 [ngClass]="BGClassName?.layout?.toolbar?.background"> ASN Qty</th>
               <td mat-cell *matCellDef="let element" >
                 {{element.ASNQty}} </td>
             </ng-container> -->
             <ng-container matColumnDef="DepartureDate">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%;"
+              <th mat-header-cell *matHeaderCellDef mat-sort-header
                 [ngClass]="BGClassName?.layout?.toolbar?.background"> Dispatch Date </th>
               <td mat-cell *matCellDef="let element"> {{element.DepartureDate | date:'dd/MM/yyyy'}}
               </td>
             </ng-container>
-  
+
             <ng-container matColumnDef="ArrivalDate">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8%;"
+              <th mat-header-cell *matHeaderCellDef mat-sort-header
                 [ngClass]="BGClassName?.layout?.toolbar?.background"> Arrival Date </th>
               <td mat-cell *matCellDef="let element"> {{element.ArrivalDate | date:'dd/MM/yyyy'}}
               </td>
             </ng-container>
-            <ng-container matColumnDef="AttachmentName">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 15%;"
-                [ngClass]="BGClassName?.layout?.toolbar?.background"> AttachmentName </th>
-              <td mat-cell *matCellDef="let element" class="AmountClass" style="color: #1b56ca;" (click)="Attachmentclk(element.AttachmentName)">
-                <!-- <img [src]="element.Status == 'ship' ? ship_url : element.Status == 'truck' ? truck_url: delivery_url"
-                  height="22px" width="26px"> -->
-                  {{element.AttachmentName}}
+
+            <!-- <ng-container matColumnDef="InvoiceAttachmentName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header
+                [ngClass]="BGClassName?.layout?.toolbar?.background"> Invoice Attachment </th>
+              <td mat-cell *matCellDef="let element">
+                <span class="pdfLinkClass" (click)="GetInvoiceAttachment(element)"> {{element.InvoiceAttachmentName}}
+                </span>
+              </td>
+            </ng-container> -->
+
+            <ng-container matColumnDef="Attachments">
+              <th mat-header-cell *matHeaderCellDef [ngClass]="BGClassName?.layout?.toolbar?.background"
+                style="text-align: center"> Attachments </th>
+              <td mat-cell *matCellDef="let element" (click)="viewASNAttachmentClicked(element)"
+                style="text-align: center;cursor: pointer;">
+                <div style="margin-top: 3px; margin-left: 15px;">
+                  <span [matBadge]="element.DocCount" matBadgeSize="medium" matBadgeColor="accent"
+                    matBadgeOverlap="false"></span>
+                </div>
+                <img style="height: 24px" src="assets/images/attachment.png">
               </td>
             </ng-container>
 
             <ng-container matColumnDef="Status">
               <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 15%;"
                 [ngClass]="BGClassName?.layout?.toolbar?.background"> Status </th>
-              <td mat-cell *matCellDef="let element" class="AmountClass">
+              <td mat-cell *matCellDef="let element">
                 <!-- <img [src]="element.Status == 'ship' ? ship_url : element.Status == 'truck' ? truck_url: delivery_url"
                   height="22px" width="26px"> -->
-                  {{element.Status}}
+                {{getStatus(element.Status)}}
               </td>
             </ng-container>
 
@@ -227,8 +238,8 @@
                     </mat-select> -->
                     <mat-label>Actions</mat-label>
                     <mat-select>
-                      <mat-option value="Print ASN" (click)="Pdfdownload(element.ASNNumber)">	Print ASN</mat-option>
-                      <mat-option value ="Get help" (click)="help(element.DocNumber)">Get Solved</mat-option>
+                      <mat-option value="Print ASN" (click)="Pdfdownload(element.ASNNumber)"> Print ASN</mat-option>
+                      <mat-option value="Get help" (click)="help(element.DocNumber)">Get Solved</mat-option>
                       <!-- <mat-option value ="Gate Entry" (click)="GateEntry(element)" *ngIf="element.Status === 'GateEntry'?true:false">Gate Entry</mat-option>
                       <mat-option value ="Cancel Gate Entry" (click)="CancelGateEntry(element)" *ngIf="DateTime.getTime() <= element.Time && element.Status !== 'GateEntry'?true:false">CancelGateEntry</mat-option> -->
                     </mat-select>
