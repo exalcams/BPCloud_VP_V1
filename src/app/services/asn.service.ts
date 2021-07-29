@@ -7,7 +7,8 @@ import { AuthService } from './auth.service';
 import { catchError } from 'rxjs/operators';
 import {
     BPCASNHeader, BPCASNView, BPCASNItem, DocumentCenter, BPCInvoiceAttachment,
-    BPCCountryMaster, BPCCurrencyMaster, BPCDocumentCenterMaster, BPCASNPack, ASNListView, BPCASNFieldMaster, BPCASNItemBatch, BPCASNItemView, ASNListFilter, ASNListViewNewDoc
+    BPCCountryMaster, BPCCurrencyMaster, BPCDocumentCenterMaster, BPCASNPack, ASNListView,
+    BPCASNFieldMaster, BPCASNItemBatch, BPCASNItemView, ASNListFilter, ASNListViewNewDoc, BPCASNAttachment
 } from 'app/models/ASN';
 import { DocumentDetails } from 'app/models/Dashboard';
 import { BPCInvoice } from 'app/models/OrderFulFilment';
@@ -64,11 +65,18 @@ export class ASNService {
             (`${this.baseAddress}poapi/ASN/FilterASNList?VendorCode=${VendorCode}&ASNNumber=${ASNNumber}&DocNumber=${DocNumber}&Material=${Material}&Status=${Status}&ASNFromDate=${ASNFromDate}&ASNToDate=${ASNToDate}`)
             .pipe(catchError(this.errorHandler));
     }
-    FilterASNListByPlants(filter: ASNListFilter): Observable<ASNListViewNewDoc[] | string> {
-        return this._httpClient.post<ASNListViewNewDoc[]>
+    FilterASNListByPlants(filter: ASNListFilter): Observable<ASNListView[] | string> {
+        return this._httpClient.post<ASNListView[]>
             (`${this.baseAddress}poapi/ASN/FilterASNListByPlants`, filter)
             .pipe(catchError(this.errorHandler));
     }
+
+    GetASNAttachmentsASNNumber(ASNNumber: string): Observable<BPCASNAttachment[] | string> {
+        return this._httpClient.get<BPCASNAttachment[]>
+            (`${this.baseAddress}poapi/ASN/GetASNAttachmentsASNNumber?ASNNumber=${ASNNumber}`)
+            .pipe(catchError(this.errorHandler));
+    }
+
     // doc
 
     DownloadOfAttachmentOnlyName(AttachmentName: string): Observable<Blob | string> {

@@ -1,0 +1,92 @@
+<div class="dialog-content-wrapper">
+  <mat-toolbar class="toolBg m-0">
+    <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+      <span class="title dialog-title">Attachments</span>
+      <div>
+        <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+          <mat-icon svgIcon="closeIcon"></mat-icon>
+        </button>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <!-- <mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+    <p> Are you sure you want to {{dialogData.Actiontype}} the {{dialogData.Catagory}} ?</p>
+</mat-dialog-content> -->
+
+  <div mat-dialog-content>
+    <!-- <div fxLayout style="padding: 10px;">
+      <div fxFlex>
+        <div fxFlex="90">
+          <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
+            <div *ngIf="ASNAttachments?.length > 0 ">
+              <ul *ngFor="let attachment of ASNAttachments">
+                <li style="cursor: pointer; color: #1e8bed;" (click)="attachmentClicked(attachment,invoiceAttachment)">
+                  {{attachment.AttachmentName}}</li>
+              </ul>
+            </div>
+            <div *ngIf="ASNAttachments?.length === 0" class="no-results-message">
+              <span class="pl-12"> No attachments..</span>
+            </div>
+          </div>
+        </div>
+        <div fxFlex="10">
+          <img class="add-attachment-icon" src="assets/images/logos/add-button.png" (click)="fileInput2.click()">
+          <input hidden type="file" #fileInput2 id="file" (change)="addAttachmentClicked($event)"
+            accept="image/x-png,image/gif,image/jpeg,image/jpg,application/pdf" />
+        </div>
+      </div>
+    </div> -->
+    <div fxLayout fxLayoutAlign="start" class="p-8 pt-12">
+      <div fxFlex *ngIf="ASNAttachments?.length === 0" class="no-results-message">
+        <span class="pl-12 pt-4"> No attachments..</span>
+      </div>
+      <div *ngIf="ASNAttachments?.length">
+        <!-- <ng-container *ngFor="let attachment of ASNAttachments">
+          <div *ngIf="attachment.Type==='Invoice'">
+            <h2>Invoice</h2>
+            <div>{{attachment.AttachmentName}}</div>
+          </div>
+        </ng-container> -->
+        <div *ngIf="InvoiceAttachments.length"> <span class="boldClass pl-8">Invoice</span></div>
+        <ul *ngFor="let attachment of InvoiceAttachments">
+          <li style="cursor: pointer; color: #1e8bed;" (click)="GetInvoiceAttachment(attachment)">
+            {{attachment.AttachmentName}}</li>
+        </ul>
+
+        <div *ngIf="DocumentCenterAttachments.length" class="mt-24"> <span class="boldClass pl-8">Document center</span></div>
+        <ul *ngFor="let attachment of DocumentCenterAttachments">
+          <li style="cursor: pointer; color: #1e8bed;" (click)="DowloandDocumentCenterAttachment(attachment)">
+            {{attachment.AttachmentName}}</li>
+        </ul>
+
+      </div>
+      <!-- <div fxFlex align="end">
+        <button class="btnBg" mat-raised-button (click)="fileInput2.click()">Select file</button>
+        <input hidden type="file" #fileInput2 id="file" (change)="addAttachmentClicked($event)"
+          accept="image/x-png,image/gif,image/jpeg,image/jpg,application/pdf" />
+      </div> -->
+    </div>
+    <!-- <div fxLayout>
+      <table *ngIf="ASNAttachments?.length" mat-table [dataSource]="AttachmentDataSource">
+
+        <ng-container matColumnDef="AttachmentName">
+          <th mat-header-cell *matHeaderCellDef style="width: 32%;"> Name </th>
+          <td mat-cell style="width: 32%;" *matCellDef="let element">
+            <span class="pdfLinkClass" (click)="attachmentClicked(element,invoiceAttachment)">
+              {{element.AttachmentName}}
+            </span>
+          </td>
+        </ng-container>      
+
+        <tr mat-header-row *matHeaderRowDef="AttachmentDisplayedColumns;sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: AttachmentDisplayedColumns;let even=even">
+        </tr>
+      </table>
+    </div> -->
+  </div>
+
+  <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+  </mat-progress-spinner>
+  <div id="overlay" *ngIf="IsProgressBarVisibile"></div>
+
+</div>
