@@ -116,8 +116,8 @@ export class CustomerReturnComponent implements OnInit {
     public snackBar: MatSnackBar,
     private dialog: MatDialog,
     private _formBuilder: FormBuilder) {
-      this.SecretKey = this._authService.SecretKey;
-      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -194,8 +194,9 @@ export class CustomerReturnComponent implements OnInit {
       CreditNote: ['', Validators.required],
       AWBNumber: ['', Validators.required],
       Transporter: ['', Validators.required],
-      TruckNumber: ['', [Validators.required, Validators.pattern('^[A-Z]{2}[-][0-9]{1,2}[-][A-Z]{1,2}[-][0-9]{3,4}?$')]],
-
+      // TruckNumber: ['', [Validators.required, Validators.pattern('^[A-Z]{2}[-][0-9]{1,2}[-][A-Z]{1,2}[-][0-9]{3,4}?$')]],
+      // TruckNumber: ['', [Validators.required, Validators.pattern('^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{3,4}$')]],
+      TruckNumber: ['', [Validators.required, Validators.pattern('^[A-Z]{2}[ -][0-9]{1,2}[ -][A-Z]{2,3}[ -][0-9]{3,4}')]],
       Status: [''],
     });
   }
@@ -226,6 +227,9 @@ export class CustomerReturnComponent implements OnInit {
     this.ReturnItemDataSource = new MatTableDataSource(this.AllReturnItems);
     this.isQtyError = false;
     this.selectedDocCenterMaster = new BPCDocumentCenterMaster();
+    this.SelectedPIRNumber = '';
+    this.status_show = '';
+    this.ReturnFormGroup.get('Date').patchValue(new Date());
   }
 
   ResetReturnFormGroup(): void {
@@ -272,35 +276,35 @@ export class CustomerReturnComponent implements OnInit {
       this.GetReturnByRetAndPartnerID();
     }
     else {
-      this.SelectedReturnHeader.Status = "saved"
+      this.SelectedReturnHeader.Status = "saved";
     }
   }
-  //for batch dialog
-  GetBatchByRet() {
+  // for batch dialog
+  GetBatchByRet(): void {
     this._CustomerService.GetAllReturnbatch(this.SelectedReturnHeader.RetReqID).subscribe(
       (data) => {
         this.Batchlist = data as BPCRetItemBatch[],
-          this.BatchListNo = this.Batchlist.length
+          this.BatchListNo = this.Batchlist.length;
         //  console.log("batch"+this.Batchlist)
         // this.BatchDataSource = new MatTableDataSource(this.AllReturnItems);
       },
       (err) => {
         console.log(err);
       }
-    )
+    );
   }
-  GetSerialByRet() {
+  GetSerialByRet(): void {
     this._CustomerService.GetAllReturnSerial(this.SelectedReturnHeader.RetReqID).subscribe(
       (data) => {
         this.SerialList = data as BPCRetItemSerial[],
-          this.SerialListNo = this.SerialList.length
+          this.SerialListNo = this.SerialList.length;
         //  console.log("batch"+this.SerialList)
 
       },
       (err) => {
         console.log(err);
       }
-    )
+    );
   }
   RemovePurchaseIndentItemFromTable(doc: BPCRetItem): void {
     const index: number = this.AllReturnItems.indexOf(doc);
@@ -308,15 +312,15 @@ export class CustomerReturnComponent implements OnInit {
       this.AllReturnItems.splice(index, 1);
     }
     this.ReturnItemDataSource = new MatTableDataSource(this.AllReturnItems);
-    this.SelectedReturnView.Batch
-    this.Batchlist = null
+    // this.SelectedReturnView.Batch;
+    this.Batchlist = null;
     this.SelectedReturnView.Batch = [];
-    this.BatchListNo = null
-    this.SerialList = null
+    this.BatchListNo = null;
+    this.SerialList = null;
     this.SelectedReturnView.Serial = [];
-    this.SerialListNo = null
+    this.SerialListNo = null;
   }
-  GetAllInvoices() {
+  GetAllInvoices(): void {
     this._POService.GetAllInvoices().subscribe(
       (data) => {
         this.InvoiceData = data as BPCInvoicePayment[];
@@ -324,7 +328,7 @@ export class CustomerReturnComponent implements OnInit {
       },
       (err) => console.log(err)
 
-    )
+    );
   }
   DateSelected(event): void {
     const selectedType = event.value;
@@ -332,7 +336,7 @@ export class CustomerReturnComponent implements OnInit {
       // this.SelectedTask.Type = event.value;
     }
   }
-  BatchOpen(selecteditem: BPCRetItemBatch) {
+  BatchOpen(selecteditem: BPCRetItemBatch): void {
 
     const dialogRef = this.dialog.open(BatchDialogComponent, {
       width: '500px',
@@ -351,7 +355,7 @@ export class CustomerReturnComponent implements OnInit {
     );
   }
 
-  SerialOpen(selecteditem: BPCRetItemSerial) {
+  SerialOpen(selecteditem: BPCRetItemSerial): void {
     const dialogRef = this.dialog.open(SerialDialogComponent, {
       width: '500px',
       data: { selecteditem: selecteditem, SerialList: this.SerialList, status: this.status_show }
@@ -533,16 +537,14 @@ export class CustomerReturnComponent implements OnInit {
   //         }
   //     );
   // }
-  //mouni
+  // mouni
   GetReturnByRetAndPartnerID(): void {
     this._CustomerService.GetReturnByRetAndPartnerID_RetH(this.SelectedPIRNumber, this.currentUserName).subscribe(
       (data) => {
-
-
         this.SelectedReturnHeader = data as BPCRetHeader;
-        this.status_show = this.SelectedReturnHeader.Status
-        console.log("status", this.status_show);
-        if (this.status_show == 'submitted') {
+        this.status_show = this.SelectedReturnHeader.Status;
+        // console.log("status", this.status_show);
+        if (this.status_show === 'submitted') {
           this.ReturnFormGroup.get('RequestID').disable();
           this.ReturnFormGroup.get('Date').disable();
           this.ReturnFormGroup.get('InvoiceReference').disable();
@@ -554,13 +556,11 @@ export class CustomerReturnComponent implements OnInit {
           this.ReturnFormGroup.get('Status').disable();
           this.show = true;
         }
-        else if (this.status_show == 'saved') {
+        else if (this.status_show === 'saved') {
           this.ReturnFormGroup.get('RequestID').disable();
           this.ReturnFormGroup.get('Status').disable();
-
-
         }
-        console.log("ret" + this.SelectedReturnHeader);
+        // console.log("ret" + this.SelectedReturnHeader);
         if (this.SelectedReturnHeader) {
           this.LoadSelectedReturn(this.SelectedReturnHeader);
         }
@@ -573,7 +573,7 @@ export class CustomerReturnComponent implements OnInit {
       }
     );
   }
-  //mouni end
+  // mouni end
   LoadSelectedReturn(seletedReturn: BPCRetHeader): void {
     this.SelectedReturnHeader = seletedReturn;
     this.SelectedReturnView.RetReqID = this.SelectedReturnHeader.RetReqID;
@@ -583,15 +583,13 @@ export class CustomerReturnComponent implements OnInit {
     this.GetBatchByRet();
     this.GetSerialByRet();
   }
-  //moni
+  // moni
   GetReturnItemsByRet(): void {
     this._CustomerService.GetReturnItemsByRet_RetI(this.SelectedReturnHeader.RetReqID).subscribe(
       (data) => {
         const dt = data as BPCRetItem[];
         if (dt && dt.length && dt.length > 0) {
           this.AllReturnItems = data as BPCRetItem[];
-
-
           this.ReturnItemDataSource = new MatTableDataSource(this.AllReturnItems);
         }
       },
@@ -708,7 +706,6 @@ export class CustomerReturnComponent implements OnInit {
   }
   GetReturnSerialItemValues(): void {
     this.SelectedReturnView.Serial = [];
-
     if (this.SerialList != null) {
       this.SerialList.forEach(x => {
         if (this.SelectedReturnHeader) {
@@ -753,28 +750,31 @@ export class CustomerReturnComponent implements OnInit {
   SubmitClicked(): void {
     if (this.ReturnFormGroup.valid) {
       if (!this.isQtyError) {
-
-
         this.GetReturnValues("submitted");
         this.GetReturnItemValues();
         this.GetReturnBatchItemValues();
         this.GetReturnSerialItemValues();
-        if(!this.SelectedPIRNumber){
-          this.length=0
-        }
-        else if(this.SelectedPIRNumber){
-        this.length=this.ReturnItemDataSource.data.length
-        }
-
-
-        if ((this.AllReturnItems.length || this.ReturnItemFormGroup.status == "VALID") && (this.length!=0))
+        // if (!this.SelectedPIRNumber) {
+        //   this.length = 0;
+        // }
+        // else if (this.SelectedPIRNumber) {
+        //   this.length = this.ReturnItemDataSource.data.length;
+        // }
+        if (this.AllReturnItems.length && this.AllReturnItems.length !== 0) {
           this.SetActionToOpenConfirmation('Submit');
-        else if (this.length==0 && this.ReturnItemFormGroup.status == "INVALID") {
-          this.ShowValidationErrors(this.ReturnItemFormGroup);
         }
-        else if (this.length==0 && this.ReturnItemFormGroup.status == "VALID") {
-          this.notificationSnackBarComponent.openSnackBar('Minimum one item should be in Item table', SnackBarStatus.danger);
+        else if (this.AllReturnItems.length === 0) {
+          this.notificationSnackBarComponent.openSnackBar('Minimum one item should be in table', SnackBarStatus.danger);
         }
+        // if ((this.AllReturnItems.length || this.ReturnItemFormGroup.status === "VALID") && (this.length !== 0)) {
+        //   this.SetActionToOpenConfirmation('Submit');
+        // }
+        // else if (this.length === 0 && this.ReturnItemFormGroup.status === "INVALID") {
+        //   this.ShowValidationErrors(this.ReturnItemFormGroup);
+        // }
+        // else if (this.length === 0 && this.ReturnItemFormGroup.status === "VALID") {
+        //   this.notificationSnackBarComponent.openSnackBar('Minimum one item should be in Item table', SnackBarStatus.danger);
+        // }
 
       }
 
@@ -833,11 +833,11 @@ export class CustomerReturnComponent implements OnInit {
     // this.GetBPReturnSubItemValues();
     // this.SelectedReturnView.CreatedBy = this.authenticationDetails.UserID.toString();
     this.IsProgressBarVisibile = true;
-    if (Actiontype == 'Submit') {
-      this.SelectedReturnView.Status = '20'
+    if (Actiontype === 'Submit') {
+      this.SelectedReturnView.Status = '20';
     }
-    else if (Actiontype == 'Save') {
-      this.SelectedReturnView.Status = '10'
+    else if (Actiontype === 'Save') {
+      this.SelectedReturnView.Status = '10';
     }
     this._CustomerService.CreateReturnHeader(this.SelectedReturnView).subscribe(
       (data) => {
@@ -927,11 +927,11 @@ export class CustomerReturnComponent implements OnInit {
     // this.SelectedBPReturnView.TransID = this.SelectedBPReturn.TransID;
     // this.SelectedReturnView.ModifiedBy = this.authenticationDetails.UserID.toString();
     this.IsProgressBarVisibile = true;
-    if (Actiontype == 'Submit') {
-      this.SelectedReturnView.Status = '20'
+    if (Actiontype === 'Submit') {
+      this.SelectedReturnView.Status = '20';
     }
-    else if (Actiontype == 'Save') {
-      this.SelectedReturnView.Status = '10'
+    else if (Actiontype === 'Save') {
+      this.SelectedReturnView.Status = '10';
     }
 
     this._CustomerService.UpdateReturnHeader(this.SelectedReturnView).subscribe(
@@ -1082,10 +1082,10 @@ export class CustomerReturnComponent implements OnInit {
 
     this.orderqty = Number(this.ReturnItemFormGroup.get('OrderQty').value);
 
-    if ((this.retqty > this.orderqty) && (this.orderqty != 0)) {
-      this.ReturnItemFormGroup.get('RetQty').setErrors({ qty1: true })
+    if ((this.retqty > this.orderqty) && (this.orderqty !== 0)) {
+      this.ReturnItemFormGroup.get('RetQty').setErrors({ qty1: true });
     }
-    else if ((this.orderqty == 0)) {
+    else if ((this.orderqty === 0)) {
 
       // this.ReturnItemFormGroup.get('RetQty').setErrors({ qty1: false })
       this.ReturnItemFormGroup.get('OrderQty').markAsTouched();
@@ -1095,7 +1095,7 @@ export class CustomerReturnComponent implements OnInit {
 
       // this.ReturnItemFormGroup.get('RetQty').setErrors({ qty1: false })
       this.ReturnItemFormGroup.get('RetQty').markAsUntouched();
-      this.ReturnItemFormGroup.get('RetQty').setErrors(null)
+      this.ReturnItemFormGroup.get('RetQty').setErrors(null);
     }
 
     // const RetQtyVAL = + this.ReturnItemFormGroup.get('RetQty').value;

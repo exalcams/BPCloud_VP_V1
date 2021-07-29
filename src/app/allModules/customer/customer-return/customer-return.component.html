@@ -13,7 +13,7 @@
 
       <mat-card fxFlex="100" class="side-bar p-0">
         <div class="sidenav-content" fxFlex fxLayout="column">
-          <div fxFlex fxLayout class="p-0 pt-8">
+          <div fxLayout class="p-0 pt-8">
             <div fxFlex class="px-12 mt-4">
               <form autocomplete="off" class="normal" fxLayout="column" fxLayoutAlign="start" name="form" novalidate
                 [formGroup]="ReturnFormGroup">
@@ -23,7 +23,7 @@
                       <input matInput placeholder="Ret Req ID" formControlName="RequestID">
                       <mat-error
                         *ngIf="ReturnFormGroup.get('RequestID').touched && ReturnFormGroup.get('RequestID').hasError('required')">
-                        RequestID is required
+                        Request ID is required
                       </mat-error>
                     </mat-form-field>
                   </div>
@@ -52,7 +52,7 @@
                       </mat-select>
                       <mat-error
                         *ngIf="ReturnFormGroup.get('InvoiceReference').touched && ReturnFormGroup.get('InvoiceReference').hasError('required')">
-                        InvoiceReference is required
+                        Invoice Reference is required
                       </mat-error>
                     </mat-form-field>
                   </div>
@@ -61,7 +61,7 @@
                       <input matInput placeholder="SO Number" formControlName="SONumber">
                       <mat-error
                         *ngIf="ReturnFormGroup.get('SONumber').touched && ReturnFormGroup.get('SONumber').hasError('required')">
-                        SONumber is required
+                        SO Number is required
                       </mat-error>
                     </mat-form-field>
                   </div>
@@ -70,7 +70,7 @@
                       <input matInput placeholder="Credit Note" formControlName="CreditNote">
                       <mat-error
                         *ngIf="ReturnFormGroup.get('CreditNote').touched && ReturnFormGroup.get('CreditNote').hasError('required')">
-                        CreditNote is required
+                        Credit Note is required
                       </mat-error>
                     </mat-form-field>
                   </div>
@@ -79,7 +79,7 @@
                       <input matInput placeholder="AWB Number" formControlName="AWBNumber">
                       <mat-error
                         *ngIf="ReturnFormGroup.get('AWBNumber').touched && ReturnFormGroup.get('AWBNumber').hasError('required')">
-                        AWBNumber is required
+                        AWB Number is required
                       </mat-error>
                     </mat-form-field>
                   </div>
@@ -97,7 +97,7 @@
                       <input matInput placeholder="Truck Number" formControlName="TruckNumber">
                       <mat-error
                         *ngIf="ReturnFormGroup.get('TruckNumber').touched && ReturnFormGroup.get('TruckNumber').hasError('required')">
-                        TruckNumber is required
+                        Truck Number is required
                       </mat-error>
                       <mat-error *ngIf="ReturnFormGroup.get('TruckNumber').touched && !ReturnFormGroup.get('TruckNumber').hasError('required')
                       && ReturnFormGroup.get('TruckNumber').hasError('pattern')">
@@ -120,7 +120,7 @@
               </form>
             </div>
 
-            <div fxFlex class="borderleft mb-40 pt-40" [class.pt-60]="SelectedReturnHeader?.RetReqID">
+            <div fxFlex class="borderleft pt-40" [class.pt-60]="SelectedReturnHeader?.RetReqID">
               <div fxLayout class="mx-40">
                 <div fxFlex="30">Draft</div>
                 <div fxFlex="30">Submitted</div>
@@ -230,7 +230,7 @@
                     <!-- (input)="onSearchChange($event.target.value)" -->
                     <mat-error
                       *ngIf="ReturnItemFormGroup.get('RetQty').touched && ReturnItemFormGroup.get('RetQty').hasError('required')">
-                      RetQty is required
+                      Ret Qty is required
                     </mat-error>
                     <mat-error *ngIf="ReturnItemFormGroup.get('RetQty').touched && !ReturnItemFormGroup.get('RetQty').hasError('required')
                     && ReturnItemFormGroup.get('RetQty').hasError('pattern')">
@@ -395,6 +395,13 @@
             </div>
           </div>
         </mat-card-actions>
+        <div fxLayout>
+          <div fxFlex fxLayoutAlign="end">
+            <button class="floatBtn" mat-fab style="background-color: #f6b570" (click)="ResetControl()">
+              <mat-icon style="color: white;">add</mat-icon>
+            </button>
+          </div>
+        </div>
       </mat-card>
     </div>
     <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">

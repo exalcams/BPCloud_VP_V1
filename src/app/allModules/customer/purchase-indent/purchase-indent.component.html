@@ -52,7 +52,7 @@
       </div> -->
       <mat-card fxFlex="100" class="side-bar p-0">
         <div class="sidenav-content" fxFlex fxLayout="column">
-          <div fxFlex fxLayout class="p-0 pt-8">
+          <div fxLayout class="p-0 pt-8">
             <div fxFlex class="px-12 mt-4">
               <form autocomplete="off" class="normal" fxLayout="column" fxLayoutAlign="start" name="form" novalidate
                 [formGroup]="PurchaseIndentFormGroup">
@@ -105,7 +105,7 @@
                 </div>
               </form>
             </div>
-            <div fxFlex class="borderleft mb-40 pt-40" [class.pt-60]="SelectedPurchaseIndentHeader?.PIRNumber">
+            <div fxFlex class="borderleft pt-40" [class.pt-60]="SelectedPurchaseIndentHeader?.PIRNumber">
               <div fxLayout class="mx-40">
                 <div fxFlex="30">Draft</div>
                 <!-- <div fxFlex="30">Shipped</div> -->
@@ -184,18 +184,19 @@
                 </div>
                 <div fxFlex="15">
                   <mat-form-field class="px-12" style="width: 100%;">
-                    <mat-select placeholder="Material" formControlName="Material" (selectionChange)="ProductSelected($event)" >
+                    <mat-select placeholder="Material" formControlName="Material"
+                      (selectionChange)="ProductSelected($event)">
                       <!-- (selectionChange)="Material(value)" -->
                       <!-- (selectionChange)="CountryOfOriginSelected($event)" -->
                       <!-- ProductID: string; -->
                       <mat-option *ngFor="let Prod of AllProducts" [value]="Prod.ProductID">{{Prod.ProductID}}
                       </mat-option>
-                      
+
                     </mat-select>
                     <mat-error
-                    *ngIf="PurchaseIndentItemFormGroup.get('Material').touched && PurchaseIndentItemFormGroup.get('Material').hasError('required')">
-                    Material is required
-                  </mat-error>
+                      *ngIf="PurchaseIndentItemFormGroup.get('Material').touched && PurchaseIndentItemFormGroup.get('Material').hasError('required')">
+                      Material is required
+                    </mat-error>
                     <!-- <input matInput placeholder="Material" formControlName="Material">
                     <mat-error
                       *ngIf="PurchaseIndentItemFormGroup.get('Material').touched && PurchaseIndentItemFormGroup.get('Material').hasError('required')">
@@ -275,8 +276,8 @@
                 <div fxFlex="15">
                   <mat-form-field class="px-12" style="width: 100%;">
                     <!-- <input matInput placeholder="Delivery Date" formControlName="DeliveryDate"> -->
-                    <input matInput placeholder="Delivery Date" [matDatepicker]="picker1"
-                      formControlName="DeliveryDate" [min]="minDate">
+                    <input matInput placeholder="Delivery Date" [matDatepicker]="picker1" formControlName="DeliveryDate"
+                      [min]="minDate">
                     <mat-datepicker-toggle matSuffix [for]="picker1">
                       <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon" class="mb-12"></mat-icon>
                     </mat-datepicker-toggle>
@@ -287,7 +288,7 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div  fxFlex="10"  *ngIf="status_show!='submitted'" fxLayoutAlign="center start">
+                <div fxFlex="10" *ngIf="status_show!='submitted'" fxLayoutAlign="center start">
                   <img class="addIcon" (click)="AddPurchaseIndentItemToTable()"
                     src="assets/images/logos/add-button.png">
                   <!-- <button class="SaveBtn" mat-raised-button (click)="AddDocumentCenterToTable()">Add</button> -->
@@ -343,15 +344,15 @@
                   {{element.DeliveryDate | date :'dd/MM/yyyy'}} </td>
               </ng-container>
 
-              <ng-container  matColumnDef="Action">
-                <th mat-header-cell [hidden]="show"  *matHeaderCellDef mat-sort-header style="width: 10%"> </th>
+              <ng-container matColumnDef="Action">
+                <th mat-header-cell [hidden]="show" *matHeaderCellDef mat-sort-header style="width: 10%"> </th>
                 <td mat-cell [hidden]="show" *matCellDef="let element" style="text-align: center;width: 10%">
                   <img class="removeIcon" src="assets/images/remove-button.png"
                     (click)="RemovePurchaseIndentItemFromTable(element)">
                 </td>
               </ng-container>
 
-              <tr mat-header-row  *matHeaderRowDef="PurchaseIndentItemDisplayedColumns;sticky: true"></tr>
+              <tr mat-header-row *matHeaderRowDef="PurchaseIndentItemDisplayedColumns;sticky: true"></tr>
               <tr mat-row *matRowDef="let row; columns: PurchaseIndentItemDisplayedColumns;let even=even">
               </tr>
             </table>
@@ -375,13 +376,21 @@
             </div>
             <div fxFlex align="end">
               <!-- *ngIf="!SelectedPurchaseIndentHeader?.PIRNumber" -->
-              <button type="button"  *ngIf="SelectedPurchaseIndentHeader?.Status!='submitted'" mat-stroked-button class="SaveBtn mb-4" (click)="SaveClicked()"
-               >Save
+              <button type="button" *ngIf="SelectedPurchaseIndentHeader?.Status!='submitted'" mat-stroked-button
+                class="SaveBtn mb-4" (click)="SaveClicked()">Save
               </button>
-              <button type="button" *ngIf="SelectedPurchaseIndentHeader?.Status!='submitted'" mat-raised-button class="SubmitBtn mb-4" (click)="SubmitClicked()">Submit</button>
+              <button type="button" *ngIf="SelectedPurchaseIndentHeader?.Status!='submitted'" mat-raised-button
+                class="SubmitBtn mb-4" (click)="SubmitClicked()">Submit</button>
             </div>
           </div>
         </mat-card-actions>
+        <div fxLayout>
+          <div fxFlex fxLayoutAlign="end">
+            <button class="floatBtn" mat-fab style="background-color: #f6b570" (click)="ResetControl()">
+              <mat-icon style="color: white;">add</mat-icon>
+            </button>
+          </div>
+        </div>
       </mat-card>
     </div>
     <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">

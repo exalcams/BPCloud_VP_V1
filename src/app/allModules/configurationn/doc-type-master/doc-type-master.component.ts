@@ -84,6 +84,7 @@ export class DocTypeMasterComponent implements OnInit {
     Object.keys(this.DocumentCenterMasterFormGroup.controls).forEach(key => {
       this.DocumentCenterMasterFormGroup.get(key).markAsUntouched();
     });
+    this.DocumentCenterMasterFormGroup.get('DocumentType').enable();
     // this.fileToUpload = null;
   }
   InitializeAllExtensions(): void {
@@ -123,6 +124,7 @@ export class DocTypeMasterComponent implements OnInit {
     this.DocumentCenterMasterFormGroup.get('Extension').patchValue(this.selectedDocumentCenterMaster.Extension);
     this.DocumentCenterMasterFormGroup.get('SizeInKB').patchValue(this.selectedDocumentCenterMaster.SizeInKB);
     this.DocumentCenterMasterFormGroup.get('ForwardMail').patchValue(this.selectedDocumentCenterMaster.ForwardMail);
+    this.DocumentCenterMasterFormGroup.get('DocumentType').disable();
   }
   numberOnly(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;

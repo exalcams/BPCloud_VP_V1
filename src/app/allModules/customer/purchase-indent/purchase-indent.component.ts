@@ -239,6 +239,9 @@ export class PurchaseIndentComponent implements OnInit {
         this.PurchaseIndentItemDataSource = new MatTableDataSource(this.AllPurchaseIndentItems);
         this.isWeightError = false;
         this.selectedDocCenterMaster = new BPCDocumentCenterMaster();
+        this.SelectedPIRNumber = '';
+        this.status_show = '';
+        this.PurchaseIndentFormGroup.get('Date').patchValue(new Date());
     }
 
     ResetPurchaseIndentFormGroup(): void {
@@ -260,9 +263,9 @@ export class PurchaseIndentComponent implements OnInit {
             formArray.removeAt(0);
         }
     }
-    selectionChange(ProductId) {
+    selectionChange(ProductId): void {
         //    this. Material_Text=Materialtext
-        console.log("Materialtext", ProductId.value);
+        // console.log("Materialtext", ProductId.value);
         //     const PODItemFormArray = this. AllProducts 
         //   PODItemFormArray.controls.forEach((x, i) => {})
         for (this.i = 0; this.i <= this.AllProducts.length; this.i++) {
@@ -468,7 +471,7 @@ export class PurchaseIndentComponent implements OnInit {
             (data) => {
                 this.SelectedPurchaseIndentHeader = data as BPCPIHeader;
                 this.status_show = this.SelectedPurchaseIndentHeader.Status;
-                console.log("status", this.status_show);
+                // console.log("status", this.status_show);
                 if (this.status_show === "submitted") {
                     this.PurchaseIndentFormGroup.get('PIRNumber').disable();
                     this.PurchaseIndentFormGroup.get('Date').disable();
@@ -761,7 +764,8 @@ export class PurchaseIndentComponent implements OnInit {
     //         });
     // }
     // AddDocumentCenterAttachment(Actiontype: string): void {
-    //     this._CustomerService.AddDocumentCenterAttachment(this.SelectedPurchaseIndentHeader.PurchaseIndentNumber, this.currentUserID.toString(), this.fileToUploadList).subscribe(
+    //     this._CustomerService.AddDocumentCenterAttachment
+    //         (this.SelectedPurchaseIndentHeader.PurchaseIndentNumber, this.currentUserID.toString(), this.fileToUploadList).subscribe(
     //         (dat) => {
     //             this.ResetControl();
     //             this.notificationSnackBarComponent.openSnackBar(`PurchaseIndent ${Actiontype === 'Submit' ? 'submitted' : 'saved'} successfully`, SnackBarStatus.success);

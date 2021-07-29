@@ -814,11 +814,16 @@
     color: #f44336;
     font-size: 12px;
     margin-top: -16px;
-    margin-left: 12px
+    margin-left: 12px;
     // margin-left: 32px;
   }
   .AttError {
     color: #f44336;
     font-size: 12px;
+  }
+  .floatBtn {
+    position: fixed;
+    bottom: 80px !important;
+    right: 12px;
   }
 }
