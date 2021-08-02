@@ -1,6 +1,6 @@
 <div id="cusord" class="page-layout carded" fusePerfectScrollbar>
   <div class="center" fxLayout="column" fxLayoutGap="10px">
-    <div class="outer" fxLayout>
+    <!-- <div class="outer" fxLayout>
       <div class="bg"></div>
       <div>
         <h3 style="margin: 0px;padding-left: 10px;"><b>Purchase List</b></h3>
@@ -8,43 +8,179 @@
       <div fxFlex align="end">
         <span><img src="../../../../assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
       </div>
-    </div> 
-<div *ngIf="!AllPurchase?.length" class="cl_norec">NO Record Found</div>
+    </div>  -->
+    <div class="outer" fxLayout>
+      <div class="bg"></div>
+      <div>
+        <h3 style="margin: 0px;padding-left: 10px;"><b>Purchase List</b></h3>
+      </div>
+      <div fxFlex align="end">
+        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+      </div>
+    </div>
+
+    <div class="px-20">
+      <div fxLayout="row" fxFlex="100%" fxLayoutAlign="space-around center">
+        <div fxFlex="100%">
+          <!-- <div class="SectionTitle">
+            <strong>Invoice</strong>
+           
+          </div> -->
+          <div [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" style="width: 70px;height: 2px;"></div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!AllPurchase?.length" class="cl_norec">NO Record Found</div>
     <!-- table -->
-    <div class="px-20 pb-20">
+    <div class="px-20 py-20">
+
+      <div class="content" *ngIf="!isExpanded" @expandCollapse>
+        <form autocomplete="off" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" novalidate
+          [formGroup]="SearchFormGroup">
+          <div fxFlex fxLayout="row wrap">
+            <div fxFlex="20">
+              <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>From Date</mat-label>
+                <input matInput [matDatepicker]="picker1" formControlName="FromDate" (dateChange)="DateSelected()">
+                <mat-datepicker-toggle matSuffix [for]="picker1">
+                  <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+                <mat-error
+                  *ngIf="SearchFormGroup.get('FromDate').touched && SearchFormGroup.get('FromDate').hasError('required')">
+                  From Date is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="20">
+              <mat-form-field class="pl-32" appearance="outline" style="width: 100%;">
+                <mat-label>To Date</mat-label>
+                <input matInput [matDatepicker]="picker2" formControlName="ToDate" (dateChange)="DateSelected()">
+                <mat-datepicker-toggle matSuffix [for]="picker2">
+                  <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+                <mat-error
+                  *ngIf="SearchFormGroup.get('ToDate').touched && SearchFormGroup.get('ToDate').hasError('required')">
+                  To Date is required
+                </mat-error>
+              </mat-form-field>
+              <div *ngIf="isDateError" class="DateError">
+                To date should not be less than from date
+              </div>
+            </div>
+            <!-- <div fxFlex="25" class="pl-32">
+              <mat-form-field class="pr-8" appearance="outline" style="width: 100%;">
+                <mat-label>Vendor</mat-label>
+                <input matInput formControlName="VendorCode">
+                <mat-error
+                  *ngIf="SearchFormGroup.get('VendorCode').touched && SearchFormGroup.get('VendorCode').hasError('required')">
+                  Vendor is required
+                </mat-error>
+              </mat-form-field>
+            </div> -->
+            <div fxFlex="20" class="pl-32">
+              <mat-form-field class="pr-8" appearance="outline" style="width: 100%;">
+                <mat-label>Ref Number</mat-label>
+                <input matInput formControlName="RefNumber">
+                <mat-error
+                  *ngIf="SearchFormGroup.get('RefNumber').touched && SearchFormGroup.get('RefNumber').hasError('required')">
+                  Ref Number is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="20">
+              <mat-form-field style="width: 100%;" appearance="outline">
+                <!-- <input matInput placeholder="Status" formControlName="Status"> -->
+                <mat-label>Status</mat-label>
+                <mat-select formControlName="Status">
+                  <mat-option *ngFor="let st of Statuses" [value]="st.Value">{{st.Key}}</mat-option>
+                </mat-select>
+                <mat-error
+                  *ngIf="SearchFormGroup.get('Status').touched && SearchFormGroup.get('Status').hasError('required')">
+                  Status is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="20" fxLayoutAlign="center center" class="pl-32">
+              <button mat-raised-button class="SaveBtn" (click)="SearchClicked()"
+                [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">Search</button>
+            </div>
+          </div>
+          <div fxFlex fxLayout>
+
+            <div fxFlex="60" class="ml-180 pr-8" fxLayout>
+
+
+              <!-- <mat-form-field class="px-32" style="width: 100%;">
+                <div class="mr-8 mt-8">Status</div>
+                <div fxLayout fxLayoutAlign="center" fxFlex class="mt-8">
+                  <mat-radio-group placeholder="Status" formControlName="Status">
+                    <mat-radio-button value="All">All</mat-radio-button>
+                    <mat-radio-button value="Open" class="ml-40">Open</mat-radio-button>
+                    <mat-radio-button value="Closed" class="ml-40">Closed</mat-radio-button>
+                  </mat-radio-group>
+                  <div fxFlex fxLayoutAlign="end center" class="ml-8">
+                    <button mat-raised-button class="SaveBtn" (click)="SearchClicked()"
+                      [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">Search</button>
+                  </div>
+                </div>
+              </mat-form-field> -->
+            </div>
+          </div>
+        </form>
+      </div>
+      <div fxLayout="row" class="mt-20" fxLayoutAlign="start center">
+        <mat-form-field appearance="outline" fxFlex="50">
+          <mat-icon class="mr-12" matPrefix>search</mat-icon>
+          <mat-label>Search</mat-label>
+          <input [(ngModel)]="searchText" matInput (keyup)="applyFilter($event)">
+        </mat-form-field>
+        <div fxFlex fxLayoutAlign="end center">
+          <!-- <mat-form-field appearance="outline" style="min-width: 100px;">
+            <mat-select [(ngModel)]="SelectValue">
+              <mat-option value="All">All</mat-option>
+            </mat-select>
+          </mat-form-field> -->
+          <button (click)="exportAsXLSX()" class="excelBtn mx-24" mat-stroked-button>
+            <img class="excelImg" src="assets/images/excel.png">
+          </button>
+          <img class="expandImg" src="assets/images/expand.png" (click)="expandClicked()">
+        </div>
+      </div>
       <table class="abnormal" mat-table [dataSource]="PurchaseDataSource" matSort>
 
         <ng-container matColumnDef="PIRNumber">
-          <th mat-header-cell *matHeaderCellDef> Order </th>
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Order </th>
           <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
             <div fxLayout>
-              <div class="tableCellBorder"  [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+              <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
               <div fxFlex class="pl-4">
-                <span class="cursorPointer" (click)="Gotocreate(element.PIRNumber)"> {{element.PIRNumber}}</span>
+                <span class="pdfLinkClass" (click)="Gotocreate(element.PIRNumber)"> {{element.PIRNumber}}</span>
                 <!-- (click)="GotoPIR(element.PIRNumber,element.PIRType)" -->
               </div>
             </div>
           </td>
         </ng-container>
         <ng-container matColumnDef="Date">
-          <th mat-header-cell *matHeaderCellDef>Order Date </th>
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>Order Date </th>
           <td mat-cell *matCellDef="let element">
             <span>{{element.Date | date :'dd/MM/yyyy'}}</span>
           </td>
         </ng-container>
         <ng-container matColumnDef="ReferenceDoc">
-          <th mat-header-cell *matHeaderCellDef>Reference Document</th>
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>Reference Document</th>
           <td mat-cell *matCellDef="let element">
             <span>{{element.ReferenceDoc}}</span>
           </td>
         </ng-container>
         <ng-container matColumnDef="Status">
-          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>Status</th>
           <td mat-cell *matCellDef="let element">
             <span *ngIf="element.Status=='10'">Draft</span>
             <span *ngIf="element.Status=='20'">Submitted</span>
             <span *ngIf="element.Status=='30'">Created</span>
-            <span *ngIf="element.Status=='40'">Canceled</span>
+            <span *ngIf="element.Status=='40'">Cancelled</span>
           </td>
         </ng-container>
         <!-- <ng-container matColumnDef="Status">
@@ -95,9 +231,9 @@
       <!-- <div *ngIf="data_list==false"> No Records Found</div> -->
     </div>
     <!-- table -->
-
-
   </div>
   <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
   </mat-progress-spinner>
+  <div id="overlay" *ngIf="IsProgressBarVisibile">
+  </div>
 </div>
