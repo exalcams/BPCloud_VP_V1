@@ -81,7 +81,7 @@ export class ASNAttachmentViewDialogComponent implements OnInit {
   GetInvoiceAttachment(element: BPCASNAttachment): void {
     const fileName = element.AttachmentName;
     this.IsProgressBarVisibile = true;
-    this._asnService.DowloandInvoiceAttachment(fileName, element.ASNNumber).subscribe(
+    this._asnService.DowloandAttachmentByID(element.AttachmentID).subscribe(
       data => {
         if (data) {
           let fileType = 'image/jpg';
@@ -104,7 +104,7 @@ export class ASNAttachmentViewDialogComponent implements OnInit {
   DowloandDocumentCenterAttachment(element: BPCASNAttachment): void {
     const fileName = element.AttachmentName;
     this.IsProgressBarVisibile = true;
-    this._asnService.DowloandDocumentCenterAttachment(fileName, element.ASNNumber).subscribe(
+    this._asnService.DowloandAttachmentByID(element.AttachmentID).subscribe(
       data => {
         if (data) {
           let fileType = 'image/jpg';

@@ -270,6 +270,13 @@ export class ASNService {
             .pipe(catchError(this.errorHandler));
     }
 
+    DowloandAttachmentByID(AttachmentID: number): Observable<Blob | string> {
+        return this._httpClient.get(`${this.baseAddress}poapi/ASN/DowloandAttachmentByID?AttachmentID=${AttachmentID}`, {
+            responseType: 'blob',
+            headers: new HttpHeaders().append('Content-Type', 'application/json')
+        })
+            .pipe(catchError(this.errorHandler));
+    }
 
     CreateASNPdf(ASNNumber: string): Observable<Blob | string> {
         return this._httpClient.get(`${this.baseAddress}poapi/ASN/CreateASNPdf?ASNNumber=${ASNNumber}`, {
