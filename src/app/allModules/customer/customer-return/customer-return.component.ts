@@ -21,7 +21,10 @@ import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notific
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
 import { AttachmentDetails } from 'app/models/task';
 import { AttachmentDialogComponent } from 'app/notifications/attachment-dialog/attachment-dialog.component';
-import { BPCPIHeader, BPCPIView, BPCPIItem, BPCProd, BPCRetHeader, BPCRetView_new, BPCRetItem, BPCInvoicePayment, BPCRetItemBatch, BPCRetItemSerial } from 'app/models/customer';
+import {
+  BPCPIHeader, BPCPIView, BPCPIItem, BPCProd, BPCRetHeader, BPCRetView_new, BPCRetItem, BPCInvoicePayment,
+  BPCRetItemBatch, BPCRetItemSerial, BPCRetItemView, BPCRetView
+} from 'app/models/customer';
 import { BPCFact } from 'app/models/fact';
 import { BatchDialogComponent } from '../batch-dialog/batch-dialog.component';
 import { SerialDialogComponent } from '../serial-dialog/serial-dialog.component';
@@ -55,8 +58,9 @@ export class CustomerReturnComponent implements OnInit {
   POItems: BPCOFItem[] = [];
   SelectedReturnHeader: BPCRetHeader;
   SelectedReturnNumber: string;
-  SelectedReturnView: BPCRetView_new;
-  AllReturnItems: BPCRetItem[] = [];
+  SelectedReturnView: BPCRetView;
+
+  AllReturnItems: BPCRetItemView[] = [];
   ReturnItemDisplayedColumns: string[] = [
     'Item',
     'Material',
@@ -125,7 +129,7 @@ export class CustomerReturnComponent implements OnInit {
     this.PO = new BPCOFHeader();
     this.SelectedReturnHeader = new BPCRetHeader();
     this.SelectedReturnHeader.Status = 'Open';
-    this.SelectedReturnView = new BPCRetView_new();
+    this.SelectedReturnView = new BPCRetView();
     this.SelectedReturnNumber = '';
     this.invAttach = new BPCInvoiceAttachment();
     this.minDate = new Date();
@@ -209,15 +213,16 @@ export class CustomerReturnComponent implements OnInit {
       RetQty: ['', [Validators.required, Validators.pattern('^([1-9][0-9]*)([.][0-9]{1,2})?$')]],
       // ReasonText: [''],
       // FileName: [''],
-      Invoice: ['', Validators.required]
-
+      Invoice: ['', Validators.required],
+      // Batches: [[]],
+      // Serials: [[]]
     });
   }
 
   ResetControl(): void {
     this.SelectedReturnHeader = new BPCRetHeader();
     this.SelectedReturnHeader.Status = 'Open';
-    this.SelectedReturnView = new BPCRetView_new();
+    this.SelectedReturnView = new BPCRetView();
     this.SelectedReturnNumber = '';
     this.ResetReturnFormGroup();
     // this.SetInitialValueForReturnFormGroup();
@@ -280,45 +285,45 @@ export class CustomerReturnComponent implements OnInit {
     }
   }
   // for batch dialog
-  GetBatchByRet(): void {
-    this._CustomerService.GetAllReturnbatch(this.SelectedReturnHeader.RetReqID).subscribe(
-      (data) => {
-        this.Batchlist = data as BPCRetItemBatch[],
-          this.BatchListNo = this.Batchlist.length;
-        //  console.log("batch"+this.Batchlist)
-        // this.BatchDataSource = new MatTableDataSource(this.AllReturnItems);
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-  }
-  GetSerialByRet(): void {
-    this._CustomerService.GetAllReturnSerial(this.SelectedReturnHeader.RetReqID).subscribe(
-      (data) => {
-        this.SerialList = data as BPCRetItemSerial[],
-          this.SerialListNo = this.SerialList.length;
-        //  console.log("batch"+this.SerialList)
+  // GetBatchByRet(): void {
+  //   this._CustomerService.GetAllReturnbatch(this.SelectedReturnHeader.RetReqID).subscribe(
+  //     (data) => {
+  //       this.Batchlist = data as BPCRetItemBatch[],
+  //         this.BatchListNo = this.Batchlist.length;
+  //       //  console.log("batch"+this.Batchlist)
+  //       // this.BatchDataSource = new MatTableDataSource(this.AllReturnItems);
+  //     },
+  //     (err) => {
+  //       console.log(err);
+  //     }
+  //   );
+  // }
+  // GetSerialByRet(): void {
+  //   this._CustomerService.GetAllReturnSerial(this.SelectedReturnHeader.RetReqID).subscribe(
+  //     (data) => {
+  //       this.SerialList = data as BPCRetItemSerial[],
+  //         this.SerialListNo = this.SerialList.length;
+  //       //  console.log("batch"+this.SerialList)
 
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-  }
-  RemovePurchaseIndentItemFromTable(doc: BPCRetItem): void {
+  //     },
+  //     (err) => {
+  //       console.log(err);
+  //     }
+  //   );
+  // }
+  RemovePurchaseIndentItemFromTable(doc: BPCRetItemView): void {
     const index: number = this.AllReturnItems.indexOf(doc);
     if (index > -1) {
       this.AllReturnItems.splice(index, 1);
     }
     this.ReturnItemDataSource = new MatTableDataSource(this.AllReturnItems);
     // this.SelectedReturnView.Batch;
-    this.Batchlist = null;
-    this.SelectedReturnView.Batch = [];
-    this.BatchListNo = null;
-    this.SerialList = null;
-    this.SelectedReturnView.Serial = [];
-    this.SerialListNo = null;
+    // this.Batchlist = null;
+    // // this.SelectedReturnView.Batch = [];
+    // this.BatchListNo = null;
+    // this.SerialList = null;
+    // this.SelectedReturnView.Serial = [];
+    // this.SerialListNo = null;
   }
   GetAllInvoices(): void {
     this._POService.GetAllInvoices().subscribe(
@@ -336,17 +341,18 @@ export class CustomerReturnComponent implements OnInit {
       // this.SelectedTask.Type = event.value;
     }
   }
-  BatchOpen(selecteditem: BPCRetItemBatch): void {
-
+  BatchOpen(selecteditem: BPCRetItemView): void {
+    const index = this.AllReturnItems.indexOf(selecteditem);
     const dialogRef = this.dialog.open(BatchDialogComponent, {
       width: '500px',
       // height:'400px',
-      data: { selecteditem: selecteditem, batchlist: this.Batchlist, status: this.status_show }
+      data: { selecteditem: selecteditem, status: this.status_show }
     });
     dialogRef.afterClosed().subscribe(result => {
 
       this.Batchlist = result as BPCRetItemBatch[];
       this.BatchListNo = this.Batchlist.length;
+      this.AllReturnItems[index].Batches = this.Batchlist;
 
       // if (!this.BatchListNo)
       //   this.GetBatchByRet();
@@ -355,16 +361,20 @@ export class CustomerReturnComponent implements OnInit {
     );
   }
 
-  SerialOpen(selecteditem: BPCRetItemSerial): void {
+  SerialOpen(selecteditem: BPCRetItemView): void {
+    const index = this.AllReturnItems.indexOf(selecteditem);
     const dialogRef = this.dialog.open(SerialDialogComponent, {
       width: '500px',
-      data: { selecteditem: selecteditem, SerialList: this.SerialList, status: this.status_show }
+      data: { selecteditem: selecteditem, status: this.status_show }
 
     });
     dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.SerialList = result as BPCRetItemSerial[];
+        this.SerialListNo = this.SerialList.length;
+        this.AllReturnItems[index].Serials = this.SerialList;
+      }
 
-      this.SerialList = result as BPCRetItemSerial[];
-      this.SerialListNo = this.SerialList.length;
       // if (!this.SerialListNo)
       //   this.GetSerialByRet();
     });
@@ -451,7 +461,11 @@ export class CustomerReturnComponent implements OnInit {
 
   AddReturnItemToTable(): void {
     if (this.ReturnItemFormGroup.valid) {
-      const PIItem = new BPCRetItem();
+      const PIItem = new BPCRetItemView();
+      PIItem.Client = this.SelectedBPCFact.Client;
+      PIItem.Company = this.SelectedBPCFact.Company;
+      PIItem.Type = this.SelectedBPCFact.Type;
+      PIItem.PatnerID = this.SelectedBPCFact.PatnerID;
       PIItem.Item = this.ReturnItemFormGroup.get('Item').value;
       PIItem.InvoiceNumber = this.ReturnItemFormGroup.get('Invoice').value;
       PIItem.Material = this.ReturnItemFormGroup.get('Material').value;
@@ -478,7 +492,7 @@ export class CustomerReturnComponent implements OnInit {
     }
   }
 
-  RemoveReturnItemFromTable(doc: BPCRetItem): void {
+  RemoveReturnItemFromTable(doc: BPCRetItemView): void {
     const index: number = this.AllReturnItems.indexOf(doc);
     if (index > -1) {
       this.AllReturnItems.splice(index, 1);
@@ -579,17 +593,33 @@ export class CustomerReturnComponent implements OnInit {
     this.SelectedReturnView.RetReqID = this.SelectedReturnHeader.RetReqID;
     this.SelectedReturnNumber = this.SelectedReturnHeader.RetReqID;
     this.SetReturnHeaderValues();
-    this.GetReturnItemsByRet();
-    this.GetBatchByRet();
-    this.GetSerialByRet();
+    // this.GetReturnItemsByRet();
+    this.GetReturnItemsByReqID();
+    // this.GetBatchByRet();
+    // this.GetSerialByRet();
   }
+
   // moni
-  GetReturnItemsByRet(): void {
-    this._CustomerService.GetReturnItemsByRet_RetI(this.SelectedReturnHeader.RetReqID).subscribe(
+  // GetReturnItemsByRet(): void {
+  //   this._CustomerService.GetReturnItemsByRet_RetI(this.SelectedReturnHeader.RetReqID).subscribe(
+  //     (data) => {
+  //       const dt = data as BPCRetItem[];
+  //       if (dt && dt.length && dt.length > 0) {
+  //         this.AllReturnItems = data as BPCRetItem[];
+  //         this.ReturnItemDataSource = new MatTableDataSource(this.AllReturnItems);
+  //       }
+  //     },
+  //     (err) => {
+  //       console.error(err);
+  //     }
+  //   );
+  // }
+  GetReturnItemsByReqID(): void {
+    this._CustomerService.GetReturnItemsByReqID(this.SelectedReturnHeader.RetReqID).subscribe(
       (data) => {
         const dt = data as BPCRetItem[];
         if (dt && dt.length && dt.length > 0) {
-          this.AllReturnItems = data as BPCRetItem[];
+          this.AllReturnItems = data as BPCRetItemView[];
           this.ReturnItemDataSource = new MatTableDataSource(this.AllReturnItems);
         }
       },
@@ -598,7 +628,6 @@ export class CustomerReturnComponent implements OnInit {
       }
     );
   }
-
   SetReturnHeaderValues(): void {
     this.ReturnFormGroup.get('RequestID').patchValue(this.SelectedReturnHeader.RetReqID);
     this.ReturnFormGroup.get('Date').patchValue(this.SelectedReturnHeader.Date);
@@ -686,39 +715,38 @@ export class CustomerReturnComponent implements OnInit {
       });
     }
   }
-  GetReturnBatchItemValues(): void {
-    this.SelectedReturnView.Batch = [];
+  // GetReturnBatchItemValues(): void {
+  //   this.SelectedReturnView.Batch = [];
 
+  //   if (this.Batchlist != null) {
+  //     this.Batchlist.forEach(x => {
+  //       if (this.Batchlist) {
+  //         x.Client = this.SelectedBPCFact.Client;
+  //         x.Company = this.SelectedBPCFact.Company;
+  //         x.Type = this.SelectedBPCFact.Type;
+  //         x.PatnerID = this.SelectedBPCFact.PatnerID;
+  //         // x.RetReqID=this.SelectedReturnHeader.RetReqID;
 
-    if (this.Batchlist != null) {
-      this.Batchlist.forEach(x => {
-        if (this.Batchlist) {
-          x.Client = this.SelectedBPCFact.Client;
-          x.Company = this.SelectedBPCFact.Company;
-          x.Type = this.SelectedBPCFact.Type;
-          x.PatnerID = this.SelectedBPCFact.PatnerID;
-          // x.RetReqID=this.SelectedReturnHeader.RetReqID;
-
-        }
-        this.SelectedReturnView.Batch.push(x);
-      });
-    }
-  }
-  GetReturnSerialItemValues(): void {
-    this.SelectedReturnView.Serial = [];
-    if (this.SerialList != null) {
-      this.SerialList.forEach(x => {
-        if (this.SelectedReturnHeader) {
-          x.Client = this.SelectedReturnHeader.Client;
-          x.Company = this.SelectedReturnHeader.Company;
-          x.Type = this.SelectedReturnHeader.Type;
-          x.PatnerID = this.SelectedReturnHeader.PatnerID;
-          // x.RetReqID=this.SelectedReturnHeader.RetReqID;
-        }
-        this.SelectedReturnView.Serial.push(x);
-      });
-    }
-  }
+  //       }
+  //       this.SelectedReturnView.Batch.push(x);
+  //     });
+  //   }
+  // }
+  // GetReturnSerialItemValues(): void {
+  //   this.SelectedReturnView.Serial = [];
+  //   if (this.SerialList != null) {
+  //     this.SerialList.forEach(x => {
+  //       if (this.SelectedReturnHeader) {
+  //         x.Client = this.SelectedReturnHeader.Client;
+  //         x.Company = this.SelectedReturnHeader.Company;
+  //         x.Type = this.SelectedReturnHeader.Type;
+  //         x.PatnerID = this.SelectedReturnHeader.PatnerID;
+  //         // x.RetReqID=this.SelectedReturnHeader.RetReqID;
+  //       }
+  //       this.SelectedReturnView.Serial.push(x);
+  //     });
+  //   }
+  // }
 
   SaveClicked(): void {
     // if (this.ReturnFormGroup.valid) {
@@ -727,8 +755,8 @@ export class CustomerReturnComponent implements OnInit {
       //     if (this.InvoiceDetailsFormGroup.valid) {
       this.GetReturnValues("saved");
       this.GetReturnItemValues();
-      this.GetReturnBatchItemValues();
-      this.GetReturnSerialItemValues();
+      // this.GetReturnBatchItemValues();
+      // this.GetReturnSerialItemValues();
       // this.GetInvoiceDetailValues();
       // this.GetDocumentCenterValues();
       // this.SelectedReturnView.IsSubmitted = false;
@@ -752,8 +780,8 @@ export class CustomerReturnComponent implements OnInit {
       if (!this.isQtyError) {
         this.GetReturnValues("submitted");
         this.GetReturnItemValues();
-        this.GetReturnBatchItemValues();
-        this.GetReturnSerialItemValues();
+        // this.GetReturnBatchItemValues();
+        // this.GetReturnSerialItemValues();
         // if (!this.SelectedPIRNumber) {
         //   this.length = 0;
         // }

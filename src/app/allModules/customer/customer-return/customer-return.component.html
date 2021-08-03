@@ -328,14 +328,16 @@
                 <th mat-header-cell *matHeaderCellDef style="width: 12%;"> Batch </th>
                 <td mat-cell style="width: 12%;text-align-last: center;" *matCellDef="let element">
                   <button mat-raised-button class="SubmitBtn mb-4" (click)="BatchOpen(element)">
-                    Batch {{BatchListNo?'('+BatchListNo +')':''}}</button>
+                    Batch {{element.Batches?.length>0?'('+element.Batches?.length+')':''}}
+                  </button>
                 </td>
               </ng-container>
               <ng-container matColumnDef="Serial">
                 <th mat-header-cell *matHeaderCellDef style="width: 13%;"> Serial </th>
                 <td mat-cell style="width: 13%;text-align-last: center;" *matCellDef="let element">
-                  <button mat-raised-button class="SubmitBtn mb-4" (click)="SerialOpen(element)">Serial
-                    {{SerialListNo?'('+SerialListNo +')':''}} </button>
+                  <button mat-raised-button class="SubmitBtn mb-4" (click)="SerialOpen(element)">
+                    Serial {{element.Serials?.length>0?'('+element.Serials?.length+')':''}}
+                  </button>
                 </td>
               </ng-container>
               <ng-container matColumnDef="Action">
@@ -387,11 +389,12 @@
             </div>
             <!-- <div *ngIf="!SelectedReturnHeader?.PIRNumber" fxFlex align="end"> -->
             <div fxFlex align="end">
-              <button *ngIf="SelectedReturnHeader?.Status!='submitted'" mat-stroked-button class="SaveBtn mb-4"
-                (click)="SaveClicked()">Save
+              <button
+                *ngIf="!SelectedReturnHeader?.Status || SelectedReturnHeader?.Status==='Open'|| SelectedReturnHeader?.Status==='saved'"
+                mat-stroked-button class="SaveBtn mb-4" (click)="SaveClicked()">Save
               </button>
-              <button *ngIf="SelectedReturnHeader?.Status!='submitted'" mat-raised-button class="SubmitBtn mb-4"
-                (click)="SubmitClicked()">Submit</button>
+              <button *ngIf="!SelectedReturnHeader?.Status || SelectedReturnHeader?.Status==='Open'||SelectedReturnHeader?.Status==='saved'" mat-raised-button
+                class="SubmitBtn mb-4" (click)="SubmitClicked()">Submit</button>
             </div>
           </div>
         </mat-card-actions>

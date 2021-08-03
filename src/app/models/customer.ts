@@ -128,19 +128,24 @@ export class BPCRetItemSerial extends CommonClass {
 
 }
 
-// export class BPCRetView extends CommonClass {
-//     ID: number;
-//     Client: string;
-//     Company: string;
-//     Type: string;
-//     PatnerID: string;
-//     RetReqID: string;
-//     Text: string;
-//     Date: Date | string | null;
-//     InvoiceDoc: string;
-//     Status: string;
-//     Items: BPCRetItem[];
-// }
+export class BPCRetView extends CommonClass {
+    Client: string;
+    Company: string;
+    Type: string;
+    PatnerID: string;
+    RetReqID: string;
+    DocumentNumber: string;
+    CreditNote: string;
+    AWBNumber: string;
+    Transporter: string;
+    TruckNumber: string;
+    Text: string;
+    Date: Date | string | null;
+    InvoiceDoc: string;
+    Status: string;
+    Items: BPCRetItemView[];
+}
+// tslint:disable-next-line:class-name
 export class BPCRetView_new extends CommonClass {
     // ID: number;
     Client: string;
@@ -161,6 +166,47 @@ export class BPCRetView_new extends CommonClass {
     Batch: BPCRetItemBatch[];
     Serial: BPCRetItemSerial[];
 }
+export class BPCRetItemView extends CommonClass {
+    Client: string;
+    Company: string;
+    Type: string;
+    PatnerID: string;
+    RetReqID: string;
+    Item: string;
+    ProdcutID: string;
+    Material: string;
+    MaterialText: string;
+    InvoiceNumber: string;
+    OrderQty: number;
+    RetQty: number;
+    ReasonText: string;
+    FileName: string;
+    AttachmentReferenceNo: string;
+    Batches: BPCRetItemBatch[];
+    Serials: BPCRetItemSerial[];
+    constructor() {
+        super();
+        this.Batches = [];
+        this.Serials = [];
+    }
+}
+// export class BPCRetView1 extends CommonClass {
+//     Client: string;
+//     Company: string;
+//     Type: string;
+//     PatnerID: string;
+//     RetReqID: string;
+//     DocumentNumber: string;
+//     CreditNote: string;
+//     AWBNumber: string;
+//     Transporter: string;
+//     TruckNumber: string;
+//     Text: string;
+//     Date: Date | string | null;
+//     InvoiceDoc: string;
+//     Status: string;
+//     Items: BPCRetItemView1[];
+// }
 export class BPCProd extends CommonClass {
     // ID: number;
     Client: string;
@@ -248,5 +294,4 @@ export class BPCPayRecord extends CommonClass {
     Remarks: string;
     RefNumber: string;
     PayDoc: string;
-
 }
