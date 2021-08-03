@@ -564,12 +564,12 @@ export class PurchaseIndentComponent implements OnInit {
         else {
             // this.SelectedPurchaseIndentHeader.Client = this.SelectedPurchaseIndentView.Client = this.SelectedPurchaseIndentHeader.Client;
             // this.SelectedPurchaseIndentHeader.Company = this.SelectedPurchaseIndentView.Company = this.SelectedPurchaseIndentHeader.Company;
-            if (action === "submitted") {
-                this.SelectedPurchaseIndentHeader.Status = this.SelectedPurchaseIndentView.Status = "20";
-            }
-            else if (action === "saved") {
-                this.SelectedPurchaseIndentHeader.Status = this.SelectedPurchaseIndentView.Status = "10";
-            }
+            // if (action === "submitted") {
+            //     this.SelectedPurchaseIndentHeader.Status = this.SelectedPurchaseIndentView.Status = "20";
+            // }
+            // else if (action === "saved") {
+            //     this.SelectedPurchaseIndentHeader.Status = this.SelectedPurchaseIndentView.Status = "10";
+            // }
         }
     }
 
@@ -731,7 +731,7 @@ export class PurchaseIndentComponent implements OnInit {
         else if (Actiontype === 'Save') {
             this.SelectedPurchaseIndentView.Status = '10';
         }
-        console.log("SelectedPurchaseIndentView" + this.SelectedPurchaseIndentView);
+        // console.log("SelectedPurchaseIndentView" + this.SelectedPurchaseIndentView);
         // mchng
         this._CustomerService.CreatePurchaseIndent(this.SelectedPurchaseIndentView).subscribe(
             (data) => {

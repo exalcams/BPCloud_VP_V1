@@ -4,7 +4,10 @@ import { AuthService } from './auth.service';
 import { Observable, throwError } from 'rxjs';
 import { Guid } from 'guid-typescript';
 import { catchError } from 'rxjs/operators';
-import { BPCPIView, BPCPIHeader, BPCProd, BPCPIItem, BPCRetHeader, BPCRetView_new, BPCRetItem, BPCRetItemBatch, BPCRetItemSerial } from 'app/models/customer';
+import {
+    BPCPIView, BPCPIHeader, BPCProd, BPCPIItem, BPCRetHeader, BPCRetView_new, BPCRetItem,
+    BPCRetItemBatch, BPCRetItemSerial, BPCRetItemView, BPCRetView
+} from 'app/models/customer';
 
 @Injectable({
     providedIn: 'root'
@@ -180,7 +183,13 @@ export class CustomerService {
         return this._httpClient.get<BPCRetItem[]>(`${this.baseAddress}poapi/Return/GetReturnItemsByRet_RetI?RetReqID=${RetReqID}`)
             .pipe(catchError(this.errorHandler));
     }
-    CreateReturnHeader(Return: BPCRetView_new): Observable<any> {
+
+    GetReturnItemsByReqID(RetReqID: string): Observable<BPCRetItemView[] | string> {
+        return this._httpClient.get<BPCRetItemView[]>(`${this.baseAddress}poapi/Return/GetReturnItemsByReqID?RetReqID=${RetReqID}`)
+            .pipe(catchError(this.errorHandler));
+    }
+
+    CreateReturnHeader(Return: BPCRetView): Observable<any> {
         return this._httpClient.post<any>(`${this.baseAddress}poapi/Return/CreateReturnHeader`,
             Return,
             {
@@ -191,7 +200,7 @@ export class CustomerService {
             .pipe(catchError(this.errorHandler));
     }
 
-    UpdateReturnHeader(Return: BPCRetView_new): Observable<any> {
+    UpdateReturnHeader(Return: BPCRetView): Observable<any> {
         return this._httpClient.post<any>(`${this.baseAddress}poapi/Return/UpdateReturnHeader`,
             Return,
             {

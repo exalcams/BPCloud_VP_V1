@@ -376,10 +376,10 @@
             </div>
             <div fxFlex align="end">
               <!-- *ngIf="!SelectedPurchaseIndentHeader?.PIRNumber" -->
-              <button type="button" *ngIf="SelectedPurchaseIndentHeader?.Status!='submitted'" mat-stroked-button
+              <button type="button" *ngIf="!SelectedPurchaseIndentHeader?.Status || SelectedPurchaseIndentHeader?.Status==='Open' || SelectedPurchaseIndentHeader?.Status==='saved'" mat-stroked-button
                 class="SaveBtn mb-4" (click)="SaveClicked()">Save
               </button>
-              <button type="button" *ngIf="SelectedPurchaseIndentHeader?.Status!='submitted'" mat-raised-button
+              <button type="button" *ngIf="!SelectedPurchaseIndentHeader?.Status || SelectedPurchaseIndentHeader?.Status==='Open' || SelectedPurchaseIndentHeader?.Status==='saved'" mat-raised-button
                 class="SubmitBtn mb-4" (click)="SubmitClicked()">Submit</button>
             </div>
           </div>

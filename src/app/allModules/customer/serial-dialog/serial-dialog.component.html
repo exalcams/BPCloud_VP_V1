@@ -1,5 +1,5 @@
 <div>
-  <mat-toolbar>
+  <mat-toolbar class="toolBg m-0">
     <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
       <span class="title dialog-title">Serial Details</span>
       <button mat-icon-button (click)="CloseClicked()" aria-label="Close dialog">
@@ -15,9 +15,9 @@
       <div fxLayout>
         <mat-form-field fxFlex class="px-12">
           <input matInput placeholder="Serial" formControlName="Serial">
-          <mat-error *ngIf="SerailFormGroup.get('Batch').touched && 
-       SerailFormGroup.get('Batch').hasError('required')">
-            Batch is required
+          <mat-error *ngIf="SerailFormGroup.get('Serial').touched && 
+       SerailFormGroup.get('Serial').hasError('required')">
+            Serial is required
           </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex class="px-12">
@@ -33,8 +33,9 @@
       </div>
     </form>
 
-    <div *ngIf="AllReturnItems.length" class="table px-12">
+    <div *ngIf="ReturnItemSerials.length" class="table px-12">
       <table mat-table [dataSource]="SerialDataSource">
+        
         <ng-container matColumnDef="Serial">
           <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Serial</th>
           <td mat-cell style="width: 10%;" *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
@@ -45,10 +46,8 @@
           </td>
         </ng-container>
 
-
-
         <ng-container matColumnDef="RetQty">
-          <th mat-header-cell *matHeaderCellDef style="width: 15%;"> RetQty</th>
+          <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Ret Qty</th>
           <td mat-cell style="width: 15%;" *matCellDef="let element">
             <span> {{ element.RetQty}} </span>
           </td>
