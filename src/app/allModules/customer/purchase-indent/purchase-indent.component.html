@@ -288,7 +288,7 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div fxFlex="10" *ngIf="status_show!='submitted'" fxLayoutAlign="center start">
+                <div fxFlex="10" *ngIf="!SelectedPurchaseIndentHeader?.Status || SelectedPurchaseIndentHeader?.Status==='Open' || SelectedPurchaseIndentHeader?.Status==='saved'" fxLayoutAlign="center start">
                   <img class="addIcon" (click)="AddPurchaseIndentItemToTable()"
                     src="assets/images/logos/add-button.png">
                   <!-- <button class="SaveBtn" mat-raised-button (click)="AddDocumentCenterToTable()">Add</button> -->
@@ -345,8 +345,8 @@
               </ng-container>
 
               <ng-container matColumnDef="Action">
-                <th mat-header-cell [hidden]="show" *matHeaderCellDef mat-sort-header style="width: 10%"> </th>
-                <td mat-cell [hidden]="show" *matCellDef="let element" style="text-align: center;width: 10%">
+                <th mat-header-cell [hidden]="hide" *matHeaderCellDef mat-sort-header style="width: 10%"> </th>
+                <td mat-cell [hidden]="hide" *matCellDef="let element" style="text-align: center;width: 10%">
                   <img class="removeIcon" src="assets/images/remove-button.png"
                     (click)="RemovePurchaseIndentItemFromTable(element)">
                 </td>

@@ -99,7 +99,7 @@ export class CustomerReturnComponent implements OnInit {
   Batchlist: BPCRetItemBatch[];
   SerialList: BPCRetItemSerial[];
   SerialListNo: number;
-  show: boolean;
+  hide: boolean;
   orderqty: number;
   retqty: number;
   invoice_duplicate: any;
@@ -234,6 +234,7 @@ export class CustomerReturnComponent implements OnInit {
     this.selectedDocCenterMaster = new BPCDocumentCenterMaster();
     this.SelectedPIRNumber = '';
     this.status_show = '';
+    this.hide = false;
     this.ReturnFormGroup.get('Date').patchValue(new Date());
   }
 
@@ -568,11 +569,16 @@ export class CustomerReturnComponent implements OnInit {
           this.ReturnFormGroup.get('Transporter').disable();
           this.ReturnFormGroup.get('TruckNumber').disable();
           this.ReturnFormGroup.get('Status').disable();
-          this.show = true;
+          // this.show = true;
         }
         else if (this.status_show === 'saved') {
           this.ReturnFormGroup.get('RequestID').disable();
           this.ReturnFormGroup.get('Status').disable();
+        }
+        if (!this.status_show || this.status_show === 'Open' || this.status_show === 'saved') {
+          this.hide = false;
+        } else {
+          this.hide = true;
         }
         // console.log("ret" + this.SelectedReturnHeader);
         if (this.SelectedReturnHeader) {

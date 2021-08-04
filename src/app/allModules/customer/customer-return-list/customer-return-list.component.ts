@@ -61,6 +61,7 @@ export class CustomerReturnListComponent implements OnInit {
   DefaultFromDate: Date;
   DefaultToDate: Date;
   Statuses = [];
+  searchText = '';
   constructor(
     private _formBuilder: FormBuilder,
     public _customerService: CustomerService,

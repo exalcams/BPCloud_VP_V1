@@ -261,7 +261,7 @@
                   <input hidden type="file" #fileInput1 (change)="handleFileInput($event)"
                     accept="image/x-png,image/gif,image/jpeg,image/jpg,application/pdf" />
                 </div> -->
-                <div *ngIf="status_show!='submitted'" fxFlex="10" fxLayoutAlign="center start">
+                <div *ngIf="!SelectedReturnHeader?.Status || SelectedReturnHeader?.Status==='Open'|| SelectedReturnHeader?.Status==='saved'" fxFlex="10" fxLayoutAlign="center start">
                   <img class="addIcon" src="assets/images/logos/add-button.png" (click)="AddReturnItemToTable()">
                   <!-- <button class="SaveBtn" mat-raised-button (click)="AddDocumentCenterToTable()">Add</button> -->
                 </div>
@@ -341,8 +341,8 @@
                 </td>
               </ng-container>
               <ng-container matColumnDef="Action">
-                <th mat-header-cell [hidden]="show" *matHeaderCellDef mat-sort-header style="width: 13%"> </th>
-                <td mat-cell [hidden]="show" *matCellDef="let element" class="mb-4" style="width: 13%">
+                <th mat-header-cell [hidden]="hide" *matHeaderCellDef mat-sort-header style="width: 13%"> </th>
+                <td mat-cell [hidden]="hide" *matCellDef="let element" class="mb-4" style="width: 13%">
                   <img class="removeIcon" src="assets/images/remove-button.png"
                     (click)="RemovePurchaseIndentItemFromTable(element)">
                 </td>

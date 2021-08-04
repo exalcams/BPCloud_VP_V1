@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, ViewEncapsulation } from '@an
 import { AuthenticationDetails, UserWithRole, AppUsage } from 'app/models/master';
 import { Guid } from 'guid-typescript';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
-import { BPCPODHeader, BPCPODView, BPCPODItem, BPCReasonMaster } from 'app/models/POD';
+import { BPCPODHeader, BPCPODView, BPCPODItem, BPCReasonMaster, BPCPODItemView, AttachmentFiles } from 'app/models/POD';
 import { FormGroup, FormArray, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { MatPaginator, MatSort, MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
@@ -61,10 +61,9 @@ export class PODDetailsComponent implements OnInit {
     'ReceivedQty',
     'MissingQty',
     'BreakageQty',
-
     'AcceptedQty',
     'Reason',
-    'AttachmentName',
+    'AttachmentNames',
     'Remarks'
   ];
   PODItemFormArray: FormArray = this._formBuilder.array([]);
@@ -396,18 +395,18 @@ export class PODDetailsComponent implements OnInit {
     this.SelectedPODHeader = seletedPOD;
     this.SelectedPODView.InvoiceNumber = this.SelectedPODHeader.InvoiceNumber;
     this.SelectedInvoiceNumber = this.SelectedPODHeader.InvoiceNumber;
-    this.GetPODItemsByPOD();
+    this.GetPODItemViewsByPOD();
     this.SetPODHeaderValues();
 
   }
 
-  GetPODItemsByPOD(): void {
+  GetPODItemViewsByPOD(): void {
     this.IsProgressBarVisibile = true;
-    this._PODService.GetPODItemsByPOD(this.SelectedPODHeader.InvoiceNumber).subscribe(
+    this._PODService.GetPODItemViewsByPOD(this.SelectedPODHeader.InvoiceNumber).subscribe(
       (data) => {
 
         this.IsProgressBarVisibile = false;
-        this.SelectedPODView.PODItems = data as BPCPODItem[];
+        this.SelectedPODView.PODItems = data as BPCPODItemView[];
         this.ClearFormArray(this.PODItemFormArray);
 
         if (this.SelectedPODView.PODItems && this.SelectedPODView.PODItems.length) {
@@ -442,7 +441,7 @@ export class PODDetailsComponent implements OnInit {
   }
 
 
-  InsertPODItemsFormGroup(PODItem: BPCPODItem): void {
+  InsertPODItemsFormGroup(PODItem: BPCPODItemView): void {
     const row = this._formBuilder.group({
       Item: [PODItem.Item],
       Material: [PODItem.Material],
@@ -454,7 +453,7 @@ export class PODDetailsComponent implements OnInit {
       AcceptedQty: [PODItem.AcceptedQty, [Validators.required, Validators.max(PODItem.Qty), Validators.pattern('^([0-9][0-9]*)([.][0-9]{1,3})?$')]],
       Reason: [PODItem.Reason],
       Remarks: [PODItem.Remarks],
-      AttachmentName: [PODItem.AttachmentName]
+      AttachmentNames: [PODItem.AttachmentNames]
     });
     row.disable();
     if (this.SelectedPODHeader.Status === 'Submitted') {
@@ -463,7 +462,7 @@ export class PODDetailsComponent implements OnInit {
       row.get('BreakageQty').disable();
       row.get('AcceptedQty').disable();
       row.get('Remarks').enable();
-      row.get('AttachmentName').enable();
+      row.get('AttachmentNames').enable();
     }
     else {
       row.get('ReceivedQty').enable();
@@ -472,7 +471,7 @@ export class PODDetailsComponent implements OnInit {
       row.get('AcceptedQty').enable();
       row.get('Reason').enable();
       row.get('Remarks').enable();
-      row.get('AttachmentName').enable();
+      row.get('AttachmentNames').enable();
     }
 
     this.PODItemFormArray.push(row);
@@ -517,7 +516,7 @@ export class PODDetailsComponent implements OnInit {
     this.SelectedPODView.PODItems = [];
     const PODItemFormArray = this.PODItemFormGroup.get('PODItems') as FormArray;
     PODItemFormArray.controls.forEach((x, i) => {
-      const item: BPCPODItem = new BPCPODItem();
+      const item: BPCPODItemView = new BPCPODItemView();
       if (this.SelectedBPCFact) {
         item.Client = this.SelectedBPCFact.Client;
         item.Company = this.SelectedBPCFact.Company;
@@ -535,7 +534,7 @@ export class PODDetailsComponent implements OnInit {
       item.AcceptedQty = x.get('AcceptedQty').value;
       item.Reason = x.get('Reason').value;
       item.Remarks = x.get('Remarks').value;
-      item.AttachmentName = x.get('AttachmentName').value;
+      item.AttachmentNames = x.get('AttachmentNames').value as string[];
 
       item.Client = this.SelectedPODHeader.Client;
       item.Company = this.SelectedPODHeader.Company;
@@ -571,7 +570,18 @@ export class PODDetailsComponent implements OnInit {
   }
   GetPODItemAttachments(): void {
     if (this.fileToUploadList.length && this.SelectedPODView.PODItems.length) {
-      this.fileToUploadList = this.fileToUploadList.filter(x => this.SelectedPODView.PODItems.some(y => x.name === y.AttachmentName));
+      const files = this.SelectedPODView.PODItems.map(x => x.AttachmentNames);
+      const AllFileNames: string[] = [];
+      if (files && files.length) {
+        files.forEach(x => {
+          if (x && x.length) {
+            x.forEach(y => {
+              AllFileNames.push(y);
+            });
+          }
+        });
+      }
+      this.fileToUploadList = this.fileToUploadList.filter(x => AllFileNames.some(y => x.name === y));
     }
   }
   CheckForNonZeroMissingQty(): boolean {
@@ -701,13 +711,13 @@ export class PODDetailsComponent implements OnInit {
         this.Recived_status = "40";
         this.PODItemFormArray.controls[i].get('Reason').setValidators(Validators.required);
         this.PODItemFormArray.controls[i].get('Reason').updateValueAndValidity();
-        this.PODItemFormArray.controls[i].get('AttachmentName').setValidators(Validators.required);
-        this.PODItemFormArray.controls[i].get('AttachmentName').updateValueAndValidity();
+        this.PODItemFormArray.controls[i].get('AttachmentNames').setValidators(Validators.required);
+        this.PODItemFormArray.controls[i].get('AttachmentNames').updateValueAndValidity();
       } else {
         this.PODItemFormArray.controls[i].get('Reason').clearValidators();
         this.PODItemFormArray.controls[i].get('Reason').updateValueAndValidity();
-        this.PODItemFormArray.controls[i].get('AttachmentName').clearValidators();
-        this.PODItemFormArray.controls[i].get('AttachmentName').updateValueAndValidity();
+        this.PODItemFormArray.controls[i].get('AttachmentNames').clearValidators();
+        this.PODItemFormArray.controls[i].get('AttachmentNames').updateValueAndValidity();
       }
 
       // this.PODItemFormGroup.get('PODItems').get('ReceivedQty').hasError;
@@ -879,26 +889,29 @@ export class PODDetailsComponent implements OnInit {
   }
 
   AddPODItemAttachment(Actiontype: string): void {
-    this._PODService.AddPODItemAttachment(this.SelectedPODHeader.PatnerID, this.SelectedPODHeader.DocNumber, this.SelectedPODHeader.InvoiceNumber, this.currentUserID.toString(), this.fileToUploadList).subscribe(
-      (dat) => {
-        this.ResetControl();
-        if (Actiontype === 'Submit') {
-          if (this.Recived_status === '40') {
-            this.notificationSnackBarComponent.openSnackBar(`We have noted the quantity difference, we will process your order again`, SnackBarStatus.success, 5000);
+    this._PODService.AddPODItemAttachment
+      (this.SelectedPODHeader.PatnerID, this.SelectedPODHeader.DocNumber, this.SelectedPODHeader.InvoiceNumber, this.currentUserID.toString(), this.fileToUploadList)
+      .subscribe(
+        (dat) => {
+          this.ResetControl();
+          if (Actiontype === 'Submit') {
+            if (this.Recived_status === '40') {
+              this.notificationSnackBarComponent.openSnackBar(`We have noted the quantity difference, we will process your order again`, SnackBarStatus.success, 5000);
+            } else {
+              this.notificationSnackBarComponent.openSnackBar(`POD submitted successfully`, SnackBarStatus.success);
+            }
           } else {
-            this.notificationSnackBarComponent.openSnackBar(`POD submitted successfully`, SnackBarStatus.success);
+            this.notificationSnackBarComponent.openSnackBar(`POD saved successfully`, SnackBarStatus.success);
           }
-        } else {
-          this.notificationSnackBarComponent.openSnackBar(`POD saved successfully`, SnackBarStatus.success);
+          // this.notificationSnackBarComponent.openSnackBar(`POD ${Actiontype === 'Submit' ? 'submitted' : 'saved'} successfully`, SnackBarStatus.success);
+          this.IsProgressBarVisibile = false;
+          this.GetPODBasedOnCondition();
+        },
+        (err) => {
+          this.SelectedPODHeader.Status = this.SelectedPODView.Status = 'Open';
+          this.showErrorNotificationSnackBar(err);
         }
-        // this.notificationSnackBarComponent.openSnackBar(`POD ${Actiontype === 'Submit' ? 'submitted' : 'saved'} successfully`, SnackBarStatus.success);
-        this.IsProgressBarVisibile = false;
-        this.GetPODBasedOnCondition();
-      },
-      (err) => {
-        this.showErrorNotificationSnackBar(err);
-      }
-    );
+      );
   }
 
   showErrorNotificationSnackBar(err: any): void {
@@ -948,6 +961,7 @@ export class PODDetailsComponent implements OnInit {
         }
       },
       (err) => {
+        this.SelectedPODHeader.Status = this.SelectedPODView.Status = 'Open';
         console.error(err);
         this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
         this.IsProgressBarVisibile = false;
@@ -1026,63 +1040,79 @@ export class PODDetailsComponent implements OnInit {
     }
   }
   CheckPODItemAttachment(index: number): void {
-    const fileName = this.PODItemFormArray.controls[index].get('AttachmentName').value;
-    if (fileName) {
-      const file = this.fileToUploadList.filter(x => x.name === fileName)[0];
-      if (file && file.size) {
-        const blob = new Blob([file], { type: file.type });
-        this.OpenPODItemAttachmentDialog(index, blob, fileName);
-      } else {
-        this.IsProgressBarVisibile = true;
-        this._PODService.DowloandPODItemAttachment(fileName).subscribe(
-          data => {
-            if (data) {
-              let fileType = 'image/jpg';
-              fileType = fileName.toLowerCase().includes('.jpg') ? 'image/jpg' :
-                fileName.toLowerCase().includes('.jpeg') ? 'image/jpeg' :
-                  fileName.toLowerCase().includes('.png') ? 'image/png' :
-                    fileName.toLowerCase().includes('.gif') ? 'image/gif' :
-                      fileName.toLowerCase().includes('.pdf') ? 'application/pdf' : '';
-              const blob = new Blob([data], { type: fileType });
-              this.OpenPODItemAttachmentDialog(index, blob, fileName);
-              // this.OpenAttachmentDialog(fileName, blob);
-            }
-            this.IsProgressBarVisibile = false;
-          },
-          error => {
-            console.error(error);
-            this.IsProgressBarVisibile = false;
-          }
-        );
-      }
+    const item = this.PODItemFormArray.controls[index].get('Item').value;
+    const fileNames = this.PODItemFormArray.controls[index].get('AttachmentNames').value as string[];
+    if (fileNames && fileNames.length) {
+      const files = this.fileToUploadList.filter(x => fileNames.some(y => x.name === y));
+      this.OpenPODItemAttachmentDialog(item, index, files, fileNames);
+      // if (file && file.size) {
+      //   const blob = new Blob([file], { type: file.type });
+      //   this.OpenPODItemAttachmentDialog(index, blob, fileName);
+      // } else {
+      //   this.IsProgressBarVisibile = true;
+      //   this._PODService.DowloandPODItemAttachment(fileName).subscribe(
+      //     data => {
+      //       if (data) {
+      //         let fileType = 'image/jpg';
+      //         fileType = fileName.toLowerCase().includes('.jpg') ? 'image/jpg' :
+      //           fileName.toLowerCase().includes('.jpeg') ? 'image/jpeg' :
+      //             fileName.toLowerCase().includes('.png') ? 'image/png' :
+      //               fileName.toLowerCase().includes('.gif') ? 'image/gif' :
+      //                 fileName.toLowerCase().includes('.pdf') ? 'application/pdf' : '';
+      //         const blob = new Blob([data], { type: fileType });
+      //         this.OpenPODItemAttachmentDialog(index, blob, fileName);
+      //         // this.OpenAttachmentDialog(fileName, blob);
+      //       }
+      //       this.IsProgressBarVisibile = false;
+      //     },
+      //     error => {
+      //       console.error(error);
+      //       this.IsProgressBarVisibile = false;
+      //     }
+      //   );
+      // }
+
     } else {
       // const el: HTMLElement = this.fileInput1.nativeElement;
       // el.click();
-      this.OpenPODItemAttachmentDialog(index);
+      this.OpenPODItemAttachmentDialog(item, index);
     }
   }
-  OpenPODItemAttachmentDialog(index: number, blob?: Blob, fileName?: string): void {
+  OpenPODItemAttachmentDialog(item: string, index: number, files?: File[], fileNames?: string[]): void {
     let dialogConfig: MatDialogConfig;
-    if (blob && fileName) {
-      const file = new File([blob], fileName);
-      dialogConfig = {
-        data: file,
-        panelClass: 'pod-item-attach-dialog'
-      };
-    } else {
-      dialogConfig = {
-        panelClass: 'pod-item-attach-dialog'
-      };
-    }
+    // if (blob && fileName) {
+    //   const file = new File([blob], fileName);
+    //   dialogConfig = {
+    //     data: file,
+    //     panelClass: 'pod-item-attach-dialog'
+    //   };
+    // } else {
+    //   dialogConfig = {
+    //     panelClass: 'pod-item-attach-dialog'
+    //   };
+    // }
+    const attahmentFiles: AttachmentFiles = new AttachmentFiles();
+    attahmentFiles.Item = item;
+    attahmentFiles.index = index;
+    attahmentFiles.files = files;
+    attahmentFiles.fileNames = fileNames;
+    attahmentFiles.IsSubmitted = this.SelectedPODHeader.Status.includes('Confirmed');
+    dialogConfig = {
+      data: attahmentFiles,
+      panelClass: 'pod-item-attach-dialog'
+    };
     const dialogRef = this.dialog.open(PODItemAttachmentDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       result => {
         if (result) {
-          const result1 = result as File;
+          const result1 = result as AttachmentFiles;
           if (result1) {
-            this.fileToUpload = result1;
-            this.fileToUploadList.push(result1);
-            this.PODItemFormArray.controls[index].get('AttachmentName').patchValue(this.fileToUpload.name);
+            // this.fileToUpload = result1;
+            result1.files.forEach(x => {
+              this.fileToUploadList.push(x);
+            });
+
+            this.PODItemFormArray.controls[index].get('AttachmentNames').patchValue(result1.fileNames);
           }
         }
       });
@@ -1091,7 +1121,7 @@ export class PODDetailsComponent implements OnInit {
     if (evt.target.files && evt.target.files.length > 0) {
       this.fileToUpload = evt.target.files[0];
       this.fileToUploadList.push(this.fileToUpload);
-      this.PODItemFormArray.controls[index].get('AttachmentName').patchValue(this.fileToUpload.name);
+      this.PODItemFormArray.controls[index].get('AttachmentNames').patchValue(this.fileToUpload.name);
     }
   }
   MenuBookClicked(index: number): void {
@@ -1114,35 +1144,35 @@ export class PODDetailsComponent implements OnInit {
       });
   }
 
-  ViewPODItemAttachment(index: number): void {
-    const fileName = this.PODItemFormArray.controls[index].get('AttachmentName').value;
-    const file = this.fileToUploadList.filter(x => x.name === fileName)[0];
-    if (file && file.size) {
-      const blob = new Blob([file], { type: file.type });
-      this.OpenAttachmentDialog(fileName, blob);
-    } else {
-      this.IsProgressBarVisibile = true;
-      this._PODService.DowloandPODItemAttachment(fileName).subscribe(
-        data => {
-          if (data) {
-            let fileType = 'image/jpg';
-            fileType = fileName.toLowerCase().includes('.jpg') ? 'image/jpg' :
-              fileName.toLowerCase().includes('.jpeg') ? 'image/jpeg' :
-                fileName.toLowerCase().includes('.png') ? 'image/png' :
-                  fileName.toLowerCase().includes('.gif') ? 'image/gif' :
-                    fileName.toLowerCase().includes('.pdf') ? 'application/pdf' : '';
-            const blob = new Blob([data], { type: fileType });
-            this.OpenAttachmentDialog(fileName, blob);
-          }
-          this.IsProgressBarVisibile = false;
-        },
-        error => {
-          console.error(error);
-          this.IsProgressBarVisibile = false;
-        }
-      );
-    }
-  }
+  // ViewPODItemAttachment(index: number): void {
+  //   const fileName = this.PODItemFormArray.controls[index].get('AttachmentNames').value;
+  //   const file = this.fileToUploadList.filter(x => x.name === fileName)[0];
+  //   if (file && file.size) {
+  //     const blob = new Blob([file], { type: file.type });
+  //     this.OpenAttachmentDialog(fileName, blob);
+  //   } else {
+  //     this.IsProgressBarVisibile = true;
+  //     this._PODService.DowloandPODItemAttachment(fileName).subscribe(
+  //       data => {
+  //         if (data) {
+  //           let fileType = 'image/jpg';
+  //           fileType = fileName.toLowerCase().includes('.jpg') ? 'image/jpg' :
+  //             fileName.toLowerCase().includes('.jpeg') ? 'image/jpeg' :
+  //               fileName.toLowerCase().includes('.png') ? 'image/png' :
+  //                 fileName.toLowerCase().includes('.gif') ? 'image/gif' :
+  //                   fileName.toLowerCase().includes('.pdf') ? 'application/pdf' : '';
+  //           const blob = new Blob([data], { type: fileType });
+  //           this.OpenAttachmentDialog(fileName, blob);
+  //         }
+  //         this.IsProgressBarVisibile = false;
+  //       },
+  //       error => {
+  //         console.error(error);
+  //         this.IsProgressBarVisibile = false;
+  //       }
+  //     );
+  //   }
+  // }
 
   OpenAttachmentDialog(FileName: string, blob: Blob): void {
     const attachmentDetails: AttachmentDetails = {
