@@ -9,7 +9,7 @@
   </mat-toolbar>
 
   <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
-    <div fxLayout style="padding: 10px;">
+    <!-- <div fxLayout style="padding: 10px;">
       <div fxFlex="90">
         <span style="cursor: pointer; color: #1e8bed;" (click)="attachmentClicked()">{{file?.name}}</span>
         <div *ngIf="!file?.name" class="no-results-message">
@@ -23,11 +23,65 @@
         <input hidden type="file" #fileInput2 id="file" (change)="handleFileInput($event)"
           accept="image/x-png,image/gif,image/jpeg,image/jpg,application/pdf" />
       </div>
+    </div> -->
+    <div fxLayout>
+      <div fxFlex="90">
+        <div *ngIf="attachmentFiles?.fileNames?.length === 0 ; else att" class="no-results-message">
+          <span class="pl-12 pt-4"> No attachments..</span>
+        </div>
+        <ng-template #att>
+          <span class="pt-4 boldUnderline"> Attachments</span>
+        </ng-template>
+      </div>
+      <div fxFlex="10">
+        <img *ngIf="!attachmentFiles?.IsSubmitted" class="removeIcon" src="assets/images/logos/add-button.png"
+          (click)="fileInput2.click()">
+        <input hidden type="file" #fileInput2 id="file" (change)="handleFileInput($event)"
+          accept="image/x-png,image/gif,image/jpeg,image/jpg,application/pdf" />
+      </div>
     </div>
+
+
+    <div fxLayout fxLayoutAlign="start" class="pt-12">
+
+      <div fxFlex="100">
+
+        <div *ngIf="attachmentFiles?.fileNames?.length">
+          <div fxLayout *ngFor="let fileName of attachmentFiles?.fileNames" class="py-4">
+            <!-- <ng-container *ngFor="let fileName of attachmentFiles?.fileNames"> -->
+            <div fxFlex="90">
+              <div style="cursor: pointer; color: #1e8bed;" (click)="GetPODItemAttachment(fileName)">
+                {{fileName}}
+              </div>
+            </div>
+            <div fxFlex="10">
+              <img *ngIf="!attachmentFiles?.IsSubmitted" class="removeIcon" src="assets/images/remove-button.png" (click)="RemoveItemAttachment(fileName)">
+            </div>
+            <!-- </ng-container> -->
+          </div>
+
+          <!-- <ul *ngFor="let fileName of attachmentFiles?.fileNames">
+            <li style="cursor: pointer; color: #1e8bed;" (click)="GetPODItemAttachment(fileName)">
+              {{fileName}}</li>
+          </ul> -->
+        </div>
+      </div>
+
+      <!-- <div fxFlex="10">
+        <img class="removeIcon" src="assets/images/remove-button.png" (click)="RemoveItemAttachment(element)">
+      </div> -->
+
+    </div>
+
   </div>
 
   <mat-dialog-actions class="m-0 p-16" fxLayoutAlign="space-between center">
     <button mat-button type="button" (click)="CloseClicked()">Cancel</button>
     <button mat-button type="button" class="btnBg" (click)="YesClicked()">Yes</button>
   </mat-dialog-actions>
+
+  <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+  </mat-progress-spinner>
+  <div id="overlay" *ngIf="IsProgressBarVisibile"></div>
+
 </div>

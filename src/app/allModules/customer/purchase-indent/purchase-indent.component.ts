@@ -95,7 +95,7 @@ export class PurchaseIndentComponent implements OnInit {
     i: number;
     Status_pageload: any;
     isHidden = true;
-    show: boolean;
+    hide: boolean;
     length: number;
     SecretKey: string;
     SecureStorage: SecureLS;
@@ -241,6 +241,7 @@ export class PurchaseIndentComponent implements OnInit {
         this.selectedDocCenterMaster = new BPCDocumentCenterMaster();
         this.SelectedPIRNumber = '';
         this.status_show = '';
+        this.hide = false;
         this.PurchaseIndentFormGroup.get('Date').patchValue(new Date());
     }
 
@@ -478,13 +479,17 @@ export class PurchaseIndentComponent implements OnInit {
                     this.PurchaseIndentFormGroup.get('ReferenceDoc').disable();
                     this.PurchaseIndentFormGroup.get('Status').disable();
                     this.PurchaseIndentFormGroup.get('Date').disable();
-                    this.show = true;
+
                 }
                 else if (this.status_show === "saved") {
                     this.PurchaseIndentFormGroup.get('PIRNumber').disable();
                     this.PurchaseIndentFormGroup.get('Status').disable();
                 }
-
+                if (!this.status_show || this.status_show === 'Open' || this.status_show === 'saved') {
+                    this.hide = false;
+                } else {
+                    this.hide = true;
+                }
 
                 if (this.SelectedPurchaseIndentHeader) {
                     this.LoadSelectedPurchaseIndent(this.SelectedPurchaseIndentHeader);

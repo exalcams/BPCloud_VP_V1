@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject, Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { AuthService } from './auth.service';
-import { BPCPODHeader, BPCPODView, BPCPODItem, BPCReasonMaster, ChartDetails } from 'app/models/POD';
+import { BPCPODHeader, BPCPODView, BPCPODItem, BPCReasonMaster, ChartDetails, BPCPODItemView } from 'app/models/POD';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({
@@ -138,6 +138,10 @@ export class PODService {
         return this._httpClient.get<BPCPODItem[]>(`${this.baseAddress}poapi/POD/GetPODItemsByPOD?PODNumber=${PODNumber}`)
             .pipe(catchError(this.errorHandler));
     }
+    GetPODItemViewsByPOD(PODNumber: string): Observable<BPCPODItemView[] | string> {
+        return this._httpClient.get<BPCPODItemView[]>(`${this.baseAddress}poapi/POD/GetPODItemViewsByPOD?PODNumber=${PODNumber}`)
+            .pipe(catchError(this.errorHandler));
+    }
     GetAllReasonMaster(): Observable<BPCReasonMaster[] | string> {
         return this._httpClient.get<BPCReasonMaster[]>(`${this.baseAddress}poapi/Master/GetAllReasonMaster`)
             .pipe(catchError(this.errorHandler));
@@ -166,8 +170,8 @@ export class PODService {
         ).pipe(catchError(this.errorHandler));
     }
 
-    DowloandPODItemAttachment(AttachmentName: string): Observable<Blob | string> {
-        return this._httpClient.get(`${this.baseAddress}poapi/POD/DowloandPODItemAttachment?AttachmentName=${AttachmentName}`, {
+    DowloandPODItemAttachment(Item: string, AttachmentName: string): Observable<Blob | string> {
+        return this._httpClient.get(`${this.baseAddress}poapi/POD/DowloandPODItemAttachment?Item=${Item}&AttachmentName=${AttachmentName}`, {
             responseType: 'blob',
             headers: new HttpHeaders().append('Content-Type', 'application/json')
         })

@@ -60,6 +60,7 @@ export class CustomerPurchaseListComponent implements OnInit {
   DefaultFromDate: Date;
   DefaultToDate: Date;
   Statuses = [];
+  searchText = '';
 
   constructor(
     private _formBuilder: FormBuilder,
