@@ -62,7 +62,7 @@ export class SerialDialogComponent implements OnInit {
   InitialiseSerialFormGroup(): void {
     this.SerailFormGroup = this.frombuilder.group({
       Serial: ['', Validators.required],
-      RetQty: ['', Validators.required]
+      RetQty: ['', [Validators.required, Validators.pattern('^[1-9][0-9]{0,9}$')]]
     }
 
     );
@@ -107,7 +107,7 @@ export class SerialDialogComponent implements OnInit {
     return true;
   }
   CloseClicked(): void {
-    this.dialogRef.close(this.ReturnItemSerials);
+    this.dialogRef.close(null);
   }
   AddSerialToTable(): void {
     if (this.SerailFormGroup.valid) {
@@ -129,8 +129,14 @@ export class SerialDialogComponent implements OnInit {
       // this.ResetReturnItemFormGroup();
       // this.selectedDocCenterMaster = new BPCDocumentCenterMaster();
     } else {
-      // this.ShowValidationErrors(this.ReturnItemFormGroup);
+      this.ShowValidationErrors();
     }
+  }
+  ShowValidationErrors(): void {
+    Object.keys(this.SerailFormGroup.controls).forEach(key => {
+      this.SerailFormGroup.get(key).markAsTouched();
+      this.SerailFormGroup.get(key).markAsDirty();
+    });
   }
   RemoveReturnSerialItemFromTable(item: BPCRetItemSerial): void {
     const index: number = this.ReturnItemSerials.indexOf(item);

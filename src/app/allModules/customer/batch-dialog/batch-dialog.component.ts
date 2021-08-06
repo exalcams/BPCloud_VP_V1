@@ -65,7 +65,7 @@ export class BatchDialogComponent implements OnInit {
   InitialiseBAtchFormGroup(): void {
     this.BatchFormGroup = this.frombuilder.group({
       Batch: ['', Validators.required],
-      RetQty: ['', Validators.required]
+      RetQty: ['', [Validators.required, Validators.pattern('^[1-9][0-9]{0,9}$')]]
     }
     );
   }
@@ -110,7 +110,7 @@ export class BatchDialogComponent implements OnInit {
     return true;
   }
   CloseClicked(): void {
-    this.dialogRef.close(this.ReturnItemBatches);
+    this.dialogRef.close(null);
   }
   AddBatchToTable(): void {
     if (this.BatchFormGroup.valid) {
@@ -132,11 +132,15 @@ export class BatchDialogComponent implements OnInit {
       // this.ResetReturnItemFormGroup();
       // this.selectedDocCenterMaster = new BPCDocumentCenterMaster();
     } else {
-      // this.ShowValidationErrors(this.ReturnItemFormGroup);
+      this.ShowValidationErrors();
     }
+  }
 
-
-
+  ShowValidationErrors(): void {
+    Object.keys(this.BatchFormGroup.controls).forEach(key => {
+      this.BatchFormGroup.get(key).markAsTouched();
+      this.BatchFormGroup.get(key).markAsDirty();
+    });
   }
   RemoveReturnBatchItemFromTable(item: BPCRetItemBatch): void {
     const index: number = this.ReturnItemBatches.indexOf(item);

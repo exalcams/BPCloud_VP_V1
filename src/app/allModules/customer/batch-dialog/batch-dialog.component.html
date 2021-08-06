@@ -22,9 +22,12 @@
         </mat-form-field>
         <mat-form-field fxFlex class="px-12">
           <input matInput placeholder="Qty" formControlName="RetQty" (keydown)="decimalOnly($event)">
-          <mat-error *ngIf="BatchFormGroup.get('RetQty').touched && 
-        BatchFormGroup.get('RetQty').hasError('required')">
+          <mat-error *ngIf="BatchFormGroup.get('RetQty').touched && BatchFormGroup.get('RetQty').hasError('required')">
             Qty is required
+          </mat-error>
+          <mat-error *ngIf="BatchFormGroup.get('RetQty').touched && !BatchFormGroup.get('RetQty').hasError('required')
+          && BatchFormGroup.get('RetQty').hasError('pattern')">
+            Please enter a valid Qty
           </mat-error>
         </mat-form-field>
         <div *ngIf="status_show!='submitted'" fxFlex="10" fxLayoutAlign="center start">
@@ -33,7 +36,7 @@
       </div>
     </form>
 
-    <div *ngIf="ReturnItemBatches.length" class="table px-12">
+    <div *ngIf="ReturnItemBatches.length" class="table pt-4 px-12">
       <table mat-table [dataSource]="BatchDataSource">
         <ng-container matColumnDef="Batch">
           <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Batch</th>
