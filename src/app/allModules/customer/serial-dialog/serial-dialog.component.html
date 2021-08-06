@@ -22,9 +22,12 @@
         </mat-form-field>
         <mat-form-field fxFlex class="px-12">
           <input matInput placeholder="Qty" formControlName="RetQty" (keydown)="decimalOnly($event)">
-          <mat-error *ngIf="SerailFormGroup.get('RetQty').touched && 
-    SerailFormGroup.get('RetQty').hasError('required')">
+          <mat-error *ngIf="SerailFormGroup.get('RetQty').touched && SerailFormGroup.get('RetQty').hasError('required')">
             Qty is required
+          </mat-error>
+          <mat-error *ngIf="SerailFormGroup.get('RetQty').touched && !SerailFormGroup.get('RetQty').hasError('required')
+          && SerailFormGroup.get('RetQty').hasError('pattern')">
+            Please enter a valid Qty
           </mat-error>
         </mat-form-field>
         <div fxFlex="10" fxLayoutAlign="center start" *ngIf="status_show!='submitted'">
@@ -33,9 +36,9 @@
       </div>
     </form>
 
-    <div *ngIf="ReturnItemSerials.length" class="table px-12">
+    <div *ngIf="ReturnItemSerials.length" class="table pt-4 px-12">
       <table mat-table [dataSource]="SerialDataSource">
-        
+
         <ng-container matColumnDef="Serial">
           <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Serial</th>
           <td mat-cell style="width: 10%;" *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
