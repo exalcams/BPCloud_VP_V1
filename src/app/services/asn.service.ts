@@ -278,8 +278,8 @@ export class ASNService {
             .pipe(catchError(this.errorHandler));
     }
 
-    CreateASNPdf(ASNNumber: string): Observable<Blob | string> {
-        return this._httpClient.get(`${this.baseAddress}poapi/ASN/CreateASNPdf?ASNNumber=${ASNNumber}`, {
+    CreateASNPdf(ASNNumber: string, FTPFlag: boolean): Observable<Blob | string> {
+        return this._httpClient.get(`${this.baseAddress}poapi/ASN/CreateASNPdf?ASNNumber=${ASNNumber}&FTPFlag=${FTPFlag}`, {
             responseType: 'blob',
             headers: new HttpHeaders().append('Content-Type', 'application/json')
         })

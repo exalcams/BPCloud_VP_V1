@@ -64,7 +64,7 @@ export class AsnListComponent implements OnInit {
     { Value: "GateEntry", Name: "GateEntry" },
     { Value: "GateEntry Completed", Name: "GateEntry Completed" },
     { Value: "Cancelled", Name: "Cancelled" },
-    { Value: "ShipmentNotRelevant", Name: "ShipmentNotRelevant" },
+    // { Value: "ShipmentNotRelevant", Name: "ShipmentNotRelevant" },
     { Value: "Saved", Name: "Saved" }
   ];
 
@@ -397,7 +397,7 @@ export class AsnListComponent implements OnInit {
     this.IsProgressBarVisibile = true;
     // this.SelectedASNHeader.ASNNumber=""
     // this.SelectedASNHeader.ASNNumber="no"
-    this._asnService.CreateASNPdf(no).subscribe(
+    this._asnService.CreateASNPdf(no, false).subscribe(
       // this._ASNService.CreateASNPdf(this.SelectedASNHeader.ASNNumber).subscribe(
       data => {
         if (data) {

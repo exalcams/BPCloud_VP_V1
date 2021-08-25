@@ -103,7 +103,7 @@ export class ASNListComponent implements OnInit {
     { Value: "GateEntry", Name: "Gate Entry" },
     { Value: "GateEntry Completed", Name: "Gate Entry Completed" },
     { Value: "Cancelled", Name: "Cancelled" },
-    { Value: "ShipmentNotRelevant", Name: "Shipment Not Relevant" },
+    // { Value: "ShipmentNotRelevant", Name: "Shipment Not Relevant" },
     { Value: "Saved", Name: "Saved" }
   ];
 
@@ -216,7 +216,7 @@ export class ASNListComponent implements OnInit {
     this.IsProgressBarVisibile = true;
     // this.SelectedASNHeader.ASNNumber=""
     // this.SelectedASNHeader.ASNNumber="no"
-    this._ASNService.CreateASNPdf(no).subscribe(
+    this._ASNService.CreateASNPdf(no, false).subscribe(
       // this._ASNService.CreateASNPdf(this.SelectedASNHeader.ASNNumber).subscribe(
       data => {
         if (data) {
@@ -224,7 +224,7 @@ export class ASNListComponent implements OnInit {
           const fileType = 'application/pdf';
           const blob = new Blob([data], { type: fileType });
           const currentDateTime = this._datePipe.transform(new Date(), 'ddMMyyyyHHmmss');
-          const FileName = this.SelectedASNHeader.ASNNumber + '_' + currentDateTime + '.pdf';
+          const FileName = no + '_' + currentDateTime + '.pdf';
           this.OpenASNPrintDialog(FileName, blob);
           // FileSaver.saveAs(blob, this.SelectedASNHeader.ASNNumber + '_' + currentDateTime + '.pdf');
         } else {
