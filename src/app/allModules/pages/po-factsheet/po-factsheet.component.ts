@@ -219,7 +219,7 @@ export class PoFactsheetComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        const retrievedObject =this.SecureStorage.get('authorizationData');
+        const retrievedObject = this.SecureStorage.get('authorizationData');
         if (retrievedObject) {
             this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
             this.currentUserID = this.authenticationDetails.UserID;
@@ -381,8 +381,8 @@ export class PoFactsheetComponent implements OnInit {
                     .subscribe(
                         (data) => {
                             if (data) {
-                                let attachments = data as BPCInvoiceAttachment[];
-                                console.log("attachments", attachments);
+                                const attachments = data as BPCInvoiceAttachment[];
+                                // console.log("attachments", attachments);
                                 for (let i = 0; i < attachments.length; i++) {
                                     if (attachments[i].AttachmentName !== Document.AttachmentName) {
                                         attachments.splice(i, 1);
@@ -1093,7 +1093,7 @@ export class PoFactsheetComponent implements OnInit {
     }
 
 
-    POFactSerClicked(item) {
+    POFactSerClicked(item): void {
         item.enable();
 
         const Item = item.value;
@@ -1104,9 +1104,9 @@ export class PoFactsheetComponent implements OnInit {
             console.log("ses", ItemSES);
         }, err => {
             console.log(err);
-        })
+        });
     }
-    OpenPOFactServiceDialog(Data: any) {
+    OpenPOFactServiceDialog(Data: any): void {
         const dialogConfig: MatDialogConfig = {
             panelClass: 'po-fact-item-ses-dialog',
             data: Data

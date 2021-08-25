@@ -486,7 +486,7 @@ export class ASNComponent implements OnInit {
         this.ASNItemFormArray.controls[index].get('ASNQty').markAsTouched();
         const aSNItemFormArray = this.ASNItemFormGroup.get('ASNItems') as FormArray;
         aSNItemFormArray.controls.forEach((x, i) => {
-            var a = x.get('ASNQty').value;
+            const a = x.get('ASNQty').value;
             // console.log("eve",eve);
 
             if (x.get('ASNQty').value) {
@@ -500,7 +500,7 @@ export class ASNComponent implements OnInit {
             this.ASNItemFormArray.controls.forEach((x, i) => {
                 x.get('ASNQty').setErrors(null);
                 x.get('ASNQty').markAsUntouched();
-                x.get('ASNQty').valid;
+                // x.get('ASNQty').valid;
 
             });
 
@@ -1046,7 +1046,8 @@ export class ASNComponent implements OnInit {
             GRQty: [poItem.CompletedQty],
             PipelineQty: [poItem.TransitQty],
             OpenQty: [poItem.OpenQty],
-            ASNQty: [poItem.MaxAllowedQty],
+            // ASNQty: [poItem.MaxAllowedQty],
+            ASNQty: [''],
             UOM: [poItem.UOM],
             Batch: [[]],
             SES: [poItem.BPCOFItemSESes],
@@ -1502,6 +1503,7 @@ export class ASNComponent implements OnInit {
             const asq = +x.get('ASNQty').value;
             const up = +x.get('UnitPrice').value;
             TotalASNAmount += (asq * up);
+            TotalASNAmount = Math.round((TotalASNAmount + Number.EPSILON) * 100) / 100;
         });
         this.InvoiceDetailsFormGroup.get('POBasicPrice').patchValue(TotalASNAmount);
         this.InvoiceDetailsFormGroup.get('POBasicPrice').disable();
@@ -1556,6 +1558,7 @@ export class ASNComponent implements OnInit {
                 const asq = +x.get('ASNQty').value;
                 const up = +x.get('UnitPrice').value;
                 TotalASNAmount += (asq * up);
+                TotalASNAmount = Math.round((TotalASNAmount + Number.EPSILON) * 100) / 100;
             });
             if (TotalASNAmount !== 0 && poBasicPrice !== 0 && TotalASNAmount !== poBasicPrice) {
                 this.isPOBasicPriceError = true;
@@ -2352,6 +2355,7 @@ export class ASNComponent implements OnInit {
                 'OpenQty': x.OpenQty,
                 'ASNQty': x.ASNQty,
                 // 'Batch': this.SelectedASNView.ASNItemBatches[i].Batch,
+                // tslint:disable-next-line:max-line-length
                 // 'ManufactureDate': this.SelectedASNView.ASNItemBatches[i].ManufactureDate ? this._datePipe.transform(this.SelectedASNView.ASNItemBatches[i].ManufactureDate, 'dd-MM-yyyy') : '',
                 // 'ExpiryDate': this.SelectedASNView.ASNItemBatches[i].ExpiryDate ? this._datePipe.transform(this.SelectedASNView.ASNItemBatches[i].ExpiryDate, 'dd-MM-yyyy') : '',
             };
@@ -2403,7 +2407,7 @@ export class ASNComponent implements OnInit {
 
     CreateASNPdf(): void {
         this.IsProgressBarVisibile = true;
-        this._ASNService.CreateASNPdf(this.SelectedASNHeader.ASNNumber).subscribe(
+        this._ASNService.CreateASNPdf(this.SelectedASNHeader.ASNNumber, true).subscribe(
             data => {
                 if (data) {
                     this.IsProgressBarVisibile = false;

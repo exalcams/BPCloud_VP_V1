@@ -250,7 +250,7 @@ export class SerListComponent implements OnInit {
     this._excelService.exportAsExcelFile(itemsShowedd, 'accountstatement');
   }
   expandClicked(): void {
-    //this.CreateActionLogvalues("Expand");
+    // this.CreateActionLogvalues("Expand");
     this.isExpanded = !this.isExpanded;
   }
   Pdfdownload(no: any): void {
@@ -258,7 +258,7 @@ export class SerListComponent implements OnInit {
     this.IsProgressBarVisibile = true;
     // this.SelectedASNHeader.ASNNumber=""
     // this.SelectedASNHeader.ASNNumber="no"
-    this._asnService.CreateASNPdf(no).subscribe(
+    this._asnService.CreateASNPdf(no, false).subscribe(
       // this._ASNService.CreateASNPdf(this.SelectedASNHeader.ASNNumber).subscribe(
       data => {
         if (data) {
@@ -312,7 +312,7 @@ export class SerListComponent implements OnInit {
       // this.GetASNBasedOnCondition();
     });
   }
-  ASNnumber(asn: any) {
+  ASNnumber(asn: any): void {
     this._router.navigate(["/asn"], { queryParams: { id: asn } });
   }
   CreateActionLogvalues(text): void {
