@@ -54,6 +54,8 @@ export class ASNComponent implements OnInit {
     MenuItems: string[];
     notificationSnackBarComponent: NotificationSnackBarComponent;
     IsProgressBarVisibile: boolean;
+    IsProgressBarVisibile1: boolean;
+    IsProgressBarVisibile2: boolean;
     AllASNHeaders: BPCASNHeader[] = [];
     ASNFormGroup: FormGroup;
     ASNItemFormGroup: FormGroup;
@@ -182,6 +184,8 @@ export class ASNComponent implements OnInit {
         this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
         this.authenticationDetails = new AuthenticationDetails();
         this.IsProgressBarVisibile = false;
+        this.IsProgressBarVisibile1 = false;
+        this.IsProgressBarVisibile2 = false;
         this.PO = new BPCOFHeader();
         this.SelectedASNHeader = new BPCASNHeader();
         this.SelectedASNView = new BPCASNView();
@@ -993,6 +997,9 @@ export class ASNComponent implements OnInit {
         this._ASNService.GetInvoiceAttachmentByASN(this.SelectedASNHeader.ASNNumber, this.SelectedASNHeader.InvDocReferenceNo).subscribe(
             (data) => {
                 this.invAttach = data as BPCInvoiceAttachment;
+                if (this.invAttach) {
+                    this.SelectedASNView.InvAttachmentName = this.invAttach.AttachmentName;
+                }
             },
             (err) => {
                 console.error(err);
@@ -2073,68 +2080,120 @@ export class ASNComponent implements OnInit {
         // this.GetASNValues();
         // this.GetBPASNSubItemValues();
         // this.SelectedASNView.CreatedBy = this.authenticationDetails.UserID.toString();
+        // this.IsProgressBarVisibile = true;
+        if (this.invoiceAttachment) {
+            this.SelectedASNView.InvAttachmentName = this.invoiceAttachment.name;
+            this.AddInvoiceAttachment(Actiontype);
+        } else {
+            this.CallCreateASN(Actiontype);
+        }
+    }
+
+    CallCreateASN(Actiontype: string): void {
         this.IsProgressBarVisibile = true;
         this._ASNService.CreateASN(this.SelectedASNView).subscribe(
             (data) => {
                 this.SelectedASNHeader.ASNNumber = (data as BPCASNHeader).ASNNumber;
-                if (this.invoiceAttachment) {
-                    this.AddInvoiceAttachment(Actiontype);
+                this.SelectedASNHeader.IsSubmitted = (data as BPCASNHeader).IsSubmitted;
+                this.SelectedASNHeader.Field1 = (data as BPCASNHeader).Field1;
+                this.IsProgressBarVisibile = false;
+                // if (this.invoiceAttachment) {
+                //     this.AddInvoiceAttachment(Actiontype);
+                // } else {
+
+                // }
+                if (this.fileToUploadList && this.fileToUploadList.length) {
+                    this.AddDocumentCenterAttachment(Actiontype);
                 } else {
-                    if (this.fileToUploadList && this.fileToUploadList.length) {
-                        this.AddDocumentCenterAttachment(Actiontype);
+                    if (this.SelectedASNHeader.Field1) {
+                        this.showErrorNotificationSnackBar(this.SelectedASNHeader.Field1);
+                        this.ResetControl();
+                        this.GetASNBasedOnCondition();
                     } else {
                         this.notificationSnackBarComponent.openSnackBar(`ASN ${Actiontype === 'Submit' ? 'submitted' : 'saved'} successfully`, SnackBarStatus.success);
-                        this.IsProgressBarVisibile = false;
                         // if (Actiontype === 'Submit' && !this.IsShipmentNotRelevant) {
-                        if (Actiontype === 'Submit') {
+                        if (Actiontype === 'Submit' && this.SelectedASNHeader.IsSubmitted) {
                             this.CreateASNPdf();
                         } else {
                             this.ResetControl();
                             this.GetASNBasedOnCondition();
                         }
                     }
+
                 }
             },
             (err) => {
+                this.IsProgressBarVisibile = false;
                 this.showErrorNotificationSnackBar(err);
+                this.ResetControl();
+                this.GetASNBasedOnCondition();
             }
         );
     }
 
     AddInvoiceAttachment(Actiontype: string): void {
-        this._ASNService.AddInvoiceAttachment(this.SelectedASNHeader.ASNNumber, this.currentUserID.toString(), this.invoiceAttachment).subscribe(
+        this.IsProgressBarVisibile1 = true;
+        this._ASNService.AddInvoiceAttachment(this.SelectedASNHeader, this.currentUserID.toString(), this.invoiceAttachment).subscribe(
             (dat) => {
-                if (this.fileToUploadList && this.fileToUploadList.length) {
-                    this.AddDocumentCenterAttachment(Actiontype);
+                // if (this.fileToUploadList && this.fileToUploadList.length) {
+                //     this.AddDocumentCenterAttachment(Actiontype);
+                // } else {
+                //     if (this.SelectedASNHeader.Field1) {
+                //         this.showErrorNotificationSnackBar(this.SelectedASNHeader.Field1);
+                //         this.ResetControl();
+                //         this.GetASNBasedOnCondition();
+                //     } else {
+                //         this.notificationSnackBarComponent.openSnackBar(`ASN ${Actiontype === 'Submit' ? 'submitted' : 'saved'} successfully`, SnackBarStatus.success);
+                //         this.IsProgressBarVisibile = false;
+                //         if (Actiontype === 'Submit' && this.SelectedASNHeader.IsSubmitted) {
+                //             this.CreateASNPdf();
+                //         } else {
+                //             this.ResetControl();
+                //             this.GetASNBasedOnCondition();
+                //         }
+                //     }
+
+                // }
+                this.IsProgressBarVisibile1 = false;
+                if (this.SelectedASNHeader.ASNNumber) {
+                    this.CallUpdateASN(Actiontype);
+                } else {
+                    this.CallCreateASN(Actiontype);
+                }
+            },
+            (err) => {
+                this.IsProgressBarVisibile1 = false;
+                this.showErrorNotificationSnackBar(err);
+                this.ResetControl();
+                this.GetASNBasedOnCondition();
+            });
+    }
+    AddDocumentCenterAttachment(Actiontype: string): void {
+        this.IsProgressBarVisibile2 = true;
+        this._ASNService.AddDocumentCenterAttachment(this.SelectedASNHeader.ASNNumber, this.currentUserID.toString(), this.fileToUploadList).subscribe(
+            (dat) => {
+                this.IsProgressBarVisibile2 = false;
+                if (this.SelectedASNHeader.Field1) {
+                    this.showErrorNotificationSnackBar(this.SelectedASNHeader.Field1);
+                    this.ResetControl();
+                    this.GetASNBasedOnCondition();
                 } else {
                     this.notificationSnackBarComponent.openSnackBar(`ASN ${Actiontype === 'Submit' ? 'submitted' : 'saved'} successfully`, SnackBarStatus.success);
                     this.IsProgressBarVisibile = false;
-                    if (Actiontype === 'Submit') {
+                    if (Actiontype === 'Submit' && this.SelectedASNHeader.IsSubmitted) {
                         this.CreateASNPdf();
                     } else {
                         this.ResetControl();
                         this.GetASNBasedOnCondition();
                     }
+
                 }
             },
             (err) => {
+                this.IsProgressBarVisibile2 = false;
                 this.showErrorNotificationSnackBar(err);
-            });
-    }
-    AddDocumentCenterAttachment(Actiontype: string): void {
-        this._ASNService.AddDocumentCenterAttachment(this.SelectedASNHeader.ASNNumber, this.currentUserID.toString(), this.fileToUploadList).subscribe(
-            (dat) => {
-                this.notificationSnackBarComponent.openSnackBar(`ASN ${Actiontype === 'Submit' ? 'submitted' : 'saved'} successfully`, SnackBarStatus.success);
-                this.IsProgressBarVisibile = false;
-                if (Actiontype === 'Submit') {
-                    this.CreateASNPdf();
-                } else {
-                    this.ResetControl();
-                    this.GetASNBasedOnCondition();
-                }
-            },
-            (err) => {
-                this.showErrorNotificationSnackBar(err);
+                this.ResetControl();
+                this.GetASNBasedOnCondition();
             }
         );
     }
@@ -2150,20 +2209,37 @@ export class ASNComponent implements OnInit {
         // this.GetBPASNSubItemValues();
         // this.SelectedBPASNView.TransID = this.SelectedBPASN.TransID;
         // this.SelectedASNView.ModifiedBy = this.authenticationDetails.UserID.toString();
-        this.IsProgressBarVisibile = true;
+        if (this.invoiceAttachment) {
+            this.SelectedASNView.InvAttachmentName = this.invoiceAttachment.name;
+            this.AddInvoiceAttachment(Actiontype);
+        } else {
+            this.CallUpdateASN(Actiontype);
+        }
+    }
 
+    CallUpdateASN(Actiontype: string): void {
+        this.IsProgressBarVisibile = true;
         this._ASNService.UpdateASN(this.SelectedASNView).subscribe(
             (data) => {
                 this.SelectedASNHeader.ASNNumber = (data as BPCASNHeader).ASNNumber;
-                if (this.invoiceAttachment) {
-                    this.AddInvoiceAttachment(Actiontype);
+                this.SelectedASNHeader.IsSubmitted = (data as BPCASNHeader).IsSubmitted;
+                this.SelectedASNHeader.Field1 = (data as BPCASNHeader).Field1;
+                // if (this.invoiceAttachment) {
+                //     this.AddInvoiceAttachment(Actiontype);
+                // } else {
+
+                // }
+                if (this.fileToUploadList && this.fileToUploadList.length) {
+                    this.AddDocumentCenterAttachment(Actiontype);
                 } else {
-                    if (this.fileToUploadList && this.fileToUploadList.length) {
-                        this.AddDocumentCenterAttachment(Actiontype);
+                    if (this.SelectedASNHeader.Field1) {
+                        this.showErrorNotificationSnackBar(this.SelectedASNHeader.Field1);
+                        this.ResetControl();
+                        this.GetASNBasedOnCondition();
                     } else {
                         this.notificationSnackBarComponent.openSnackBar(`ASN ${Actiontype === 'Submit' ? 'submitted' : 'saved'} successfully`, SnackBarStatus.success);
                         this.IsProgressBarVisibile = false;
-                        if (Actiontype === 'Submit') {
+                        if (Actiontype === 'Submit' && this.SelectedASNHeader.IsSubmitted) {
                             this.CreateASNPdf();
                         } else {
                             this.ResetControl();
@@ -2173,12 +2249,15 @@ export class ASNComponent implements OnInit {
                 }
             },
             (err) => {
-                console.error(err);
-                this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
                 this.IsProgressBarVisibile = false;
+                this.showErrorNotificationSnackBar(err);
+                // this.ResetControl();
+                // this.GetASNBasedOnCondition();
+                // console.error(err);
+                // this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
+                // this.IsProgressBarVisibile = false;
             }
         );
-
     }
 
     DeleteASN(): void {

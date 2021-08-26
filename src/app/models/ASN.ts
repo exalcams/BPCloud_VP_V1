@@ -246,6 +246,7 @@ export class BPCASNView extends CommonClass {
     TaxAmount: number | null;
     InvoiceAmount: number | null;
     InvoiceAmountUOM: string;
+    InvAttachmentName: string;
     InvDocReferenceNo: string;
     IsSubmitted: boolean;
     Status: string;

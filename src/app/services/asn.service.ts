@@ -215,12 +215,16 @@ export class ASNService {
             .pipe(catchError(this.errorHandler));
     }
 
-    AddInvoiceAttachment(ASNNumber: string, CreatedBy: string, selectedFile: File): Observable<any> {
+     AddInvoiceAttachment(header: BPCASNHeader, CreatedBy: string, selectedFile: File): Observable<any> {
         const formData: FormData = new FormData();
         if (selectedFile) {
             formData.append(selectedFile.name, selectedFile, selectedFile.name);
         }
-        formData.append('ASNNumber', ASNNumber);
+        formData.append('Client', header.Client);
+        formData.append('Company', header.Company);
+        formData.append('Type', header.Type);
+        formData.append('PatnerID', header.PatnerID);
+        formData.append('ReferenceNo', header.DocNumber);
         formData.append('CreatedBy', CreatedBy.toString());
 
         return this._httpClient.post<any>(`${this.baseAddress}poapi/ASN/AddInvoiceAttachment`,
