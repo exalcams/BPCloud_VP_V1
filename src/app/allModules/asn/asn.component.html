@@ -1451,9 +1451,9 @@
         </mat-card-actions>
       </mat-card>
     </div>
-    <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile || IsProgressBarVisibile1 || IsProgressBarVisibile2" class="progressBarPostion" color="accent" mode="indeterminate">
     </mat-progress-spinner>
-    <div id="overlay" *ngIf="IsProgressBarVisibile">
+    <div id="overlay" *ngIf="IsProgressBarVisibile || IsProgressBarVisibile1 || IsProgressBarVisibile2">
     </div>
   </div>
 </div>
