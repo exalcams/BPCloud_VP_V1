@@ -19,7 +19,7 @@ export class BatchDialogComponent implements OnInit {
   BatchDataSource: MatTableDataSource<BPCRetItemBatch>;
   BatchDisplayedColumns: string[] = [
     "Batch",
-    "RetQty",
+    "ReturnQty",
     "Remove"
   ];
   show: boolean;
@@ -65,7 +65,7 @@ export class BatchDialogComponent implements OnInit {
   InitialiseBAtchFormGroup(): void {
     this.BatchFormGroup = this.frombuilder.group({
       Batch: ['', Validators.required],
-      RetQty: ['', [Validators.required, Validators.pattern('^[1-9][0-9]{0,9}$')]]
+      ReturnQty: ['', [Validators.required, Validators.pattern('^[1-9][0-9]{0,9}$')]]
     }
     );
   }
@@ -116,7 +116,7 @@ export class BatchDialogComponent implements OnInit {
     if (this.BatchFormGroup.valid) {
       const RItem = new BPCRetItemBatch();
       RItem.Batch = this.BatchFormGroup.get('Batch').value;
-      RItem.RetQty = +this.BatchFormGroup.get('RetQty').value;
+      RItem.ReturnQty = +this.BatchFormGroup.get('ReturnQty').value;
       RItem.Client = this.ReturnItem.Client;
       RItem.Company = this.ReturnItem.Company;
       RItem.Item = this.ReturnItem.Item;
@@ -154,8 +154,8 @@ export class BatchDialogComponent implements OnInit {
   YesClicked(): void {
     if (this.ReturnItemBatches.length) {
       let rQty = 0;
-      this.ReturnItemBatches.forEach(x => rQty = x.RetQty + rQty);
-      if (+(rQty) === (+this.ReturnItem.RetQty)) {
+      this.ReturnItemBatches.forEach(x => rQty = x.ReturnQty + rQty);
+      if (+(rQty) === (+this.ReturnItem.ReturnQty)) {
         this.dialogRef.close(this.ReturnItemBatches);
       } else {
         this.notificationSnackBarComponent.openSnackBar('Sum of Batch qty is not matched with Return Qty', SnackBarStatus.danger);

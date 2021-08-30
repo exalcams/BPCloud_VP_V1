@@ -19,7 +19,7 @@ export class SerialDialogComponent implements OnInit {
   SerialDataSource: MatTableDataSource<BPCRetItemSerial>;
   SerialDisplayedColumns: string[] = [
     "Serial",
-    "RetQty",
+    "ReturnQty",
     "Remove"
   ];
   status_show: any;
@@ -62,7 +62,7 @@ export class SerialDialogComponent implements OnInit {
   InitialiseSerialFormGroup(): void {
     this.SerailFormGroup = this.frombuilder.group({
       Serial: ['', Validators.required],
-      RetQty: ['', [Validators.required, Validators.pattern('^[1-9][0-9]{0,9}$')]]
+      ReturnQty: ['', [Validators.required, Validators.pattern('^[1-9][0-9]{0,9}$')]]
     }
 
     );
@@ -113,7 +113,7 @@ export class SerialDialogComponent implements OnInit {
     if (this.SerailFormGroup.valid) {
       const RItem = new BPCRetItemSerial();
       RItem.Serial = this.SerailFormGroup.get('Serial').value;
-      RItem.RetQty = +this.SerailFormGroup.get('RetQty').value;
+      RItem.ReturnQty = +this.SerailFormGroup.get('ReturnQty').value;
       RItem.Client = this.ReturnItem.Client;
       RItem.Company = this.ReturnItem.Company;
       RItem.Type = this.ReturnItem.Type;
@@ -149,8 +149,8 @@ export class SerialDialogComponent implements OnInit {
   YesClicked(): void {
     if (this.ReturnItemSerials.length) {
       let rQty = 0;
-      this.ReturnItemSerials.forEach(x => rQty = x.RetQty + rQty);
-      if (+(rQty) === (+this.ReturnItem.RetQty)) {
+      this.ReturnItemSerials.forEach(x => rQty = x.ReturnQty + rQty);
+      if (+(rQty) === (+this.ReturnItem.ReturnQty)) {
         this.dialogRef.close(this.ReturnItemSerials);
       } else {
         this.notificationSnackBarComponent.openSnackBar('Sum of Serial qty is not matched with Return Qty', SnackBarStatus.danger);

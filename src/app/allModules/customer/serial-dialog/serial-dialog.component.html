@@ -21,12 +21,12 @@
           </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex class="px-12">
-          <input matInput placeholder="Qty" formControlName="RetQty" (keydown)="decimalOnly($event)">
-          <mat-error *ngIf="SerailFormGroup.get('RetQty').touched && SerailFormGroup.get('RetQty').hasError('required')">
+          <input matInput placeholder="Qty" formControlName="ReturnQty" (keydown)="decimalOnly($event)">
+          <mat-error *ngIf="SerailFormGroup.get('ReturnQty').touched && SerailFormGroup.get('ReturnQty').hasError('required')">
             Qty is required
           </mat-error>
-          <mat-error *ngIf="SerailFormGroup.get('RetQty').touched && !SerailFormGroup.get('RetQty').hasError('required')
-          && SerailFormGroup.get('RetQty').hasError('pattern')">
+          <mat-error *ngIf="SerailFormGroup.get('ReturnQty').touched && !SerailFormGroup.get('ReturnQty').hasError('required')
+          && SerailFormGroup.get('ReturnQty').hasError('pattern')">
             Please enter a valid Qty
           </mat-error>
         </mat-form-field>
@@ -49,10 +49,10 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="RetQty">
+        <ng-container matColumnDef="ReturnQty">
           <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Ret Qty</th>
           <td mat-cell style="width: 15%;" *matCellDef="let element">
-            <span> {{ element.RetQty}} </span>
+            <span> {{ element.ReturnQty}} </span>
           </td>
         </ng-container>
 

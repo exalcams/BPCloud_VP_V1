@@ -39,7 +39,7 @@ export class BPCPIItem extends CommonClass {
     OrderQty: number;
     UOM: string;
     HSN: string;
-    RetQty: number;
+    ReturnQty: number;
     ReasonText: string;
     FileName: string;
     AttachmentReferenceNo: string;
@@ -73,16 +73,18 @@ export class BPCRetHeader extends CommonClass {
     Type: string;
     PatnerID: string;
     RetReqID: string;
+    DocumentNumber: string;
+    CreditNote: string;
+    AWBNumber: string;
+    Transporter: string;
+    TruckNumber: string;
     Text: string;
     Date: Date | string | null;
     InvoiceDoc: string;
+    // Plant: string;
     Status: string;
-    TruckNumber: string;
-    Transporter: string;
-    AWBNumber: string;
-    CreditNote: string;
-    DocumentNumber: string;
-
+    TotalReturnQty: number;
+    TotalReturnAmount: number;
 }
 
 export class BPCRetItem extends CommonClass {
@@ -94,11 +96,13 @@ export class BPCRetItem extends CommonClass {
     RetReqID: string;
     Item: string;
     ProdcutID: string;
-    MaterialText: string;
     Material: string;
+    MaterialText: string;
     InvoiceNumber: string;
     OrderQty: number;
-    RetQty: number;
+    ReturnQty: number;
+    InvoiceAmount: number;
+    ReturnAmount: number;
     ReasonText: string;
     FileName: string;
     AttachmentReferenceNo: string;
@@ -112,7 +116,7 @@ export class BPCRetItemBatch extends CommonClass {
     RetReqID: string;
     Item: string;
     Batch: string;
-    RetQty: number;
+    ReturnQty: number;
 
 }
 export class BPCRetItemSerial extends CommonClass {
@@ -124,7 +128,7 @@ export class BPCRetItemSerial extends CommonClass {
     RetReqID: string;
     Item: string;
     Serial: string;
-    RetQty: number;
+    ReturnQty: number;
 
 }
 
@@ -143,7 +147,13 @@ export class BPCRetView extends CommonClass {
     Date: Date | string | null;
     InvoiceDoc: string;
     Status: string;
+    TotalReturnQty: number;
+    TotalReturnAmount: number;
     Items: BPCRetItemView[];
+    constructor() {
+        super();
+        this.Items = [];
+    }
 }
 // tslint:disable-next-line:class-name
 export class BPCRetView_new extends CommonClass {
@@ -155,16 +165,24 @@ export class BPCRetView_new extends CommonClass {
     RetReqID: string;
     DocumentNumber: string;
     CreditNote: string;
-    TruckNumber: string;
-    Transporter: string;
     AWBNumber: string;
+    Transporter: string;
+    TruckNumber: string;
     Text: string;
     Date: Date | string | null;
     InvoiceDoc: string;
     Status: string;
+    TotalReturnQty: number;
+    TotalReturnAmount: number;
     Items: BPCRetItem[];
     Batch: BPCRetItemBatch[];
     Serial: BPCRetItemSerial[];
+    constructor() {
+        super();
+        this.Items = [];
+        this.Batch = [];
+        this.Serial = [];
+    }
 }
 export class BPCRetItemView extends CommonClass {
     Client: string;
@@ -178,10 +196,12 @@ export class BPCRetItemView extends CommonClass {
     MaterialText: string;
     InvoiceNumber: string;
     OrderQty: number;
-    RetQty: number;
+    ReturnQty: number;
     ReasonText: string;
     FileName: string;
     AttachmentReferenceNo: string;
+    InvoiceAmount: number;
+    ReturnAmount: number;
     Batches: BPCRetItemBatch[];
     Serials: BPCRetItemSerial[];
     constructor() {

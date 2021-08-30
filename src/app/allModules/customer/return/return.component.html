@@ -152,14 +152,14 @@
                 </div>
                 <div fxFlex="15">
                   <mat-form-field class="px-12" style="width: 100%;">
-                    <input matInput placeholder="RetQty" formControlName="RetQty" (keyup)="QtySelected()">
+                    <input matInput placeholder="ReturnQty" formControlName="ReturnQty" (keyup)="QtySelected()">
                     <mat-error
-                      *ngIf="ReturnItemFormGroup.get('RetQty').touched && ReturnItemFormGroup.get('RetQty').hasError('required')">
-                      RetQty is required
+                      *ngIf="ReturnItemFormGroup.get('ReturnQty').touched && ReturnItemFormGroup.get('ReturnQty').hasError('required')">
+                      ReturnQty is required
                     </mat-error>
                     <mat-error
-                    *ngIf="ReturnItemFormGroup.get('RetQty').touched && !ReturnItemFormGroup.get('RetQty').hasError('required')
-                    &&ReturnItemFormGroup.get('RetQty').hasError('pattern')">
+                    *ngIf="ReturnItemFormGroup.get('ReturnQty').touched && !ReturnItemFormGroup.get('ReturnQty').hasError('required')
+                    &&ReturnItemFormGroup.get('ReturnQty').hasError('pattern')">
                     Enter valid Quantity
                   </mat-error>
                   </mat-form-field>
@@ -232,10 +232,10 @@
                   {{element.OrderQty}} </td>
               </ng-container>
 
-              <ng-container matColumnDef="RetQty">
-                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> RetQty </th>
+              <ng-container matColumnDef="ReturnQty">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> ReturnQty </th>
                 <td mat-cell style="width: 15%;" *matCellDef="let element">
-                  {{element.RetQty}} </td>
+                  {{element.ReturnQty}} </td>
               </ng-container>
 
               <!-- <ng-container matColumnDef="UOM">
