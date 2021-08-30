@@ -59,7 +59,7 @@ export class ReturnComponent implements OnInit {
     'ProdcutID',
     // 'MaterialText',
     'OrderQty',
-    'RetQty',
+    'ReturnQty',
     // 'DeliveryDate',
     // 'UOM',
     'ReasonText',
@@ -103,9 +103,9 @@ export class ReturnComponent implements OnInit {
     private dialog: MatDialog,
     private _formBuilder: FormBuilder,
     private _authService: AuthService,
-    ) {
-      this.SecretKey = this._authService.SecretKey;
-      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
+  ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -191,7 +191,7 @@ export class ReturnComponent implements OnInit {
       Item: ['', Validators.required],
       ProdcutID: ['', Validators.required],
       MaterialText: [''],
-      RetQty: ['', [Validators.required, Validators.pattern('^([1-9][0-9]*)([.][0-9]{1,2})?$')]],
+      ReturnQty: ['', [Validators.required, Validators.pattern('^([1-9][0-9]*)([.][0-9]{1,2})?$')]],
       OrderQty: ['', [Validators.required, Validators.pattern('^([1-9][0-9]*)([.][0-9]{1,2})?$')]],
       // UOM: ['', Validators.required],
       // DeliveryDate: ['', Validators.required],
@@ -332,7 +332,7 @@ export class ReturnComponent implements OnInit {
       PIItem.Item = this.ReturnItemFormGroup.get('Item').value;
       PIItem.ProdcutID = this.ReturnItemFormGroup.get('ProdcutID').value;
       PIItem.MaterialText = this.ReturnItemFormGroup.get('MaterialText').value;
-      PIItem.RetQty = this.ReturnItemFormGroup.get('RetQty').value;
+      PIItem.ReturnQty = this.ReturnItemFormGroup.get('ReturnQty').value;
       PIItem.OrderQty = this.ReturnItemFormGroup.get('OrderQty').value;
       // PIItem.DeliveryDate = this.ReturnItemFormGroup.get('DeliveryDate').value;
       // PIItem.UOM = this.ReturnItemFormGroup.get('UOM').value;
@@ -838,8 +838,8 @@ export class ReturnComponent implements OnInit {
 
   QtySelected(): void {
     const OrderQtyVAL = +this.ReturnItemFormGroup.get('OrderQty').value;
-    const RetQtyVAL = + this.ReturnItemFormGroup.get('RetQty').value;
-    if (OrderQtyVAL < RetQtyVAL) {
+    const ReturnQtyVAL = + this.ReturnItemFormGroup.get('ReturnQty').value;
+    if (OrderQtyVAL < ReturnQtyVAL) {
       this.isQtyError = true;
     } else {
       this.isQtyError = false;

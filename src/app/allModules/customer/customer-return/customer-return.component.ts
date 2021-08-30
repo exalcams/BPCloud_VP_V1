@@ -65,13 +65,14 @@ export class CustomerReturnComponent implements OnInit {
     'Item',
     'Material',
     'OrderQty',
-    'RetQty',
-    'Invoice',
+    'ReturnQty',
+    // 'Invoice',
+    'ReasonText',
+    'InvoiceAmount',
+    'ReturnAmount',
     'Batch',
     'Serial',
     'Action'
-
-
   ];
   ReturnItemDataSource: MatTableDataSource<BPCRetItem>;
   @ViewChild(MatPaginator) ReturnItemPaginator: MatPaginator;
@@ -101,7 +102,7 @@ export class CustomerReturnComponent implements OnInit {
   SerialListNo: number;
   hide: boolean;
   orderqty: number;
-  retqty: number;
+  ReturnQty: number;
   invoice_duplicate: any;
   length: number;
   SecretKey: string;
@@ -202,6 +203,8 @@ export class CustomerReturnComponent implements OnInit {
       // TruckNumber: ['', [Validators.required, Validators.pattern('^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{3,4}$')]],
       TruckNumber: ['', [Validators.required, Validators.pattern('^[A-Z]{2}[ -][0-9]{1,2}[ -][A-Z]{2,3}[ -][0-9]{3,4}')]],
       Status: [''],
+      TotalReturnQty: [''],
+      TotalReturnAmount: [''],
     });
   }
 
@@ -210,10 +213,12 @@ export class CustomerReturnComponent implements OnInit {
       Item: ['', Validators.required],
       Material: ['', Validators.required],
       OrderQty: ['', [Validators.required, Validators.pattern('^([1-9][0-9]*)([.][0-9]{1,2})?$')]],
-      RetQty: ['', [Validators.required, Validators.pattern('^([1-9][0-9]*)([.][0-9]{1,2})?$')]],
-      // ReasonText: [''],
+      ReturnQty: ['', [Validators.required, Validators.pattern('^([1-9][0-9]*)([.][0-9]{1,2})?$')]],
+      ReasonText: [''],
+      InvoiceAmount: ['', [Validators.required, Validators.pattern('^([1-9][0-9]*)([.][0-9]{1,2})?$')]],
+      ReturnAmount: ['', [Validators.required, Validators.pattern('^([1-9][0-9]*)([.][0-9]{1,2})?$')]],
       // FileName: [''],
-      Invoice: ['', Validators.required],
+      // Invoice: ['', Validators.required],
       // Batches: [[]],
       // Serials: [[]]
     });
@@ -312,12 +317,14 @@ export class CustomerReturnComponent implements OnInit {
   //     }
   //   );
   // }
-  RemovePurchaseIndentItemFromTable(doc: BPCRetItemView): void {
+  RemoveReturnItemFromTable(doc: BPCRetItemView): void {
     const index: number = this.AllReturnItems.indexOf(doc);
     if (index > -1) {
       this.AllReturnItems.splice(index, 1);
     }
     this.ReturnItemDataSource = new MatTableDataSource(this.AllReturnItems);
+    this.CalculateTotalReturnQty();
+    this.CalculateTotalReturnAmount();
     // this.SelectedReturnView.Batch;
     // this.Batchlist = null;
     // // this.SelectedReturnView.Batch = [];
@@ -468,13 +475,15 @@ export class CustomerReturnComponent implements OnInit {
       PIItem.Type = this.SelectedBPCFact.Type;
       PIItem.PatnerID = this.SelectedBPCFact.PatnerID;
       PIItem.Item = this.ReturnItemFormGroup.get('Item').value;
-      PIItem.InvoiceNumber = this.ReturnItemFormGroup.get('Invoice').value;
+      // PIItem.InvoiceNumber = this.ReturnItemFormGroup.get('Invoice').value;
       PIItem.Material = this.ReturnItemFormGroup.get('Material').value;
-      PIItem.RetQty = this.ReturnItemFormGroup.get('RetQty').value;
+      PIItem.ReturnQty = this.ReturnItemFormGroup.get('ReturnQty').value;
       PIItem.OrderQty = this.ReturnItemFormGroup.get('OrderQty').value;
       // PIItem.DeliveryDate = this.ReturnItemFormGroup.get('DeliveryDate').value;
       // PIItem.UOM = this.ReturnItemFormGroup.get('UOM').value;
-      // PIItem.ReasonText = this.ReturnItemFormGroup.get('ReasonText').value;
+      PIItem.ReasonText = this.ReturnItemFormGroup.get('ReasonText').value;
+      PIItem.InvoiceAmount = this.ReturnItemFormGroup.get('InvoiceAmount').value;
+      PIItem.ReturnAmount = this.ReturnItemFormGroup.get('ReturnAmount').value;
       // PIItem.FileName = this.ReturnItemFormGroup.get('FileName').value;
       if (this.fileToUpload) {
         PIItem.FileName = this.fileToUpload.name;
@@ -486,6 +495,8 @@ export class CustomerReturnComponent implements OnInit {
       }
       this.AllReturnItems.push(PIItem);
       this.ReturnItemDataSource = new MatTableDataSource(this.AllReturnItems);
+      this.CalculateTotalReturnQty();
+      this.CalculateTotalReturnAmount();
       this.ResetReturnItemFormGroup();
       this.selectedDocCenterMaster = new BPCDocumentCenterMaster();
     } else {
@@ -493,17 +504,36 @@ export class CustomerReturnComponent implements OnInit {
     }
   }
 
-  RemoveReturnItemFromTable(doc: BPCRetItemView): void {
-    const index: number = this.AllReturnItems.indexOf(doc);
-    if (index > -1) {
-      this.AllReturnItems.splice(index, 1);
-      const indexx = this.fileToUploadList.findIndex(x => x.name === doc.FileName);
-      if (indexx > -1) {
-        this.fileToUploadList.splice(indexx, 1);
-      }
-    }
-    this.ReturnItemDataSource = new MatTableDataSource(this.AllReturnItems);
+  // RemoveReturnItemFromTable(doc: BPCRetItemView): void {
+  //   const index: number = this.AllReturnItems.indexOf(doc);
+  //   if (index > -1) {
+  //     this.AllReturnItems.splice(index, 1);
+  //     const indexx = this.fileToUploadList.findIndex(x => x.name === doc.FileName);
+  //     if (indexx > -1) {
+  //       this.fileToUploadList.splice(indexx, 1);
+  //     }
+  //   }
+  //   this.ReturnItemDataSource = new MatTableDataSource(this.AllReturnItems);
+  //   this.CalculateTotalReturnQty();
+  //   this.CalculateTotalReturnAmount();
+  // }
 
+  CalculateTotalReturnQty(): void {
+    let TotalReturnQty = 0;
+    this.AllReturnItems.forEach((x, i) => {
+      TotalReturnQty += +x.ReturnQty;
+    });
+    TotalReturnQty = Math.round((TotalReturnQty + Number.EPSILON) * 100) / 100;
+    this.ReturnFormGroup.get('TotalReturnQty').patchValue(TotalReturnQty);
+  }
+
+  CalculateTotalReturnAmount(): void {
+    let TotalReturnAmount = 0;
+    this.AllReturnItems.forEach((x, i) => {
+      TotalReturnAmount += +x.ReturnAmount;
+    });
+    TotalReturnAmount = Math.round((TotalReturnAmount + Number.EPSILON) * 100) / 100;
+    this.ReturnFormGroup.get('TotalReturnAmount').patchValue(TotalReturnAmount);
   }
 
   GetAllBPCCountryMasters(): void {
@@ -1112,28 +1142,28 @@ export class CustomerReturnComponent implements OnInit {
   QtySelected(): void {
     const OrderQtyVAL = +this.ReturnItemFormGroup.get('OrderQty').value;
 
-    this.retqty = Number(this.ReturnItemFormGroup.get('RetQty').value);
+    this.ReturnQty = Number(this.ReturnItemFormGroup.get('ReturnQty').value);
 
     this.orderqty = Number(this.ReturnItemFormGroup.get('OrderQty').value);
 
-    if ((this.retqty > this.orderqty) && (this.orderqty !== 0)) {
-      this.ReturnItemFormGroup.get('RetQty').setErrors({ qty1: true });
+    if ((this.ReturnQty > this.orderqty) && (this.orderqty !== 0)) {
+      this.ReturnItemFormGroup.get('ReturnQty').setErrors({ qty1: true });
     }
     else if ((this.orderqty === 0)) {
 
-      // this.ReturnItemFormGroup.get('RetQty').setErrors({ qty1: false })
+      // this.ReturnItemFormGroup.get('ReturnQty').setErrors({ qty1: false })
       this.ReturnItemFormGroup.get('OrderQty').markAsTouched();
     }
-    else if (this.retqty <= this.orderqty) {
+    else if (this.ReturnQty <= this.orderqty) {
       this.ReturnItemFormGroup.get('OrderQty').markAsUntouched();
 
-      // this.ReturnItemFormGroup.get('RetQty').setErrors({ qty1: false })
-      this.ReturnItemFormGroup.get('RetQty').markAsUntouched();
-      this.ReturnItemFormGroup.get('RetQty').setErrors(null);
+      // this.ReturnItemFormGroup.get('ReturnQty').setErrors({ qty1: false })
+      this.ReturnItemFormGroup.get('ReturnQty').markAsUntouched();
+      this.ReturnItemFormGroup.get('ReturnQty').setErrors(null);
     }
 
-    // const RetQtyVAL = + this.ReturnItemFormGroup.get('RetQty').value;
-    // if (OrderQtyVAL < RetQtyVAL) {
+    // const ReturnQtyVAL = + this.ReturnItemFormGroup.get('ReturnQty').value;
+    // if (OrderQtyVAL < ReturnQtyVAL) {
     //   this.isQtyError = true;
     // } else {
     //   this.isQtyError = false;

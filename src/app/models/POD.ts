@@ -1,7 +1,22 @@
 import { CommonClass } from './common';
 
 export class BPCPODHeader extends CommonClass {
-    ID: number;
+    // ID: number;
+    // Client: string;
+    // Company: string;
+    // Type: string;
+    // PatnerID: string;
+    // DocNumber: string;
+    // InvoiceNumber: string;
+    // InvoiceDate: Date | string | null;
+    // TruckNumber: string;
+    // VessleNumber: string;
+    // Amount: number | null;
+    // Currency: string;
+    // Transporter: string;
+    // Plant: string;
+    // Status: string;
+    // Doc: string;
     Client: string;
     Company: string;
     Type: string;
@@ -9,14 +24,17 @@ export class BPCPODHeader extends CommonClass {
     DocNumber: string;
     InvoiceNumber: string;
     InvoiceDate: Date | string | null;
+    OBDNumber: string;
+    OBDDate: Date | string | null;
     TruckNumber: string;
     VessleNumber: string;
     Amount: number | null;
     Currency: string;
     Transporter: string;
+    Driver: string;
+    DriverContactNo: string;
     Plant: string;
     Status: string;
-    Doc: string;
 }
 
 export class BPCPODItem extends CommonClass {

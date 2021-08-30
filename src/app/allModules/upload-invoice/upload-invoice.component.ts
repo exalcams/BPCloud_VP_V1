@@ -670,6 +670,7 @@ export class UploadInvoiceComponent implements OnInit {
     const pr = +this.SecondTableFormGroup.get('Price').value;
     const ta = +this.SecondTableFormGroup.get('Tax').value;
     Amount = pr + ta;
+    Amount = Math.round((Amount + Number.EPSILON) * 100) / 100;
     this.SecondTableFormGroup.get('Amount').patchValue(Amount);
     // this.ASNItemFormArray.controls.forEach((x, i) => {
     //   const asq = +x.get('ASNQty').value;
@@ -684,6 +685,7 @@ export class UploadInvoiceComponent implements OnInit {
     this.flipItems.forEach((x, i) => {
       TotalAmount += x.Amount;
     });
+    TotalAmount = Math.round((TotalAmount + Number.EPSILON) * 100) / 100;
     this.flipFormGroup.get('InvoiceAmount').patchValue(TotalAmount);
   }
 

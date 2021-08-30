@@ -105,6 +105,24 @@
                       </mat-error>
                     </mat-form-field>
                   </div>
+                  <div fxFlex="33" class="px-12">
+                    <mat-form-field style="width: 100%;">
+                      <input matInput placeholder="Total Return Qty" formControlName="TotalReturnQty" disabled>
+                      <mat-error
+                        *ngIf="ReturnFormGroup.get('TotalReturnQty').touched && ReturnFormGroup.get('TotalReturnQty').hasError('required')">
+                        Total Return Qty is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33" class="px-12">
+                    <mat-form-field style="width: 100%;">
+                      <input matInput placeholder="Total Return Amount" formControlName="TotalReturnAmount" disabled>
+                      <mat-error
+                        *ngIf="ReturnFormGroup.get('TotalReturnAmount').touched && ReturnFormGroup.get('TotalReturnAmount').hasError('required')">
+                        Total Return Amount is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
                   <div fxFlex="33" class="px-12" *ngIf="SelectedPIRNumber">
                     <mat-form-field style="width: 100%;">
                       <input matInput placeholder="Status" formControlName="Status">
@@ -166,7 +184,7 @@
             <div>
               <form autocomplete="off" class="normal" fxLayout="row" fxLayoutAlign="start" name="form" novalidate
                 [formGroup]="ReturnItemFormGroup">
-                <div fxFlex="15">
+                <div fxFlex="10">
                   <mat-form-field class="px-12" style="width: 100%;">
                     <input matInput placeholder="Item" formControlName="Item">
                     <mat-error
@@ -181,7 +199,8 @@
                       <!-- (selectionChange)="Material(value)" -->
                       <!-- (selectionChange)="CountryOfOriginSelected($event)" -->
                       <!-- ProductID: string; -->
-                      <mat-option *ngFor="let Prod of AllProducts" [value]="Prod.ProductID">{{Prod.ProductID}}
+                      <mat-option *ngFor="let Prod of AllProducts" [value]="Prod.ProductID">
+                        {{Prod.ProductID | removeLeadingZero}}
                       </mat-option>
 
                     </mat-select>
@@ -226,33 +245,60 @@
                 </div>
                 <div fxFlex="15">
                   <mat-form-field class="px-12" style="width: 100%;">
-                    <input matInput placeholder="Ret Qty" formControlName="RetQty" (keyup)="QtySelected()">
+                    <input matInput placeholder="Ret Qty" formControlName="ReturnQty" (keyup)="QtySelected()">
                     <!-- (input)="onSearchChange($event.target.value)" -->
                     <mat-error
-                      *ngIf="ReturnItemFormGroup.get('RetQty').touched && ReturnItemFormGroup.get('RetQty').hasError('required')">
+                      *ngIf="ReturnItemFormGroup.get('ReturnQty').touched && ReturnItemFormGroup.get('ReturnQty').hasError('required')">
                       Ret Qty is required
                     </mat-error>
-                    <mat-error *ngIf="ReturnItemFormGroup.get('RetQty').touched && !ReturnItemFormGroup.get('RetQty').hasError('required')
-                    && ReturnItemFormGroup.get('RetQty').hasError('pattern')">
+                    <mat-error *ngIf="ReturnItemFormGroup.get('ReturnQty').touched && !ReturnItemFormGroup.get('ReturnQty').hasError('required')
+                    && ReturnItemFormGroup.get('ReturnQty').hasError('pattern')">
                       Enter valid Quantity
                     </mat-error>
-                    <mat-error *ngIf="ReturnItemFormGroup.get('RetQty').hasError('qty1')">
+                    <mat-error *ngIf="ReturnItemFormGroup.get('ReturnQty').hasError('qty1')">
                       Return Qty should be less than Order Qty
                     </mat-error>
                   </mat-form-field>
-
                 </div>
-
                 <div fxFlex="15">
                   <mat-form-field class="px-12" style="width: 100%;">
-                    <!-- <input matInput placeholder="Invoice" formControlName="Invoice" (keyup)="truck_func()"> -->
+                    <input matInput placeholder="Reason Text" formControlName="ReasonText">
+                    <mat-error
+                      *ngIf="ReturnItemFormGroup.get('ReasonText').touched && ReturnItemFormGroup.get('ReasonText').hasError('required')">
+                      Reason Text is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="15">
+                  <mat-form-field class="px-12" style="width: 100%;">
+                    <input matInput placeholder="Invoice Amount" formControlName="InvoiceAmount">
+                    <mat-error
+                      *ngIf="ReturnItemFormGroup.get('InvoiceAmount').touched && ReturnItemFormGroup.get('InvoiceAmount').hasError('required')">
+                      Invoice Amount is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="15">
+                  <mat-form-field class="px-12" style="width: 100%;">
+                    <input matInput placeholder="Return Amount" formControlName="ReturnAmount">
+                    <mat-error
+                      *ngIf="ReturnItemFormGroup.get('ReturnAmount').touched && ReturnItemFormGroup.get('ReturnAmount').hasError('required')">
+                      Return Amount is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+
+                <!-- <div fxFlex="15">
+                  <mat-form-field class="px-12" style="width: 100%;">
                     <input matInput placeholder="Invoice" formControlName="Invoice">
                     <mat-error
                       *ngIf="ReturnItemFormGroup.get('Invoice').touched && ReturnItemFormGroup.get('Invoice').hasError('required')">
                       Invoice is required
                     </mat-error>
                   </mat-form-field>
-                </div>
+                </div> -->
+
                 <!-- <div fxFlex="20" fxLayoutAlign="start center" class="mt-16">
                   <img class="addBlueIcon" src="assets/images/addBlue.png" (click)="fileInput1.click()">
                   <span class="attachClass" (click)="fileInput1.click()">
@@ -261,7 +307,9 @@
                   <input hidden type="file" #fileInput1 (change)="handleFileInput($event)"
                     accept="image/x-png,image/gif,image/jpeg,image/jpg,application/pdf" />
                 </div> -->
-                <div *ngIf="!SelectedReturnHeader?.Status || SelectedReturnHeader?.Status==='Open'|| SelectedReturnHeader?.Status==='saved'" fxFlex="10" fxLayoutAlign="center start">
+                <div
+                  *ngIf="!SelectedReturnHeader?.Status || SelectedReturnHeader?.Status==='Open'|| SelectedReturnHeader?.Status==='saved'"
+                  fxFlex="10" fxLayoutAlign="center start">
                   <img class="addIcon" src="assets/images/logos/add-button.png" (click)="AddReturnItemToTable()">
                   <!-- <button class="SaveBtn" mat-raised-button (click)="AddDocumentCenterToTable()">Add</button> -->
                 </div>
@@ -301,10 +349,28 @@
                   {{element.OrderQty}} </td>
               </ng-container>
 
-              <ng-container matColumnDef="RetQty">
+              <ng-container matColumnDef="ReturnQty">
                 <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Ret Qty </th>
                 <td mat-cell style="width: 15%;" *matCellDef="let element">
-                  {{element.RetQty}} </td>
+                  {{element.ReturnQty}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="ReasonText">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Reason Text </th>
+                <td mat-cell style="width: 15%;" *matCellDef="let element">
+                  {{element.ReasonText}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="InvoiceAmount">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Invoice Amount </th>
+                <td mat-cell style="width: 15%;" *matCellDef="let element">
+                  {{element.InvoiceAmount}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="ReturnAmount">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Return Amount </th>
+                <td mat-cell style="width: 15%;" *matCellDef="let element">
+                  {{element.ReturnAmount}} </td>
               </ng-container>
 
               <!-- <ng-container matColumnDef="UOM">
@@ -319,11 +385,12 @@
                   {{element.DeliveryDate | date :'dd/MM/yyyy'}} </td>
               </ng-container> -->
 
-              <ng-container matColumnDef="Invoice">
+              <!-- <ng-container matColumnDef="Invoice">
                 <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Invoice </th>
                 <td mat-cell style="width: 15%;" *matCellDef="let element">
                   {{element.InvoiceNumber}} </td>
-              </ng-container>
+              </ng-container> -->
+
               <ng-container matColumnDef="Batch">
                 <th mat-header-cell *matHeaderCellDef style="width: 12%;"> Batch </th>
                 <td mat-cell style="width: 12%;text-align-last: center;" *matCellDef="let element">
@@ -344,7 +411,7 @@
                 <th mat-header-cell [hidden]="hide" *matHeaderCellDef mat-sort-header style="width: 13%"> </th>
                 <td mat-cell [hidden]="hide" *matCellDef="let element" class="mb-4" style="width: 13%">
                   <img class="removeIcon" src="assets/images/remove-button.png"
-                    (click)="RemovePurchaseIndentItemFromTable(element)">
+                    (click)="RemoveReturnItemFromTable(element)">
                 </td>
               </ng-container>
 
@@ -393,8 +460,9 @@
                 *ngIf="!SelectedReturnHeader?.Status || SelectedReturnHeader?.Status==='Open'|| SelectedReturnHeader?.Status==='saved'"
                 mat-stroked-button class="SaveBtn mb-4" (click)="SaveClicked()">Save
               </button>
-              <button *ngIf="!SelectedReturnHeader?.Status || SelectedReturnHeader?.Status==='Open'||SelectedReturnHeader?.Status==='saved'" mat-raised-button
-                class="SubmitBtn mb-4" (click)="SubmitClicked()">Submit</button>
+              <button
+                *ngIf="!SelectedReturnHeader?.Status || SelectedReturnHeader?.Status==='Open'||SelectedReturnHeader?.Status==='saved'"
+                mat-raised-button class="SubmitBtn mb-4" (click)="SubmitClicked()">Submit</button>
             </div>
           </div>
         </mat-card-actions>

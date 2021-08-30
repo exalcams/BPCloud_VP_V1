@@ -21,12 +21,12 @@
           </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex class="px-12">
-          <input matInput placeholder="Qty" formControlName="RetQty" (keydown)="decimalOnly($event)">
-          <mat-error *ngIf="BatchFormGroup.get('RetQty').touched && BatchFormGroup.get('RetQty').hasError('required')">
+          <input matInput placeholder="Qty" formControlName="ReturnQty" (keydown)="decimalOnly($event)">
+          <mat-error *ngIf="BatchFormGroup.get('ReturnQty').touched && BatchFormGroup.get('ReturnQty').hasError('required')">
             Qty is required
           </mat-error>
-          <mat-error *ngIf="BatchFormGroup.get('RetQty').touched && !BatchFormGroup.get('RetQty').hasError('required')
-          && BatchFormGroup.get('RetQty').hasError('pattern')">
+          <mat-error *ngIf="BatchFormGroup.get('ReturnQty').touched && !BatchFormGroup.get('ReturnQty').hasError('required')
+          && BatchFormGroup.get('ReturnQty').hasError('pattern')">
             Please enter a valid Qty
           </mat-error>
         </mat-form-field>
@@ -48,10 +48,10 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="RetQty">
+        <ng-container matColumnDef="ReturnQty">
           <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Ret Qty</th>
           <td mat-cell style="width: 15%;" *matCellDef="let element">
-            <span> {{ element.RetQty}} </span>
+            <span> {{ element.ReturnQty}} </span>
           </td>
         </ng-container>
 
