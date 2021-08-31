@@ -70,7 +70,10 @@ export class BPCASNItem extends CommonClass {
     PlantCode: string;
     UnitPrice: number | null;
     Value: number | null;
+    NetAmount: number | null;
     TaxAmount: number | null;
+    FreightAmount: number | null;
+    OtherAmount: number | null;
     TaxCode: string;
 }
 
@@ -94,7 +97,10 @@ export class BPCASNItemView extends CommonClass {
     PlantCode: string;
     UnitPrice: number | null;
     Value: number | null;
+    NetAmount: number | null;
     TaxAmount: number | null;
+    FreightAmount: number | null;
+    OtherAmount: number | null;
     TaxCode: string;
     ASNItemBatches: BPCASNItemBatch[];
     ASNItemSESes: BPCASNItemSES[];
@@ -421,6 +427,20 @@ export class GRNListFilter {
     ToDate: Date | string | null;
     constructor() {
         this.Plants = [];
+    }
+}
+export class ASNSplitView{
+    UnitPrice: number | null;
+    NetAmount: number | null;
+    TaxAmount: number | null;
+    FreightAmount: number | null;
+    OtherAmount: number | null;
+    constructor(){
+        this.UnitPrice=0;
+        this.NetAmount=0;
+        this.TaxAmount=0;
+        this.FreightAmount=0;
+        this.OtherAmount=0;
     }
 }
 

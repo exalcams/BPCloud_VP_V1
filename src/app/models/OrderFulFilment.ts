@@ -60,7 +60,10 @@ export class BPCOFItem extends CommonClass {
     PlantCode: string;
     UnitPrice: number | null;
     Value: number | null;
+    NetAmount: number | null;
     TaxAmount: number | null;
+    FreightAmount: number | null;
+    OtherAmount: number | null;
     TaxCode: string;
     MaxAllowedQty: number;
 }
@@ -87,7 +90,10 @@ export class BPCOFItemView extends CommonClass {
     PlantCode: string;
     UnitPrice: number | null;
     Value: number | null;
+    NetAmount: number | null;
     TaxAmount: number | null;
+    FreightAmount: number | null;
+    OtherAmount: number | null;
     TaxCode: string;
     MaxAllowedQty: number;
     BPCOFItemSESes: BPCASNItemSES[];
