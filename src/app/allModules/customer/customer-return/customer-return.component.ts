@@ -30,6 +30,8 @@ import { BatchDialogComponent } from '../batch-dialog/batch-dialog.component';
 import { SerialDialogComponent } from '../serial-dialog/serial-dialog.component';
 import * as SecureLS from 'secure-ls';
 import { AuthService } from 'app/services/auth.service';
+import { BPCPODView } from 'app/models/POD';
+import { ShareParameterService } from 'app/services/share-parameters.service';
 
 @Component({
   selector: 'app-customer-return',
@@ -105,6 +107,9 @@ export class CustomerReturnComponent implements OnInit {
   ReturnQty: number;
   invoice_duplicate: any;
   length: number;
+
+  SelectedPODView: BPCPODView;
+
   SecretKey: string;
   SecureStorage: SecureLS;
   constructor(
@@ -113,6 +118,7 @@ export class CustomerReturnComponent implements OnInit {
     private _FactService: FactService,
     private _POService: POService,
     private _CustomerService: CustomerService,
+    private _shareParameterService: ShareParameterService,
     private _ASNService: ASNService,
     private _datePipe: DatePipe,
     private _authService: AuthService,
@@ -161,6 +167,8 @@ export class CustomerReturnComponent implements OnInit {
     this._route.queryParams.subscribe(params => {
       this.SelectedPIRNumber = params['id'];
     });
+    this.SelectedPODView = this._shareParameterService.GetPODView();
+    this._shareParameterService.SetPODView(null);
     this.CreateAppUsage();
     this.InitializeReturnFormGroup();
     this.InitializeReturnItemFormGroup();
@@ -172,6 +180,9 @@ export class CustomerReturnComponent implements OnInit {
     this.GetAllInvoices();
     if (!this.SelectedPIRNumber) {
       this.SelectedReturnHeader.Status = '';
+    }
+    if (this.SelectedPODView) {
+      this.InitializeReturnValuesByPOD();
     }
   }
   CreateAppUsage(): void {
@@ -206,6 +217,8 @@ export class CustomerReturnComponent implements OnInit {
       TotalReturnQty: [''],
       TotalReturnAmount: [''],
     });
+    this.ReturnFormGroup.get('TotalReturnQty').disable();
+    this.ReturnFormGroup.get('TotalReturnAmount').disable();
   }
 
   InitializeReturnItemFormGroup(): void {
@@ -221,6 +234,29 @@ export class CustomerReturnComponent implements OnInit {
       // Invoice: ['', Validators.required],
       // Batches: [[]],
       // Serials: [[]]
+    });
+    this.ReturnItemFormGroup.get('ReturnAmount').disable();
+  }
+
+  InitializeReturnValuesByPOD(): void {
+    // this.ReturnFormGroup.get('RequestID').patchValue(this.SelectedReturnHeader.RetReqID);
+    // this.ReturnFormGroup.get('Date').patchValue(this.SelectedReturnHeader.Date);
+    this.ReturnFormGroup.get('InvoiceReference').patchValue(this.SelectedPODView.InvoiceNumber);
+    this.ReturnFormGroup.get('SONumber').patchValue(this.SelectedPODView.DocNumber);
+    // this.ReturnFormGroup.get('CreditNote').patchValue(this.SelectedReturnHeader.CreditNote);
+    // this.ReturnFormGroup.get('AWBNumber').patchValue(this.SelectedReturnHeader.AWBNumber);
+    this.ReturnFormGroup.get('Transporter').patchValue(this.SelectedPODView.Transporter);
+    this.ReturnFormGroup.get('TruckNumber').patchValue(this.SelectedPODView.TruckNumber);
+    // this.ReturnFormGroup.get('Status').patchValue(this.SelectedReturnHeader.Status);
+    this.SelectedPODView.PODItems.forEach(x => {
+      if (x.Qty !== x.AcceptedQty) {
+        this.ReturnItemFormGroup.get('Item').patchValue(x.Item);
+        this.ReturnItemFormGroup.get('Material').patchValue(x.Material);
+        this.ReturnItemFormGroup.get('OrderQty').patchValue(x.Qty);
+        this.ReturnItemFormGroup.get('ReturnQty').patchValue(x.Qty - x.AcceptedQty);
+        this.ReturnItemFormGroup.get('ReasonText').patchValue(x.Reason);
+        // return;
+      }
     });
   }
 
@@ -241,6 +277,9 @@ export class CustomerReturnComponent implements OnInit {
     this.status_show = '';
     this.hide = false;
     this.ReturnFormGroup.get('Date').patchValue(new Date());
+    this.ReturnFormGroup.get('TotalReturnQty').disable();
+    this.ReturnFormGroup.get('TotalReturnAmount').disable();
+    this.ReturnItemFormGroup.get('ReturnAmount').disable();
   }
 
   ResetReturnFormGroup(): void {
@@ -334,14 +373,14 @@ export class CustomerReturnComponent implements OnInit {
     // this.SerialListNo = null;
   }
   GetAllInvoices(): void {
-    this._POService.GetAllInvoices().subscribe(
-      (data) => {
-        this.InvoiceData = data as BPCInvoicePayment[];
-        // console.log("invd"+  this.InvoiceData);
-      },
-      (err) => console.log(err)
+    // this._POService.GetAllInvoices().subscribe(
+    //   (data) => {
+    //     this.InvoiceData = data as BPCInvoicePayment[];
+    //     // console.log("invd"+  this.InvoiceData);
+    //   },
+    //   (err) => console.log(err)
 
-    );
+    // );
   }
   DateSelected(event): void {
     const selectedType = event.value;
@@ -498,6 +537,7 @@ export class CustomerReturnComponent implements OnInit {
       this.CalculateTotalReturnQty();
       this.CalculateTotalReturnAmount();
       this.ResetReturnItemFormGroup();
+      this.ReturnItemFormGroup.get('ReturnAmount').disable();
       this.selectedDocCenterMaster = new BPCDocumentCenterMaster();
     } else {
       this.ShowValidationErrors(this.ReturnItemFormGroup);
@@ -526,7 +566,18 @@ export class CustomerReturnComponent implements OnInit {
     TotalReturnQty = Math.round((TotalReturnQty + Number.EPSILON) * 100) / 100;
     this.ReturnFormGroup.get('TotalReturnQty').patchValue(TotalReturnQty);
   }
-
+  CalculateReturnAmount(): void {
+    const OrderQty = +this.ReturnItemFormGroup.get('OrderQty').value;
+    const ReturnQty = +this.ReturnItemFormGroup.get('ReturnQty').value;
+    const InvoiceAmount = +this.ReturnItemFormGroup.get('InvoiceAmount').value;
+    if (OrderQty > 0 && ReturnQty > 0 && InvoiceAmount > 0) {
+      let reAmount = +((InvoiceAmount * ReturnQty) / OrderQty);
+      reAmount = Math.round((reAmount + Number.EPSILON) * 100) / 100;
+      this.ReturnItemFormGroup.get('ReturnAmount').patchValue(reAmount);
+    } else {
+      this.ReturnItemFormGroup.get('ReturnAmount').patchValue(0);
+    }
+  }
   CalculateTotalReturnAmount(): void {
     let TotalReturnAmount = 0;
     this.AllReturnItems.forEach((x, i) => {

@@ -281,19 +281,49 @@ export class ASNListComponent implements OnInit {
       queryParams: { id: po, navigator_page: "ASN" },
     });
   }
+  // GateEntry(Asn: ASNListView): void {
+  //   this.CreateActionLogvalues("Gate Entry");
+  //   this._GateService.CreateGateEntryByAsnList(Asn).subscribe(
+  //     (data) => {
+  //       // this.Gate = data as BPCGateHoveringVechicles;
+  //       this.notificationSnackBarComponent.openSnackBar("Gate Entry Successfull", SnackBarStatus.success);
+  //       this.SearchBtnClicked();
+  //       // this.SearchClicked();
+  //     },
+  //     (err) => {
+  //       this.notificationSnackBarComponent.openSnackBar(err, SnackBarStatus.danger);
+  //     }
+  //   );
+  // }
+  // CancelGateEntry(Asn: ASNListView): void {
+  //   this.CreateActionLogvalues("Cancel Gate Entry");
+  //   this._GateService.CancelGateEntryByAsnList(Asn).subscribe(
+  //     (data) => {
+  //       // this.Gate = data as BPCGateHoveringVechicles;
+  //       this.notificationSnackBarComponent.openSnackBar("Cancel Gate Entry Successfull", SnackBarStatus.success);
+  //       this.SearchBtnClicked();
+  //     },
+  //     (err) => {
+  //       this.notificationSnackBarComponent.openSnackBar(err, SnackBarStatus.danger);
+  //     }
+  //   );
+  // }
   GateEntry(Asn: ASNListView): void {
-    this.CreateActionLogvalues("Gate Entry");
-    this._GateService.CreateGateEntryByAsnList(Asn).subscribe(
-      (data) => {
-        // this.Gate = data as BPCGateHoveringVechicles;
-        this.notificationSnackBarComponent.openSnackBar("Gate Entry Successfull", SnackBarStatus.success);
-        this.SearchBtnClicked();
-        // this.SearchClicked();
-      },
-      (err) => {
-        this.notificationSnackBarComponent.openSnackBar(err, SnackBarStatus.danger);
-      }
-    );
+    this._shareParameterService.SetASNListView(Asn);
+    this._router.navigate(["/gate/gateentry"]);
+
+    // this.CreateActionLogvalues("Gate Entry");
+    // this._GateService.CreateGateEntryByAsnList(Asn).subscribe(
+    //   (data) => {
+    //     // this.Gate = data as BPCGateHoveringVechicles;
+    //     this.notificationSnackBarComponent.openSnackBar("Gate Entry Successfull", SnackBarStatus.success);
+    //     this.SearchBtnClicked();
+    //     // this.SearchClicked();
+    //   },
+    //   (err) => {
+    //     this.notificationSnackBarComponent.openSnackBar(err, SnackBarStatus.danger);
+    //   }
+    // );
   }
   CancelGateEntry(Asn: ASNListView): void {
     this.CreateActionLogvalues("Cancel Gate Entry");
@@ -727,11 +757,20 @@ export class ASNListComponent implements OnInit {
     });
   }
 
+  // ASNnumber(asn: ASNListView): void {
+  //   // this.CreateActionLogvalues("ASNNumber");
+  //   this._shareParameterService.SetASNListView(asn);
+  //   this._router.navigate(["/asn"]);
+  //   // this._router.navigate(["/asn"], { queryParams: { id: asn.DocNumber } });
+  // }
+  
   ASNnumber(asn: ASNListView): void {
     // this.CreateActionLogvalues("ASNNumber");
-    this._shareParameterService.SetASNListView(asn);
-    this._router.navigate(["/asn"]);
-    // this._router.navigate(["/asn"], { queryParams: { id: asn.DocNumber } });
+    if (this.currentUserRole === 'GateUser') {
+    } else {
+      this._shareParameterService.SetASNListView(asn);
+      this._router.navigate(["/asn"]);
+    }
   }
 
   InitializeSearchForm(): void {

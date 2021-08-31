@@ -27,6 +27,8 @@ import { BPCFact } from 'app/models/fact';
 import * as SecureLS from 'secure-ls';
 import { AuthService } from 'app/services/auth.service';
 import { ActionLog } from 'app/models/OrderFulFilment';
+import { ShareParameterService } from 'app/services/share-parameters.service';
+import { NotificationDialog1Component } from 'app/notifications/notification-dialog1/notification-dialog1.component';
 
 @Component({
   selector: 'app-poddetails',
@@ -113,6 +115,7 @@ export class PODDetailsComponent implements OnInit {
     private _ASNService: ASNService,
     private _PODService: PODService,
     private _vendorMasterService: VendorMasterService,
+    private _shareParameterService: ShareParameterService,
     private _datePipe: DatePipe,
     private _route: ActivatedRoute,
     private _authService: AuthService,
@@ -306,25 +309,25 @@ export class PODDetailsComponent implements OnInit {
     }
   }
 
-  AmountUnitSelected(event): void {
+  // AmountUnitSelected(event): void {
 
-  }
+  // }
 
-  grossWeightUnitSelected(event): void {
+  // grossWeightUnitSelected(event): void {
 
-  }
+  // }
 
-  VolumetricWeightUOMSelected(event): void {
+  // VolumetricWeightUOMSelected(event): void {
 
-  }
+  // }
 
-  CountryOfOriginSelected(event): void {
+  // CountryOfOriginSelected(event): void {
 
-  }
+  // }
 
-  invoiceValueUnitSelected(event): void {
+  // invoiceValueUnitSelected(event): void {
 
-  }
+  // }
 
 
   // AddDocCenterAttClicked(): void {
@@ -394,6 +397,9 @@ export class PODDetailsComponent implements OnInit {
   LoadSelectedPOD(seletedPOD: BPCPODHeader): void {
     this.SelectedPODHeader = seletedPOD;
     this.SelectedPODView.InvoiceNumber = this.SelectedPODHeader.InvoiceNumber;
+    this.SelectedPODView.DocNumber = this.SelectedPODHeader.DocNumber;
+    this.SelectedPODView.Transporter = this.SelectedPODHeader.Transporter;
+    this.SelectedPODView.TruckNumber = this.SelectedPODHeader.TruckNumber;
     this.SelectedInvoiceNumber = this.SelectedPODHeader.InvoiceNumber;
     this.GetPODItemViewsByPOD();
     this.SetPODHeaderValues();
@@ -848,6 +854,28 @@ export class PODDetailsComponent implements OnInit {
       });
   }
 
+  OpenNotificationDialog1(): void {
+    const dialogConfig: MatDialogConfig = {
+      data: {
+        title: 'We have noticed the quantity difference.',
+        subtitle: 'It is recommended to create a return request.'
+      },
+      panelClass: 'confirmation-dialog'
+    };
+    const dialogRef = this.dialog.open(NotificationDialog1Component, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      result => {
+        if (result) {
+          this._shareParameterService.SetPODView(this.SelectedPODView);
+          this._router.navigate(['/customer/customerreturn']);
+        } else {
+          this.CallResetAndPOD();
+        }
+      },
+      () => {
+        this.CallResetAndPOD();
+      });
+  }
 
   CreatePOD(Actiontype: string): void {
 
@@ -867,19 +895,20 @@ export class PODDetailsComponent implements OnInit {
         if (this.fileToUploadList && this.fileToUploadList.length) {
           this.AddPODItemAttachment(Actiontype);
         } else {
-          this.ResetControl();
+          this.IsProgressBarVisibile = false;
           if (Actiontype === 'Submit') {
             if (this.Recived_status === '40') {
-              this.notificationSnackBarComponent.openSnackBar(`We have noted the quantity difference, we will process your order again`, SnackBarStatus.success, 5000);
+              this.OpenNotificationDialog1();
+              // this.notificationSnackBarComponent.openSnackBar(`We have noted the quantity difference, we will process your order again`, SnackBarStatus.success, 5000);
             } else {
               this.notificationSnackBarComponent.openSnackBar(`POD submitted successfully`, SnackBarStatus.success);
+              this.CallResetAndPOD();
             }
           } else {
             this.notificationSnackBarComponent.openSnackBar(`POD saved successfully`, SnackBarStatus.success);
+            this.CallResetAndPOD();
           }
           // this.notificationSnackBarComponent.openSnackBar(`POD ${Actiontype === 'Submit' ? 'submitted' : 'saved'} successfully`, SnackBarStatus.success);
-          this.IsProgressBarVisibile = false;
-          this.GetPODBasedOnCondition();
         }
       },
       (err) => {
@@ -888,24 +917,26 @@ export class PODDetailsComponent implements OnInit {
     );
   }
 
+
   AddPODItemAttachment(Actiontype: string): void {
     this._PODService.AddPODItemAttachment
       (this.SelectedPODHeader.PatnerID, this.SelectedPODHeader.DocNumber, this.SelectedPODHeader.InvoiceNumber, this.currentUserID.toString(), this.fileToUploadList)
       .subscribe(
         (dat) => {
-          this.ResetControl();
+          this.IsProgressBarVisibile = false;
           if (Actiontype === 'Submit') {
             if (this.Recived_status === '40') {
-              this.notificationSnackBarComponent.openSnackBar(`We have noted the quantity difference, we will process your order again`, SnackBarStatus.success, 5000);
+              this.OpenNotificationDialog1();
+              // this.notificationSnackBarComponent.openSnackBar(`We have noted the quantity difference, we will process your order again`, SnackBarStatus.success, 5000);
             } else {
               this.notificationSnackBarComponent.openSnackBar(`POD submitted successfully`, SnackBarStatus.success);
+              this.CallResetAndPOD();
             }
           } else {
             this.notificationSnackBarComponent.openSnackBar(`POD saved successfully`, SnackBarStatus.success);
+            this.CallResetAndPOD();
           }
           // this.notificationSnackBarComponent.openSnackBar(`POD ${Actiontype === 'Submit' ? 'submitted' : 'saved'} successfully`, SnackBarStatus.success);
-          this.IsProgressBarVisibile = false;
-          this.GetPODBasedOnCondition();
         },
         (err) => {
           this.SelectedPODHeader.Status = this.SelectedPODView.Status = 'Open';
@@ -945,19 +976,21 @@ export class PODDetailsComponent implements OnInit {
         if (this.fileToUploadList && this.fileToUploadList.length) {
           this.AddPODItemAttachment(Actiontype);
         } else {
-          this.ResetControl();
+          this.IsProgressBarVisibile = false;
           if (Actiontype === 'Submit') {
             if (this.Recived_status === '40') {
-              this.notificationSnackBarComponent.openSnackBar(`We have noted the quantity difference, we will process your order again`, SnackBarStatus.success, 5000);
+              this.OpenNotificationDialog1();
+              // this.notificationSnackBarComponent.openSnackBar(`We have noted the quantity difference, we will process your order again`, SnackBarStatus.success, 5000);
             } else {
               this.notificationSnackBarComponent.openSnackBar(`POD submitted successfully`, SnackBarStatus.success);
+              this.CallResetAndPOD();
             }
           } else {
             this.notificationSnackBarComponent.openSnackBar(`POD saved successfully`, SnackBarStatus.success);
+            this.CallResetAndPOD();
           }
           // this.notificationSnackBarComponent.openSnackBar(`POD ${Actiontype === 'Submit' ? 'submitted' : 'saved'} successfully`, SnackBarStatus.success);
-          this.IsProgressBarVisibile = false;
-          this.GetPODBasedOnCondition();
+
         }
       },
       (err) => {
@@ -967,6 +1000,10 @@ export class PODDetailsComponent implements OnInit {
         this.IsProgressBarVisibile = false;
       }
     );
+  }
+  CallResetAndPOD(): void {
+    this.ResetControl();
+    this.GetPODBasedOnCondition();
   }
   UpdateSO(): void {
     this.SelectedPODView.Recived_status = this.Recived_status;

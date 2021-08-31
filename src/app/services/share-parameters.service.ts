@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ASNListView } from 'app/models/ASN';
+import { BPCPODView } from 'app/models/POD';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +8,7 @@ import { ASNListView } from 'app/models/ASN';
 export class ShareParameterService {
   public CurrentInvoiceDetail: any;
   public CurrentASNListView: ASNListView;
+  public CurrentPODView: BPCPODView;
   constructor() { }
   SetInvoiceDetail(InvoiceDetail: any): void {
     this.CurrentInvoiceDetail = InvoiceDetail;
@@ -19,5 +21,11 @@ export class ShareParameterService {
   }
   GetASNListView(): ASNListView {
     return this.CurrentASNListView;
+  }
+  SetPODView(podView: BPCPODView): void {
+    this.CurrentPODView = podView;
+  }
+  GetPODView(): BPCPODView {
+    return this.CurrentPODView;
   }
 }

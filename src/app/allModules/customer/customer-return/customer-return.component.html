@@ -43,13 +43,13 @@
                   </div>
                   <div fxFlex="33" class="px-12">
                     <mat-form-field style="width: 100%;">
-                      <!-- <input matInput placeholder="InvoiceReference" formControlName="InvoiceReference"> -->
-                      <mat-select placeholder="Invoice Reference" formControlName="InvoiceReference"
+                      <input matInput placeholder="InvoiceReference" formControlName="InvoiceReference">
+                      <!-- <mat-select placeholder="Invoice Reference" formControlName="InvoiceReference"
                         (selectionChange)="InvoiceSelected($event)">
                         <mat-option *ngFor="let count of  InvoiceData" [value]="count.InvoiceNo">
                           {{count.InvoiceNo}}
                         </mat-option>
-                      </mat-select>
+                      </mat-select> -->
                       <mat-error
                         *ngIf="ReturnFormGroup.get('InvoiceReference').touched && ReturnFormGroup.get('InvoiceReference').hasError('required')">
                         Invoice Reference is required
@@ -227,7 +227,7 @@
                 </div> -->
                 <div fxFlex="15">
                   <mat-form-field class="px-12" style="width: 100%;">
-                    <input matInput placeholder="Order Qty" formControlName="OrderQty" (keyup)="QtySelected()">
+                    <input matInput placeholder="Order Qty" formControlName="OrderQty" (keyup)="QtySelected()" (blur)="CalculateReturnAmount()">
                     <mat-error
                       *ngIf="ReturnItemFormGroup.get('OrderQty').touched && ReturnItemFormGroup.get('OrderQty').hasError('required')">
                       Order Qty is required
@@ -245,7 +245,7 @@
                 </div>
                 <div fxFlex="15">
                   <mat-form-field class="px-12" style="width: 100%;">
-                    <input matInput placeholder="Ret Qty" formControlName="ReturnQty" (keyup)="QtySelected()">
+                    <input matInput placeholder="Ret Qty" formControlName="ReturnQty" (keyup)="QtySelected()" (blur)="CalculateReturnAmount()">
                     <!-- (input)="onSearchChange($event.target.value)" -->
                     <mat-error
                       *ngIf="ReturnItemFormGroup.get('ReturnQty').touched && ReturnItemFormGroup.get('ReturnQty').hasError('required')">
@@ -271,7 +271,7 @@
                 </div>
                 <div fxFlex="15">
                   <mat-form-field class="px-12" style="width: 100%;">
-                    <input matInput placeholder="Invoice Amount" formControlName="InvoiceAmount">
+                    <input matInput placeholder="Invoice Amount" formControlName="InvoiceAmount" (blur)="CalculateReturnAmount()">
                     <mat-error
                       *ngIf="ReturnItemFormGroup.get('InvoiceAmount').touched && ReturnItemFormGroup.get('InvoiceAmount').hasError('required')">
                       Invoice Amount is required
