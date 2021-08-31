@@ -12,7 +12,7 @@ import { ASNService } from 'app/services/asn.service';
 import { ShareParameterService } from 'app/services/share-parameters.service';
 import {
     BPCASNHeader, BPCASNItem, DocumentCenter, BPCASNView, BPCInvoiceAttachment,
-    BPCCountryMaster, BPCCurrencyMaster, BPCDocumentCenterMaster, BPCASNPack, ASNItemXLSX, BPCASNFieldMaster, BPCASNItemBatch, BPCASNItemView, BPCASNItemSES, ASNListView
+    BPCCountryMaster, BPCCurrencyMaster, BPCDocumentCenterMaster, BPCASNPack, ASNItemXLSX, BPCASNFieldMaster, BPCASNItemBatch, BPCASNItemView, BPCASNItemSES, ASNListView, ASNSplitView
 } from 'app/models/ASN';
 import { BehaviorSubject } from 'rxjs';
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
@@ -36,6 +36,7 @@ import { ASNItemServiceDialogComponent } from './asnitem-service-dialog/asnitem-
 import { AuthService } from 'app/services/auth.service';
 import { GateService } from 'app/services/gate.service';
 import * as SecureLS from 'secure-ls';
+import { AsnSplitupViewDialogComponent } from 'app/notifications/asn-splitup-view-dialog/asn-splitup-view-dialog.component';
 
 @Component({
     selector: 'app-asn',
@@ -90,6 +91,7 @@ export class ASNComponent implements OnInit {
         'ASNQty',
         'Batch',
         'SES',
+        'SplitUpView'
         // 'ManufactureDate',
         // 'ExpiryDate'
     ];
@@ -1063,7 +1065,10 @@ export class ASNComponent implements OnInit {
             PlantCode: [poItem.PlantCode],
             UnitPrice: [poItem.UnitPrice],
             Value: [poItem.Value],
+            NetAmount: [poItem.NetAmount],
             TaxAmount: [poItem.TaxAmount],
+            FreightAmount: [poItem.FreightAmount],
+            OtherAmount: [poItem.OtherAmount],
             TaxCode: [poItem.TaxCode],
         });
         row.disable();
@@ -2672,6 +2677,44 @@ export class ASNComponent implements OnInit {
                 this.notificationSnackBarComponent.openSnackBar(err, SnackBarStatus.danger);
             }
         );
+    }
+    ViewSplitUpClicked(ASNItem:FormGroup) : void{
+        var itemData=new ASNSplitView();
+        itemData.UnitPrice=ASNItem.get('UnitPrice').value;
+        itemData.NetAmount=ASNItem.get('NetAmount').value;
+        itemData.TaxAmount=ASNItem.get('TaxAmount').value;
+        itemData.FreightAmount=ASNItem.get('FreightAmount').value;
+        itemData.OtherAmount=ASNItem.get('OtherAmount').value;
+        this.OpenSplitUpViewDialog(itemData);
+    }
+    PriceSplitUpClicked() : void{
+        const ASNItemArray=this.ASNItemFormGroup.get('ASNItems') as FormArray;
+        var itemData=new ASNSplitView();
+        ASNItemArray.controls.forEach(item => {
+            if(item.get('UnitPrice').value){
+                itemData.UnitPrice+=item.get('UnitPrice').value;
+            }
+            if(item.get('NetAmount').value){
+                itemData.NetAmount+=item.get('NetAmount').value;
+            }
+            if(item.get('TaxAmount').value){
+                itemData.TaxAmount+=item.get('TaxAmount').value;
+            }
+            if(item.get('FreightAmount').value){
+                itemData.FreightAmount+=item.get('FreightAmount').value;
+            }
+            if(item.get('OtherAmount').value){
+                itemData.OtherAmount+=item.get('OtherAmount').value;
+            }
+        });
+        this.OpenSplitUpViewDialog(itemData);
+    }
+    OpenSplitUpViewDialog(itemData:ASNSplitView) : void{
+        const dialogConfig: MatDialogConfig = {
+            data: itemData,
+            panelClass: 'asn-splitup-dialog'
+        };
+        const dialogRef = this.dialog.open(AsnSplitupViewDialogComponent, dialogConfig);
     }
 }
 

@@ -62,6 +62,7 @@ import { ASNComponent } from './asn.component';
 import { AsnPrintDialogComponent } from './asn-print-dialog/asn-print-dialog.component';
 import { ASNItemBatchDialogComponent } from "./asnitem-batch-dialog/asnitem-batch-dialog.component";
 import { ASNItemServiceDialogComponent } from './asnitem-service-dialog/asnitem-service-dialog.component';
+import { AsnSplitupViewDialogComponent } from "app/notifications/asn-splitup-view-dialog/asn-splitup-view-dialog.component";
 // import { ChatModule } from '../chat';
 // import 'chart.piecelabel.js';
 
@@ -151,8 +152,9 @@ const routes = [
         AsnPrintDialogComponent,
         ASNItemBatchDialogComponent,
         ASNItemServiceDialogComponent,
+        AsnSplitupViewDialogComponent
     ],
     providers: [DecimalPipe],
-    entryComponents: [AsnPrintDialogComponent, ASNItemBatchDialogComponent, ASNItemServiceDialogComponent],
+    entryComponents: [AsnPrintDialogComponent, ASNItemBatchDialogComponent, ASNItemServiceDialogComponent,AsnSplitupViewDialogComponent],
 })
 export class ASNModule { }

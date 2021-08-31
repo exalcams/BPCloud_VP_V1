@@ -1,0 +1,39 @@
+<div class="dialog-content-wrapper">
+  <mat-toolbar class="toolBg m-0">
+      <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+          <span class="title dialog-title">Price Split Up</span>
+          <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+              <mat-icon svgIcon="closeIcon"></mat-icon>
+          </button>
+      </mat-toolbar-row>
+  </mat-toolbar>
+
+  <mat-dialog-content class="p-24 m-0" fusePerfectScrollbar fxLayout="column" fxLayoutGap="12px">
+    <div fxFlex=100 fxLayoutAlign="space-between">
+      <span>Net Amount</span>
+      <span>{{PriceData.NetAmount?PriceData.NetAmount:0}}</span>
+    </div>
+    <div fxLayoutAlign="space-between">
+      <span>Tax Amount</span>
+      <span>{{PriceData.TaxAmount?PriceData.TaxAmount:0}}</span>
+    </div>
+    <div fxFlex=100 fxLayoutAlign="space-between">
+      <span>Freight Amount</span>
+      <span>{{PriceData.FreightAmount?PriceData.FreightAmount:0}}</span>
+    </div>
+    <div fxLayoutAlign="space-between">
+      <span>Other Amount</span>
+      <span>{{PriceData.OtherAmount?PriceData.OtherAmount:0}}</span>
+    </div>
+    <div fxLayoutAlign="end">
+      <span class="divider"></span>
+    </div>
+    <div fxLayoutAlign="space-between" class="cl_gross">
+      <span>Gross Amount</span>
+      <span>{{PriceData.UnitPrice?PriceData.UnitPrice:0}}</span>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="m-0 p-16" fxLayoutAlign="end center" align="end">
+      <button mat-button type="button" class="btnBg" (click)="dialogRef.close()">Close</button>
+  </mat-dialog-actions>
+</div>

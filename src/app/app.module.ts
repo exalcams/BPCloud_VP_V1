@@ -170,7 +170,7 @@ const appRoutes: Routes = [
         ASNReleaseDialogComponent,
         NotificationDialog1Component,
         UploadInvoiceComponent,
-        ASNAttachmentViewDialogComponent
+        ASNAttachmentViewDialogComponent,
     ],
     imports: [
         BrowserModule,

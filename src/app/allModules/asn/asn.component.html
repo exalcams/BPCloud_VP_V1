@@ -937,6 +937,16 @@
                         </td>
                       </ng-container> -->
 
+                      <ng-container matColumnDef="SplitUpView">
+                        <th mat-header-cell *matHeaderCellDef style="width: 150px;"
+                          [ngClass]="BGClassName?.layout?.toolbar?.background"> Split Up
+                        </th>
+                        <td mat-cell *matCellDef="let element; let index = index" style="width: 150px;"
+                          [formGroupName]="index" class="editable">
+                          <button type="button" mat-raised-button class="DeleteBtn" (click)="ViewSplitUpClicked(element)">View</button>
+                        </td>
+                      </ng-container>
+
                       <tr mat-header-row *matHeaderRowDef="ASNItemDisplayedColumns;sticky: true"></tr>
                       <tr mat-row *matRowDef="let row; columns: ASNItemDisplayedColumns;let even=even">
                       </tr>
@@ -1166,7 +1176,7 @@
 
               <form autocomplete="off" class="normal" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="20px"
                 fxFlex="1 0 auto" name="form" novalidate [formGroup]="InvoiceDetailsFormGroup">
-                <div fxLayout="row" fxLayoutGap="20px" class="mb-12" fxLayoutAlign="start">
+                <div fxLayout="row" fxLayoutGap="20px" class="mb-12" fxLayoutAlign="start center">
                   <div fxFlex="25">
                     <mat-form-field class="pl-8 pr-12" style="width: 100%;">
                       <input matInput placeholder="Invoice Number (16 Char)" formControlName="InvoiceNumber">
@@ -1211,7 +1221,7 @@
                         PO Basic Price is required
                       </mat-error>
                       <mat-error *ngIf="InvoiceDetailsFormGroup.get('POBasicPrice').touched && !InvoiceDetailsFormGroup.get('InvoiceAmount').hasError('required')
-            &&InvoiceDetailsFormGroup.get('POBasicPrice').hasError('pattern')">
+                    &&InvoiceDetailsFormGroup.get('POBasicPrice').hasError('pattern')">
                         Enter a valid amount
                       </mat-error>
                     </mat-form-field>
@@ -1229,7 +1239,7 @@
                         Tax Amount is required
                       </mat-error>
                       <mat-error *ngIf="InvoiceDetailsFormGroup.get('TaxAmount').touched && !InvoiceDetailsFormGroup.get('InvoiceAmount').hasError('required')
-            &&InvoiceDetailsFormGroup.get('TaxAmount').hasError('pattern')">
+                  &&InvoiceDetailsFormGroup.get('TaxAmount').hasError('pattern')">
                         Enter a valid amount
                       </mat-error>
                     </mat-form-field>
@@ -1245,7 +1255,7 @@
                             Invoice Value is required
                           </mat-error>
                           <mat-error *ngIf="InvoiceDetailsFormGroup.get('InvoiceAmount').touched && !InvoiceDetailsFormGroup.get('InvoiceAmount').hasError('required')
-                &&InvoiceDetailsFormGroup.get('InvoiceAmount').hasError('pattern')">
+                    &&InvoiceDetailsFormGroup.get('InvoiceAmount').hasError('pattern')">
                             Enter a valid amount
                           </mat-error>
                         </mat-form-field>
@@ -1268,6 +1278,9 @@
                         </mat-form-field>
                       </div>
                     </div>
+                  </div>
+                  <div fxFlex=30>
+                    <button type="button" mat-raised-button class="DeleteBtn" (click)="PriceSplitUpClicked()">View Split Up</button>
                   </div>
                 </div>
                 <div fxLayout="row" fxLayoutAlign="start">
