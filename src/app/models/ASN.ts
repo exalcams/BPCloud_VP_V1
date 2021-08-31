@@ -341,7 +341,7 @@ export class ASNItemXLSXdup {
     Material: string;
     MaterialText: string;
     UnitPrice: number;
-   
+
     // Batch: string;
     // ManufactureDate: Date | string | null;
     // ExpiryDate: Date | string | null;
@@ -429,18 +429,18 @@ export class GRNListFilter {
         this.Plants = [];
     }
 }
-export class ASNSplitView{
+export class ASNSplitView {
     UnitPrice: number | null;
     NetAmount: number | null;
     TaxAmount: number | null;
     FreightAmount: number | null;
     OtherAmount: number | null;
-    constructor(){
-        this.UnitPrice=0;
-        this.NetAmount=0;
-        this.TaxAmount=0;
-        this.FreightAmount=0;
-        this.OtherAmount=0;
+    constructor() {
+        this.UnitPrice = 0;
+        this.NetAmount = 0;
+        this.TaxAmount = 0;
+        this.FreightAmount = 0;
+        this.OtherAmount = 0;
     }
 }
 
