@@ -39,6 +39,7 @@ export class POService {
       .pipe(catchError(this.errorHandler));
   }
   FilterPOList(VendorCode: string, PONumber: string, Status: string, FromDate: string, ToDate: string): Observable<BPCOFHeader[] | string> {
+    // tslint:disable-next-line:max-line-length
     return this._httpClient.get<BPCOFHeader[]>(`${this.baseAddress}poapi/PO/FilterPOList?VendorCode=${VendorCode}&PONumber=${PONumber}&Status=${Status}&FromDate=${FromDate}&ToDate=${ToDate}`)
       .pipe(catchError(this.errorHandler));
   }
@@ -59,6 +60,10 @@ export class POService {
   }
   GetPOByDocAndPartnerID(DocNumber: string, PartnerID: string): Observable<BPCOFHeader | string> {
     return this._httpClient.get<any>(`${this.baseAddress}poapi/PO/GetPOByDocAndPartnerID?DocNumber=${DocNumber}&PartnerID=${PartnerID}`)
+      .pipe(catchError(this.errorHandler));
+  }
+  GetPOByDocAndImportVendor(DocNumber: string, ImportVendor: string): Observable<BPCOFHeader | string> {
+    return this._httpClient.get<any>(`${this.baseAddress}poapi/PO/GetPOByDocAndImportVendor?DocNumber=${DocNumber}&ImportVendor=${ImportVendor}`)
       .pipe(catchError(this.errorHandler));
   }
   GetPOViewByDocAndPartnerID(DocNumber: string, PartnerID: string): Observable<BPCOFHeaderView | string> {
@@ -108,7 +113,7 @@ export class POService {
       .pipe(catchError(this.errorHandler));
   }
   // Data Migration
-  //madhu
+  // madhu
   GetInvoiceByPartnerIdAnDocumentNo(PatnerID: string): Observable<BPCInvoice | any> {
     return this._httpClient.get<BPCInvoice>(`${this.baseAddress}poapi/Invoice/GetInvoiceByPartnerIdAnDocumentNo?PatnerID=${PatnerID}`)
       .pipe(catchError(this.errorHandler));
@@ -117,7 +122,7 @@ export class POService {
     return this._httpClient.get<BPCRetNew>(`${this.baseAddress}poapi/Return/GetPartnerAndRequestIDByPartnerId?PatnerID=${PatnerID}`)
       .pipe(catchError(this.errorHandler));
   }
-  GetAttachmentByPatnerIdAndDocNum(DocNumber: string, PatnerID: string,): Observable<DocumentDetails[] | string> {
+  GetAttachmentByPatnerIdAndDocNum(DocNumber: string, PatnerID: string, ): Observable<DocumentDetails[] | string> {
     return this._httpClient.get<DocumentDetails[]>(`${this.baseAddress}poapi/Dashboard/GetAttachmentByPatnerIdAndDocNum?PatnerID=${PatnerID}&DocNumber=${DocNumber}`)
       .pipe(catchError(this.errorHandler));
   }
@@ -319,7 +324,7 @@ export class POService {
       )
       .pipe(catchError(this.errorHandler));
   }
-  //Welcome Message
+  // Welcome Message
   CreateWelcomeMessage(WelcomeMessage: BPCWelcomeMessage): Observable<any> {
     return this._httpClient
       .post<any>(
@@ -371,7 +376,7 @@ export class POService {
   }
 
 
-  //invoice payment
+  // invoice payment
   GetAllInvoices(): Observable<BPCInvoicePayment[] | string> {
     return this._httpClient.get<BPCInvoicePayment[]>(`${this.baseAddress}poapi/Invoice/GetAllInvoices`)
       .pipe(catchError(this.errorHandler));
@@ -460,8 +465,8 @@ export class POService {
       )
       .pipe(catchError(this.errorHandler));
   }
-  //invoice payment end
-  //payment history
+  // invoice payment end
+  // payment history
   GetAllPaymentRecord(): Observable<BPCPayRecord[] | string> {
     return this._httpClient.get<BPCPayRecord[]>(`${this.baseAddress}poapi/Invoice/GetAllPaymentRecord`)
       .pipe(catchError(this.errorHandler));
@@ -485,7 +490,7 @@ export class POService {
   }
 
 
-  //inv with payrecord,payment,invoice
+  // inv with payrecord,payment,invoice
 
   UpdateInvoicePay(InvoicePayment: BPCInvoicePayView): Observable<any> {
     return this._httpClient
@@ -500,5 +505,5 @@ export class POService {
       )
       .pipe(catchError(this.errorHandler));
   }
-  //end
+  // end
 }

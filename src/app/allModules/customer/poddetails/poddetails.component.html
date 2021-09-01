@@ -66,10 +66,10 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div fxFlex="25">
+                <div fxFlex="24">
                   <mat-form-field class="px-24" style="width: 100%;">
                     <input matInput placeholder="Invoice Date" [matDatepicker]="picker0" formControlName="InvoiceDate"
-                      [max]="maxDate">
+                      >
                     <mat-datepicker-toggle matSuffix [for]="picker0">
                       <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon" class="mb-12"></mat-icon>
                     </mat-datepicker-toggle>
@@ -121,6 +121,31 @@
                 </div>
 
                 <div fxFlex="24">
+                  <mat-form-field class="pl-8 pr-24" style="width: 100%;">
+                    <input matInput placeholder="OutBound Delivery Number" formControlName="OutBoundDeliveryNumber">
+                    <mat-error
+                      *ngIf="PODFormGroup.get('InvoiceNumber').touched && PODFormGroup.get('OutBoundDeliveryNumber').hasError('required')">
+                      OutBound Delivery Number is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div fxFlex="24">
+                  <mat-form-field class="px-24" style="width: 100%;">
+                    <input matInput placeholder="OutBound Delivery Date" [matDatepicker]="picker10" formControlName="OutBoundDeliveryDate"
+                      >
+                    <mat-datepicker-toggle matSuffix [for]="picker10">
+                      <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon" class="mb-12"></mat-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #picker10></mat-datepicker>
+                    <mat-error
+                      *ngIf="PODFormGroup.get('OutBoundDeliveryDate').touched && PODFormGroup.get('OutBoundDeliveryDate').hasError('required')">
+                      OutBound Delivery Date is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                
+                <div fxFlex="24">
                   <mat-form-field class="pl-8  px-24" style="width: 100%;">
                     <input matInput placeholder="Truck number" formControlName="TruckNumber">
                     <mat-error
@@ -129,7 +154,7 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div fxFlex="25">
+                <div fxFlex="24">
                   <mat-form-field class="px-24" style="width: 100%;">
                     <input matInput placeholder="Transporter" formControlName="Transporter">
                     <mat-error
@@ -180,7 +205,7 @@
                 </div> -->
 
 
-                <div fxFlex="25">
+                <div fxFlex="24">
                   <mat-form-field class=" pl-8 px-24" style="width: 100%;">
                     <input matInput placeholder="Status" formControlName="Status">
                     <mat-error
