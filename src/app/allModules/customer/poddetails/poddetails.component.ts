@@ -190,6 +190,8 @@ export class PODDetailsComponent implements OnInit {
       InvoiceNumber: ['', Validators.required],
       DocNumber: ['', Validators.required],
       InvoiceDate: [new Date(), Validators.required],
+      OutBoundDeliveryNumber: ['', Validators.required],
+      OutBoundDeliveryDate: [new Date(), Validators.required],
       TruckNumber: ['', Validators.required],
       VessleNumber: ['', Validators.required],
       Amount: ['', [Validators.pattern('^([0-9]*[1-9][0-9]*(\\.[0-9]+)?|[0]*\\.[0-9]*[1-9][0-9]*)$')]],
@@ -398,6 +400,8 @@ export class PODDetailsComponent implements OnInit {
     this.SelectedPODHeader = seletedPOD;
     this.SelectedPODView.InvoiceNumber = this.SelectedPODHeader.InvoiceNumber;
     this.SelectedPODView.DocNumber = this.SelectedPODHeader.DocNumber;
+    this.SelectedPODView.OutBoundDeliveryNumber = this.SelectedPODHeader.OutBoundDeliveryNumber;
+    this.SelectedPODView.OutBoundDeliveryDate = this.SelectedPODHeader.OutBoundDeliveryDate;
     this.SelectedPODView.Transporter = this.SelectedPODHeader.Transporter;
     this.SelectedPODView.TruckNumber = this.SelectedPODHeader.TruckNumber;
     this.SelectedInvoiceNumber = this.SelectedPODHeader.InvoiceNumber;
@@ -436,6 +440,8 @@ export class PODDetailsComponent implements OnInit {
     this.PODFormGroup.get('VessleNumber').patchValue(this.SelectedPODHeader.VessleNumber);
     this.PODFormGroup.get('InvoiceNumber').patchValue(this.SelectedPODHeader.InvoiceNumber);
     this.PODFormGroup.get('InvoiceDate').patchValue(this.SelectedPODHeader.InvoiceDate);
+    this.PODFormGroup.get('OutBoundDeliveryNumber').patchValue(this.SelectedPODHeader.OutBoundDeliveryNumber);
+    this.PODFormGroup.get('OutBoundDeliveryDate').patchValue(this.SelectedPODHeader.OutBoundDeliveryDate);
     this.PODFormGroup.get('Transporter').patchValue(this.SelectedPODHeader.Transporter);
     this.PODFormGroup.get('Amount').patchValue(this.SelectedPODHeader.Amount);
     this.PODFormGroup.get('Currency').patchValue(this.SelectedPODHeader.Currency);
@@ -498,6 +504,8 @@ export class PODDetailsComponent implements OnInit {
     this.SelectedPODHeader.VessleNumber = this.SelectedPODView.VessleNumber = this.PODFormGroup.get('VessleNumber').value;
     this.SelectedPODHeader.InvoiceNumber = this.SelectedPODView.InvoiceNumber = this.PODFormGroup.get('InvoiceNumber').value;
     this.SelectedPODHeader.InvoiceDate = this.SelectedPODView.InvoiceDate = this.PODFormGroup.get('InvoiceDate').value;
+    this.SelectedPODHeader.OutBoundDeliveryNumber = this.SelectedPODView.OutBoundDeliveryNumber = this.PODFormGroup.get('OutBoundDeliveryNumber').value;
+    this.SelectedPODHeader.OutBoundDeliveryDate = this.SelectedPODView.OutBoundDeliveryDate = this.PODFormGroup.get('OutBoundDeliveryDate').value;
     this.SelectedPODHeader.Transporter = this.SelectedPODView.Transporter = this.PODFormGroup.get('Transporter').value;
     this.SelectedPODHeader.Amount = this.SelectedPODView.Amount = this.PODFormGroup.get('Amount').value;
     this.SelectedPODHeader.Currency = this.SelectedPODView.Currency = this.PODFormGroup.get('Currency').value;

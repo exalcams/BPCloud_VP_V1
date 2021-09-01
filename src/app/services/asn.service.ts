@@ -50,6 +50,10 @@ export class ASNService {
         return this._httpClient.get<BPCASNHeader[]>(`${this.baseAddress}poapi/ASN/GetAllASNByPartnerID?PartnerID=${PartnerID}`)
             .pipe(catchError(this.errorHandler));
     }
+    GetAllASNByImportVendor(ImportVendor: string): Observable<BPCASNHeader[] | string> {
+        return this._httpClient.get<BPCASNHeader[]>(`${this.baseAddress}poapi/ASN/GetAllASNByImportVendor?ImportVendor=${ImportVendor}`)
+            .pipe(catchError(this.errorHandler));
+    }
     GetAllASNList(): Observable<ASNListView[] | string> {
         return this._httpClient.get<ASNListView[]>(`${this.baseAddress}poapi/ASN/GetAllASNList`)
             .pipe(catchError(this.errorHandler));
@@ -94,6 +98,14 @@ export class ASNService {
         return this._httpClient.get<ASNListView[]>
             // tslint:disable-next-line:max-line-length
             (`${this.baseAddress}poapi/ASN/FilterASNListByPartnerID?PartnerID=${PartnerID}&ASNNumber=${ASNNumber}&DocNumber=${DocNumber}&Material=${Material}&Status=${Status}&ASNFromDate=${ASNFromDate}&ASNToDate=${ASNToDate}`)
+            .pipe(catchError(this.errorHandler));
+    }
+
+    // tslint:disable-next-line:max-line-length
+    FilterASNListByImportVendor(ImportVendor: string, ASNNumber: string, DocNumber: string, Material: string, Status: string, ASNFromDate: string, ASNToDate: string): Observable<ASNListView[] | string> {
+        return this._httpClient.get<ASNListView[]>
+            // tslint:disable-next-line:max-line-length
+            (`${this.baseAddress}poapi/ASN/FilterASNListByImportVendor?ImportVendor=${ImportVendor}&ASNNumber=${ASNNumber}&DocNumber=${DocNumber}&Material=${Material}&Status=${Status}&ASNFromDate=${ASNFromDate}&ASNToDate=${ASNToDate}`)
             .pipe(catchError(this.errorHandler));
     }
 

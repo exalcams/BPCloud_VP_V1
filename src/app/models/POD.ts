@@ -79,6 +79,8 @@ export class BPCPODView extends CommonClass {
     DocNumber: string;
     InvoiceNumber: string;
     InvoiceDate: Date | string | null;
+    OutBoundDeliveryNumber: string;
+    OutBoundDeliveryDate: Date | string | null;
     TruckNumber: string;
     VessleNumber: string;
     Amount: number | null;

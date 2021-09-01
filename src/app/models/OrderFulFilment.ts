@@ -23,6 +23,9 @@ export class BPCOFHeader extends CommonClass {
     Plant: string;
     PlantName: string;
     DocCount: number;
+    ImportVendor: string;
+    // ImportVendorEmail: string;
+    // ImportVendorContactNumber: string;
 }
 export class Notification extends CommonClass {
     ID: number;
@@ -425,6 +428,9 @@ export class BPCOFHeaderView extends CommonClass {
     DocType: string;
     PlantName: string;
     DocCount: number;
+    ImportVendor: string;
+    // ImportVendorEmail: string;
+    // ImportVendorContactNumber: string;
 }
 
 export class BPCOFHeaderView1 extends CommonClass {

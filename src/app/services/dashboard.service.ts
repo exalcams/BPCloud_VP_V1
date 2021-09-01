@@ -48,6 +48,10 @@ export class DashboardService {
     return this._httpClient.get<BPCOFHeaderView[]>(`${this.baseAddress}poapi/Dashboard/GetOfsByPartnerID?PartnerID=${PartnerID}`)
       .pipe(catchError(this.errorHandler));
   }
+  GetOfsByImportVendor(ImportVendor: any): Observable<BPCOFHeaderView[] | string> {
+    return this._httpClient.get<BPCOFHeaderView[]>(`${this.baseAddress}poapi/Dashboard/GetOfsByPartnerID?ImportVendor=${ImportVendor}`)
+      .pipe(catchError(this.errorHandler));
+  }
 
   GetOfsByOption(ofOption: OfOption): Observable<BPCOFHeaderView[] | string> {
     return this._httpClient.post<BPCOFHeaderView[]>(`${this.baseAddress}poapi/Dashboard/GetOfsByOption`,
@@ -59,7 +63,16 @@ export class DashboardService {
       })
       .pipe(catchError(this.errorHandler));
   }
-
+  GetOfsByOptionForImportVendor(ofOption: OfOption): Observable<BPCOFHeaderView[] | string> {
+    return this._httpClient.post<BPCOFHeaderView[]>(`${this.baseAddress}poapi/Dashboard/GetOfsByOptionForImportVendor`,
+      ofOption,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      })
+      .pipe(catchError(this.errorHandler));
+  }
   GetOFHeaderView1ByPartnerID(PartnerID: any): Observable<BPCOFHeaderView1[] | string> {
     return this._httpClient.get<BPCOFHeaderView1[]>(`${this.baseAddress}poapi/Dashboard/GetOFHeaderView1ByPartnerID?PartnerID=${PartnerID}`)
       .pipe(catchError(this.errorHandler));
@@ -197,6 +210,10 @@ export class DashboardService {
     return this._httpClient.get<BPCOFHeader>(`${this.baseAddress}poapi/Dashboard/GetBPCOFHeader?PartnerID=${PartnerID}&ReferenceNo=${refNo}`)
       .pipe(catchError(this.errorHandler));
   }
+  GetBPCOFHeaderByImportVendor(ImportVendor: string, refNo: string): Observable<BPCOFHeader | string> {
+    return this._httpClient.get<BPCOFHeader>(`${this.baseAddress}poapi/Dashboard/GetBPCOFHeaderByImportVendor?ImportVendor=${ImportVendor}&ReferenceNo=${refNo}`)
+      .pipe(catchError(this.errorHandler));
+  }
   GetOFItemSESByItem(item: string, DocumentNo: string, partnerId: string): Observable<BPCASNItemSES | string> {
     return this._httpClient.get<BPCASNItemSES>(`${this.baseAddress}poapi/PO/GetOFItemSESByItem?item=${item}&DocumentNo=${DocumentNo}&PartnerId=${partnerId}`)
       .pipe(catchError(this.errorHandler));
@@ -260,6 +277,12 @@ export class DashboardService {
   GetOrderFulfilmentDetails(po: any, PatnerID: any): Observable<OrderFulfilmentDetails | string> {
     return this._httpClient
       .get<OrderFulfilmentDetails>(`${this.baseAddress}poapi/Dashboard/GetOrderFulfilmentDetails?PO=${po}&PatnerID=${PatnerID}`)
+      .pipe(catchError(this.errorHandler));
+  }
+
+  GetOrderFulfilmentDetailsByImportVendor(po: any, ImportVendor: any): Observable<OrderFulfilmentDetails | string> {
+    return this._httpClient
+      .get<OrderFulfilmentDetails>(`${this.baseAddress}poapi/Dashboard/GetOrderFulfilmentDetailsByImportVendor?PO=${po}&ImportVendor=${ImportVendor}`)
       .pipe(catchError(this.errorHandler));
   }
 
