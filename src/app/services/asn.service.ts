@@ -139,6 +139,11 @@ export class ASNService {
             (`${this.baseAddress}poapi/ASN/GetASNsByDoc?DocNumber=${DocNumber}&PartnerID=${PartnerID}`)
             .pipe(catchError(this.errorHandler));
     }
+    GetASNByDocAndImportVendor(DocNumber: string, ImportVendor: string): Observable<BPCASNHeader[] | string> {
+        return this._httpClient.get<BPCASNHeader[]>
+            (`${this.baseAddress}poapi/ASN/GetASNsByDoc?DocNumber=${DocNumber}&ImportVendor=${ImportVendor}`)
+            .pipe(catchError(this.errorHandler));
+    }
     GetASNByDocAndASN(DocNumber: string, ASNNumber: string): Observable<BPCASNHeader | string> {
         return this._httpClient.get<BPCASNHeader>(`${this.baseAddress}poapi/ASN/GetASNByDocAndASN?DocNumber=${DocNumber}&ASNNumber=${ASNNumber}`)
             .pipe(catchError(this.errorHandler));
@@ -227,7 +232,7 @@ export class ASNService {
             .pipe(catchError(this.errorHandler));
     }
 
-     AddInvoiceAttachment(header: BPCASNHeader, CreatedBy: string, selectedFile: File): Observable<any> {
+    AddInvoiceAttachment(header: BPCASNHeader, CreatedBy: string, selectedFile: File): Observable<any> {
         const formData: FormData = new FormData();
         if (selectedFile) {
             formData.append(selectedFile.name, selectedFile, selectedFile.name);

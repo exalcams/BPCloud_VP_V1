@@ -265,70 +265,138 @@ export class PoFactsheetComponent implements OnInit {
     }
 
     GetOfDetailsByPartnerIDAndDocNumber(): void {
-        this.isProgressBarVisibile = true;
-        this._dashboardService.GetOrderFulfilmentDetails(this.PO, this.partnerID).subscribe(
-            data => {
-                // console.log("details", data);
-                if (data) {
-                    this.orderFulfilmentDetails = <OrderFulfilmentDetails>data;
-                    this.poStatus = this.orderFulfilmentDetails.Status;
-                    this.gateStatus = this.orderFulfilmentDetails.GateStatus;
-                    this.grnStatus = this.orderFulfilmentDetails.GRNStatus;
-                    this.asn = this.orderFulfilmentDetails.aSNDetails;
-                    // console.log("asn", this.asn);
-                    this.items = this.orderFulfilmentDetails.itemDetails;
-                    if (this.items.length > 0) {
-                        this.GetItemPlantDetails(this.items[0].PlantCode);
+        if (this.currentUserRole === 'Import Vendor') {
+            this.isProgressBarVisibile = true;
+            this._dashboardService.GetOrderFulfilmentDetailsByImportVendor(this.PO, this.currentUserName).subscribe(
+                data => {
+                    // console.log("details", data);
+                    if (data) {
+                        this.orderFulfilmentDetails = <OrderFulfilmentDetails>data;
+                        this.poStatus = this.orderFulfilmentDetails.Status;
+                        this.gateStatus = this.orderFulfilmentDetails.GateStatus;
+                        this.grnStatus = this.orderFulfilmentDetails.GRNStatus;
+                        this.asn = this.orderFulfilmentDetails.aSNDetails;
+                        // console.log("asn", this.asn);
+                        this.items = this.orderFulfilmentDetails.itemDetails;
+                        if (this.items.length > 0) {
+                            this.GetItemPlantDetails(this.items[0].PlantCode);
+                        }
+                        this.grn = this.orderFulfilmentDetails.gRNDetails;
+                        this.qa = this.orderFulfilmentDetails.qADetails;
+                        this.sl = this.orderFulfilmentDetails.slDetails;
+                        this.return = this.orderFulfilmentDetails.ReturnDetails;
+                        this.document = this.orderFulfilmentDetails.documentDetails;
+                        this.flip = this.orderFulfilmentDetails.flipDetails;
+                        this.itemsCount = this.orderFulfilmentDetails.ItemCount;
+                        this.asnCount = this.orderFulfilmentDetails.ASNCount;
+                        this.grnCount = this.orderFulfilmentDetails.GRNCount;
+                        this.returnCount = this.orderFulfilmentDetails.ReturnCount;
+                        this.qaCount = this.orderFulfilmentDetails.QACount;
+                        this.slCount = this.orderFulfilmentDetails.SLCount;
+                        this.documentCount = this.orderFulfilmentDetails.DocumentCount;
+                        this.flipCount = this.orderFulfilmentDetails.FlipCount;
+                        this.asnDataSource = new MatTableDataSource(this.asn);
+                        this.grnDataSource = new MatTableDataSource(this.grn);
+                        // console.log("grnDataSource", this.grnDataSource.data);
+                        this.returnDataSource = new MatTableDataSource(this.return);
+                        this.qaDataSource = new MatTableDataSource(this.qa);
+                        this.slDataSource = new MatTableDataSource(this.sl);
+                        this.documentDataSource = new MatTableDataSource(this.document);
+                        this.flipDataSource = new MatTableDataSource(this.flip);
+
+                        this.asnDataSource.paginator = this.asnPaginator;
+                        this.grnDataSource.paginator = this.grnPaginator;
+                        this.returnDataSource.paginator = this.returnPaginator;
+                        this.qaDataSource.paginator = this.qaPaginator;
+                        this.slDataSource.paginator = this.slPaginator;
+                        this.documentDataSource.paginator = this.documentPaginator;
+                        this.flipDataSource.paginator = this.flipPaginator;
+
+                        this.asnDataSource.sort = this.asnSort;
+                        this.grnDataSource.sort = this.grnSort;
+                        this.returnDataSource.sort = this.returnSort;
+                        this.qaDataSource.sort = this.qaSort;
+                        this.slDataSource.sort = this.slSort;
+                        this.documentDataSource.sort = this.documentSort;
+                        this.flipDataSource.sort = this.flipSort;
+                        this.items.forEach(x => {
+                            this.insertPOItemsFormGroup(x);
+                        });
                     }
-                    this.grn = this.orderFulfilmentDetails.gRNDetails;
-                    this.qa = this.orderFulfilmentDetails.qADetails;
-                    this.sl = this.orderFulfilmentDetails.slDetails;
-                    this.return = this.orderFulfilmentDetails.ReturnDetails;
-                    this.document = this.orderFulfilmentDetails.documentDetails;
-                    this.flip = this.orderFulfilmentDetails.flipDetails;
-                    this.itemsCount = this.orderFulfilmentDetails.ItemCount;
-                    this.asnCount = this.orderFulfilmentDetails.ASNCount;
-                    this.grnCount = this.orderFulfilmentDetails.GRNCount;
-                    this.returnCount = this.orderFulfilmentDetails.ReturnCount;
-                    this.qaCount = this.orderFulfilmentDetails.QACount;
-                    this.slCount = this.orderFulfilmentDetails.SLCount;
-                    this.documentCount = this.orderFulfilmentDetails.DocumentCount;
-                    this.flipCount = this.orderFulfilmentDetails.FlipCount;
-                    this.asnDataSource = new MatTableDataSource(this.asn);
-                    this.grnDataSource = new MatTableDataSource(this.grn);
-                    // console.log("grnDataSource", this.grnDataSource.data);
-                    this.returnDataSource = new MatTableDataSource(this.return);
-                    this.qaDataSource = new MatTableDataSource(this.qa);
-                    this.slDataSource = new MatTableDataSource(this.sl);
-                    this.documentDataSource = new MatTableDataSource(this.document);
-                    this.flipDataSource = new MatTableDataSource(this.flip);
-
-                    this.asnDataSource.paginator = this.asnPaginator;
-                    this.grnDataSource.paginator = this.grnPaginator;
-                    this.returnDataSource.paginator = this.returnPaginator;
-                    this.qaDataSource.paginator = this.qaPaginator;
-                    this.slDataSource.paginator = this.slPaginator;
-                    this.documentDataSource.paginator = this.documentPaginator;
-                    this.flipDataSource.paginator = this.flipPaginator;
-
-                    this.asnDataSource.sort = this.asnSort;
-                    this.grnDataSource.sort = this.grnSort;
-                    this.returnDataSource.sort = this.returnSort;
-                    this.qaDataSource.sort = this.qaSort;
-                    this.slDataSource.sort = this.slSort;
-                    this.documentDataSource.sort = this.documentSort;
-                    this.flipDataSource.sort = this.flipSort;
-                    this.items.forEach(x => {
-                        this.insertPOItemsFormGroup(x);
-                    });
+                    this.isProgressBarVisibile = false;
+                },
+                err => {
+                    console.error(err);
+                    this.isProgressBarVisibile = false;
                 }
-                this.isProgressBarVisibile = false;
-            },
-            err => {
-                console.error(err);
-                this.isProgressBarVisibile = false;
-            }
-        );
+            );
+        } else {
+            this.isProgressBarVisibile = true;
+            this._dashboardService.GetOrderFulfilmentDetails(this.PO, this.partnerID).subscribe(
+                data => {
+                    // console.log("details", data);
+                    if (data) {
+                        this.orderFulfilmentDetails = <OrderFulfilmentDetails>data;
+                        this.poStatus = this.orderFulfilmentDetails.Status;
+                        this.gateStatus = this.orderFulfilmentDetails.GateStatus;
+                        this.grnStatus = this.orderFulfilmentDetails.GRNStatus;
+                        this.asn = this.orderFulfilmentDetails.aSNDetails;
+                        // console.log("asn", this.asn);
+                        this.items = this.orderFulfilmentDetails.itemDetails;
+                        if (this.items.length > 0) {
+                            this.GetItemPlantDetails(this.items[0].PlantCode);
+                        }
+                        this.grn = this.orderFulfilmentDetails.gRNDetails;
+                        this.qa = this.orderFulfilmentDetails.qADetails;
+                        this.sl = this.orderFulfilmentDetails.slDetails;
+                        this.return = this.orderFulfilmentDetails.ReturnDetails;
+                        this.document = this.orderFulfilmentDetails.documentDetails;
+                        this.flip = this.orderFulfilmentDetails.flipDetails;
+                        this.itemsCount = this.orderFulfilmentDetails.ItemCount;
+                        this.asnCount = this.orderFulfilmentDetails.ASNCount;
+                        this.grnCount = this.orderFulfilmentDetails.GRNCount;
+                        this.returnCount = this.orderFulfilmentDetails.ReturnCount;
+                        this.qaCount = this.orderFulfilmentDetails.QACount;
+                        this.slCount = this.orderFulfilmentDetails.SLCount;
+                        this.documentCount = this.orderFulfilmentDetails.DocumentCount;
+                        this.flipCount = this.orderFulfilmentDetails.FlipCount;
+                        this.asnDataSource = new MatTableDataSource(this.asn);
+                        this.grnDataSource = new MatTableDataSource(this.grn);
+                        // console.log("grnDataSource", this.grnDataSource.data);
+                        this.returnDataSource = new MatTableDataSource(this.return);
+                        this.qaDataSource = new MatTableDataSource(this.qa);
+                        this.slDataSource = new MatTableDataSource(this.sl);
+                        this.documentDataSource = new MatTableDataSource(this.document);
+                        this.flipDataSource = new MatTableDataSource(this.flip);
+
+                        this.asnDataSource.paginator = this.asnPaginator;
+                        this.grnDataSource.paginator = this.grnPaginator;
+                        this.returnDataSource.paginator = this.returnPaginator;
+                        this.qaDataSource.paginator = this.qaPaginator;
+                        this.slDataSource.paginator = this.slPaginator;
+                        this.documentDataSource.paginator = this.documentPaginator;
+                        this.flipDataSource.paginator = this.flipPaginator;
+
+                        this.asnDataSource.sort = this.asnSort;
+                        this.grnDataSource.sort = this.grnSort;
+                        this.returnDataSource.sort = this.returnSort;
+                        this.qaDataSource.sort = this.qaSort;
+                        this.slDataSource.sort = this.slSort;
+                        this.documentDataSource.sort = this.documentSort;
+                        this.flipDataSource.sort = this.flipSort;
+                        this.items.forEach(x => {
+                            this.insertPOItemsFormGroup(x);
+                        });
+                    }
+                    this.isProgressBarVisibile = false;
+                },
+                err => {
+                    console.error(err);
+                    this.isProgressBarVisibile = false;
+                }
+            );
+        }
+
     }
     GetItemPlantDetails(PlantCode: string): void {
         this._dashboardService.GetItemPlantDetails(PlantCode).subscribe(
@@ -358,14 +426,26 @@ export class PoFactsheetComponent implements OnInit {
             this.DocumentNumber = params['id'];
             // console.log("docNo", this.DocumentNumber);
         });
-        this._dashboardService.GetBPCOFHeader(this.authenticationDetails.UserName, this.DocumentNumber).subscribe((header) => {
-            const data = header as BPCOFHeader;
-            console.log("header", data);
-            this.DocumentType = data.DocType;
-        },
-            err => {
-                console.log(err);
-            });
+        if (this.currentUserRole === 'Import Vendor') {
+            this._dashboardService.GetBPCOFHeaderByImportVendor(this.authenticationDetails.UserName, this.DocumentNumber).subscribe((header) => {
+                const data = header as BPCOFHeader;
+                console.log("header", data);
+                this.DocumentType = data.DocType;
+            },
+                err => {
+                    console.log(err);
+                });
+        } else {
+            this._dashboardService.GetBPCOFHeader(this.authenticationDetails.UserName, this.DocumentNumber).subscribe((header) => {
+                const data = header as BPCOFHeader;
+                console.log("header", data);
+                this.DocumentType = data.DocType;
+            },
+                err => {
+                    console.log(err);
+                });
+        }
+
     }
     GetOfAttachmentsByPartnerIDAndDocNumber(Document: DocumentDetails): void {
         this._dashboardService.GetBPCOFHeader(this.authenticationDetails.UserName, Document.ReferenceNo).subscribe(

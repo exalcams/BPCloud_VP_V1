@@ -500,25 +500,47 @@ export class OrderFulFilmentCenterComponent implements OnInit {
     }
 
     GetOfDetails(): void {
-        this.isProgressBarVisibile = true;
-        this._dashboardService.GetOfsByPartnerID(this.partnerID).subscribe(
-            (data) => {
-                if (data) {
-                    this.length = data.length;
-                    this.ofDetails = <BPCOFHeaderView[]>data;
+        if (this.currentUserRole === 'Import Vendor') {
+            this.isProgressBarVisibile = true;
+            this._dashboardService.GetOfsByImportVendor(this.currentUserName).subscribe(
+                (data) => {
+                    if (data) {
+                        this.length = data.length;
+                        this.ofDetails = <BPCOFHeaderView[]>data;
 
-                    this.ofDetailsDataSource = new MatTableDataSource(this.ofDetails);
+                        this.ofDetailsDataSource = new MatTableDataSource(this.ofDetails);
 
-                    this.ofDetailsDataSource.paginator = this.ofDetailsPaginator;
-                    this.ofDetailsDataSource.sort = this.ofDetailsSort;
+                        this.ofDetailsDataSource.paginator = this.ofDetailsPaginator;
+                        this.ofDetailsDataSource.sort = this.ofDetailsSort;
+                    }
+                    this.isProgressBarVisibile = false;
+                },
+                (err) => {
+                    console.error(err);
+                    this.isProgressBarVisibile = false;
                 }
-                this.isProgressBarVisibile = false;
-            },
-            (err) => {
-                console.error(err);
-                this.isProgressBarVisibile = false;
-            }
-        );
+            );
+        } else {
+            this.isProgressBarVisibile = true;
+            this._dashboardService.GetOfsByPartnerID(this.partnerID).subscribe(
+                (data) => {
+                    if (data) {
+                        this.length = data.length;
+                        this.ofDetails = <BPCOFHeaderView[]>data;
+
+                        this.ofDetailsDataSource = new MatTableDataSource(this.ofDetails);
+
+                        this.ofDetailsDataSource.paginator = this.ofDetailsPaginator;
+                        this.ofDetailsDataSource.sort = this.ofDetailsSort;
+                    }
+                    this.isProgressBarVisibile = false;
+                },
+                (err) => {
+                    console.error(err);
+                    this.isProgressBarVisibile = false;
+                }
+            );
+        }
     }
     // GetKRAByPartnerID(): void {
     //     this.isProgressBarVisibile = true;
@@ -631,35 +653,69 @@ export class OrderFulFilmentCenterComponent implements OnInit {
 
     }
     GetOfsByOption(ofOption: OfOption, buttonText = null): void {
-        this.isProgressBarVisibile = true;
-        this._dashboardService.GetOfsByOption(ofOption).subscribe(
-            (data) => {
-                if (data) {
-                    this.ofDetails = <BPCOFHeaderView[]>data;
-                    this.ofDetailsDataSource = new MatTableDataSource(
-                        this.ofDetails
+        if (this.currentUserRole === 'Import Vendor') {
+            ofOption.ImportVendor = this.currentUserName;
+            this.isProgressBarVisibile = true;
+            this._dashboardService.GetOfsByOptionForImportVendor(ofOption).subscribe(
+                (data) => {
+                    if (data) {
+                        this.ofDetails = <BPCOFHeaderView[]>data;
+                        this.ofDetailsDataSource = new MatTableDataSource(
+                            this.ofDetails
+                        );
+                        if (this.ofDetails.length === 0) {
+                            this.TableFooterShow = true;
+                        }
+                        else {
+                            this.TableFooterShow = false;
+                        }
+                        this.ofDetailsDataSource.paginator = this.ofDetailsPaginator;
+                        this.ofDetailsDataSource.sort = this.ofDetailsSort;
+                        this.statusvalue = ofOption.DocType;
+                    }
+                    this.isProgressBarVisibile = false;
+                },
+                (err) => {
+                    console.error(err);
+                    this.isProgressBarVisibile = false;
+                    this.notificationSnackBarComponent.openSnackBar(
+                        err instanceof Object ? "Something went wrong" : err,
+                        SnackBarStatus.danger
                     );
-                    if (this.ofDetails.length === 0) {
-                        this.TableFooterShow = true;
-                    }
-                    else {
-                        this.TableFooterShow = false;
-                    }
-                    this.ofDetailsDataSource.paginator = this.ofDetailsPaginator;
-                    this.ofDetailsDataSource.sort = this.ofDetailsSort;
-                    this.statusvalue = ofOption.DocType;
                 }
-                this.isProgressBarVisibile = false;
-            },
-            (err) => {
-                console.error(err);
-                this.isProgressBarVisibile = false;
-                this.notificationSnackBarComponent.openSnackBar(
-                    err instanceof Object ? "Something went wrong" : err,
-                    SnackBarStatus.danger
-                );
-            }
-        );
+            );
+        } else {
+            this.isProgressBarVisibile = true;
+            this._dashboardService.GetOfsByOption(ofOption).subscribe(
+                (data) => {
+                    if (data) {
+                        this.ofDetails = <BPCOFHeaderView[]>data;
+                        this.ofDetailsDataSource = new MatTableDataSource(
+                            this.ofDetails
+                        );
+                        if (this.ofDetails.length === 0) {
+                            this.TableFooterShow = true;
+                        }
+                        else {
+                            this.TableFooterShow = false;
+                        }
+                        this.ofDetailsDataSource.paginator = this.ofDetailsPaginator;
+                        this.ofDetailsDataSource.sort = this.ofDetailsSort;
+                        this.statusvalue = ofOption.DocType;
+                    }
+                    this.isProgressBarVisibile = false;
+                },
+                (err) => {
+                    console.error(err);
+                    this.isProgressBarVisibile = false;
+                    this.notificationSnackBarComponent.openSnackBar(
+                        err instanceof Object ? "Something went wrong" : err,
+                        SnackBarStatus.danger
+                    );
+                }
+            );
+        }
+
         if (buttonText != null) {
             this.CreateActionLogvalues(buttonText);
         }
