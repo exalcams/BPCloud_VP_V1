@@ -12,7 +12,7 @@ import { ASNService } from 'app/services/asn.service';
 import { ShareParameterService } from 'app/services/share-parameters.service';
 import {
     BPCASNHeader, BPCASNItem, DocumentCenter, BPCASNView, BPCInvoiceAttachment,
-    BPCCountryMaster, BPCCurrencyMaster, BPCDocumentCenterMaster, BPCASNPack, ASNItemXLSX, BPCASNFieldMaster, 
+    BPCCountryMaster, BPCCurrencyMaster, BPCDocumentCenterMaster, BPCASNPack, ASNItemXLSX, BPCASNFieldMaster,
     BPCASNItemBatch, BPCASNItemView, BPCASNItemSES, ASNListView, ASNSplitView
 } from 'app/models/ASN';
 import { BehaviorSubject } from 'rxjs';
@@ -712,17 +712,32 @@ export class ASNComponent implements OnInit {
     }
 
     GetAllASNByPartnerID(): void {
-        this._ASNService.GetAllASNByPartnerID(this.currentUserName).subscribe(
-            (data) => {
-                this.AllASNHeaders = data as BPCASNHeader[];
-                if (this.AllASNHeaders && this.AllASNHeaders.length) {
-                    this.LoadSelectedASN(this.AllASNHeaders[0]);
+        if (this.currentUserRole === 'Import Vendor') {
+            this._ASNService.GetAllASNByImportVendor(this.currentUserName).subscribe(
+                (data) => {
+                    this.AllASNHeaders = data as BPCASNHeader[];
+                    if (this.AllASNHeaders && this.AllASNHeaders.length) {
+                        this.LoadSelectedASN(this.AllASNHeaders[0]);
+                    }
+                },
+                (err) => {
+                    console.error(err);
                 }
-            },
-            (err) => {
-                console.error(err);
-            }
-        );
+            );
+        } else {
+            this._ASNService.GetAllASNByPartnerID(this.currentUserName).subscribe(
+                (data) => {
+                    this.AllASNHeaders = data as BPCASNHeader[];
+                    if (this.AllASNHeaders && this.AllASNHeaders.length) {
+                        this.LoadSelectedASN(this.AllASNHeaders[0]);
+                    }
+                },
+                (err) => {
+                    console.error(err);
+                }
+            );
+        }
+
     }
 
     GetASNByDocAndASN(): void {
@@ -744,35 +759,70 @@ export class ASNComponent implements OnInit {
     }
 
     GetASNByDocAndPartnerID(): void {
-        this._ASNService.GetASNByDocAndPartnerID(this.SelectedDocNumber, this.currentUserName).subscribe(
-            (data) => {
-                this.AllASNHeaders = data as BPCASNHeader[];
-            },
-            (err) => {
-                console.error(err);
-            }
-        );
+        if (this.currentUserRole === 'Import Vendor') {
+            this._ASNService.GetASNByDocAndImportVendor(this.SelectedDocNumber, this.currentUserName).subscribe(
+                (data) => {
+                    this.AllASNHeaders = data as BPCASNHeader[];
+                },
+                (err) => {
+                    console.error(err);
+                }
+            );
+
+        } else {
+            this._ASNService.GetASNByDocAndPartnerID(this.SelectedDocNumber, this.currentUserName).subscribe(
+                (data) => {
+                    this.AllASNHeaders = data as BPCASNHeader[];
+                },
+                (err) => {
+                    console.error(err);
+                }
+            );
+        }
     }
     GetPOByDocAndPartnerID(selectedDocNumber: string): void {
-        this._POService.GetPOByDocAndPartnerID(selectedDocNumber, this.currentUserName).subscribe(
-            (data) => {
-                this.PO = data as BPCOFHeader;
-                if (this.SelectedDocNumber) {
-                    this.InvoiceDetailsFormGroup.get('InvoiceAmountUOM').patchValue(this.PO.Currency);
+        if (this.currentUserRole === 'Import Vendor') {
+            this._POService.GetPOByDocAndImportVendor(selectedDocNumber, this.currentUserName).subscribe(
+                (data) => {
+                    this.PO = data as BPCOFHeader;
+                    if (this.SelectedDocNumber) {
+                        this.InvoiceDetailsFormGroup.get('InvoiceAmountUOM').patchValue(this.PO.Currency);
+                    }
+                    this.DocumentType = this.PO.DocType;
+                    if (this.PO && this.PO.DocType && this.PO.DocType.toLocaleLowerCase() === "subcon") {
+                        this.GetSubconViewByDocAndPartnerID();
+                    }
+                    else if (this.SelectedDocNumber && !this.SelectedASNHeader.ASNNumber) {
+                        this.GetPOItemsByDocAndPartnerID();
+                    }
+                    // this.GetPOItemsByDocAndPartnerID();
+                },
+                (err) => {
+                    console.error(err);
                 }
-                this.DocumentType = this.PO.DocType;
-                if (this.PO && this.PO.DocType && this.PO.DocType.toLocaleLowerCase() === "subcon") {
-                    this.GetSubconViewByDocAndPartnerID();
+            );
+        } else {
+            this._POService.GetPOByDocAndPartnerID(selectedDocNumber, this.currentUserName).subscribe(
+                (data) => {
+                    this.PO = data as BPCOFHeader;
+                    if (this.SelectedDocNumber) {
+                        this.InvoiceDetailsFormGroup.get('InvoiceAmountUOM').patchValue(this.PO.Currency);
+                    }
+                    this.DocumentType = this.PO.DocType;
+                    if (this.PO && this.PO.DocType && this.PO.DocType.toLocaleLowerCase() === "subcon") {
+                        this.GetSubconViewByDocAndPartnerID();
+                    }
+                    else if (this.SelectedDocNumber && !this.SelectedASNHeader.ASNNumber) {
+                        this.GetPOItemsByDocAndPartnerID();
+                    }
+                    // this.GetPOItemsByDocAndPartnerID();
+                },
+                (err) => {
+                    console.error(err);
                 }
-                else if (this.SelectedDocNumber && !this.SelectedASNHeader.ASNNumber) {
-                    this.GetPOItemsByDocAndPartnerID();
-                }
-                // this.GetPOItemsByDocAndPartnerID();
-            },
-            (err) => {
-                console.error(err);
-            }
-        );
+            );
+        }
+
     }
 
     GetPOByDocAndPartnerID1(selectedDocNumber: string): void {
@@ -790,40 +840,78 @@ export class ASNComponent implements OnInit {
     }
 
     GetPOItemsByDocAndPartnerID(): void {
-        this._POService.GetPOItemViewsByDocAndPartnerID(this.SelectedDocNumber, this.currentUserName).subscribe(
-            (data) => {
-                console.log("items", data);
-                this.POItems = data as BPCOFItemView[];
-                this.ClearFormArray(this.ASNItemFormArray);
-                if (this.POItems && this.POItems.length) {
-                    this.SelectedASNHeader.Client = this.SelectedASNView.Client = this.POItems[0].Client;
-                    this.SelectedASNHeader.Company = this.SelectedASNView.Company = this.POItems[0].Company;
-                    this.SelectedASNHeader.Type = this.SelectedASNView.Type = this.POItems[0].Type;
-                    this.SelectedASNHeader.PatnerID = this.SelectedASNView.PatnerID = this.POItems[0].PatnerID;
-                    this.SelectedASNHeader.DocNumber = this.SelectedASNView.DocNumber = this.POItems[0].DocNumber;
-                    this.POItems.forEach(poItem => {
-                        if (poItem.OpenQty && poItem.OpenQty > 0) {
-                            if (this.PO && this.PO.DocType && this.PO.DocType.toLocaleLowerCase() === "subcon") {
-                                const sub = this.SubconViews.filter(x => x.Item === poItem.Item)[0];
-                                if (sub) {
-                                    const remainingQty = sub.OrderedQty - poItem.TransitQty;
-                                    poItem.MaxAllowedQty = remainingQty;
+        if (this.currentUserRole === 'Import Vendor') {
+            this._POService.GetPOItemViewsByDocAndImportVendor(this.SelectedDocNumber, this.currentUserName).subscribe(
+                (data) => {
+                    console.log("items", data);
+                    this.POItems = data as BPCOFItemView[];
+                    this.ClearFormArray(this.ASNItemFormArray);
+                    if (this.POItems && this.POItems.length) {
+                        this.SelectedASNHeader.Client = this.SelectedASNView.Client = this.POItems[0].Client;
+                        this.SelectedASNHeader.Company = this.SelectedASNView.Company = this.POItems[0].Company;
+                        this.SelectedASNHeader.Type = this.SelectedASNView.Type = this.POItems[0].Type;
+                        this.SelectedASNHeader.PatnerID = this.SelectedASNView.PatnerID = this.POItems[0].PatnerID;
+                        this.SelectedASNHeader.DocNumber = this.SelectedASNView.DocNumber = this.POItems[0].DocNumber;
+                        this.POItems.forEach(poItem => {
+                            if (poItem.OpenQty && poItem.OpenQty > 0) {
+                                if (this.PO && this.PO.DocType && this.PO.DocType.toLocaleLowerCase() === "subcon") {
+                                    const sub = this.SubconViews.filter(x => x.Item === poItem.Item)[0];
+                                    if (sub) {
+                                        const remainingQty = sub.OrderedQty - poItem.TransitQty;
+                                        poItem.MaxAllowedQty = remainingQty;
+                                    }
+                                } else {
+                                    poItem.MaxAllowedQty = poItem.OpenQty;
                                 }
-                            } else {
-                                poItem.MaxAllowedQty = poItem.OpenQty;
+                                // poItem.MaxAllowedQty = poItem.OpenQty;
                             }
-                            // poItem.MaxAllowedQty = poItem.OpenQty;
-                        }
 
-                        this.InsertPOItemsFormGroup(poItem);
-                    });
-                    this.CalculateShipmentAmount();
+                            this.InsertPOItemsFormGroup(poItem);
+                        });
+                        this.CalculateShipmentAmount();
+                    }
+                },
+                (err) => {
+                    console.error(err);
                 }
-            },
-            (err) => {
-                console.error(err);
-            }
-        );
+            );
+        } else {
+            this._POService.GetPOItemViewsByDocAndPartnerID(this.SelectedDocNumber, this.currentUserName).subscribe(
+                (data) => {
+                    console.log("items", data);
+                    this.POItems = data as BPCOFItemView[];
+                    this.ClearFormArray(this.ASNItemFormArray);
+                    if (this.POItems && this.POItems.length) {
+                        this.SelectedASNHeader.Client = this.SelectedASNView.Client = this.POItems[0].Client;
+                        this.SelectedASNHeader.Company = this.SelectedASNView.Company = this.POItems[0].Company;
+                        this.SelectedASNHeader.Type = this.SelectedASNView.Type = this.POItems[0].Type;
+                        this.SelectedASNHeader.PatnerID = this.SelectedASNView.PatnerID = this.POItems[0].PatnerID;
+                        this.SelectedASNHeader.DocNumber = this.SelectedASNView.DocNumber = this.POItems[0].DocNumber;
+                        this.POItems.forEach(poItem => {
+                            if (poItem.OpenQty && poItem.OpenQty > 0) {
+                                if (this.PO && this.PO.DocType && this.PO.DocType.toLocaleLowerCase() === "subcon") {
+                                    const sub = this.SubconViews.filter(x => x.Item === poItem.Item)[0];
+                                    if (sub) {
+                                        const remainingQty = sub.OrderedQty - poItem.TransitQty;
+                                        poItem.MaxAllowedQty = remainingQty;
+                                    }
+                                } else {
+                                    poItem.MaxAllowedQty = poItem.OpenQty;
+                                }
+                                // poItem.MaxAllowedQty = poItem.OpenQty;
+                            }
+
+                            this.InsertPOItemsFormGroup(poItem);
+                        });
+                        this.CalculateShipmentAmount();
+                    }
+                },
+                (err) => {
+                    console.error(err);
+                }
+            );
+        }
+
     }
 
     GetArrivalDateIntervalByPOAndPartnerID(): void {

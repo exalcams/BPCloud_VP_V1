@@ -763,7 +763,7 @@ export class ASNListComponent implements OnInit {
   //   this._router.navigate(["/asn"]);
   //   // this._router.navigate(["/asn"], { queryParams: { id: asn.DocNumber } });
   // }
-  
+
   ASNnumber(asn: ASNListView): void {
     // this.CreateActionLogvalues("ASNNumber");
     if (this.currentUserRole === 'GateUser') {
@@ -866,35 +866,68 @@ export class ASNListComponent implements OnInit {
           Status = "";
         }
         this.IsProgressBarVisibile = true;
-        this._asnService.FilterASNListByPartnerID(this.currentUserName, ASNNumber, DocNumber, Material, Status, FromDate, ToDate).subscribe(
-          (data) => {
-            this.AllASNList = data as ASNListView[];
-            // this.ASN_value[0]=this.AllASNList[0].ASNNumber
-            // for (this.i = 0; this.i < this.AllASNList.length; this.i++) {
-            //   this.ASN_value[this.i] = this.AllASNList[this.i].ASNNumber
-            // }
-            this.AllASNList.forEach(ASN => {
-              ASN.CancelDuration = new Date(ASN.CancelDuration);
-              ASN.Time = new Date(ASN.CancelDuration).getTime();
-            });
+        if (this.currentUserRole === 'Import Vendor') {
+          this._asnService.FilterASNListByImportVendor(this.currentUserName, ASNNumber, DocNumber, Material, Status, FromDate, ToDate).subscribe(
+            (data) => {
+              this.AllASNList = data as ASNListView[];
+              // this.ASN_value[0]=this.AllASNList[0].ASNNumber
+              // for (this.i = 0; this.i < this.AllASNList.length; this.i++) {
+              //   this.ASN_value[this.i] = this.AllASNList[this.i].ASNNumber
+              // }
+              this.AllASNList.forEach(ASN => {
+                ASN.CancelDuration = new Date(ASN.CancelDuration);
+                ASN.Time = new Date(ASN.CancelDuration).getTime();
+              });
 
-            // var temp=new Date().getTime();
-            // // console.log(temp,this.AllASNList[19].Time);
-            // // console.log(new Date(temp),new Date(this.AllASNList[19].Time));
+              // var temp=new Date().getTime();
+              // // console.log(temp,this.AllASNList[19].Time);
+              // // console.log(new Date(temp),new Date(this.AllASNList[19].Time));
 
-            this.TableDetailsDataSource = new MatTableDataSource(this.AllASNList);
-            // // console.log("AllASNList",this.AllASNList);
-            this.DateTime = new Date();
-            // this.DateTime=this.DateTime.getTime();
-            this.TableDetailsDataSource.paginator = this.tablePaginator;
-            this.TableDetailsDataSource.sort = this.tableSort;
-            this.IsProgressBarVisibile = false;
-          },
-          (err) => {
-            console.error(err);
-            this.IsProgressBarVisibile = false;
-          }
-        );
+              this.TableDetailsDataSource = new MatTableDataSource(this.AllASNList);
+              // // console.log("AllASNList",this.AllASNList);
+              this.DateTime = new Date();
+              // this.DateTime=this.DateTime.getTime();
+              this.TableDetailsDataSource.paginator = this.tablePaginator;
+              this.TableDetailsDataSource.sort = this.tableSort;
+              this.IsProgressBarVisibile = false;
+            },
+            (err) => {
+              console.error(err);
+              this.IsProgressBarVisibile = false;
+            }
+          );
+        } else {
+          this._asnService.FilterASNListByPartnerID(this.currentUserName, ASNNumber, DocNumber, Material, Status, FromDate, ToDate).subscribe(
+            (data) => {
+              this.AllASNList = data as ASNListView[];
+              // this.ASN_value[0]=this.AllASNList[0].ASNNumber
+              // for (this.i = 0; this.i < this.AllASNList.length; this.i++) {
+              //   this.ASN_value[this.i] = this.AllASNList[this.i].ASNNumber
+              // }
+              this.AllASNList.forEach(ASN => {
+                ASN.CancelDuration = new Date(ASN.CancelDuration);
+                ASN.Time = new Date(ASN.CancelDuration).getTime();
+              });
+
+              // var temp=new Date().getTime();
+              // // console.log(temp,this.AllASNList[19].Time);
+              // // console.log(new Date(temp),new Date(this.AllASNList[19].Time));
+
+              this.TableDetailsDataSource = new MatTableDataSource(this.AllASNList);
+              // // console.log("AllASNList",this.AllASNList);
+              this.DateTime = new Date();
+              // this.DateTime=this.DateTime.getTime();
+              this.TableDetailsDataSource.paginator = this.tablePaginator;
+              this.TableDetailsDataSource.sort = this.tableSort;
+              this.IsProgressBarVisibile = false;
+            },
+            (err) => {
+              console.error(err);
+              this.IsProgressBarVisibile = false;
+            }
+          );
+        }
+
       }
     }
     else {

@@ -141,6 +141,7 @@ export class OfOption {
     ToDate: string;
     PartnerID: string;
     DocType: string;
+    ImportVendor: string;
 }
 
 export class POSearch {

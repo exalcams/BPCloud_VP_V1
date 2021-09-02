@@ -94,6 +94,10 @@ export class POService {
     return this._httpClient.get<BPCOFItemView[]>(`${this.baseAddress}poapi/PO/GetPOItemViewsByDocAndPartnerID?DocNumber=${DocNumber}&PartnerID=${PartnerID}`)
       .pipe(catchError(this.errorHandler));
   }
+  GetPOItemViewsByDocAndImportVendor(DocNumber: string, ImportVendor: string): Observable<BPCOFItemView[] | string> {
+    return this._httpClient.get<BPCOFItemView[]>(`${this.baseAddress}poapi/PO/GetPOItemViewsByDocAndImportVendor?DocNumber=${DocNumber}&ImportVendor=${ImportVendor}`)
+      .pipe(catchError(this.errorHandler));
+  }
   GetPOGRGIByDocAndPartnerID(DocNumber: string, PartnerID: string): Observable<BPCOFGRGI[] | string> {
     return this._httpClient.get<BPCOFGRGI[]>(`${this.baseAddress}poapi/PO/GetPOGRGIByDocAndPartnerID?DocNumber=${DocNumber}&PartnerID=${PartnerID}`)
       .pipe(catchError(this.errorHandler));
