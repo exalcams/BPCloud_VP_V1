@@ -49,7 +49,7 @@ export class DashboardService {
       .pipe(catchError(this.errorHandler));
   }
   GetOfsByImportVendor(ImportVendor: any): Observable<BPCOFHeaderView[] | string> {
-    return this._httpClient.get<BPCOFHeaderView[]>(`${this.baseAddress}poapi/Dashboard/GetOfsByPartnerID?ImportVendor=${ImportVendor}`)
+    return this._httpClient.get<BPCOFHeaderView[]>(`${this.baseAddress}poapi/Dashboard/GetOfsByImportVendor?ImportVendor=${ImportVendor}`)
       .pipe(catchError(this.errorHandler));
   }
 
@@ -77,7 +77,10 @@ export class DashboardService {
     return this._httpClient.get<BPCOFHeaderView1[]>(`${this.baseAddress}poapi/Dashboard/GetOFHeaderView1ByPartnerID?PartnerID=${PartnerID}`)
       .pipe(catchError(this.errorHandler));
   }
-
+  GetOFHeaderView1ByImportVendor(ImportVendor: any): Observable<BPCOFHeaderView1[] | string> {
+    return this._httpClient.get<BPCOFHeaderView1[]>(`${this.baseAddress}poapi/Dashboard/GetOFHeaderView1ByImportVendor?ImportVendor=${ImportVendor}`)
+      .pipe(catchError(this.errorHandler));
+  }
   GetOFHeaderView1ByOption(ofOption: OfOption1): Observable<BPCOFHeaderView1[] | string> {
     return this._httpClient.post<BPCOFHeaderView1[]>(`${this.baseAddress}poapi/Dashboard/GetOFHeaderView1ByOption`,
       ofOption,
@@ -88,7 +91,16 @@ export class DashboardService {
       })
       .pipe(catchError(this.errorHandler));
   }
-
+  GetOFHeaderView1ByOptionByImportVendor(ofOption: OfOption1): Observable<BPCOFHeaderView1[] | string> {
+    return this._httpClient.post<BPCOFHeaderView1[]>(`${this.baseAddress}poapi/Dashboard/GetOFHeaderView1ByOptionByImportVendor`,
+      ofOption,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      })
+      .pipe(catchError(this.errorHandler));
+  }
   GetOfStatusByPartnerID(PartnerID: any): Observable<FulfilmentStatus | string> {
     return this._httpClient.get<FulfilmentStatus>(`${this.baseAddress}poapi/Dashboard/GetOfStatusByPartnerID?PartnerID=${PartnerID}`)
       .pipe(catchError(this.errorHandler));
@@ -355,6 +367,10 @@ export class DashboardService {
   }
   GetVendorDoughnutChartData(PartnerID: string): Observable<FulfilmentDetails[] | string> {
     return this._httpClient.get<FulfilmentDetails[]>(`${this.baseAddress}poapi/Dashboard/GetVendorDoughnutChartData?PartnerID=${PartnerID}`)
+      .pipe(catchError(this.errorHandler));
+  }
+  GetVendorDoughnutChartDataByImportVendor(ImportVendor: string): Observable<FulfilmentDetails[] | string> {
+    return this._httpClient.get<FulfilmentDetails[]>(`${this.baseAddress}poapi/Dashboard/GetVendorDoughnutChartDataByImportVendor?ImportVendor=${ImportVendor}`)
       .pipe(catchError(this.errorHandler));
   }
   GetCustomerDoughnutChartData(PartnerID: string): Observable<BPCKRA[] | string> {

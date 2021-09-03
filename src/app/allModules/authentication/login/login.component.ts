@@ -560,7 +560,7 @@ export class LoginComponent implements OnInit {
             });
         }
 
-        if (this.menuItems.indexOf("OrderFulFilmentCenter") >= 0) {
+        if (this.menuItems.indexOf("MaterialOrderfulfilment") >= 0) {
             this.orderFulfilmentSubChildren.push({
                 id: "materialFulfilmentCenter",
                 title: "Fulfilment Center by Material",
@@ -1288,7 +1288,7 @@ export class LoginComponent implements OnInit {
                 url: "/reports/evaluation",
             });
         }
-        if (this.menuItems.indexOf("OTIF") >= 0 || true) {
+        if (this.menuItems.indexOf("OTIF") >= 0) {
             this.buyerReportChildren.push({
                 id: "otif",
                 title: "OTIF",
@@ -1309,7 +1309,7 @@ export class LoginComponent implements OnInit {
             });
         }
         if (
-            this.menuItems.indexOf("SupplierEvaluation") >= 0 || this.menuItems.indexOf("OTIF") >= 0 || true) {
+            this.menuItems.indexOf("SupplierEvaluation") >= 0 || this.menuItems.indexOf("OTIF") >= 0) {
             this.children.push({
                 id: "report",
                 title: "Report",

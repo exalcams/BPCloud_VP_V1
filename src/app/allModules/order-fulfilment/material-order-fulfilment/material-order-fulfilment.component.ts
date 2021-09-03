@@ -114,7 +114,7 @@ export class MaterialOrderFulfilmentComponent implements OnInit {
   progressPercentage2 = 0;
   nextProcess: string;
 
-  
+
   SecretKey: string;
   SecureStorage: SecureLS;
   constructor(
@@ -137,7 +137,7 @@ export class MaterialOrderFulfilmentComponent implements OnInit {
     );
     this.authenticationDetails = new AuthenticationDetails();
     this.isProgressBarVisibile = false;
-    
+
   }
 
   ngOnInit(): void {
@@ -170,7 +170,7 @@ export class MaterialOrderFulfilmentComponent implements OnInit {
     this.CreateAppUsage();
     this.initialiseOfDetailsFormGroup();
     this.GetOfDetails();
-    
+
   }
 
   CreateAppUsage(): void {
@@ -189,64 +189,121 @@ export class MaterialOrderFulfilmentComponent implements OnInit {
   }
 
   GetOfDetails(): void {
-    this.isProgressBarVisibile = true;
-    this._dashboardService.GetOFHeaderView1ByPartnerID(this.partnerID).subscribe(
-      (data) => {
-        if (data) {
-          this.length = data.length;
-          this.ofDetails = <BPCOFHeaderView1[]>data;
+    if (this.currentUserRole === 'Import Vendor') {
+      this.isProgressBarVisibile = true;
+      this._dashboardService.GetOFHeaderView1ByImportVendor(this.partnerID).subscribe(
+        (data) => {
+          if (data) {
+            this.length = data.length;
+            this.ofDetails = <BPCOFHeaderView1[]>data;
 
-          this.ofDetailsDataSource = new MatTableDataSource(this.ofDetails);
+            this.ofDetailsDataSource = new MatTableDataSource(this.ofDetails);
 
-          this.ofDetailsDataSource.paginator = this.ofDetailsPaginator;
-          this.ofDetailsDataSource.sort = this.ofDetailsSort;
+            this.ofDetailsDataSource.paginator = this.ofDetailsPaginator;
+            this.ofDetailsDataSource.sort = this.ofDetailsSort;
+          }
+          this.isProgressBarVisibile = false;
+        },
+        (err) => {
+          console.error(err);
+          this.isProgressBarVisibile = false;
         }
-        this.isProgressBarVisibile = false;
-      },
-      (err) => {
-        console.error(err);
-        this.isProgressBarVisibile = false;
-      }
-    );
+      );
+    } else {
+      this.isProgressBarVisibile = true;
+      this._dashboardService.GetOFHeaderView1ByPartnerID(this.partnerID).subscribe(
+        (data) => {
+          if (data) {
+            this.length = data.length;
+            this.ofDetails = <BPCOFHeaderView1[]>data;
+
+            this.ofDetailsDataSource = new MatTableDataSource(this.ofDetails);
+
+            this.ofDetailsDataSource.paginator = this.ofDetailsPaginator;
+            this.ofDetailsDataSource.sort = this.ofDetailsSort;
+          }
+          this.isProgressBarVisibile = false;
+        },
+        (err) => {
+          console.error(err);
+          this.isProgressBarVisibile = false;
+        }
+      );
+    }
+
   }
- 
+
   ResetClicked(text): void {
     this.GetOfDetails();
     this.CreateActionLogvalues(text);
     this.initialiseOfDetailsFormGroup();
     this.TableFooterShow = false;
   }
-  
+
   GetOfsByOption(ofOption: OfOption1, buttonText = null): void {
-    this.isProgressBarVisibile = true;
-    this._dashboardService.GetOFHeaderView1ByOption(ofOption).subscribe(
-      (data) => {
-        if (data) {
-          this.ofDetails = <BPCOFHeaderView1[]>data;
-          this.ofDetailsDataSource = new MatTableDataSource(
-            this.ofDetails
+    if (this.currentUserRole === 'Import Vendor') {
+      ofOption.ImportVendor = this.currentUserName;
+      this.isProgressBarVisibile = true;
+      this._dashboardService.GetOFHeaderView1ByOptionByImportVendor(ofOption).subscribe(
+        (data) => {
+          if (data) {
+            this.ofDetails = <BPCOFHeaderView1[]>data;
+            this.ofDetailsDataSource = new MatTableDataSource(
+              this.ofDetails
+            );
+            if (this.ofDetails.length === 0) {
+              this.TableFooterShow = true;
+            }
+            else {
+              this.TableFooterShow = false;
+            }
+            this.ofDetailsDataSource.paginator = this.ofDetailsPaginator;
+            this.ofDetailsDataSource.sort = this.ofDetailsSort;
+            this.statusvalue = ofOption.DocType;
+          }
+          this.isProgressBarVisibile = false;
+        },
+        (err) => {
+          console.error(err);
+          this.isProgressBarVisibile = false;
+          this.notificationSnackBarComponent.openSnackBar(
+            err instanceof Object ? "Something went wrong" : err,
+            SnackBarStatus.danger
           );
-          if (this.ofDetails.length === 0) {
-            this.TableFooterShow = true;
-          }
-          else {
-            this.TableFooterShow = false;
-          }
-          this.ofDetailsDataSource.paginator = this.ofDetailsPaginator;
-          this.ofDetailsDataSource.sort = this.ofDetailsSort;
-          this.statusvalue = ofOption.DocType;
         }
-        this.isProgressBarVisibile = false;
-      },
-      (err) => {
-        console.error(err);
-        this.isProgressBarVisibile = false;
-        this.notificationSnackBarComponent.openSnackBar(
-          err instanceof Object ? "Something went wrong" : err,
-          SnackBarStatus.danger
-        );
-      }
-    );
+      );
+    } else {
+      this.isProgressBarVisibile = true;
+      this._dashboardService.GetOFHeaderView1ByOption(ofOption).subscribe(
+        (data) => {
+          if (data) {
+            this.ofDetails = <BPCOFHeaderView1[]>data;
+            this.ofDetailsDataSource = new MatTableDataSource(
+              this.ofDetails
+            );
+            if (this.ofDetails.length === 0) {
+              this.TableFooterShow = true;
+            }
+            else {
+              this.TableFooterShow = false;
+            }
+            this.ofDetailsDataSource.paginator = this.ofDetailsPaginator;
+            this.ofDetailsDataSource.sort = this.ofDetailsSort;
+            this.statusvalue = ofOption.DocType;
+          }
+          this.isProgressBarVisibile = false;
+        },
+        (err) => {
+          console.error(err);
+          this.isProgressBarVisibile = false;
+          this.notificationSnackBarComponent.openSnackBar(
+            err instanceof Object ? "Something went wrong" : err,
+            SnackBarStatus.danger
+          );
+        }
+      );
+    }
+
     if (buttonText != null) {
       this.CreateActionLogvalues(buttonText);
     }
@@ -272,7 +329,7 @@ export class MaterialOrderFulfilmentComponent implements OnInit {
       }
     );
   }
-  
+
 
   initialiseOfDetailsFormGroup(): void {
     this.ofDetailsFormGroup = this._formBuilder.group({
@@ -327,7 +384,7 @@ export class MaterialOrderFulfilmentComponent implements OnInit {
     // this.initialiseOfDetailsFormGroup();
   }
 
-  
+
 
   openMyMenu(index: any): void {
     alert(index);

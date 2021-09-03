@@ -536,16 +536,21 @@ export class ASNComponent implements OnInit {
 
     handleFileInput1(evt): void {
         if (evt.target.files && evt.target.files.length > 0) {
-            if (this.invoiceAttachment && this.invoiceAttachment.name) {
-                this.OpenAttachmentReplaceConfirmation(evt);
-                // this.notificationSnackBarComponent.openSnackBar('Maximum one attachment is allowed, old is attachment is replaced', SnackBarStatus.warning);
-            }
-            else if (this.invAttach && this.invAttach.AttachmentName) {
-                this.OpenAttachmentReplaceConfirmation(evt);
-                // this.notificationSnackBarComponent.openSnackBar('Maximum one attachment is allowed, old is attachment is replaced', SnackBarStatus.warning);
+            const fil = evt.target.files[0] as File;
+            if (fil.type.includes('pdf')) {
+                if (this.invoiceAttachment && this.invoiceAttachment.name) {
+                    this.OpenAttachmentReplaceConfirmation(evt);
+                    // this.notificationSnackBarComponent.openSnackBar('Maximum one attachment is allowed, old is attachment is replaced', SnackBarStatus.warning);
+                }
+                else if (this.invAttach && this.invAttach.AttachmentName) {
+                    this.OpenAttachmentReplaceConfirmation(evt);
+                    // this.notificationSnackBarComponent.openSnackBar('Maximum one attachment is allowed, old is attachment is replaced', SnackBarStatus.warning);
+                } else {
+                    this.invoiceAttachment = evt.target.files[0];
+                    this.invAttach = new BPCInvoiceAttachment();
+                }
             } else {
-                this.invoiceAttachment = evt.target.files[0];
-                this.invAttach = new BPCInvoiceAttachment();
+                this.notificationSnackBarComponent.openSnackBar(`Please select only pdf file`, SnackBarStatus.danger);
             }
         }
     }
@@ -657,6 +662,8 @@ export class ASNComponent implements OnInit {
             if (!this.AllDocumentCenters || !this.AllDocumentCenters.length) {
                 this.AllDocumentCenters = [];
             }
+            documentCenter.CreatedBy = this.currentUserName;
+            documentCenter.ModifiedBy = this.currentUserName;
             this.AllDocumentCenters.push(documentCenter);
             this.DocumentCenterDataSource = new MatTableDataSource(this.AllDocumentCenters);
             this.ResetDocumentCenterFormGroup();
@@ -1346,6 +1353,8 @@ export class ASNComponent implements OnInit {
         this.SelectedASNHeader.Field8 = this.SelectedASNView.Field8 = this.ASNFormGroup.get('Field8').value;
         this.SelectedASNHeader.Field9 = this.SelectedASNView.Field9 = this.ASNFormGroup.get('Field9').value;
         this.SelectedASNHeader.Field10 = this.SelectedASNView.Field10 = this.ASNFormGroup.get('Field10').value;
+        this.SelectedASNHeader.CreatedBy = this.SelectedASNView.CreatedBy = this.currentUserName;
+        this.SelectedASNHeader.ModifiedBy = this.SelectedASNView.ModifiedBy = this.currentUserName;
         if (this.SelectedDocNumber && this.PO) {
             this.SelectedASNHeader.Client = this.SelectedASNView.Client = this.PO.Client;
             this.SelectedASNHeader.Company = this.SelectedASNView.Company = this.PO.Company;
@@ -1393,6 +1402,8 @@ export class ASNComponent implements OnInit {
             item.Value = x.get('Value').value;
             item.TaxAmount = x.get('TaxAmount').value;
             item.TaxCode = x.get('TaxCode').value;
+            item.CreatedBy = this.currentUserName;
+            item.ModifiedBy = this.currentUserName;
             // const manufDate = x.get('ManufactureDate').value;
             // if (manufDate) {
             //     itemBatch.ManufactureDate = this._datePipe.transform(manufDate, 'yyyy-MM-dd HH:mm:ss');
@@ -1421,6 +1432,8 @@ export class ASNComponent implements OnInit {
                     y.Type = this.PO.Type;
                     y.PatnerID = this.PO.PatnerID;
                     y.Item = item.Item;
+                    y.CreatedBy = this.currentUserName;
+                    y.ModifiedBy = this.currentUserName;
                 });
                 item.ASNItemSESes.forEach(y => {
                     y.Client = this.PO.Client;
@@ -1428,6 +1441,8 @@ export class ASNComponent implements OnInit {
                     y.Type = this.PO.Type;
                     y.PatnerID = this.PO.PatnerID;
                     y.Item = item.Item;
+                    y.CreatedBy = this.currentUserName;
+                    y.ModifiedBy = this.currentUserName;
                 });
                 // itemBatch.Client = this.PO.Client;
                 // itemBatch.Company = this.PO.Company;
@@ -1449,6 +1464,8 @@ export class ASNComponent implements OnInit {
                     y.Type = this.PO.Type;
                     y.PatnerID = this.PO.PatnerID;
                     y.Item = item.Item;
+                    y.CreatedBy = this.currentUserName;
+                    y.ModifiedBy = this.currentUserName;
                 });
                 item.ASNItemSESes.forEach(y => {
                     y.Client = this.PO.Client;
@@ -1456,6 +1473,8 @@ export class ASNComponent implements OnInit {
                     y.Type = this.PO.Type;
                     y.PatnerID = this.PO.PatnerID;
                     y.Item = item.Item;
+                    y.CreatedBy = this.currentUserName;
+                    y.ModifiedBy = this.currentUserName;
                 });
                 // itemBatch.Client = this.SelectedASNHeader.Client;
                 // itemBatch.Company = this.SelectedASNHeader.Company;
@@ -1558,6 +1577,8 @@ export class ASNComponent implements OnInit {
                 pack.NetWeightUOM = x.get('GrossWeightUOM').value;
                 pack.VolumetricWeight = x.get('VolumetricWeight').value;
                 pack.VolumetricWeightUOM = x.get('VolumetricWeightUOM').value;
+                pack.CreatedBy = this.currentUserName;
+                pack.ModifiedBy = this.currentUserName;
                 if (this.SelectedDocNumber && this.PO) {
                     pack.Client = this.PO.Client;
                     pack.Company = this.PO.Company;
@@ -2230,7 +2251,7 @@ export class ASNComponent implements OnInit {
 
     AddInvoiceAttachment(Actiontype: string): void {
         this.IsProgressBarVisibile1 = true;
-        this._ASNService.AddInvoiceAttachment(this.SelectedASNHeader, this.currentUserID.toString(), this.invoiceAttachment).subscribe(
+        this._ASNService.AddInvoiceAttachment(this.SelectedASNHeader, this.currentUserName, this.invoiceAttachment).subscribe(
             (dat) => {
                 // if (this.fileToUploadList && this.fileToUploadList.length) {
                 //     this.AddDocumentCenterAttachment(Actiontype);
@@ -2267,7 +2288,7 @@ export class ASNComponent implements OnInit {
     }
     AddDocumentCenterAttachment(Actiontype: string): void {
         this.IsProgressBarVisibile2 = true;
-        this._ASNService.AddDocumentCenterAttachment(this.SelectedASNHeader.ASNNumber, this.currentUserID.toString(), this.fileToUploadList).subscribe(
+        this._ASNService.AddDocumentCenterAttachment(this.SelectedASNHeader, this.currentUserName, this.fileToUploadList).subscribe(
             (dat) => {
                 this.IsProgressBarVisibile2 = false;
                 if (this.SelectedASNHeader.Field1) {
