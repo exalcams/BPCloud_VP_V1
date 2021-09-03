@@ -211,6 +211,7 @@ export class OfOption1 {
     OpenQty: number | null;
     TransitQty: number | null;
     PartnerID: string;
+    ImportVendor: string;
 }
 // export class Deliverystatus {
 //     Planned1:DeliverystatusDetails;

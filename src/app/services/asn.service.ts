@@ -242,7 +242,7 @@ export class ASNService {
         formData.append('Type', header.Type);
         formData.append('PatnerID', header.PatnerID);
         formData.append('ReferenceNo', header.DocNumber);
-        formData.append('CreatedBy', CreatedBy.toString());
+        formData.append('CreatedBy', CreatedBy);
 
         return this._httpClient.post<any>(`${this.baseAddress}poapi/ASN/AddInvoiceAttachment`,
             formData,
@@ -255,15 +255,20 @@ export class ASNService {
 
     }
 
-    AddDocumentCenterAttachment(ASNNumber: string, CreatedBy: string, selectedFiles: File[]): Observable<any> {
+    AddDocumentCenterAttachment(header: BPCASNHeader, CreatedBy: string, selectedFiles: File[]): Observable<any> {
         const formData: FormData = new FormData();
         if (selectedFiles && selectedFiles.length) {
             selectedFiles.forEach(x => {
                 formData.append(x.name, x, x.name);
             });
         }
-        formData.append('ASNNumber', ASNNumber);
-        formData.append('CreatedBy', CreatedBy.toString());
+        formData.append('Client', header.Client);
+        formData.append('Company', header.Company);
+        formData.append('Type', header.Type);
+        formData.append('PatnerID', header.PatnerID);
+        formData.append('ReferenceNo', header.DocNumber);
+        formData.append('ASNNumber', header.ASNNumber);
+        formData.append('CreatedBy', CreatedBy);
 
         return this._httpClient.post<any>(`${this.baseAddress}poapi/ASN/AddDocumentCenterAttachment`,
             formData,

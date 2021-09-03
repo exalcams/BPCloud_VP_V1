@@ -60,190 +60,194 @@
         </form>
       </div>
       <div fxFlex fxLayout fxLayoutGap="0px">
-        <!-- <div class="px-8" fxFlex="50">
-          <div fxLayout fxLayoutAlign="start center" class="p-12" *ngIf="OTIFBarChartData.length">
-            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-              [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType">
+        <div fxFlex="50" fxLayout="column">
+          <div fxFlex fxLayout fxLayoutGap="0px">
+            <!-- <div class="px-8" fxFlex="50">
+              <div fxLayout fxLayoutAlign="start center" class="p-12" *ngIf="OTIFBarChartData.length">
+                <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+                  [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType">
+                </canvas>
+              </div>
+            </div> -->
+            <div class="pl-16 pr-8" fxFlex="50" fxLayout="column" fxLayoutAlign="start">
+              <div class="tile" fxLayout="column" fxLayoutAlign="start">
+                <div fxLayoutAlign="start center" class="pt-8">
+                  <span class="boldClass pl-8">Total Stock</span>
+                </div>
+                <span class="orangeBorderBottom"></span>
+                <div fxFlex fxLayoutAlign="center" class="p-12">
+                  <div fxFlex fxLayoutAlign="center">
+                    <div class="cchart" *ngIf="TotalStockChartOptions?.series">
+                      <apx-chart [series]="TotalStockChartOptions?.series" [chart]="chartOptions.chart"
+                        [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
+                        [stroke]="chartOptions.stroke" [fill]="TotalStockChartOptions?.fill">
+                      </apx-chart>
+                    </div>
+                  </div>
+                  <div fxFlex="50" class="pl-36 chartLeftText" fxLayout="column" fxLayoutAlign="center">
+                    <div>No. Of Total Stocks</div>
+                    <div class="valueClass">{{TotalStockValue}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="px-8" fxFlex="50" fxLayout="column" fxLayoutAlign="start">
+              <div class="tile" fxLayout="column" fxLayoutAlign="start">
+                <div fxLayoutAlign="start center" class="pt-8">
+                  <span class="boldClass pl-8">Out of Stock</span>
+                </div>
+                <span class="orangeBorderBottom"></span>
+                <div fxFlex fxLayoutAlign="center" class="p-12">
+                  <div fxFlex fxLayoutAlign="center">
+                    <div class="cchart" *ngIf="OutOfStockChartOptions?.series">
+                      <apx-chart [series]="OutOfStockChartOptions?.series" [chart]="chartOptions.chart"
+                        [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
+                        [stroke]="chartOptions.stroke" [fill]="OutOfStockChartOptions?.fill">
+                      </apx-chart>
+                    </div>
+                  </div>
+                  <div fxFlex="50" class="pl-36 chartLeftText" fxLayout="column" fxLayoutAlign="center">
+                    <div>No. Of Out of Stocks Average</div>
+                    <div class="valueClass">{{OutOfStockValue}}</div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="tile" fxLayout="column" fxLayoutAlign="start">
+                <div fxLayoutAlign="start center" class="pt-8">
+                  <span class="boldClass pl-8">Out of Stock</span>
+                </div>
+                <span class="orangeBorderBottom"></span>
+                <div fxFlex fxLayoutAlign="center" class="pt-12">
+                  <div fxFlex fxLayoutAlign="center">
+                    <div class="cchart">
+                      <apx-chart [series]="OutOfStockChartOptions?.series" [chart]="chartOptions.chart"
+                        [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
+                        [stroke]="chartOptions.stroke" [fill]="OutOfStockChartOptions?.fill">
+                      </apx-chart>
+                    </div>
+                  </div>
+                  <div fxFlex="50" class="pl-36" fxLayout="column" fxLayoutAlign="center">
+                    <div>No. Of Out of Stocks Average</div>
+                    <div class="valueClass">{{OutOfStockValue}}</div>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+          </div>
+          <div fxFlex fxLayout fxLayoutGap="0px" class="mt-16">
+            <div class="pl-16 pr-8" fxFlex="50" fxLayout="column" fxLayoutAlign="start">
+              <div class="tile" fxLayout="column" fxLayoutAlign="start">
+                <div fxLayoutAlign="start center" class="pt-8">
+                  <span class="boldClass pl-8">OTIF</span>
+                </div>
+                <span class="orangeBorderBottom"></span>
+                <div fxFlex fxLayoutAlign="center" class="p-12">
+                  <div fxFlex fxLayoutAlign="center">
+                    <div class="cchart" *ngIf="OTIFChartOptions?.series">
+                      <apx-chart [series]="OTIFChartOptions?.series" [chart]="chartOptions.chart"
+                        [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
+                        [stroke]="chartOptions.stroke" [fill]="OTIFChartOptions?.fill">
+                      </apx-chart>
+                    </div>
+                  </div>
+                  <div fxFlex="50" class="pl-36 chartLeftText" fxLayout="column" fxLayoutAlign="center">
+                    <div>On Time In Full Deliveries</div>
+                    <div class="valueClass">{{OTIFValue}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="px-8" fxFlex="50" fxLayout="column" fxLayoutAlign="start">
+
+              <div class="tile" fxLayout="column" fxLayoutAlign="start">
+                <div fxLayoutAlign="start center" class="pt-8">
+                  <span class="boldClass pl-8">Turn Over</span>
+                </div>
+                <span class="orangeBorderBottom"></span>
+                <div fxFlex fxLayoutAlign="center" class="p-12">
+                  <div fxFlex fxLayoutAlign="center">
+                    <div class="cchart" *ngIf="TurnOverChartOptions?.series">
+                      <apx-chart [series]="TurnOverChartOptions?.series" [chart]="chartOptions.chart"
+                        [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
+                        [stroke]="chartOptions.stroke" [fill]="TurnOverChartOptions?.fill">
+                      </apx-chart>
+                    </div>
+                  </div>
+                  <div fxFlex="50" class="pl-36 chartLeftText" fxLayout="column" fxLayoutAlign="center">
+                    <div>Average TurnOver</div>
+                    <div class="valueClass">{{TurnOverValue}}</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- <div class="tile" fxLayout="column" fxLayoutAlign="start">
+                <div fxLayoutAlign="start center" class="pt-8">
+                  <span class="boldClass pl-8">Turn Over</span>
+                </div>
+                <span class="orangeBorderBottom"></span>
+                <div fxFlex fxLayoutAlign="center" class="pt-12">
+                  <div fxFlex fxLayoutAlign="center">
+                    <div class="cchart">
+                      <apx-chart [series]="TurnOverChartOptions?.series" [chart]="chartOptions.chart"
+                        [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
+                        [stroke]="chartOptions.stroke" [fill]="TurnOverChartOptions?.fill">
+                      </apx-chart>
+                    </div>
+                  </div>
+                  <div fxFlex="50" class="pl-36" fxLayout="column" fxLayoutAlign="center">
+                    <div>Average TurnOver</div>
+                    <div class="valueClass">{{TurnOverValue}}</div>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+
+            <!-- <div class="pl-8 pr-16" fxFlex="50">
+              <div class="tile1 lightBlueBg" fxLayout="column" fxLayoutAlign="start">
+                <div class="px-20" fxLayout="column" fxLayoutAlign="start">
+                  <div fxFlex class="pt-20">
+                    <div class="pb-8 endText">Average Time to Sell</div>
+                    <div class="bar">
+                      <div class="sellBarCompleted" [ngStyle]="{'width': AvgSellTime + '%'}">{{AvgSellTime}}%</div>
+                    </div>
+                  </div>
+                  <div fxFlex class="pt-20">
+                    <div class="pb-8 endText">Average No. of Subcon</div>
+                    <div class="bar">
+                      <div class="subconBarCompleted" [ngStyle]="{'width': AvgSubcon + '%'}">{{AvgSubcon}}%</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+    
+            </div> -->
+          </div>
+        </div>
+        <div fxFlex="50" fxLayout="column" fxLayoutGap="0px">
+          <div fxFill fxFlex="100" class="px-8">
+            <canvas class="tile2 p-24" baseChart [datasets]="barChartData" [labels]="barChartLabels"
+              [options]="barChartOptions" [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType"
+              (chartClick)="barChartClicked($event)">
             </canvas>
+            <!-- <div class="tile2 h-100" fxLayout="column" fxFill>
+              <div fxLayout fxLayoutAlign="start start" class="p-12 px-32" *ngIf="OTIFBarChartData?.length">
+                <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+                  [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType"
+                  (chartClick)="barChartClicked($event)">
+                </canvas>
+              </div>
+            </div> -->
+            <!-- <div class="tile2" fxLayout="column" fxLayoutAlign="center">
+              <div fxLayout fxLayoutAlign="center" class="p-12" *ngIf="OTIFBarChartData?.length">
+                <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+                  [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType"
+                  (chartClick)="barChartClicked($event)">
+                </canvas>
+              </div>
+            </div> -->
           </div>
-        </div> -->
-        <div class="pl-16 pr-8" fxFlex="25" fxLayout="column" fxLayoutAlign="start">
-          <div class="tile" fxLayout="column" fxLayoutAlign="start">
-            <div fxLayoutAlign="start center" class="pt-8">
-              <span class="boldClass pl-8">Total Stock</span>
-            </div>
-            <span class="orangeBorderBottom"></span>
-            <div fxFlex fxLayoutAlign="center" class="p-12">
-              <div fxFlex fxLayoutAlign="center">
-                <div class="cchart" *ngIf="TotalStockChartOptions?.series">
-                  <apx-chart [series]="TotalStockChartOptions?.series" [chart]="chartOptions.chart"
-                    [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
-                    [stroke]="chartOptions.stroke" [fill]="TotalStockChartOptions?.fill">
-                  </apx-chart>
-                </div>
-              </div>
-              <div fxFlex="50" class="pl-36 chartLeftText" fxLayout="column" fxLayoutAlign="center">
-                <div>No. Of Total Stocks</div>
-                <div class="valueClass">{{TotalStockValue}}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="px-8" fxFlex="25" fxLayout="column" fxLayoutAlign="start">
-          <div class="tile" fxLayout="column" fxLayoutAlign="start">
-            <div fxLayoutAlign="start center" class="pt-8">
-              <span class="boldClass pl-8">Out of Stock</span>
-            </div>
-            <span class="orangeBorderBottom"></span>
-            <div fxFlex fxLayoutAlign="center" class="p-12">
-              <div fxFlex fxLayoutAlign="center">
-                <div class="cchart" *ngIf="OutOfStockChartOptions?.series">
-                  <apx-chart [series]="OutOfStockChartOptions?.series" [chart]="chartOptions.chart"
-                    [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
-                    [stroke]="chartOptions.stroke" [fill]="OutOfStockChartOptions?.fill">
-                  </apx-chart>
-                </div>
-              </div>
-              <div fxFlex="50" class="pl-36 chartLeftText" fxLayout="column" fxLayoutAlign="center">
-                <div>No. Of Out of Stocks Average</div>
-                <div class="valueClass">{{OutOfStockValue}}</div>
-              </div>
-            </div>
-          </div>
-          <!-- <div class="tile" fxLayout="column" fxLayoutAlign="start">
-            <div fxLayoutAlign="start center" class="pt-8">
-              <span class="boldClass pl-8">Out of Stock</span>
-            </div>
-            <span class="orangeBorderBottom"></span>
-            <div fxFlex fxLayoutAlign="center" class="pt-12">
-              <div fxFlex fxLayoutAlign="center">
-                <div class="cchart">
-                  <apx-chart [series]="OutOfStockChartOptions?.series" [chart]="chartOptions.chart"
-                    [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
-                    [stroke]="chartOptions.stroke" [fill]="OutOfStockChartOptions?.fill">
-                  </apx-chart>
-                </div>
-              </div>
-              <div fxFlex="50" class="pl-36" fxLayout="column" fxLayoutAlign="center">
-                <div>No. Of Out of Stocks Average</div>
-                <div class="valueClass">{{OutOfStockValue}}</div>
-              </div>
-            </div>
-          </div> -->
-        </div>
-
-        <div class="pl-8 pr-16" fxFlex="50">
-          <div class="tile1" fxLayout="column" fxLayoutAlign="start">
-            <div fxLayout fxLayoutAlign="center" class="p-12" *ngIf="OTIFBarChartData?.length">
-              <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-                [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType"
-                (chartClick)="barChartClicked($event)">
-              </canvas>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div fxFlex fxLayout fxLayoutGap="0px" class="mt-16">
-        <div class="pl-16 pr-8" fxFlex="25" fxLayout="column" fxLayoutAlign="start">
-          <div class="tile" fxLayout="column" fxLayoutAlign="start">
-            <div fxLayoutAlign="start center" class="pt-8">
-              <span class="boldClass pl-8">OTIF</span>
-            </div>
-            <span class="orangeBorderBottom"></span>
-            <div fxFlex fxLayoutAlign="center" class="p-12">
-              <div fxFlex fxLayoutAlign="center">
-                <div class="cchart" *ngIf="OTIFChartOptions?.series">
-                  <apx-chart [series]="OTIFChartOptions?.series" [chart]="chartOptions.chart"
-                    [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
-                    [stroke]="chartOptions.stroke" [fill]="OTIFChartOptions?.fill">
-                  </apx-chart>
-                </div>
-              </div>
-              <div fxFlex="50" class="pl-36 chartLeftText" fxLayout="column" fxLayoutAlign="center">
-                <div>On Time In Full Deliveries</div>
-                <div class="valueClass">{{OTIFValue}}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="px-8" fxFlex="25" fxLayout="column" fxLayoutAlign="start">
-
-          <div class="tile" fxLayout="column" fxLayoutAlign="start">
-            <div fxLayoutAlign="start center" class="pt-8">
-              <span class="boldClass pl-8">Turn Over</span>
-            </div>
-            <span class="orangeBorderBottom"></span>
-            <div fxFlex fxLayoutAlign="center" class="p-12">
-              <div fxFlex fxLayoutAlign="center">
-                <div class="cchart"  *ngIf="TurnOverChartOptions?.series">
-                  <apx-chart [series]="TurnOverChartOptions?.series" [chart]="chartOptions.chart"
-                    [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
-                    [stroke]="chartOptions.stroke" [fill]="TurnOverChartOptions?.fill">
-                  </apx-chart>
-                </div>
-              </div>
-              <div fxFlex="50" class="pl-36 chartLeftText" fxLayout="column" fxLayoutAlign="center">
-                <div>Average TurnOver</div>
-                <div class="valueClass">{{TurnOverValue}}</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- <div class="tile" fxLayout="column" fxLayoutAlign="start">
-            <div fxLayoutAlign="start center" class="pt-8">
-              <span class="boldClass pl-8">Turn Over</span>
-            </div>
-            <span class="orangeBorderBottom"></span>
-            <div fxFlex fxLayoutAlign="center" class="pt-12">
-              <div fxFlex fxLayoutAlign="center">
-                <div class="cchart">
-                  <apx-chart [series]="TurnOverChartOptions?.series" [chart]="chartOptions.chart"
-                    [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
-                    [stroke]="chartOptions.stroke" [fill]="TurnOverChartOptions?.fill">
-                  </apx-chart>
-                </div>
-              </div>
-              <div fxFlex="50" class="pl-36" fxLayout="column" fxLayoutAlign="center">
-                <div>Average TurnOver</div>
-                <div class="valueClass">{{TurnOverValue}}</div>
-              </div>
-            </div>
-          </div> -->
-        </div>
-
-        <div class="pl-8 pr-16" fxFlex="50">
-          <div class="tile1 lightBlueBg" fxLayout="column" fxLayoutAlign="start">
-            <div class="px-20" fxLayout="column" fxLayoutAlign="start">
-              <div fxFlex class="pt-20">
-                <div class="pb-8 endText">Average Time to Sell</div>
-                <div class="bar">
-                  <div class="sellBarCompleted" [ngStyle]="{'width': AvgSellTime + '%'}">{{AvgSellTime}}%</div>
-                </div>
-                <!-- <mat-progress-bar mode="determinate" class="sell" [value]="AvgSellTime" #keywordsInput></mat-progress-bar> -->
-              </div>
-              <div fxFlex class="pt-20">
-                <div class="pb-8 endText">Average No. of Subcon</div>
-                <div class="bar">
-                  <div class="subconBarCompleted" [ngStyle]="{'width': AvgSubcon + '%'}">{{AvgSubcon}}%</div>
-                </div>
-                <!-- <mat-progress-bar mode="determinate" class="subcon" [value]="AvgSubcon"></mat-progress-bar> -->
-              </div>
-            </div>
-          </div>
-          <!-- <div class="tile" fxLayout="column" fxLayoutAlign="start">
-            <div class="px-20" fxLayout="column" fxLayoutAlign="start">
-              <div fxFlex class="pt-20">
-                <div class="pb-4 endText">Average Time to Sell</div>
-                <mat-progress-bar mode="determinate" class="sell" [value]="AvgSellTime"></mat-progress-bar>
-              </div>
-              <div fxFlex class="pt-20">
-                <div class="pb-4 endText">Average No. of Subcon</div>
-                <mat-progress-bar mode="determinate" class="subcon" [value]="AvgSubcon"></mat-progress-bar>
-              </div>
-            </div>
-          </div> -->
         </div>
       </div>
     </div>

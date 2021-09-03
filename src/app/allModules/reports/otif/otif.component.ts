@@ -135,8 +135,8 @@ export class OTIFComponent implements OnInit {
     // cornerRadius: 20,
     maintainAspectRatio: false,
     legend: {
-      position: "right",
-      align: "end",
+      // position: "right",
+      // align: "end",
       labels: {
         fontSize: 10,
         usePointStyle: true,
@@ -147,8 +147,8 @@ export class OTIFComponent implements OnInit {
     scales: {
       xAxes: [
         {
-          barPercentage: 0.2,
-          // categoryPercentage: -0.5,
+          barPercentage: 0.6,
+          categoryPercentage: 0.6,
           gridLines: {
             display: false
           }
@@ -157,7 +157,7 @@ export class OTIFComponent implements OnInit {
       yAxes: [
         {
           ticks: {
-            stepSize: 50,
+            stepSize: 25,
             beginAtZero: true,
           },
           gridLines: {
@@ -170,14 +170,17 @@ export class OTIFComponent implements OnInit {
   };
   public barChartType: ChartType = "bar";
   public barChartLegend = true;
-  public barChartLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  // public barChartLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  // public barChartLabels = ['Jan', 'Feb', 'March', 'Apr', 'May', 'Jun', 'Jul', "Aug", "Sep", "Oct", "Nov", "Dec"];
+  public barChartLabels = [];
   public barChartData: any[] = [
-    { data: [], label: 'Out of Stock', stack: 'a' },
-    { data: [], label: 'Total Stock', stack: 'a' }
+    // { data: [], label: 'Out of Stock', stack: 'a' },
+    { data: [], label: 'Total Stock' },
+    { data: [], label: 'OTIF' }
   ];
   public barChartColors: any[] = [
-    { backgroundColor: "#435cfc" }, { backgroundColor: "#280bc7" }
-    // { backgroundColor: ["#435cfc", '#280bc7'] },
+    // { backgroundColor: "#435cfc" }, { backgroundColor: "#280bc7" }
+    { backgroundColor: "#280bc7" }, { backgroundColor: "#54c4f5" }
   ];
 
   // Line chart
@@ -554,9 +557,9 @@ export class OTIFComponent implements OnInit {
         //   // this.barChartData[0].label[1] = this.OTIFBarChartData.map(x => x.label);
         //   this.BaseChart.chart.update();
         // }, 10);
-        this.barChartLabels = this.OTIFBarChartData.map(x => x.Day);
-        this.barChartData[0].data = this.OTIFBarChartData.map(x => x.OutOfStock);
-        this.barChartData[1].data = this.OTIFBarChartData.map(x => x.TotalStock);
+        this.barChartLabels = this.OTIFBarChartData.map(x => x.Month);
+        this.barChartData[0].data = this.OTIFBarChartData.map(x => x.TotalStock);
+        this.barChartData[1].data = this.OTIFBarChartData.map(x => x.OTIF);
         this.IsProgressBarVisibile2 = false;
         // this.BarchartOptions = {
         //   series: this.barChartData,
@@ -642,8 +645,8 @@ export class OTIFComponent implements OnInit {
         //   this.BaseChart.chart.update();
         // }, 10);
         this.lineChartLabels = this.OTIFLineChartData.map(x => x.Month);
-        this.lineChartData[0].data = this.OTIFLineChartData.map(x => x.TurnOver);
-        this.lineChartData[1].data = this.OTIFLineChartData.map(x => x.OTIF);
+        this.lineChartData[0].data = this.OTIFLineChartData.map(x => x.OTIF);
+        this.lineChartData[1].data = this.OTIFLineChartData.map(x => x.TurnOver);
         this.lineChartData[2].data = this.OTIFLineChartData.map(x => x.OutOfStock);
         this.IsProgressBarVisibile3 = false;
       },

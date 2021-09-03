@@ -834,27 +834,52 @@ export class OrderFulFilmentCenterComponent implements OnInit {
     }
 
     GetVendorDoughnutChartData(): void {
-        this.isProgressBarVisibile3 = true;
-        this._dashboardService
-            .GetVendorDoughnutChartData(this.partnerID)
-            .subscribe(
-                (data) => {
-                    if (data) {
-                        const fulfilmentDetails = data as FulfilmentDetails[];
-                        this.doughnutChartLabels = fulfilmentDetails.map(
-                            (x) => x.label
-                        );
-                        this.doughnutChartData = fulfilmentDetails.map(
-                            (x) => +x.Value
-                        );
+        if (this.currentUserRole === 'Import Vendor') {
+            this.isProgressBarVisibile3 = true;
+            this._dashboardService
+                .GetVendorDoughnutChartDataByImportVendor(this.currentUserName)
+                .subscribe(
+                    (data) => {
+                        if (data) {
+                            const fulfilmentDetails = data as FulfilmentDetails[];
+                            this.doughnutChartLabels = fulfilmentDetails.map(
+                                (x) => x.label
+                            );
+                            this.doughnutChartData = fulfilmentDetails.map(
+                                (x) => +x.Value
+                            );
+                        }
+                        this.isProgressBarVisibile3 = false;
+                    },
+                    (err) => {
+                        console.error(err);
+                        this.isProgressBarVisibile3 = false;
                     }
-                    this.isProgressBarVisibile3 = false;
-                },
-                (err) => {
-                    console.error(err);
-                    this.isProgressBarVisibile3 = false;
-                }
-            );
+                );
+        } else {
+            this.isProgressBarVisibile3 = true;
+            this._dashboardService
+                .GetVendorDoughnutChartData(this.partnerID)
+                .subscribe(
+                    (data) => {
+                        if (data) {
+                            const fulfilmentDetails = data as FulfilmentDetails[];
+                            this.doughnutChartLabels = fulfilmentDetails.map(
+                                (x) => x.label
+                            );
+                            this.doughnutChartData = fulfilmentDetails.map(
+                                (x) => +x.Value
+                            );
+                        }
+                        this.isProgressBarVisibile3 = false;
+                    },
+                    (err) => {
+                        console.error(err);
+                        this.isProgressBarVisibile3 = false;
+                    }
+                );
+        }
+
     }
 
     // GetOfGraphDetailsByPartnerID(): void {
