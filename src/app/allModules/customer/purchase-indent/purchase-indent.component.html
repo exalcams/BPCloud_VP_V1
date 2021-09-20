@@ -189,7 +189,7 @@
                       <!-- (selectionChange)="Material(value)" -->
                       <!-- (selectionChange)="CountryOfOriginSelected($event)" -->
                       <!-- ProductID: string; -->
-                      <mat-option *ngFor="let Prod of AllProducts" [value]="Prod.ProductID">{{Prod.ProductID}}
+                      <mat-option *ngFor="let Prod of AllProducts" [value]="Prod.ProductID">{{Prod.ProductID | removeLeadingZero}}
                       </mat-option>
 
                     </mat-select>
@@ -312,10 +312,10 @@
               <ng-container matColumnDef="Material">
                 <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Material </th>
                 <td mat-cell style="width: 15%;" *matCellDef="let element">
-                  {{element.Material}} </td>
+                  {{element.Material | removeLeadingZero}} </td>
               </ng-container>
               <ng-container matColumnDef="MaterialText">
-                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> MaterialText </th>
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Material Text </th>
                 <td mat-cell style="width: 15%;" *matCellDef="let element">
                   {{element.MaterialText}} </td>
               </ng-container>

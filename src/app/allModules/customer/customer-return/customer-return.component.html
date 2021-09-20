@@ -339,7 +339,7 @@
               <ng-container matColumnDef="Material">
                 <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Material </th>
                 <td mat-cell style="width: 15%;" *matCellDef="let element">
-                  {{element.Material}} </td>
+                  {{element.Material | removeLeadingZero}} </td>
               </ng-container>
 
 
