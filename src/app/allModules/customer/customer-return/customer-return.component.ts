@@ -175,7 +175,8 @@ export class CustomerReturnComponent implements OnInit {
     this.GetAllBPCCountryMasters();
     this.GetAllBPCCurrencyMasters();
     this.GetFactByPartnerID();
-    this.GetAllProducts();
+    // this.GetAllProducts();
+    this.GetProductsByPartnerID();
     this.GetReturnBasedOnCondition();
     this.GetAllInvoices();
     if (!this.SelectedPIRNumber) {
@@ -619,6 +620,16 @@ export class CustomerReturnComponent implements OnInit {
       }
     );
   }
+  GetProductsByPartnerID(): void {
+    this._CustomerService.GetProductsByPartnerID(this.currentUserName).subscribe(
+        (data) => {
+            this.AllProducts = data as BPCProd[];
+        },
+        (err) => {
+            console.error(err);
+        }
+    );
+}
 
   // GetAllReturnByPartnerID(): void {
   //     this._CustomerService.GetAllReturnByPartnerID(this.currentUserName).subscribe(

@@ -177,6 +177,10 @@ export class CustomerService {
         return this._httpClient.get<BPCProd[]>(`${this.baseAddress}poapi/Product/GetAllProducts`)
             .pipe(catchError(this.errorHandler));
     }
+    GetProductsByPartnerID(PartnerID: string): Observable<BPCProd[] | string> {
+        return this._httpClient.get<BPCProd[]>(`${this.baseAddress}poapi/Product/GetProductsByPartnerID?PartnerID=${PartnerID}`)
+            .pipe(catchError(this.errorHandler));
+    }
 
     // Return Header table
     GetReturnItemsByRet_RetI(RetReqID: string): Observable<BPCRetItem[] | string> {

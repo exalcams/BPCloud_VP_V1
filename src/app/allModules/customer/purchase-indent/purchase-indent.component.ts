@@ -163,7 +163,8 @@ export class PurchaseIndentComponent implements OnInit {
         this.GetAllBPCCountryMasters();
         this.GetAllBPCCurrencyMasters();
         this.GetFactByPartnerID();
-        this.GetAllProducts();
+        // this.GetAllProducts();
+        this.GetProductsByPartnerID();
         this.GetPurchaseIndentBasedOnCondition();
         //     this.AllProd=[{Material:"001",
         //     MaterialText:"mad",
@@ -444,6 +445,17 @@ export class PurchaseIndentComponent implements OnInit {
 
     GetAllProducts(): void {
         this._CustomerService.GetAllProducts().subscribe(
+            (data) => {
+                this.AllProducts = data as BPCProd[];
+            },
+            (err) => {
+                console.error(err);
+            }
+        );
+    }
+
+    GetProductsByPartnerID(): void {
+        this._CustomerService.GetProductsByPartnerID(this.currentUserName).subscribe(
             (data) => {
                 this.AllProducts = data as BPCProd[];
             },
