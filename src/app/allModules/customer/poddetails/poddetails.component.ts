@@ -791,21 +791,21 @@ export class PODDetailsComponent implements OnInit {
     // console.log("   this.recivedStatus1_eq", this.recivedStatus1_eq);
     // console.log("   this.recivedStatus2_noteq", this.recivedStatus2_noteq);
     this.PODFormGroup.enable();
-    if (this.PODFormGroup.valid) {
-      if (!this.isWeightError) {
-        if (this.PODItemFormGroup.valid) {
-          this.GetPODValues();
-          this.GetPODItemValues();
-          this.GetPODItemAttachments();
-          this.SetActionToOpenConfirmation('Submit');
-        } else {
-          this.ShowValidationErrors(this.PODItemFormGroup);
-        }
+    // if (this.PODFormGroup.valid) {
+    if (!this.isWeightError) {
+      if (this.PODItemFormGroup.valid) {
+        this.GetPODValues();
+        this.GetPODItemValues();
+        this.GetPODItemAttachments();
+        this.SetActionToOpenConfirmation('Submit');
+      } else {
+        this.ShowValidationErrors(this.PODItemFormGroup);
       }
-
-    } else {
-      this.ShowValidationErrors(this.PODFormGroup);
     }
+
+    // } else {
+    //   this.ShowValidationErrors(this.PODFormGroup);
+    // }
   }
   DeleteClicked(): void {
     if (this.SelectedPODHeader.InvoiceNumber) {

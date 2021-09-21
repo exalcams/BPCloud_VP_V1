@@ -87,7 +87,7 @@ export class OTIFComponent implements OnInit {
   SelectValue: string;
   isExpanded: boolean;
   tableDisplayedColumns: string[] = [
-    'PatnerID',
+    // 'PatnerID',
     // 'KRA',
     'Material',
     'Date',
