@@ -736,6 +736,8 @@ export class CustomerReturnComponent implements OnInit {
     this.ReturnFormGroup.get('Transporter').patchValue(this.SelectedReturnHeader.Transporter);
     this.ReturnFormGroup.get('TruckNumber').patchValue(this.SelectedReturnHeader.TruckNumber);
     this.ReturnFormGroup.get('Status').patchValue(this.SelectedReturnHeader.Status);
+    this.ReturnFormGroup.get('TotalReturnQty').patchValue(this.SelectedReturnHeader.TotalReturnQty);
+    this.ReturnFormGroup.get('TotalReturnAmount').patchValue(this.SelectedReturnHeader.TotalReturnAmount);
     // this.ReturnFormGroup.get('Status').patchValue(this.SelectedReturnHeader.TruckNumber);
     console.log(this.ReturnFormGroup);
 
@@ -761,6 +763,8 @@ export class CustomerReturnComponent implements OnInit {
     this.SelectedReturnHeader.AWBNumber = this.SelectedReturnView.AWBNumber = this.ReturnFormGroup.get('AWBNumber').value;
     this.SelectedReturnHeader.Transporter = this.SelectedReturnView.Transporter = this.ReturnFormGroup.get('Transporter').value;
     this.SelectedReturnHeader.TruckNumber = this.SelectedReturnView.TruckNumber = this.ReturnFormGroup.get('TruckNumber').value;
+    this.SelectedReturnHeader.TotalReturnQty = this.SelectedReturnView.TotalReturnQty = this.ReturnFormGroup.get('TotalReturnQty').value;
+    this.SelectedReturnHeader.TotalReturnAmount = this.SelectedReturnView.TotalReturnAmount = this.ReturnFormGroup.get('TotalReturnAmount').value;
 
     if (this.SelectedPIRNumber) {
       // this.SelectedReturnHeader.Client = this.SelectedReturnView.Client = this.PO.Client;

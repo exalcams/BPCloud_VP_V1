@@ -283,7 +283,7 @@
           </div>
 
           <table fxFlex class="table" mat-table [dataSource]="tableDataSource" matSort>
-            <ng-container matColumnDef="PatnerID">
+            <!-- <ng-container matColumnDef="PatnerID">
               <th mat-header-cell *matHeaderCellDef mat-sort-header
                 [ngClass]="BGClassName?.layout?.toolbar?.background">
                 PatnerID </th>
@@ -295,14 +295,20 @@
                   </div>
                 </div>
               </td>
-            </ng-container>
+            </ng-container> -->
 
             <ng-container matColumnDef="Material">
               <th mat-header-cell *matHeaderCellDef mat-sort-header
                 [ngClass]="BGClassName?.layout?.toolbar?.background">
                 Material </th>
-              <td mat-cell *matCellDef="let element">
-                {{element.Material}} </td>
+                <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+                  <div fxLayout>
+                    <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
+                    <div fxFlex class="pl-8">
+                      <span> {{element.Material}} </span>
+                    </div>
+                  </div>
+                </td>
             </ng-container>
 
             <ng-container matColumnDef="Date">
