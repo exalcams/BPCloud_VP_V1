@@ -45,10 +45,10 @@ export class CustomerReturnListComponent implements OnInit {
     "Date",
     "InvoiceDoc",
     "DocumentNumber",
-    "CreditNote",
+    // "CreditNote",
     "AWBNumber",
-    "Transporter",
-    "TruckNumber",
+    // "Transporter",
+    // "TruckNumber",
     "Status",
     // "StatusFlow",
   ];

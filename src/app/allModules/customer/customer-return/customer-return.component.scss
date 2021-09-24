@@ -345,8 +345,11 @@
   }
   .removeIcon {
     height: 20px;
-    padding-left: 10px;
+    padding-left: 20px;
     cursor: pointer !important;
+  }
+  .m-5 {
+    margin-right: 6% !important;
   }
   .mat-input-element:disabled {
     color: rgba(0, 0, 0, 0.87) !important;
