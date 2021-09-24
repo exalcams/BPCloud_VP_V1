@@ -69,11 +69,12 @@ export class CustomerReturnComponent implements OnInit {
     'OrderQty',
     'ReturnQty',
     // 'Invoice',
+    'RequiredAction',
     'ReasonText',
     'InvoiceAmount',
     'ReturnAmount',
-    'Batch',
-    'Serial',
+    // 'Batch',
+    // 'Serial',
     'Action'
   ];
   ReturnItemDataSource: MatTableDataSource<BPCRetItem>;
@@ -208,12 +209,13 @@ export class CustomerReturnComponent implements OnInit {
       Date: [new Date(), Validators.required],
       InvoiceReference: ['', Validators.required],
       SONumber: ['', Validators.required],
-      CreditNote: ['', Validators.required],
+      CreditNote: [''],
       AWBNumber: ['', Validators.required],
-      Transporter: ['', Validators.required],
+      Transporter: [''],
       // TruckNumber: ['', [Validators.required, Validators.pattern('^[A-Z]{2}[-][0-9]{1,2}[-][A-Z]{1,2}[-][0-9]{3,4}?$')]],
       // TruckNumber: ['', [Validators.required, Validators.pattern('^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{3,4}$')]],
-      TruckNumber: ['', [Validators.required, Validators.pattern('^[A-Z]{2}[ -][0-9]{1,2}[ -][A-Z]{2,3}[ -][0-9]{3,4}')]],
+      // TruckNumber: ['', [Validators.required, Validators.pattern('^[A-Z]{2}[ -][0-9]{1,2}[ -][A-Z]{2,3}[ -][0-9]{3,4}')]],
+      TruckNumber: [''],
       Status: [''],
       TotalReturnQty: [''],
       TotalReturnAmount: [''],
@@ -229,6 +231,7 @@ export class CustomerReturnComponent implements OnInit {
       OrderQty: ['', [Validators.required, Validators.pattern('^([1-9][0-9]*)([.][0-9]{1,2})?$')]],
       ReturnQty: ['', [Validators.required, Validators.pattern('^([1-9][0-9]*)([.][0-9]{1,2})?$')]],
       ReasonText: [''],
+      RequiredAction: ['', Validators.required],
       InvoiceAmount: ['', [Validators.required, Validators.pattern('^([1-9][0-9]*)([.][0-9]{1,2})?$')]],
       ReturnAmount: ['', [Validators.required, Validators.pattern('^([1-9][0-9]*)([.][0-9]{1,2})?$')]],
       // FileName: [''],
@@ -521,6 +524,7 @@ export class CustomerReturnComponent implements OnInit {
       PIItem.OrderQty = this.ReturnItemFormGroup.get('OrderQty').value;
       // PIItem.DeliveryDate = this.ReturnItemFormGroup.get('DeliveryDate').value;
       // PIItem.UOM = this.ReturnItemFormGroup.get('UOM').value;
+      PIItem.RequiredAction = this.ReturnItemFormGroup.get('RequiredAction').value;
       PIItem.ReasonText = this.ReturnItemFormGroup.get('ReasonText').value;
       PIItem.InvoiceAmount = this.ReturnItemFormGroup.get('InvoiceAmount').value;
       PIItem.ReturnAmount = this.ReturnItemFormGroup.get('ReturnAmount').value;
@@ -622,14 +626,14 @@ export class CustomerReturnComponent implements OnInit {
   }
   GetProductsByPartnerID(): void {
     this._CustomerService.GetProductsByPartnerID(this.currentUserName).subscribe(
-        (data) => {
-            this.AllProducts = data as BPCProd[];
-        },
-        (err) => {
-            console.error(err);
-        }
+      (data) => {
+        this.AllProducts = data as BPCProd[];
+      },
+      (err) => {
+        console.error(err);
+      }
     );
-}
+  }
 
   // GetAllReturnByPartnerID(): void {
   //     this._CustomerService.GetAllReturnByPartnerID(this.currentUserName).subscribe(
@@ -715,7 +719,7 @@ export class CustomerReturnComponent implements OnInit {
   GetReturnItemsByReqID(): void {
     this._CustomerService.GetReturnItemsByReqID(this.SelectedReturnHeader.RetReqID).subscribe(
       (data) => {
-        const dt = data as BPCRetItem[];
+        const dt = data as BPCRetItemView[];
         if (dt && dt.length && dt.length > 0) {
           this.AllReturnItems = data as BPCRetItemView[];
           this.ReturnItemDataSource = new MatTableDataSource(this.AllReturnItems);

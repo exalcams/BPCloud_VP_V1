@@ -65,7 +65,7 @@
                       </mat-error>
                     </mat-form-field>
                   </div>
-                  <div fxFlex="33" class="px-12">
+                  <!-- <div fxFlex="33" class="px-12">
                     <mat-form-field style="width: 100%;">
                       <input matInput placeholder="Credit Note" formControlName="CreditNote">
                       <mat-error
@@ -73,7 +73,7 @@
                         Credit Note is required
                       </mat-error>
                     </mat-form-field>
-                  </div>
+                  </div> -->
                   <div fxFlex="33" class="px-12">
                     <mat-form-field style="width: 100%;">
                       <input matInput placeholder="AWB Number" formControlName="AWBNumber">
@@ -83,7 +83,7 @@
                       </mat-error>
                     </mat-form-field>
                   </div>
-                  <div fxFlex="33" class="px-12">
+                  <!-- <div fxFlex="33" class="px-12">
                     <mat-form-field style="width: 100%;">
                       <input matInput placeholder="Transporter" formControlName="Transporter">
                       <mat-error
@@ -91,8 +91,8 @@
                         Transporter is required
                       </mat-error>
                     </mat-form-field>
-                  </div>
-                  <div fxFlex="33" class="px-12">
+                  </div> -->
+                  <!-- <div fxFlex="33" class="px-12">
                     <mat-form-field style="width: 100%;">
                       <input matInput placeholder="Truck Number" formControlName="TruckNumber">
                       <mat-error
@@ -104,7 +104,7 @@
                         Enter valid Truck Number
                       </mat-error>
                     </mat-form-field>
-                  </div>
+                  </div> -->
                   <div fxFlex="33" class="px-12">
                     <mat-form-field style="width: 100%;">
                       <input matInput placeholder="Total Return Qty" formControlName="TotalReturnQty" disabled>
@@ -114,6 +114,7 @@
                       </mat-error>
                     </mat-form-field>
                   </div>
+
                   <div fxFlex="33" class="px-12">
                     <mat-form-field style="width: 100%;">
                       <input matInput placeholder="Total Return Amount" formControlName="TotalReturnAmount" disabled>
@@ -181,11 +182,11 @@
             <div>
               <span class="Shipment-Proposal">Item</span>
             </div>
-            <div>
+            <div class="mx-12">
               <form autocomplete="off" class="normal" fxLayout="row" fxLayoutAlign="start" name="form" novalidate
                 [formGroup]="ReturnItemFormGroup">
                 <div fxFlex="10">
-                  <mat-form-field class="px-12" style="width: 100%;">
+                  <mat-form-field class="pr-12" style="width: 100%;">
                     <input matInput placeholder="Item" formControlName="Item">
                     <mat-error
                       *ngIf="ReturnItemFormGroup.get('Item').touched && ReturnItemFormGroup.get('Item').hasError('required')">
@@ -194,7 +195,7 @@
                   </mat-form-field>
                 </div>
                 <div fxFlex="15">
-                  <mat-form-field class="px-12" style="width: 100%;">
+                  <mat-form-field class="pr-12" style="width: 100%;">
                     <mat-select placeholder="Material" formControlName="Material">
                       <!-- (selectionChange)="Material(value)" -->
                       <!-- (selectionChange)="CountryOfOriginSelected($event)" -->
@@ -212,7 +213,7 @@
                   </mat-form-field>
                 </div>
                 <!-- <div fxFlex="10">
-                  <mat-form-field class="px-12" style="width: 100%;">
+                  <mat-form-field class="pr-12" style="width: 100%;">
                     <mat-select (selectionChange)="ProductSelected($event)" placeholder="Prodcut ID"
                       formControlName="ProdcutID">
                       <mat-option *ngFor="let count of AllProducts" [value]="count.ProductID">
@@ -225,9 +226,10 @@
                     </mat-error>
                   </mat-form-field>
                 </div> -->
-                <div fxFlex="15">
-                  <mat-form-field class="px-12" style="width: 100%;">
-                    <input matInput placeholder="Order Qty" formControlName="OrderQty" (keyup)="QtySelected()" (blur)="CalculateReturnAmount()">
+                <div fxFlex="10">
+                  <mat-form-field class="pr-12" style="width: 100%;">
+                    <input matInput placeholder="Order Qty" formControlName="OrderQty" (keyup)="QtySelected()"
+                      (blur)="CalculateReturnAmount()">
                     <mat-error
                       *ngIf="ReturnItemFormGroup.get('OrderQty').touched && ReturnItemFormGroup.get('OrderQty').hasError('required')">
                       Order Qty is required
@@ -243,9 +245,10 @@
                     </mat-error> -->
                   </mat-form-field>
                 </div>
-                <div fxFlex="15">
-                  <mat-form-field class="px-12" style="width: 100%;">
-                    <input matInput placeholder="Return Qty" formControlName="ReturnQty" (keyup)="QtySelected()" (blur)="CalculateReturnAmount()">
+                <div fxFlex="10">
+                  <mat-form-field class="pr-12" style="width: 100%;">
+                    <input matInput placeholder="Return Qty" formControlName="ReturnQty" (keyup)="QtySelected()"
+                      (blur)="CalculateReturnAmount()">
                     <!-- (input)="onSearchChange($event.target.value)" -->
                     <mat-error
                       *ngIf="ReturnItemFormGroup.get('ReturnQty').touched && ReturnItemFormGroup.get('ReturnQty').hasError('required')">
@@ -261,7 +264,20 @@
                   </mat-form-field>
                 </div>
                 <div fxFlex="15">
-                  <mat-form-field class="px-12" style="width: 100%;">
+                  <mat-form-field class="pr-12" style="width: 100%;">
+                    <!-- <input matInput placeholder="Reason Text" formControlName="ReasonText"> -->
+                    <mat-select placeholder="Required action" formControlName="RequiredAction">
+                      <mat-option value="Return">Return</mat-option>
+                      <mat-option value="Refund">Refund</mat-option>
+                    </mat-select>
+                    <mat-error
+                      *ngIf="ReturnItemFormGroup.get('RequiredAction').touched && ReturnItemFormGroup.get('RequiredAction').hasError('required')">
+                      Required Action is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="15">
+                  <mat-form-field class="pr-12" style="width: 100%;">
                     <input matInput placeholder="Reason Text" formControlName="ReasonText">
                     <mat-error
                       *ngIf="ReturnItemFormGroup.get('ReasonText').touched && ReturnItemFormGroup.get('ReasonText').hasError('required')">
@@ -269,17 +285,18 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div fxFlex="15">
-                  <mat-form-field class="px-12" style="width: 100%;">
-                    <input matInput placeholder="Invoice Amount" formControlName="InvoiceAmount" (blur)="CalculateReturnAmount()">
+                <div fxFlex="10">
+                  <mat-form-field class="pr-12" style="width: 100%;">
+                    <input matInput placeholder="Invoice Amount" formControlName="InvoiceAmount"
+                      (blur)="CalculateReturnAmount()">
                     <mat-error
                       *ngIf="ReturnItemFormGroup.get('InvoiceAmount').touched && ReturnItemFormGroup.get('InvoiceAmount').hasError('required')">
                       Invoice Amount is required
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div fxFlex="15">
-                  <mat-form-field class="px-12" style="width: 100%;">
+                <div fxFlex="10">
+                  <mat-form-field class="pr-12" style="width: 100%;">
                     <input matInput placeholder="Return Amount" formControlName="ReturnAmount">
                     <mat-error
                       *ngIf="ReturnItemFormGroup.get('ReturnAmount').touched && ReturnItemFormGroup.get('ReturnAmount').hasError('required')">
@@ -290,7 +307,7 @@
 
 
                 <!-- <div fxFlex="15">
-                  <mat-form-field class="px-12" style="width: 100%;">
+                  <mat-form-field class="pr-12" style="width: 100%;">
                     <input matInput placeholder="Invoice" formControlName="Invoice">
                     <mat-error
                       *ngIf="ReturnItemFormGroup.get('Invoice').touched && ReturnItemFormGroup.get('Invoice').hasError('required')">
@@ -307,10 +324,10 @@
                   <input hidden type="file" #fileInput1 (change)="handleFileInput($event)"
                     accept="image/x-png,image/gif,image/jpeg,image/jpg,application/pdf" />
                 </div> -->
-                <div
-                  *ngIf="!SelectedReturnHeader?.Status || SelectedReturnHeader?.Status==='Open'|| SelectedReturnHeader?.Status==='saved'"
-                  fxFlex="10" fxLayoutAlign="center start">
-                  <img class="addIcon" src="assets/images/logos/add-button.png" (click)="AddReturnItemToTable()">
+
+                <div fxFlex="5" fxLayoutAlign="center start">
+                  <img class="addIcon" src="assets/images/logos/add-button.png" (click)="AddReturnItemToTable()"
+                    *ngIf="!SelectedReturnHeader?.Status || SelectedReturnHeader?.Status==='Open'|| SelectedReturnHeader?.Status==='saved'">
                   <!-- <button class="SaveBtn" mat-raised-button (click)="AddDocumentCenterToTable()">Add</button> -->
                 </div>
               </form>
@@ -324,11 +341,12 @@
             </div>
           </div> -->
 
-          <div fxFlex fxLayout="column" class="table mx-20 my-12">
-            <table *ngIf="AllReturnItems?.length" mat-table [dataSource]="ReturnItemDataSource" matSort>
+          <div fxFlex fxLayout="column" class="table mx-20 my-12" [class.m-5]="hide">
+            <table *ngIf="AllReturnItems?.length" mat-table [dataSource]="ReturnItemDataSource"
+              matSort>
               <ng-container matColumnDef="Item">
-                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Item </th>
-                <td mat-cell style="width: 15%;" *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
+                <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Item </th>
+                <td mat-cell style="width: 10%;" *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
                   <div fxLayout>
                     <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
                     <div fxFlex class="pl-4">{{element.Item}} </div>
@@ -344,15 +362,21 @@
 
 
               <ng-container matColumnDef="OrderQty">
-                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Order Qty </th>
-                <td mat-cell style="width: 15%;" *matCellDef="let element">
+                <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Order Qty </th>
+                <td mat-cell style="width: 10%;" *matCellDef="let element">
                   {{element.OrderQty}} </td>
               </ng-container>
 
               <ng-container matColumnDef="ReturnQty">
-                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Ret Qty </th>
-                <td mat-cell style="width: 15%;" *matCellDef="let element">
+                <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Ret Qty </th>
+                <td mat-cell style="width: 10%;" *matCellDef="let element">
                   {{element.ReturnQty}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="RequiredAction">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Required Action </th>
+                <td mat-cell style="width: 15%;" *matCellDef="let element">
+                  {{element.RequiredAction}} </td>
               </ng-container>
 
               <ng-container matColumnDef="ReasonText">
@@ -362,14 +386,14 @@
               </ng-container>
 
               <ng-container matColumnDef="InvoiceAmount">
-                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Invoice Amount </th>
-                <td mat-cell style="width: 15%;" *matCellDef="let element">
+                <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Invoice Amount </th>
+                <td mat-cell style="width: 10%;" *matCellDef="let element">
                   {{element.InvoiceAmount}} </td>
               </ng-container>
 
               <ng-container matColumnDef="ReturnAmount">
-                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Return Amount </th>
-                <td mat-cell style="width: 15%;" *matCellDef="let element">
+                <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Return Amount </th>
+                <td mat-cell style="width: 10%;" *matCellDef="let element">
                   {{element.ReturnAmount}} </td>
               </ng-container>
 
@@ -391,7 +415,7 @@
                   {{element.InvoiceNumber}} </td>
               </ng-container> -->
 
-              <ng-container matColumnDef="Batch">
+              <!-- <ng-container matColumnDef="Batch">
                 <th mat-header-cell *matHeaderCellDef style="width: 12%;"> Batch </th>
                 <td mat-cell style="width: 12%;text-align-last: center;" *matCellDef="let element">
                   <button mat-raised-button class="SubmitBtn mb-4" (click)="BatchOpen(element)">
@@ -406,10 +430,10 @@
                     Serial {{element.Serials?.length>0?'('+element.Serials?.length+')':''}}
                   </button>
                 </td>
-              </ng-container>
+              </ng-container> -->
               <ng-container matColumnDef="Action">
-                <th mat-header-cell [hidden]="hide" *matHeaderCellDef mat-sort-header style="width: 13%"> </th>
-                <td mat-cell [hidden]="hide" *matCellDef="let element" class="mb-4" style="width: 13%">
+                <th mat-header-cell [hidden]="hide" *matHeaderCellDef mat-sort-header style="width: 5%"> </th>
+                <td mat-cell [hidden]="hide" *matCellDef="let element" class="mb-4" style="width: 5%">
                   <img class="removeIcon" src="assets/images/remove-button.png"
                     (click)="RemoveReturnItemFromTable(element)">
                 </td>

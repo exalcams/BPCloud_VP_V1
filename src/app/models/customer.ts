@@ -101,6 +101,7 @@ export class BPCRetItem extends CommonClass {
     InvoiceNumber: string;
     OrderQty: number;
     ReturnQty: number;
+    RequiredAction: number;
     InvoiceAmount: number;
     ReturnAmount: number;
     ReasonText: string;
@@ -197,6 +198,7 @@ export class BPCRetItemView extends CommonClass {
     InvoiceNumber: string;
     OrderQty: number;
     ReturnQty: number;
+    RequiredAction: number;
     ReasonText: string;
     FileName: string;
     AttachmentReferenceNo: string;
