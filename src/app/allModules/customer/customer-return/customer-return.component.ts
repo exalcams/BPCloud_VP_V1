@@ -228,6 +228,7 @@ export class CustomerReturnComponent implements OnInit {
     this.ReturnItemFormGroup = this._formBuilder.group({
       Item: ['', Validators.required],
       Material: ['', Validators.required],
+      MaterialText: ['', Validators.required],
       OrderQty: ['', [Validators.required, Validators.pattern('^([1-9][0-9]*)([.][0-9]{1,2})?$')]],
       ReturnQty: ['', [Validators.required, Validators.pattern('^([1-9][0-9]*)([.][0-9]{1,2})?$')]],
       ReasonText: [''],
@@ -256,6 +257,7 @@ export class CustomerReturnComponent implements OnInit {
       if (x.Qty !== x.AcceptedQty) {
         this.ReturnItemFormGroup.get('Item').patchValue(x.Item);
         this.ReturnItemFormGroup.get('Material').patchValue(x.Material);
+        this.ReturnItemFormGroup.get('MaterialText').patchValue(x.MaterialText);
         this.ReturnItemFormGroup.get('OrderQty').patchValue(x.Qty);
         this.ReturnItemFormGroup.get('ReturnQty').patchValue(x.Qty - x.AcceptedQty);
         this.ReturnItemFormGroup.get('ReasonText').patchValue(x.Reason);
@@ -333,6 +335,21 @@ export class CustomerReturnComponent implements OnInit {
       this.SelectedReturnHeader.Status = "saved";
     }
   }
+  ProductSelected(event): void {
+    if (event.value) {
+        const selectedProd = this.AllProducts.filter(x => x.ProductID === event.value)[0];
+        if (selectedProd) {
+            this.ReturnItemFormGroup.get('MaterialText').patchValue(selectedProd.MaterialText);
+            this.ReturnItemFormGroup.get('MaterialText').disable();
+            // if (selectedProd.HSN) {
+            //     this.PurchaseIndentItemFormGroup.get('HSN').patchValue(selectedProd.HSN);
+            //     this.PurchaseIndentItemFormGroup.get('HSN').disable();
+            // } else {
+            //     this.PurchaseIndentItemFormGroup.get('HSN').enable();
+            // }
+        }
+    }
+}
   // for batch dialog
   // GetBatchByRet(): void {
   //   this._CustomerService.GetAllReturnbatch(this.SelectedReturnHeader.RetReqID).subscribe(
@@ -520,6 +537,7 @@ export class CustomerReturnComponent implements OnInit {
       PIItem.Item = this.ReturnItemFormGroup.get('Item').value;
       // PIItem.InvoiceNumber = this.ReturnItemFormGroup.get('Invoice').value;
       PIItem.Material = this.ReturnItemFormGroup.get('Material').value;
+      PIItem.MaterialText = this.ReturnItemFormGroup.get('MaterialText').value;
       PIItem.ReturnQty = this.ReturnItemFormGroup.get('ReturnQty').value;
       PIItem.OrderQty = this.ReturnItemFormGroup.get('OrderQty').value;
       // PIItem.DeliveryDate = this.ReturnItemFormGroup.get('DeliveryDate').value;
