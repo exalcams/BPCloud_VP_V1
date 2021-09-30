@@ -196,7 +196,8 @@
                 </div>
                 <div fxFlex="15">
                   <mat-form-field class="pr-12" style="width: 100%;">
-                    <mat-select placeholder="Material" formControlName="Material">
+                    <mat-select placeholder="Material" formControlName="Material"
+                      (selectionChange)="ProductSelected($event)">
                       <!-- (selectionChange)="Material(value)" -->
                       <!-- (selectionChange)="CountryOfOriginSelected($event)" -->
                       <!-- ProductID: string; -->
@@ -342,8 +343,7 @@
           </div> -->
 
           <div fxFlex fxLayout="column" class="table mx-20 my-12" [class.m-5]="hide">
-            <table *ngIf="AllReturnItems?.length" mat-table [dataSource]="ReturnItemDataSource"
-              matSort>
+            <table *ngIf="AllReturnItems?.length" mat-table [dataSource]="ReturnItemDataSource" matSort>
               <ng-container matColumnDef="Item">
                 <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Item </th>
                 <td mat-cell style="width: 10%;" *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
