@@ -70,6 +70,27 @@ export class BPCPayPayment extends CommonClass {
     BankName: string;
     BankAccount: string;
 }
+
+// export class BPCPayRecord extends CommonClass {
+//     Client: string;
+//     Company: string;
+//     Type: string;
+//     PartnerID: string;
+//     DocumentNumber: string;
+//     InvoiceNumber: string;
+//     // PayRecordNo: string;
+//     PaidAmount: number;
+//     UOM: string;
+//     ReferenceNumber: string;
+//     PaymentDate: Date | string | null;
+//     AccountNumber: string;
+//     Bank: string;
+//     PaymentType: string;
+//     PaymentDocument: string;
+//     // Time: string;
+//     // Remarks: string;
+//     // Medium: string;
+// }
 export class BPCPayDis extends CommonClass {
     Client: string;
     Company: string;

@@ -1,4 +1,5 @@
 import { CommonClass } from './common';
+import { BPCInvoice } from './OrderFulFilment';
 import { BPCPayPayment } from './Payment.model';
 export class BPCPIHeader extends CommonClass {
     ID: number;
@@ -294,9 +295,15 @@ export class BPCInvoicePayment extends CommonClass {
 }
 export class BPCInvoicePayView extends CommonClass {
     ID: number;
-    Invoices: BPCInvoicePayment[];
+    Invoices: BPCInvoice[];
     PayRecord: BPCPayRecord[];
     PayPayment: BPCPayPayment[];
+    constructor() {
+        super();
+        this.Invoices = [];
+        this.PayRecord = [];
+        this.PayPayment = [];
+    }
 }
 
 
@@ -305,15 +312,18 @@ export class BPCPayRecord extends CommonClass {
     Company: string;
     Type: string;
     PartnerID: string;
-    InvoiceNumber: string;
     DocumentNumber: string;
-    PaymentDate: Date;
-    PayRecordNo: string;
-    UOM: string;
+    InvoiceNumber: string;
+    PayRecordNo: number;
     PaidAmount: number;
-    Medium: string;
-    Time: string;
-    Remarks: string;
-    RefNumber: string;
-    PayDoc: string;
+    UOM: string;
+    ReferenceNumber: string;
+    PaymentDate: Date | string | null;
+    AccountNumber: string;
+    Bank: string;
+    PaymentType: string;
+    PaymentDocument: string;
+    // Time: string;
+    // Remarks: string;
+    // Medium: string;
 }

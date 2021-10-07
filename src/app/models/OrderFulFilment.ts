@@ -378,10 +378,25 @@ export class ActionLog extends CommonClass {
     UsedOn: string;
 }
 export class BPCInvoice extends CommonClass {
+    Client: string;
+    Company: string;
+    Type: string;
+    PatnerID: string;
+    FiscalYear: string;
     InvoiceNo: string;
     InvoiceDate: Date | string | null;
     InvoiceAmount: number;
+    AWBNumber: string;
+    PoReference: string;
+    PaidAmount: number;
+    BalanceAmount: number | null;
     Currency: string;
+    DateofPayment: Date | string | null;
+    Plant: string;
+    Status: string;
+    AttID: string;
+    PODDate: Date | string | null;
+    PODConfirmedBy: string;
 
 }
 

@@ -126,7 +126,7 @@ export class POService {
     return this._httpClient.get<BPCRetNew>(`${this.baseAddress}poapi/Return/GetPartnerAndRequestIDByPartnerId?PatnerID=${PatnerID}`)
       .pipe(catchError(this.errorHandler));
   }
-  GetAttachmentByPatnerIdAndDocNum(DocNumber: string, PatnerID: string, ): Observable<DocumentDetails[] | string> {
+  GetAttachmentByPatnerIdAndDocNum(DocNumber: string, PatnerID: string): Observable<DocumentDetails[] | string> {
     return this._httpClient.get<DocumentDetails[]>(`${this.baseAddress}poapi/Dashboard/GetAttachmentByPatnerIdAndDocNum?PatnerID=${PatnerID}&DocNumber=${DocNumber}`)
       .pipe(catchError(this.errorHandler));
   }
@@ -381,8 +381,12 @@ export class POService {
 
 
   // invoice payment
-  GetAllInvoices(): Observable<BPCInvoicePayment[] | string> {
-    return this._httpClient.get<BPCInvoicePayment[]>(`${this.baseAddress}poapi/Invoice/GetAllInvoices`)
+  GetAllInvoices(): Observable<BPCInvoice[] | string> {
+    return this._httpClient.get<BPCInvoice[]>(`${this.baseAddress}poapi/Invoice/GetAllInvoices`)
+      .pipe(catchError(this.errorHandler));
+  }
+  GetAllInvoicesByPartnerID(PartnerID: string): Observable<BPCInvoice[] | string> {
+    return this._httpClient.get<BPCInvoice[]>(`${this.baseAddress}poapi/Invoice/GetAllInvoicesByPartnerID?PartnerID=${PartnerID}`)
       .pipe(catchError(this.errorHandler));
   }
   // (`${this.baseAddress}poapi/Invoice/GetExcel_VendorReconciliation?Excel_val=${Excel_val}&Selectedvendor=${Selectedvendor}`)
@@ -477,6 +481,11 @@ export class POService {
   }
   GetAllRecordDateFilter(): Observable<BPCPayRecord[] | string> {
     return this._httpClient.get<BPCPayRecord[]>(`${this.baseAddress}poapi/Invoice/GetAllRecordDateFilter`)
+      .pipe(catchError(this.errorHandler));
+  }
+  GetPaymentRecordsByInvoice(PartnerID: string, DocNumber: string, InvoiceNumber: string): Observable<BPCPayRecord[] | string> {
+    return this._httpClient.get<BPCPayRecord[]>
+      (`${this.baseAddress}poapi/Invoice/GetPaymentRecordsByInvoice?PartnerID=${PartnerID}&DocNumber=${DocNumber}&InvoiceNumber=${InvoiceNumber}`)
       .pipe(catchError(this.errorHandler));
   }
   CreatePaymentRecord(InvoicePaymentRcrd: BPCPayRecord): Observable<any> {
