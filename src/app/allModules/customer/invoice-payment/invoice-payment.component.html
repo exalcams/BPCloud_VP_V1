@@ -56,14 +56,14 @@
               <ng-container matColumnDef="PaidAmount">
                 <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Paid Amount</th>
                 <td mat-cell style="width: 15%;text-align-last: right;" *matCellDef="let element">
-               <span class="paidLinkClass" (click)="openPaidAmount(element)">  {{element.PaidAmount}} </span>
+               <span class="paidLinkClass" (click)="GetPaymentRecordsByInvoice(element)">  {{element.PaidAmount}} </span>
                 </td>
               </ng-container>
 
-              <ng-container matColumnDef="AWBNumber">
-                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> AWB Number </th>
+              <ng-container matColumnDef="PoReference">
+                <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Doc Number </th>
                 <td mat-cell style="width: 15%;" *matCellDef="let element">
-                  {{element.AWBNumber}}</td>
+                  {{element.PoReference}}</td>
               </ng-container>
 
           
