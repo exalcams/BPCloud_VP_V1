@@ -71,7 +71,6 @@
       flex: 1;
       position: relative;
       border-radius: 10px;
-
     }
   }
   .side-bar {
@@ -96,7 +95,7 @@
     border-radius: 0 25px 25px 0;
     margin-right: 7px;
   }
-  
+
   @mixin TableBorderRight($color) {
     border-right: 1px solid $color;
   }
@@ -164,7 +163,7 @@
     //   border-radius: 0 !important;
     // }
   }
-  
+
   .whiteBg {
     background-color: white !important;
   }
@@ -215,15 +214,13 @@
   }
   .intervalclass {
     @extend .italicClass;
-  
+
     font-size: small;
   }
   .subHeader {
     font-weight: 500;
   }
-  
 
-  
   .tableLeftBorder {
     border-left: 1px solid rgba(0, 0, 0, 0.12);
   }
@@ -241,7 +238,7 @@
     background-color: white;
     border-color: gray;
   }
-  
+
   .hor-timeline {
     height: 8px;
     margin-top: 5px;
@@ -340,5 +337,34 @@
     color: #1e8bed;
     cursor: pointer;
   }
- 
+  .SaveBtn {
+    background-color: #efb577;
+    height: 36px;
+    padding: 0px 32px;
+    color: white;
+    // margin-top: -19px;
+  }
+  .SaveAsDraftBtn {
+    background-color: white;
+    color: #efb577;
+  }
+  .excelImg {
+    // margin: 4px 6px 4px 4px;
+    height: 24px;
+  }
+  .excelBtn {
+    // margin-top: -16px;
+    min-width: 0px;
+    background-color: white;
+    color: rgb(46, 125, 50);
+    &.mat-stroked-button {
+      // border-radius: 5px;
+      padding: 0px 8px;
+    }
+  }
+  .expandImg {
+    height: 36px;
+    // margin-top: -16px;
+    cursor: pointer;
+  }
 }

@@ -1,13 +1,54 @@
-.toolBg {
-    background-color: #121214 !important;
-    color: white !important;
-}
-.btnBg {
-    // background-color: #efb577 !important;
-    color: #efb577 !important;
-    border: 1px solid  #efb577;
-}
-.btnBg1 {
-    background-color: #efb577 !important;
-    color: white !important;
+.payment-dialog {
+    .dialogHeight {
+        min-height: 50vh;
+        max-height: 70vh;
+    }
+    .mat-dialog-content {
+        margin: 0px;
+        padding: 0px;
+        padding-left: 5px;
+        overflow-y: auto;
+        max-height: 80vh;
+        width: 50vw !important;
+    }
+    .toolBg {
+        background-color: #121214 !important;
+        color: white !important;
+    }
+    .btnBg {
+        // background-color: #efb577 !important;
+        color: #efb577 !important;
+        border: 1px solid #efb577;
+    }
+    .btnBg1 {
+        background-color: #efb577 !important;
+        color: white !important;
+    }
+    .addIcon {
+        height: 20px;
+        margin-top: 16px;
+        padding-left: 4px;
+        cursor: pointer !important;
+    }
+    .addAttachmentClass {
+        margin-top: 25px;
+        color: #4784f7;
+        cursor: pointer !important;
+    }
+    .addBlueIcon {
+        @extend .addIcon;
+        margin-top: 0px;
+        height: 15px;
+    }
+    .attachClass {
+        // margin-top: 25px;
+        padding-left: 8px;
+        cursor: pointer !important;
+        color: #4784f7;
+    }
+
+    .pdfLinkClass {
+        color: #1e8bed;
+        cursor: pointer;
+    }
 }

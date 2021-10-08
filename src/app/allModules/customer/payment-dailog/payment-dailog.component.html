@@ -1,4 +1,4 @@
-<div>
+<div class="dialog-content-wrapper">
   <mat-toolbar class="toolBg m-0">
     <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
       <span class="title dialog-title">Payment Details</span>
@@ -7,89 +7,96 @@
       </button>
     </mat-toolbar-row>
   </mat-toolbar>
-  <form autocomplete="off" 
-  [formGroup]="InvoiceFormGroup">
-<div mat-dialog-content class="m-8" >
-  <div fxFlex fxLayout="row wrap" class="my-8">
-    <div fxFlex="50" class="px-12 my-8">
-  <mat-form-field  style="width: 100%;">
-    <input matInput placeholder="Amount"  [disabled]="isMulitple" formControlName="PaymentAmount">
-    <!-- <mat-error *ngIf="InvoiceFormGroup.controls['PaymentAmount'].errors?.required" >Payment Amount should be less than {{data.InvoiceAmount}}</mat-error> -->
-    <mat-error
-    *ngIf="InvoiceFormGroup.get('PaymentAmount').touched && InvoiceFormGroup.get('PaymentAmount').hasError('required')">
-    Amount is required
-  </mat-error>
-  <mat-error
-  *ngIf="InvoiceFormGroup.get('PaymentAmount').touched && InvoiceFormGroup.get('PaymentAmount').hasError('max')">
-  Enter Full Amount
-</mat-error>
-<!-- <mat-error *ngIf="InvoiceFormGroup.PaymentAmount.errors.max">Amount should be less than invoice amount</mat-error> -->
-  </mat-form-field>
-</div>
-<div fxFlex="50" class="px-12 my-8">
+  <div mat-dialog-content class="mx-12">
+    <form autocomplete="off" [formGroup]="InvoiceFormGroup">
+      <div fxLayout="row wrap" class="my-8">
+        <div fxFlex="50" class="px-12 my-8">
+          <mat-form-field style="width: 100%;">
+            <input matInput placeholder="Amount" [disabled]="isMulitple" formControlName="PaymentAmount">
+            <!-- <mat-error *ngIf="InvoiceFormGroup.controls['PaymentAmount'].errors?.required" >Payment Amount should be less than {{data.InvoiceAmount}}</mat-error> -->
+            <mat-error
+              *ngIf="InvoiceFormGroup.get('PaymentAmount').touched && InvoiceFormGroup.get('PaymentAmount').hasError('required')">
+              Amount is required
+            </mat-error>
+            <mat-error
+              *ngIf="InvoiceFormGroup.get('PaymentAmount').touched && InvoiceFormGroup.get('PaymentAmount').hasError('max')">
+              Enter Full Amount
+            </mat-error>
+            <!-- <mat-error *ngIf="InvoiceFormGroup.PaymentAmount.errors.max">Amount should be less than invoice amount</mat-error> -->
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" class="px-12 my-8">
 
-  <mat-form-field  style="width: 100%;">
-    <input matInput placeholder="Reference No"   formControlName="ReferenceNumber">
-    <mat-error
-    *ngIf="InvoiceFormGroup.get('ReferenceNumber').touched && InvoiceFormGroup.get('ReferenceNumber').hasError('required')">
-    Reference No is required
-  </mat-error>
- 
-  </mat-form-field>
-  </div>
-  <div fxFlex="50" class="px-12 my-8">
+          <mat-form-field style="width: 100%;">
+            <input matInput placeholder="Reference No" formControlName="ReferenceNumber">
+            <mat-error
+              *ngIf="InvoiceFormGroup.get('ReferenceNumber').touched && InvoiceFormGroup.get('ReferenceNumber').hasError('required')">
+              Reference No is required
+            </mat-error>
 
-  <mat-form-field  style="width: 100%;">
-    <input matInput placeholder="Payment Date" [matDatepicker]="picker0" formControlName="PaymentDate">
-    <mat-datepicker-toggle matSuffix [for]="picker0">
-      <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon" class="mb-12"></mat-icon>
-    </mat-datepicker-toggle>
-    <mat-datepicker #picker0></mat-datepicker>
-    <mat-error
-    *ngIf="InvoiceFormGroup.get('PaymentDate').touched && InvoiceFormGroup.get('PaymentDate').hasError('required')">
-    Payment Date is required
-  </mat-error>
- 
-  </mat-form-field>
-  </div>
-  <div fxFlex="50" class="px-12 my-8">
-  <mat-form-field  style="width: 100%;">
-    <input matInput placeholder="Account No"   formControlName="AccountNo">
-    <mat-error
-    *ngIf="InvoiceFormGroup.get('AccountNo').touched && InvoiceFormGroup.get('AccountNo').hasError('required')">
-    Account No is required
-  </mat-error>
-  </mat-form-field>
-  </div>
-  <div fxFlex="50" class="px-12 my-8">
-  <mat-form-field  style="width: 100%;">
-    <input matInput placeholder="Bank"   formControlName="Bank">
-    <mat-error
-    *ngIf="InvoiceFormGroup.get('Bank').touched && InvoiceFormGroup.get('Bank').hasError('required')">
-    Bank is required
-  </mat-error>
- 
-  </mat-form-field>
-  </div>
-  <div fxFlex="50" class="px-12 my-8">
-  <mat-form-field  style="width: 100%;">
-    <input matInput placeholder="Payment Type"   formControlName="PaymentType">
-    <mat-error
-    *ngIf="InvoiceFormGroup.get('PaymentType').touched && InvoiceFormGroup.get('PaymentType').hasError('required')">
-    Payment Type is required
-  </mat-error>
- 
-  </mat-form-field>
-  </div>
-</div>
-</div> 
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" class="px-12 my-8">
 
-</form>
+          <mat-form-field style="width: 100%;">
+            <input matInput placeholder="Payment Date" [matDatepicker]="picker0" formControlName="PaymentDate">
+            <mat-datepicker-toggle matSuffix [for]="picker0">
+              <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon" class="mb-12"></mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker0></mat-datepicker>
+            <mat-error
+              *ngIf="InvoiceFormGroup.get('PaymentDate').touched && InvoiceFormGroup.get('PaymentDate').hasError('required')">
+              Payment Date is required
+            </mat-error>
 
-<mat-dialog-actions class="m-0 p-16"  align="end" >
-  <button mat-button class="btnBg" [mat-dialog-close]="null" mat-dialog-close>Cancel</button>
-  <div fxFlex align="end">
-  <button mat-button class="btnBg1" align="end"  (click)="submit()">Submit</button>
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" class="px-12 my-8">
+          <mat-form-field style="width: 100%;">
+            <input matInput placeholder="Account No" formControlName="AccountNo">
+            <mat-error
+              *ngIf="InvoiceFormGroup.get('AccountNo').touched && InvoiceFormGroup.get('AccountNo').hasError('required')">
+              Account No is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" class="px-12 my-8">
+          <mat-form-field style="width: 100%;">
+            <input matInput placeholder="Bank" formControlName="Bank">
+            <mat-error
+              *ngIf="InvoiceFormGroup.get('Bank').touched && InvoiceFormGroup.get('Bank').hasError('required')">
+              Bank is required
+            </mat-error>
+
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" class="px-12 my-8">
+          <mat-form-field style="width: 100%;">
+            <input matInput placeholder="Payment Type" formControlName="PaymentType">
+            <mat-error
+              *ngIf="InvoiceFormGroup.get('PaymentType').touched && InvoiceFormGroup.get('PaymentType').hasError('required')">
+              Payment Type is required
+            </mat-error>
+
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="start">
+        <img class="addBlueIcon" src="assets/images/addBlue.png" (click)="fileInput2.click()">
+        <span class="attachClass" (click)="fileInput2.click()">
+          Add Attachment
+        </span>
+        <input hidden type="file" #fileInput2 id="file" (change)="handleFileInput1($event)" accept="application/pdf" />
+      </div>
+      <div *ngIf="fileToUpload && fileToUpload.name" (click)="GetPaymentAttachment()" class="pdfLinkClass p-8">
+        {{fileToUpload?.name}}</div>
+    </form>
   </div>
-</mat-dialog-actions>
+
+  <mat-dialog-actions class="m-0 mx-12 p-16 py-24" align="end">
+    <button mat-button class="btnBg" [mat-dialog-close]="null" mat-dialog-close>Cancel</button>
+    <div fxFlex align="end">
+      <button mat-button class="btnBg1" align="end" (click)="submit()">Submit</button>
+    </div>
+  </mat-dialog-actions>
 </div>

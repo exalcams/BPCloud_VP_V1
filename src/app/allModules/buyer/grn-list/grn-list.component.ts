@@ -130,7 +130,7 @@ export class GrnListComponent implements OnInit {
 
       }],
     }
-  }
+  };
 
   labels = ['17/04/2020', '18/04/2020', '19/04/2020', '20/04/2020', '21/04/2020'];
   chartData = [
@@ -197,8 +197,8 @@ export class GrnListComponent implements OnInit {
     private _masterService: MasterService,
     private _datePipe: DatePipe,
     private _excelService: ExcelService,
-    private _authService: AuthService,) {
-      this.SecretKey = this._authService.SecretKey;
+    private _authService: AuthService) {
+    this.SecretKey = this._authService.SecretKey;
     this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -210,13 +210,13 @@ export class GrnListComponent implements OnInit {
     this.defaultFromDate = new Date();
     this.defaultFromDate.setDate(this.defaultFromDate.getDate() - 30);
     this.defaultToDate = new Date();
-    
+
   }
 
   ngOnInit(): void {
     this.SetUserPreference();
     // Retrive authorizationData
-    const retrievedObject =   this.SecureStorage.get('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.currentUserID = this.authenticationDetails.UserID;
@@ -416,7 +416,7 @@ export class GrnListComponent implements OnInit {
         // console.log("FilterGRRListForBuyer", this.material, this.QTY, this.Datefrom, this.Dateto);
         this._reportService.FilterGRRListForBuyer(this.GRN, this.material, this.Datefrom, this.Dateto).subscribe(
           (data) => {
-            console.log("FilterGRRListForBuyer",data)
+            // console.log("FilterGRRListForBuyer", data);
             this.grReceiptsReports = [];
             this.grReceiptsReports = data as BPCReportGRR[];
             this.grReceiptsReportDataSource = new MatTableDataSource(this.grReceiptsReports);
