@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatSnackBar, MatTableDataSource } from '@angular/material';
 import { MatPaginator } from '@angular/material/paginator';
 import { BPCInvoicePayView, BPCPayRecord } from 'app/models/customer';
@@ -16,12 +16,18 @@ import { PaymentDailogComponent } from '../payment-dailog/payment-dailog.compone
 import { PaymentHistoryDialogComponent } from '../payment-history-dialog/payment-history-dialog.component';
 import * as SecureLS from 'secure-ls';
 import { Router } from '@angular/router';
+import { fuseAnimations } from '@fuse/animations';
+import { DatePipe } from '@angular/common';
+import { ExcelService } from 'app/services/excel.service';
 
 
 @Component({
   selector: 'app-invoice-payment',
   templateUrl: './invoice-payment.component.html',
-  styleUrls: ['./invoice-payment.component.scss']
+  styleUrls: ['./invoice-payment.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
+
 })
 export class InvoicePaymentComponent implements OnInit {
   InvoiceFormGroup: FormGroup;
@@ -33,17 +39,17 @@ export class InvoicePaymentComponent implements OnInit {
   notificationSnackBarComponent: NotificationSnackBarComponent;
 
   InvoiceFormdata: any[] = [];
-  InvoicePaymentDataArray: BPCInvoice[] = [];
+  AllInvoices: BPCInvoice[] = [];
   InvoiceDisplayedColumns: string[] = [
-    'Select',
+    // 'Select',
     'InvoiceNo',
-    'Invoicedate',
-    'PaidAmount',
     'PoReference',
-    'PODStatus',
+    'Invoicedate',
+    'InvoiceAmount',
+    'PaidAmount',
     'BalanceAmount',
+    'PODStatus',
     'Payment'
-
   ];
 
   InvoiceDataSource: MatTableDataSource<BPCInvoice>;
@@ -58,6 +64,8 @@ export class InvoicePaymentComponent implements OnInit {
   TotalPayAmount: number;
   isFullPayCheck: boolean;
   InvoicePayView: BPCInvoicePayView;
+  fileToUpload: File;
+  fileToUploadList: File[];
   authenticationDetails: AuthenticationDetails;
   currentUserID: Guid;
   currentUserName: string;
@@ -65,13 +73,21 @@ export class InvoicePaymentComponent implements OnInit {
   SecretKey: string;
   SecureStorage: SecureLS;
   MenuItems: string[];
+  SearchFormGroup: FormGroup;
+  isDateError: boolean;
+  DefaultFromDate: Date;
+  DefaultToDate: Date;
+  isExpanded: boolean;
   constructor(
     private _formBuilder: FormBuilder,
     private _authService: AuthService,
+    private formBuilder: FormBuilder,
     private _router: Router,
     private poservice: POService,
     public snackBar: MatSnackBar,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public _datePipe: DatePipe,
+    private _excelService: ExcelService
   ) {
     this.ispayment = false;
     this.isPayButton = false;
@@ -83,6 +99,10 @@ export class InvoicePaymentComponent implements OnInit {
     this.SecretKey = this._authService.SecretKey;
     this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.authenticationDetails = new AuthenticationDetails();
+    this.DefaultFromDate = new Date();
+    this.DefaultFromDate.setDate(this.DefaultFromDate.getDate() - 30);
+    this.DefaultToDate = new Date();
+    this.isExpanded = false;
   }
 
   ngOnInit(): void {
@@ -103,8 +123,12 @@ export class InvoicePaymentComponent implements OnInit {
     } else {
       this._router.navigate(['/auth/login']);
     }
-    this.GetAllInvoicesByPartnerID();
-    this.GetAllRecordsDateFilter();
+    this.fileToUpload = null;
+    this.fileToUploadList = [];
+    this.InitializeSearchForm();
+    this.SearchClicked();
+    // this.GetAllInvoicesByPartnerID();
+    // this.GetAllRecordsDateFilter();
     // UpdateInvoicePay
   }
 
@@ -113,10 +137,10 @@ export class InvoicePaymentComponent implements OnInit {
   //   this.poservice.GetAllInvoices().subscribe(
   //     (data) => {
   //       this.IsProgressBarVisibile = false;
-  //       this.InvoicePaymentDataArray = data as BPCInvoice[],
-  //         this.InvoiceDataSource = new MatTableDataSource(this.InvoicePaymentDataArray);
+  //       this.AllInvoices = data as BPCInvoice[],
+  //         this.InvoiceDataSource = new MatTableDataSource(this.AllInvoices);
   //       this.InvoiceDataSource.paginator = this.InvoicePaginator;
-  //       // console.log(this.InvoicePaymentDataArray);
+  //       // console.log(this.AllInvoices);
   //     },
   //     (err) => {
   //       console.log(err);
@@ -124,15 +148,131 @@ export class InvoicePaymentComponent implements OnInit {
   //     }
   //   );
   // }
+
+  InitializeSearchForm(): void {
+    this.SearchFormGroup = this.formBuilder.group({
+      // VendorCode: [''],
+      InvoiceNumber: [''],
+      DocNumber: [''],
+      // Material: [''],
+      // Status: ['GateEntry'],
+      FromDate: [this.DefaultFromDate],
+      ToDate: [this.DefaultToDate]
+    });
+
+
+  }
+  ResetControl(): void {
+    this.AllInvoices = [];
+    this.ResetFormGroup(this.SearchFormGroup);
+  }
+  ResetFormGroup(formGroup: FormGroup): void {
+    formGroup.reset();
+    Object.keys(formGroup.controls).forEach(key => {
+      formGroup.get(key).enable();
+      formGroup.get(key).markAsUntouched();
+    });
+  }
+
+  DateSelected(): void {
+    const FROMDATEVAL = this.SearchFormGroup.get('FromDate').value as Date;
+    const TODATEVAL = this.SearchFormGroup.get('ToDate').value as Date;
+    if (FROMDATEVAL && TODATEVAL && FROMDATEVAL > TODATEVAL) {
+      this.isDateError = true;
+    } else {
+      this.isDateError = false;
+    }
+  }
+
+  SearchClicked(): void {
+    if (this.SearchFormGroup.valid) {
+      if (!this.isDateError) {
+        const FrDate = this.SearchFormGroup.get('FromDate').value;
+        let FromDate = '';
+        if (FrDate) {
+          FromDate = this._datePipe.transform(FrDate, 'yyyy-MM-dd');
+        }
+        const TDate = this.SearchFormGroup.get('ToDate').value;
+        let ToDate = '';
+        if (TDate) {
+          ToDate = this._datePipe.transform(TDate, 'yyyy-MM-dd');
+        }
+        // const VendorCode = this.SearchFormGroup.get('VendorCode').value;
+        const InvoiceNumber = this.SearchFormGroup.get('InvoiceNumber').value;
+        const DocNumber = this.SearchFormGroup.get('DocNumber').value;
+        // const Material = this.SearchFormGroup.get('Material').value;
+        // let Status = this.SearchFormGroup.get('Status').value;
+        // if (!Status) {
+        //   Status = "";
+        // }
+        this.IsProgressBarVisibile = true;
+        this.poservice.FilterInvoices(this.currentUserName, DocNumber, InvoiceNumber, FromDate, ToDate).subscribe(
+          (data) => {
+            this.IsProgressBarVisibile = false;
+            this.AllInvoices = data as BPCInvoice[],
+              this.InvoiceDataSource = new MatTableDataSource(this.AllInvoices);
+            this.InvoiceDataSource.paginator = this.InvoicePaginator;
+          },
+          (err) => {
+            console.error(err);
+            this.IsProgressBarVisibile = false;
+          }
+        );
+      }
+    } else {
+      this.ShowValidationErrors(this.SearchFormGroup);
+    }
+  }
+
+  ShowValidationErrors(formGroup: FormGroup): void {
+    Object.keys(formGroup.controls).forEach(key => {
+      if (!formGroup.get(key).valid) {
+        console.log(key);
+      }
+      formGroup.get(key).markAsTouched();
+      formGroup.get(key).markAsDirty();
+      if (formGroup.get(key) instanceof FormArray) {
+        const FormArrayControls = formGroup.get(key) as FormArray;
+        Object.keys(FormArrayControls.controls).forEach(key1 => {
+          if (FormArrayControls.get(key1) instanceof FormGroup) {
+            const FormGroupControls = FormArrayControls.get(key1) as FormGroup;
+            Object.keys(FormGroupControls.controls).forEach(key2 => {
+              FormGroupControls.get(key2).markAsTouched();
+              FormGroupControls.get(key2).markAsDirty();
+              if (!FormGroupControls.get(key2).valid) {
+                console.log(key2);
+              }
+            });
+          } else {
+            FormArrayControls.get(key1).markAsTouched();
+            FormArrayControls.get(key1).markAsDirty();
+          }
+        });
+      }
+    });
+
+  }
+
+  expandClicked(): void {
+    this.isExpanded = !this.isExpanded;
+  }
+
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.InvoiceDataSource.filter = filterValue.trim().toLowerCase();
+  }
+
   GetAllInvoicesByPartnerID(): void {
+    this.fileToUpload = null;
+    this.fileToUploadList = [];
     this.IsProgressBarVisibile = true;
     this.poservice.GetAllInvoicesByPartnerID(this.currentUserName).subscribe(
       (data) => {
         this.IsProgressBarVisibile = false;
-        this.InvoicePaymentDataArray = data as BPCInvoice[],
-          this.InvoiceDataSource = new MatTableDataSource(this.InvoicePaymentDataArray);
+        this.AllInvoices = data as BPCInvoice[],
+          this.InvoiceDataSource = new MatTableDataSource(this.AllInvoices);
         this.InvoiceDataSource.paginator = this.InvoicePaginator;
-        // console.log(this.InvoicePaymentDataArray);
+        // console.log(this.AllInvoices);
       },
       (err) => {
         console.log(err);
@@ -211,14 +351,19 @@ export class InvoicePaymentComponent implements OnInit {
       // console.log(Invoicedata);
       const BalanceAmount = Invoicedata.InvoiceAmount - Invoicedata.PaidAmount;
       const dialogRef = this.dialog.open(PaymentDailogComponent, {
-        width: '700px',
-        height: '420px',
-        data: { Amount: BalanceAmount, isMultiple: false }
+        panelClass: 'payment-dialog',
+        data: { Amount: BalanceAmount, isMultiple: false, fileToUpload: this.fileToUpload }
       });
       dialogRef.afterClosed().subscribe(result => {
         if (result != null) {
           // console.log(result);
-          const pay = result as BPCPayRecord;
+          // tslint:disable-next-line:prefer-const
+          let pay = result as BPCPayRecord;
+          if (pay.PaymentDocument instanceof File) {
+            this.fileToUpload = pay.PaymentDocument as File;
+            pay.AttachmentName = this.fileToUpload.name;
+            pay.Status = 'Open';
+          }
           this.InvoicePayView.PayPayment = [];
           this.InvoicePayView.PayRecord = [];
           this.InvoicePayView.Invoices = [];
@@ -231,7 +376,8 @@ export class InvoicePaymentComponent implements OnInit {
           this.GetInvoice(Invoicedata, Invoicedata.PaidAmount, pay);
           this.isFullPayCheck = false;
           // console.log(this.InvoiceDataSource.data);
-          this.UpdateInvoicePay();
+          // this.UpdateInvoicePay();
+          this.AddPaymentRecord();
 
         }
 
@@ -250,15 +396,20 @@ export class InvoicePaymentComponent implements OnInit {
       // console.log( this.TotalPayAmount);
 
       const dialogRef = this.dialog.open(PaymentDailogComponent, {
-        width: '700px',
-        height: '420px',
-        data: { Amount: this.TotalPayAmount, isMultiple: true }
+        panelClass: 'attachment-dialog',
+        data: { Amount: this.TotalPayAmount, isMultiple: true, fileToUpload: this.fileToUpload }
       });
       dialogRef.afterClosed().subscribe(result => {
         if (result != null) {
-          console.log(result);
-          const pay = result as BPCPayRecord;
-          console.log(this.SelectedPaymentData);
+          // console.log(result);
+          // tslint:disable-next-line:prefer-const
+          let pay = result as BPCPayRecord;
+          if (pay.PaymentDocument instanceof File) {
+            this.fileToUpload = pay.PaymentDocument as File;
+            pay.AttachmentName = this.fileToUpload.name;
+            pay.Status = 'Open';
+          }
+          // console.log(this.SelectedPaymentData);
           this.InvoicePayView.PayPayment = [];
           this.InvoicePayView.PayRecord = [];
           this.InvoicePayView.Invoices = [];
@@ -269,7 +420,8 @@ export class InvoicePaymentComponent implements OnInit {
             this.GetInvoice(x, null, pay);
           });
           this.isFullPayCheck = false;
-          this.UpdateInvoicePay();
+          // this.UpdateInvoicePay();
+          this.AddPaymentRecord();
         }
 
 
@@ -314,10 +466,31 @@ export class InvoicePaymentComponent implements OnInit {
       (err) => {
         console.log(err);
         this.IsProgressBarVisibile = false;
-        this.notificationSnackBarComponent.openSnackBar('Failed to create', SnackBarStatus.danger);
+        this.notificationSnackBarComponent.openSnackBar('Failed to update payment details', SnackBarStatus.danger);
       }
     );
   }
+
+  AddPaymentRecord(): void {
+    // console.log(this.InvoicePayView);
+    this.IsProgressBarVisibile = true;
+    this.fileToUploadList = [];
+    this.fileToUploadList.push(this.fileToUpload);
+    this.poservice.AddPaymentRecord(this.InvoicePayView, this.fileToUploadList).subscribe(
+      (data) => {
+        // console.log(data),
+        this.IsProgressBarVisibile = false;
+        this.GetAllInvoicesByPartnerID();
+        this.notificationSnackBarComponent.openSnackBar('Payment details updated successfully', SnackBarStatus.success);
+      },
+      (err) => {
+        console.log(err);
+        this.IsProgressBarVisibile = false;
+        this.notificationSnackBarComponent.openSnackBar('Failed to update payment details', SnackBarStatus.danger);
+      }
+    );
+  }
+
   SelectForPayment(): void {
     if (this.TableDataSelection.selected) {
       this.isPayButton = true;
@@ -362,6 +535,7 @@ export class InvoicePaymentComponent implements OnInit {
     PayRecord.InvoiceNumber = Invoicedata.InvoiceNo;
     PayRecord.Type = Invoicedata.Type;
     PayRecord.PartnerID = Invoicedata.PatnerID;
+    PayRecord.PaymentDocument = null;
     this.InvoicePayView.PayRecord.push(PayRecord);
     // this.poservice.CreatePaymentRecord(PayRecord).subscribe(
 
@@ -370,4 +544,30 @@ export class InvoicePaymentComponent implements OnInit {
 
     // )
   }
+
+
+  exportAsXLSX(): void {
+    const currentPageIndex = this.InvoiceDataSource.paginator.pageIndex;
+    const PageSize = this.InvoiceDataSource.paginator.pageSize;
+    const startIndex = currentPageIndex * PageSize;
+    const endIndex = startIndex + PageSize;
+    const itemsShowed = this.AllInvoices.slice(startIndex, endIndex);
+    const itemsShowedd = [];
+    itemsShowed.forEach(x => {
+      const item = {
+        'Invoice No': x.InvoiceNo,
+        'PO Reference': x.PoReference,
+        'Invoice Date': x.InvoiceDate ? this._datePipe.transform(x.InvoiceDate, 'dd-MM-yyyy') : '',
+        // 'Posted on': x.PostedOn ? this._datePipe.transform(x.PostedOn, 'dd-MM-yyyy') : '',
+        'Invoice Amount': x.InvoiceAmount,
+        'Paid Amount': x.PaidAmount,
+        'Balance Amount': x.BalanceAmount,
+        'POD Status': (x.PODDate && x.PODConfirmedBy) ? 'Confirmed' : 'Open',
+      };
+      itemsShowedd.push(item);
+    });
+    this._excelService.exportAsExcelFile(itemsShowedd, 'Invoices');
+  }
+
+
 }

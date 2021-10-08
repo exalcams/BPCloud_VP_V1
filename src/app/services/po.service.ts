@@ -389,6 +389,11 @@ export class POService {
     return this._httpClient.get<BPCInvoice[]>(`${this.baseAddress}poapi/Invoice/GetAllInvoicesByPartnerID?PartnerID=${PartnerID}`)
       .pipe(catchError(this.errorHandler));
   }
+  FilterInvoices(PatnerID: string, DocNumber: string, InvoiceNumber: string, FromDate: string, ToDate: string): Observable<BPCInvoice[] | string> {
+    // tslint:disable-next-line:max-line-length
+    return this._httpClient.get<BPCInvoice[]>(`${this.baseAddress}poapi/Invoice/FilterInvoices?PatnerID=${PatnerID}&DocNumber=${DocNumber}&InvoiceNumber=${InvoiceNumber}&FromDate=${FromDate}&ToDate=${ToDate}`)
+      .pipe(catchError(this.errorHandler));
+  }
   // (`${this.baseAddress}poapi/Invoice/GetExcel_VendorReconciliation?Excel_val=${Excel_val}&Selectedvendor=${Selectedvendor}`)
   //#region GetExcel_VendorReconciliation
   GetExcel_VendorReconciliationMismatch(Excel_val: InvoiceVendor, Selectedvendor): Observable<InvoiceVendor[]> {
@@ -518,5 +523,26 @@ export class POService {
       )
       .pipe(catchError(this.errorHandler));
   }
+
+
+  AddPaymentRecord(InvoicePayment: BPCInvoicePayView, selectedFiles: File[]): Observable<any> {
+    const formData: FormData = new FormData();
+    if (selectedFiles && selectedFiles.length) {
+        selectedFiles.forEach(x => {
+            formData.append(x.name, x, x.name);
+        });
+    }
+    formData.append('InvoicePayView', JSON.stringify(InvoicePayment));
+    return this._httpClient.post<any>(`${this.baseAddress}poapi/Invoice/AddPaymentRecordWithAttachment`,
+        formData,
+        // {
+        //   headers: new HttpHeaders({
+        //     'Content-Type': 'application/json'
+        //   })
+        // }
+    ).pipe(catchError(this.errorHandler));
+}
+
+
   // end
 }

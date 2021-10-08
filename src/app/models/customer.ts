@@ -322,7 +322,9 @@ export class BPCPayRecord extends CommonClass {
     AccountNumber: string;
     Bank: string;
     PaymentType: string;
-    PaymentDocument: string;
+    PaymentDocument: File | string | null;
+    AttachmentName: string;
+    Status: string;
     // Time: string;
     // Remarks: string;
     // Medium: string;
