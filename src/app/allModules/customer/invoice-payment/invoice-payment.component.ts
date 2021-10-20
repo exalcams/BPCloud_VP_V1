@@ -78,6 +78,7 @@ export class InvoicePaymentComponent implements OnInit {
   DefaultFromDate: Date;
   DefaultToDate: Date;
   isExpanded: boolean;
+  searchText = '';
   constructor(
     private _formBuilder: FormBuilder,
     private _authService: AuthService,
@@ -187,6 +188,8 @@ export class InvoicePaymentComponent implements OnInit {
   SearchClicked(): void {
     if (this.SearchFormGroup.valid) {
       if (!this.isDateError) {
+        this.fileToUpload = null;
+        this.fileToUploadList = [];
         const FrDate = this.SearchFormGroup.get('FromDate').value;
         let FromDate = '';
         if (FrDate) {
@@ -460,7 +463,8 @@ export class InvoicePaymentComponent implements OnInit {
       (data) => {
         // console.log(data),
         this.IsProgressBarVisibile = false;
-        this.GetAllInvoicesByPartnerID();
+        // this.GetAllInvoicesByPartnerID();
+        this.SearchClicked();
         this.notificationSnackBarComponent.openSnackBar('Payment details updated successfully', SnackBarStatus.success);
       },
       (err) => {
@@ -480,7 +484,8 @@ export class InvoicePaymentComponent implements OnInit {
       (data) => {
         // console.log(data),
         this.IsProgressBarVisibile = false;
-        this.GetAllInvoicesByPartnerID();
+        // this.GetAllInvoicesByPartnerID();
+        this.SearchClicked();
         this.notificationSnackBarComponent.openSnackBar('Payment details updated successfully', SnackBarStatus.success);
       },
       (err) => {
