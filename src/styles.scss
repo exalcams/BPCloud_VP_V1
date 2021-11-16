@@ -19,6 +19,7 @@
 .info {
     background-color: #1992ce !important;
 }
+
 .ProgressBarPostion {
     position: absolute !important;
     top: 43%;
@@ -34,13 +35,16 @@
 .mat-horizontal-stepper-header {
     pointer-events: none !important;
 }
+
 .mat-dialog-container {
     padding: 0px !important;
     overflow: hidden !important;
 }
+
 .cdk-global-scrollblock {
     overflow-y: hidden !important;
 }
+
 .notificationMenuItem {
     overflow: visible !important;
     white-space: normal !important;
@@ -49,6 +53,7 @@
     font-size: 15px !important;
     padding-top: 10px !important;
 }
+
 #overlay {
     position: fixed;
     width: 100%;
@@ -75,19 +80,21 @@
 //     background: transparent !important;
 // }
 
-.carousel > button:last-of-type {
+.carousel>button:last-of-type {
     right: 0px !important;
     top: 150px !important;
 }
 
-.carousel > button:first-of-type {
+.carousel>button:first-of-type {
     left: 0px !important;
     top: 150px !important;
 }
+
 .apexcharts-menu-icon {
     position: relative;
     visibility: hidden !important;
-  }
+}
+
 .theme-toolBar {
     background-color: #121214 !important;
 }
@@ -100,5 +107,22 @@
     background-color: #121214 !important;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: 'Roboto', sans-serif; }
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.head1 {
+    margin: 0px !important;
+    padding-left: 20px !important;
+}
+
+.logoClass {
+    height: 40px;
+    padding: 4px 15px 2px 0px;
+}

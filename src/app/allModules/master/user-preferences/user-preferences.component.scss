@@ -1,6 +1,7 @@
 @import "src/@fuse/scss/fuse";
 #user-master {
   background-color: white;
+  // font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   .outer {
     border-bottom: 1px solid rgba(255, 85, 0, 0.1);
     position: relative;
@@ -27,11 +28,9 @@
     background-repeat: no-repeat;
     background-size: cover;
   }
-  .progressBarPostion {
-    position: absolute !important;
-    top: 350px;
-    z-index: 1;
-    left: 55%;
+  .head1 {
+    margin: 0px;
+    padding-left: 20px;
   }
   .center {
     padding: 0px !important;
@@ -346,7 +345,7 @@
     }
     // .mat-form-field-outline-start,
     // .mat-form-field-outline-end {
-    //   border-radius: 0 !important;
+    //     border-radius: 0 !important;
     // }
   }
   // td.mat-cell {
@@ -690,5 +689,13 @@
   .floatBtn {
     position: fixed;
     bottom: 80px !important;
+  }
+  .card1 {
+    height: 100%;
+    margin: 20px;
+    padding: 0px !important;
+  }
+  .grow {
+    flex-grow: 1;
   }
 }

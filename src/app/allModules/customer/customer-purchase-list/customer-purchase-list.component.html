@@ -1,21 +1,21 @@
 <div id="cusord" class="page-layout carded" fusePerfectScrollbar>
-  <div class="center" fxLayout="column" fxLayoutGap="10px">
+  <div class="center" fxLayout="column">
     <!-- <div class="outer" fxLayout>
       <div class="bg"></div>
       <div>
-        <h3 style="margin: 0px;padding-left: 10px;"><b>Purchase List</b></h3>
+        <h3 class="head1"><b>Purchase List</b></h3>
       </div>
       <div fxFlex align="end">
-        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+        <span><img src="assets/images/logo.svg" class="logoClass"></span>
       </div>
     </div>  -->
     <div class="outer" fxLayout>
       <div class="bg"></div>
       <div>
-        <h3 style="margin: 0px;padding-left: 10px;"><b>Purchase List</b></h3>
+        <h3 class="head1"><b>Purchase List</b></h3>
       </div>
       <div fxFlex align="end">
-        <span><img src="assets/images/logo.svg" style="height: 40px;padding: 4px 15px 2px 0px;"></span>
+        <span><img src="assets/images/logo.svg" class="logoClass"></span>
       </div>
     </div>
 
@@ -30,7 +30,6 @@
         </div>
       </div>
     </div>
-    <div *ngIf="!AllPurchase?.length" class="cl_norec">NO Record Found</div>
     <!-- table -->
     <div class="px-20 py-20">
 
@@ -228,6 +227,8 @@
       <div>
         <mat-paginator [pageSizeOptions]="[10,50,100,250,500,1000]"></mat-paginator>
       </div>
+      <!-- <div *ngIf="!AllPurchase?.length" class="cl_norec">NO Record Found</div> -->
+
       <!-- <div *ngIf="data_list==false"> No Records Found</div> -->
     </div>
     <!-- table -->

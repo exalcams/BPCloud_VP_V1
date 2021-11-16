@@ -73,13 +73,15 @@ export class SCOCMessageComponent implements OnInit {
     this._POService.GetSCOCMessage().subscribe(
       (data) => {
         this.IsProgressBarVisibile = false;
-        this.selectedSCOCMessage = data as BPCSCOCMessage;
-        if (!this.selectedSCOCMessage) {
-          this.selectedSCOCMessage = new BPCSCOCMessage();
-        }
-        if (this.selectedSCOCMessage && this.selectedSCOCMessage.SCOCMessage) {
-          this.notesForm.get('Notes').patchValue(this.selectedSCOCMessage.SCOCMessage);
-        }
+        setTimeout(() => {
+          this.selectedSCOCMessage = data as BPCSCOCMessage;
+          if (!this.selectedSCOCMessage) {
+            this.selectedSCOCMessage = new BPCSCOCMessage();
+          }
+          if (this.selectedSCOCMessage && this.selectedSCOCMessage.SCOCMessage) {
+            this.notesForm.get('Notes').patchValue(this.selectedSCOCMessage.SCOCMessage);
+          }
+        }, 10);
       },
       (err) => {
         console.error(err);

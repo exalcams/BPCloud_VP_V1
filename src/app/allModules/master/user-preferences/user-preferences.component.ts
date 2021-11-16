@@ -34,14 +34,17 @@ export class UserPreferencesComponent implements OnInit {
   CurrentUserName: string;
   SecretKey: string;
   SecureStorage: SecureLS;
+
   constructor(private _fuseConfigService: FuseConfigService,
     private _masterService: MasterService,
     private _formBuilder: FormBuilder,
-    private _authService:AuthService,
+    private _authService: AuthService,
     private _router: Router,
     public snackBar: MatSnackBar,
-    
     private dialog: MatDialog) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
+
     this.userPreferenceFormGroup = this._formBuilder.group({
       navbarPrimaryBackground: [''],
       navbarSecondaryBackground: [''],
@@ -51,18 +54,16 @@ export class UserPreferencesComponent implements OnInit {
     this.userPreference = new UserPreference();
     this.authenticationDetails = new AuthenticationDetails();
     this._unsubscribeAll = new Subject();
-    this.SecretKey = this._authService.SecretKey;
-        this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
   }
 
   ngOnInit(): void {
-    // console.log(this.currentSelecteduserPreference);
+    // // console.log(this.currentSelecteduserPreference);
     // Retrive authorizationData
     const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
-      this.CurrentUserName=this.authenticationDetails.UserName;
-      this.CurrentUserId=this.authenticationDetails.UserID;
+      this.CurrentUserName = this.authenticationDetails.UserName;
+      this.CurrentUserId = this.authenticationDetails.UserID;
       this.MenuItems = this.authenticationDetails.MenuItemNames.split(',');
       if (this.MenuItems.indexOf('UserPreferences') < 0) {
         this.notificationSnackBarComponent.openSnackBar('You do not have permission to visit this page', SnackBarStatus.danger);
@@ -96,7 +97,7 @@ export class UserPreferencesComponent implements OnInit {
           this.userPreferenceFormGroup.get('toolbarBackground').patchValue(this.userPreference.ToolbarBackground);
         } else {
           this.UpdateUserPreference();
-          console.log(this.userPreferenceFormGroup.get('navbarPrimaryBackground').value);
+          // console.log(this.userPreferenceFormGroup.get('navbarPrimaryBackground').value);
         }
       },
       (err) => {
@@ -133,7 +134,7 @@ export class UserPreferencesComponent implements OnInit {
                 this.userPreference.ModifiedBy = this.authenticationDetails.UserID.toString();
                 this._masterService.UpdateUserPreference(this.userPreference).subscribe(
                   (data) => {
-                    // console.log(data);
+                    // // console.log(data);
                     this.ResetControl();
                     this.notificationSnackBarComponent.openSnackBar('User preference updated successfully', SnackBarStatus.success);
                     this.IsProgressBarVisibile = false;
@@ -169,7 +170,7 @@ export class UserPreferencesComponent implements OnInit {
                 this.userPreference.CreatedBy = this.authenticationDetails.UserID.toString();
                 this._masterService.CreateUserPreference(this.userPreference).subscribe(
                   (data) => {
-                    // console.log(data);
+                    // // console.log(data);
                     this.ResetControl();
                     this.notificationSnackBarComponent.openSnackBar('User preference created successfully', SnackBarStatus.success);
                     this.IsProgressBarVisibile = false;
@@ -215,11 +216,11 @@ export class UserPreferencesComponent implements OnInit {
     //           this.userPreference.ModifiedBy = this.authenticationDetails.UserID.toString();
     //           this._masterService.DeleteUserPreference(this.userPreference).subscribe(
     //             (data) => {
-    //               // console.log(data);
+    //               // // console.log(data);
     //               this.ResetControl();
     //               this.notificationSnackBarComponent.openSnackBar('User preference deleted successfully', SnackBarStatus.success);
     //               this.IsProgressBarVisibile = false;
-    //               localStorage.removeItem('userPreferenceData');
+    //               this.SecureStorage.remove('userPreferenceData');
     //               this.GetUserPreferenceByUserID();
     //               // this.SaveSucceed.emit('success');
     //               // this._masterService.TriggerNotification('App deleted successfully');
@@ -246,7 +247,7 @@ export class UserPreferencesComponent implements OnInit {
     this._fuseConfigService.config
       // .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((config) => {
-        console.log("User Preference", config);
+        // console.log("User Preference", config);
         this.fuseConfig = config;
         this.BGClassName = config;
         // Retrive user preference from Local Storage
@@ -289,10 +290,10 @@ export class UserPreferencesComponent implements OnInit {
     this.ActionLog.CreatedBy = this.CurrentUserName;
     this._authService.CreateActionLog(this.ActionLog).subscribe(
       (data) => {
-        console.log(data);
+        // console.log(data);
       },
       (err) => {
-        console.log(err);
+        console.error(err);
       }
     );
   }
