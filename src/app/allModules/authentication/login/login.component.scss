@@ -59,7 +59,7 @@ login {
 
                 @include media-breakpoint("xs") {
                     text-align: center;
-                    padding: 24px;
+                    padding: 72px 24px 24px 24px;
                 }
 
                 .logo {
@@ -270,6 +270,7 @@ login {
     .ExalcaLogo {
         margin-top: 8px;
         position: absolute;
+        top: 24px;
         width: 90px;
         margin-left: 12px;
     }

@@ -43,7 +43,7 @@ export class CEOMessageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const retrievedObject =this.SecureStorage.get('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.menuItems = this.authenticationDetails.MenuItemNames.split(',');
@@ -73,13 +73,15 @@ export class CEOMessageComponent implements OnInit {
     this._POService.GetCEOMessage().subscribe(
       (data) => {
         this.IsProgressBarVisibile = false;
-        this.selectedCEOMessage = data as BPCCEOMessage;
-        if (!this.selectedCEOMessage) {
-          this.selectedCEOMessage = new BPCCEOMessage();
-        }
-        if (this.selectedCEOMessage && this.selectedCEOMessage.CEOMessage) {
-          this.notesForm.get('Notes').patchValue(this.selectedCEOMessage.CEOMessage);
-        }
+        setTimeout(() => {
+          this.selectedCEOMessage = data as BPCCEOMessage;
+          if (!this.selectedCEOMessage) {
+            this.selectedCEOMessage = new BPCCEOMessage();
+          }
+          if (this.selectedCEOMessage && this.selectedCEOMessage.CEOMessage) {
+            this.notesForm.get('Notes').patchValue(this.selectedCEOMessage.CEOMessage);
+          }
+        }, 10);
       },
       (err) => {
         console.error(err);
