@@ -1,5 +1,5 @@
 <div id="grreceipts" class="page-layout carded" fusePerfectScrollbar>
-  <div class="center" fxLayout="column" fxLayoutGap="10px">
+  <div class="center" fxLayout="column">
     <div class="outer" fxLayout>
       <div class="bg"></div>
       <div>
@@ -44,26 +44,27 @@
       </div> -->
     <!-- <div class="ml-10 mr-20" fxFlex="100" fxLayoutAlign="start"> -->
     <div *ngIf="!isExpanded" @expandCollapse style="margin-left: 20px;margin-right: 20px;margin-top: 15px;">
-      <form autocomplete="off" name="form" novalidate [formGroup]="searchFormGroup"
-        fxLayout="row wrap" fxLayoutAlign="space-around" fxFlex="100">
-        <!-- <div > -->
-        <div fxFlex="20">
+      <form autocomplete="off" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" novalidate
+      [formGroup]="searchFormGroup" *ngIf="!isExpanded" @expandCollapse>
+      <!-- <div > -->
+      <div fxFlex="100" fxLayout="row" fxLayoutGap="20px">
+        <div fxFlex="25">
           <mat-form-field appearance="outline" style="width: 100% !important;">
-            <!-- <mat-icon class="mr-12" matPrefix>search</mat-icon> -->
             <mat-label>GRN Number</mat-label>
+            <!-- <mat-icon class="mr-12" matPrefix>search</mat-icon> -->
             <input matInput formControlName="GRNNo">
           </mat-form-field>
         </div>
 
-        <div fxFlex="20">
+        <div fxFlex="25">
           <mat-form-field appearance="outline" style="width: 100% !important;">
             <!-- <mat-icon class="mr-12" matPrefix>search</mat-icon> -->
             <mat-label>Material</mat-label>
-            <input matInput formControlName="Material">
+            <input matInput placeholder="Material" formControlName="Material">
           </mat-form-field>
         </div>
 
-        <div fxFlex="20">
+        <div fxFlex="25">
           <mat-form-field appearance="outline" style="width: 100% !important;">
             <mat-label>GRN From Date</mat-label>
             <input matInput type="text" [matDatepicker]="picker" formControlName="GRNDatefrom"
@@ -78,7 +79,7 @@
           </mat-form-field>
         </div>
 
-        <div fxFlex="20">
+        <div fxFlex="25">
           <mat-form-field appearance="outline" style="width: 100% !important;">
             <mat-label>GRN To Date</mat-label>
             <input matInput type="text" [matDatepicker]="picker1" formControlName="GRNDateto"
@@ -92,12 +93,25 @@
             </mat-error>
           </mat-form-field>
         </div>
-
-        <div>
+      </div>
+      <div fxFlex="100" fxLayout="row" fxLayoutGap="20px">
+        <!-- <mat-form-field appearance="outline" fxFlex="25">
+          <mat-label>PO Number</mat-label>
+          <input matInput formControlName="DocNumber">
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="25">
+          <mat-label>ASN Number</mat-label>
+          <input matInput formControlName="ASNNumber">
+        </mat-form-field> -->
+        <div fxFlex="25"></div>
+        <div fxFlex="25"></div>
+        <div fxFlex="25"></div>
+        <div fxFlex="25" fxLayoutAlign="end">
           <button mat-raised-button class="SaveBtn" (click)="SearchBtnClicked()"
             [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">Search</button>
         </div>
-      </form>
+      </div>
+    </form>
     </div>
     <!-- </div> -->
     <!-- </div> -->

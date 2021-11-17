@@ -10,124 +10,122 @@
       </div>
     </div>
     <!-- <div fxFlex fxLayout *ngIf="!isExpanded" [@animate]="{value:'*',params:{x:'100%'}}"> -->
-    <div fxFlex fxLayout *ngIf="!isExpanded" @expandCollapse>
-      <!-- <div class="tile mx-20" fxFlex="25">
-        <div fxLayout fxLayoutAlign="start center" class="pt-8">
-          <span class="boldClass   pl-8 headerMargin"> Opening / Closing Balance</span>
-          <span [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="underline"></span>
-
-          <div fxFlex fxLayoutAlign="end center" class="pt-8 pr-12">
-            <img src="assets/images/money.png" />
-          </div>
-        </div>
-        <div fxLayout fxLayoutAlign="center" class="pt-8 mb-20">
-          <div fxFlex fxLayout="column" fxLayoutAlign="center">
-            <div fxFlex fxLayoutAlign="center" class="pt-20 boldClass">99,900.00</div>
-            <div fxFlex fxLayoutAlign="center" class="py-20">Opening Balance</div>
-          </div>
-          <div fxFlex fxLayoutAlign="center" class="tableLeftBorder">
-            <div fxFlex fxLayout="column" fxLayoutAlign="center">
-              <div fxFlex fxLayoutAlign="center" class="pt-20 boldClass">4,415,743.71</div>
-              <div fxFlex fxLayoutAlign="center" class="py-20">Closing Balance</div>
+      <div fxFlex fxLayout *ngIf="!isExpanded" @expandCollapse class="mt-16">
+        <!-- <div class="tile mx-20" fxFlex="25">
+          <div fxLayout fxLayoutAlign="start center" class="pt-8">
+            <span class="boldClass   pl-8 headerMargin"> Opening / Closing Balance</span>
+            <span [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="underline"></span>
+  
+            <div fxFlex fxLayoutAlign="end center" class="pt-8 pr-12">
+              <img src="assets/images/money.png" />
             </div>
           </div>
-        </div>
-      </div>
-      <div class="tile mx-20" fxFlex="25">
-        <div fxLayout fxLayoutAlign="start center" class="pt-8">
-          <span class="boldClass  pl-8 headerMargin"> Credit/ Debit</span>
-          <span align="start" [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="underline2"></span>
-          <div fxFlex fxLayoutAlign="end center" class="pt-8 pr-12">
-            <img src="assets/images/pay-card.png" />
-          </div>
-        </div>
-        <div fxLayout fxLayoutAlign="center" class="pt-8 mb-20">
-          <div fxFlex fxLayout="column" fxLayoutAlign="center">
-            <div fxFlex fxLayoutAlign="center" class="pt-20 boldClass">8,753,812.60</div>
-            <div fxFlex fxLayoutAlign="center" class="py-20">Total Credit</div>
-          </div>
-          <div fxFlex fxLayoutAlign="center" class="tableLeftBorder">
+          <div fxLayout fxLayoutAlign="center" class="pt-8 mb-20">
             <div fxFlex fxLayout="column" fxLayoutAlign="center">
-              <div fxFlex fxLayoutAlign="center" class="pt-20 boldClass">4,344,349.89</div>
-              <div fxFlex fxLayoutAlign="center" class="pt-20">Total Debit</div>
+              <div fxFlex fxLayoutAlign="center" class="pt-20 boldClass">99,900.00</div>
+              <div fxFlex fxLayoutAlign="center" class="py-20">Opening Balance</div>
             </div>
-          </div>
-        </div>
-      </div> -->
-      <div class="ml-20 mr-20" fxFlex="100">
-        <form autocomplete="off" name="form" novalidate [formGroup]="SearchFormGroup">
-          <div fxLayout="row" fxLayoutAlign="start center">
-            <mat-form-field appearance="outline" fxFlex="20" class="mr-8">
-              <!-- <mat-icon class="mr-12" matPrefix>search</mat-icon> -->
-              <mat-label>Document</mat-label>
-              <input matInput formControlName="DocumentID">
-            </mat-form-field>
-            <mat-form-field appearance="outline" fxFlex="20" class="mr-8">
-              <!-- <mat-icon class="mr-12" matPrefix>search</mat-icon> -->
-              <mat-label>Profit Center</mat-label>
-              <input matInput formControlName="ProfitCenter">
-            </mat-form-field>
-            <mat-form-field appearance="outline" fxFlex="25" class="mr-8">
-              <mat-label>From Date</mat-label>
-              <input matInput [matDatepicker]="picker1" formControlName="FromDate"
-                (dateChange)="DateSelected()">
-              <mat-datepicker-toggle matSuffix [for]="picker1">
-                <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
-              </mat-datepicker-toggle>
-              <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
-            <div fxFlex="25">
-              <mat-form-field appearance="outline" class="ml-8" style="width: 96%;">
-                <mat-label>To Date</mat-label>
-                <input matInput [matDatepicker]="picker2" formControlName="ToDate"
-                  (dateChange)="DateSelected()">
-                <mat-datepicker-toggle matSuffix [for]="picker2">
-                  <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
-                </mat-datepicker-toggle>
-                <mat-datepicker #picker2></mat-datepicker>
-              </mat-form-field>
-              <div *ngIf="isDateError" class="DateError mb-12 ml-12">
-                To date should not be less than from date
+            <div fxFlex fxLayoutAlign="center" class="tableLeftBorder">
+              <div fxFlex fxLayout="column" fxLayoutAlign="center">
+                <div fxFlex fxLayoutAlign="center" class="pt-20 boldClass">4,415,743.71</div>
+                <div fxFlex fxLayoutAlign="center" class="py-20">Closing Balance</div>
               </div>
             </div>
           </div>
-          <!-- <div fxLayout="row" fxLayoutAlign="start center" class="mb-12">
-            <div fxFlex class="hrLine mx-4"></div>
-            <div class="smallRound"></div>
-            <div fxFlex class="hrLine mx-4"></div>
-          </div> -->
-          <div fxLayout="row" fxLayoutAlign="start start">
-            <!-- <mat-form-field appearance="outline" fxFlex class="mr-8">
-              <input matInput placeholder="From Date" [matDatepicker]="picker1" formControlName="FromDate"
-                (dateChange)="DateSelected()">
-              <mat-datepicker-toggle matSuffix [for]="picker1">
-                <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
-              </mat-datepicker-toggle>
-              <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field> -->
-            <!-- <div fxFlex>
-              <mat-form-field appearance="outline" class="ml-8" style="width: 96%;">
-                <input matInput placeholder="To Date" [matDatepicker]="picker2" formControlName="ToDate"
-                  (dateChange)="DateSelected()">
-                <mat-datepicker-toggle matSuffix [for]="picker2">
+        </div>
+        <div class="tile mx-20" fxFlex="25">
+          <div fxLayout fxLayoutAlign="start center" class="pt-8">
+            <span class="boldClass  pl-8 headerMargin"> Credit/ Debit</span>
+            <span align="start" [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="underline2"></span>
+            <div fxFlex fxLayoutAlign="end center" class="pt-8 pr-12">
+              <img src="assets/images/pay-card.png" />
+            </div>
+          </div>
+          <div fxLayout fxLayoutAlign="center" class="pt-8 mb-20">
+            <div fxFlex fxLayout="column" fxLayoutAlign="center">
+              <div fxFlex fxLayoutAlign="center" class="pt-20 boldClass">8,753,812.60</div>
+              <div fxFlex fxLayoutAlign="center" class="py-20">Total Credit</div>
+            </div>
+            <div fxFlex fxLayoutAlign="center" class="tableLeftBorder">
+              <div fxFlex fxLayout="column" fxLayoutAlign="center">
+                <div fxFlex fxLayoutAlign="center" class="pt-20 boldClass">4,344,349.89</div>
+                <div fxFlex fxLayoutAlign="center" class="pt-20">Total Debit</div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <div class="ml-20 mr-20" fxFlex="100">
+          <form autocomplete="off" name="form" novalidate [formGroup]="SearchFormGroup">
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <mat-form-field appearance="outline" fxFlex="25">
+                <!-- <mat-icon class="mr-12" matPrefix>search</mat-icon> -->
+                <mat-label>Document</mat-label>
+                <input matInput formControlName="DocumentID">
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex="25" class="ml-32">
+                <!-- <mat-icon class="mr-12" matPrefix>search</mat-icon> -->
+                <mat-label>Profit Center</mat-label>
+                <input matInput formControlName="ProfitCenter">
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex="25" class="ml-32">
+                <mat-label>From Date</mat-label>
+                <input matInput [matDatepicker]="picker1" formControlName="FromDate" (dateChange)="DateSelected()">
+                <mat-datepicker-toggle matSuffix [for]="picker1">
                   <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
                 </mat-datepicker-toggle>
-                <mat-datepicker #picker2></mat-datepicker>
+                <mat-datepicker #picker1></mat-datepicker>
               </mat-form-field>
-              <div *ngIf="isDateError" class="DateError mb-12 ml-12">
-                To date should not be less than from date
+              <div fxFlex="25" class="ml-32" >
+                <mat-form-field appearance="outline" style="width: 100%;">
+                  <mat-label>To Date</mat-label>
+                  <input matInput [matDatepicker]="picker2" formControlName="ToDate" (dateChange)="DateSelected()">
+                  <mat-datepicker-toggle matSuffix [for]="picker2">
+                    <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+                <div *ngIf="isDateError" class="DateError mb-12 ml-12">
+                  To date should not be less than from date
+                </div>
               </div>
+            </div>
+            <!-- <div fxLayout="row" fxLayoutAlign="start center" class="mb-12">
+              <div fxFlex class="hrLine mx-4"></div>
+              <div class="smallRound"></div>
+              <div fxFlex class="hrLine mx-4"></div>
             </div> -->
-          </div>
-          <div fxLayout="row" fxLayoutAlign="start center">
-            <div fxFlex align="end">
-              <button mat-raised-button class="SaveBtn" (click)="SearchClicked('Search')"
-                [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">Search</button>
+            <div fxLayout="row" fxLayoutAlign="start start">
+              <!-- <mat-form-field appearance="outline" fxFlex class="mr-8">
+                <input matInput placeholder="From Date" [matDatepicker]="picker1" formControlName="FromDate"
+                  (dateChange)="DateSelected()">
+                <mat-datepicker-toggle matSuffix [for]="picker1">
+                  <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field> -->
+              <!-- <div fxFlex>
+                <mat-form-field appearance="outline" class="ml-8" style="width: 96%;">
+                  <input matInput placeholder="To Date" [matDatepicker]="picker2" formControlName="ToDate"
+                    (dateChange)="DateSelected()">
+                  <mat-datepicker-toggle matSuffix [for]="picker2">
+                    <mat-icon matDatepickerToggleIcon svgIcon="calendarIcon"></mat-icon>
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+                <div *ngIf="isDateError" class="DateError mb-12 ml-12">
+                  To date should not be less than from date
+                </div>
+              </div> -->
             </div>
-          </div>
-        </form>
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <div fxFlex align="end">
+                <button mat-raised-button class="SaveBtn" (click)="SearchClicked('Search')"
+                  [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">Search</button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
     <div class="px-20 pb-20">
       <div fxLayout="row" class="mt-20" fxLayoutAlign="start center">
         <mat-form-field appearance="outline" fxFlex="50">

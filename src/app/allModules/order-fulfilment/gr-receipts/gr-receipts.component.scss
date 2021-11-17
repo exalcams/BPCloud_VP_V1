@@ -311,9 +311,8 @@
     }
     .SaveBtn {
         background-color: #efb577;
-        padding: 0px 40px;
+        margin-bottom: 13px;
         color: white;
-       
     }
     .input_date {
         width: 90%;
@@ -321,7 +320,7 @@
         border: 0.7px solid darkgrey;
         border-radius: 3.3px;
         padding-left: 15px;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        // font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         border: 1px solid #c3c3c3;
     
         font-size: 13px;

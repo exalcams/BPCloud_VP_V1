@@ -54,12 +54,7 @@
     .semiBoldClass {
         font-weight: 500;
     }
-    .SaveBtn {
-        background-color: #efb577;
-        padding: 0px 40px;
-        color: white;
-        margin-top: 2rem;
-    }
+
     .subTitle {
         @extend .semiBoldClass;
         font-size: 12px;
@@ -400,7 +395,7 @@
     }
     .SaveBtn {
         background-color: #efb577;
-        padding: 0px 40px;
+        padding: 0px 20px;
         color: white;
     }
     .hrLine {

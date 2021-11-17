@@ -14,15 +14,15 @@
         <form autocomplete="off" name="form" novalidate [formGroup]="SearchFormGroup" fxLayout="column"
           fxLayoutAlign="start" fxFlex="100">
           <!-- First Row -->
-          <div fxFlex="100" fxLayout="row" fxLayoutGap="20px">
-            <div fxFlex="30">
+          <div fxFlex="100" fxLayout="row">
+            <div fxFlex="25">
               <mat-form-field appearance="outline" style="width: 100%;">
                 <mat-icon class="mr-12" matPrefix>search</mat-icon>
                 <mat-label>ASN Number</mat-label>
                 <input type="text" matInput formControlName="ASNNumber">
               </mat-form-field>
             </div>
-            <div fxFlex="30">
+            <div fxFlex="25" class="pl-32">
               <mat-form-field appearance="outline" style="width: 100%;">
                 <mat-label>PO Number</mat-label>
                 <input type="text" matInput formControlName="DocNumber">
@@ -34,7 +34,7 @@
                 <input type="text" matInput placeholder="Material" formControlName="Material">
               </mat-form-field>
             </div> -->
-            <div fxFlex="20">
+            <div fxFlex="25" class="pl-32">
               <mat-form-field style="width: 100%;" appearance="outline">
                 <mat-label>ASN From Date</mat-label>
                 <input matInput [matDatepicker]="picker1" formControlName="ASNFromDate"
@@ -45,7 +45,7 @@
                 <mat-datepicker #picker1></mat-datepicker>
               </mat-form-field>
             </div>
-            <div fxFlex="20">
+            <div fxFlex="25" class="pl-32">
               <mat-form-field appearance="outline" style="width: 100%;">
                 <mat-label>ASN To Date</mat-label>
                 <input matInput [matDatepicker]="picker2" formControlName="ASNToDate"
@@ -59,17 +59,17 @@
           </div>
 
           <!-- Second Row -->
-          <div fxFlex="100" fxLayout="row" fxLayoutGap="20px" class="mt-20">
+          <div fxFlex="100" fxLayout="row" fxLayoutGap="20px">
             <!-- <div fxFlex="28">
               <mat-form-field appearance="outline" style="width: 100%;">
                 <input type="text" matInput placeholder="Po" formControlName="DocNumber">
               </mat-form-field>
             </div> -->
-            <div fxFlex="28">
+            <div fxFlex="25">
               <mat-form-field appearance="outline" style="width: 100%;">
                 <!-- <mat-icon class="mr-12" matPrefix>search</mat-icon> -->
                 <mat-label>Status</mat-label>
-                <input type="text" matInput formControlName="Status">
+                <input type="text" matInput placeholder="Status" formControlName="Status">
               </mat-form-field>
             </div>
             <div fxLayoutAlign="end" fxFlex>
@@ -99,7 +99,7 @@
       </div>
       <div>
         <div style="overflow: auto !important;">
-          <table class="table p-20" mat-table [dataSource]="TableDetailsDataSource" matSort>
+          <table class="table px-20" mat-table [dataSource]="TableDetailsDataSource" matSort>
             <ng-container matColumnDef="ASNNumber">
               <th mat-header-cell *matHeaderCellDef mat-sort-header
                 [ngClass]="BGClassName?.layout?.toolbar?.background">

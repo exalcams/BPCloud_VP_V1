@@ -281,7 +281,7 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
     }
 
     ngOnInit(): void {
-    
+
         this.SetUserPreference();
         // Retrive authorizationData
         const retrievedObject = this.SecureStorage.get("authorizationData");
@@ -309,13 +309,13 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
         }
         this.GetFactByPartnerID();
         this.CreateAppUsage();
-       
+
         // this.GetSODetails();
         this.GetCustomerOpenProcessCircle();
         this.GetCustomerCreditLimitProcessCircle();
         this.GetCustomerDoughnutChartData();
         this.GetCustomerBarChartData();
-     
+
         this.Fulfilments = [
             {
                 name: "Open",
@@ -423,7 +423,7 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
         appUsage.CreatedBy = this.currentUserName;
         appUsage.ModifiedBy = this.currentUserName;
         this._masterService.CreateAppUsage(appUsage).subscribe(
-            (data) => {},
+            (data) => { },
             (err) => {
                 console.error(err);
             }
@@ -433,12 +433,13 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
         this._FactService.GetFactByPartnerID(this.currentUserName).subscribe(
             (data) => {
                 this.SelectedBPCFact = data as BPCFact;
-                this.client=data.Client, 
-                this.company= data.Company,
-                this.type=data.Type,
-                this.patnerid=data.PatnerID
-                if(data)
-                this.GetSODetails();
+                this.client = data.Client,
+                    this.company = data.Company,
+                    this.type = data.Type,
+                    this.patnerid = data.PatnerID;
+                if (data) {
+                    this.GetSODetails();
+                }
             },
             (err) => {
                 console.error(err);
@@ -447,8 +448,8 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
     }
     GetSODetails(): void {
         this.IsProgressBarVisibile = true;
-     
-        this._dashboardService.GetSODetails(this.client,this.company,this.type,this.patnerid).subscribe(
+
+        this._dashboardService.GetSODetails(this.client, this.company, this.type, this.patnerid).subscribe(
             // this.type
             // "C", this.PartnerID
             (data) => {
@@ -519,7 +520,7 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
                     if (data) {
                         const DoughnutChartData = data as BPCKRA[];
                         this.doughnutChartLabels = DoughnutChartData.map(
-                            (x) => x.KRA
+                            (x) => x.KRAText
                         );
                         this.doughnutChartData = DoughnutChartData.map(
                             (x) => +x.KRAValue
@@ -726,7 +727,7 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
 
     formatSubtitle = (): string => {
         return "Effiency";
-    };
+    }
 
     pieChartLabel(Fulfilments: any[], name: string): string {
         const item = Fulfilments.filter((data) => data.name === name);
@@ -737,74 +738,74 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
     }
     getStatusColor(element: SODetails, StatusFor: string): string {
         switch (StatusFor) {
-            
+
             case "order":
                 return element.Status === "order"
                     ? "#34ad65"
                     : element.Status === "partial_Recived"
-                    ? "#34ad65"
-                    : element.Status === "Fully_Recived"
-                    ? "#34ad65"
-                    : element.Status === "partial_Dispatch"
-                    ? "#34ad65"
-                    : element.Status === "Fully_Dispatch"
-                    ? "#34ad65"
-                    : element.Status === "partial_paid"
-                    ? "#34ad65"
-                    : element.Status === "Fully_Recived"
-                    ? "#34ad65"
-                   : "gray";
- 
+                        ? "#34ad65"
+                        : element.Status === "Fully_Recived"
+                            ? "#34ad65"
+                            : element.Status === "partial_Dispatch"
+                                ? "#34ad65"
+                                : element.Status === "Fully_Dispatch"
+                                    ? "#34ad65"
+                                    : element.Status === "partial_paid"
+                                        ? "#34ad65"
+                                        : element.Status === "Fully_Recived"
+                                            ? "#34ad65"
+                                            : "gray";
+
             case "Dispatch":
                 return element.Status === "order"
                     ? "gray"
                     : element.Status === "partial_Recived"
-                    ? "#34ad65"
-                    : element.Status === "Fully_Recived"
-                    ? "#34ad65"
-                    : element.Status === "partial_Dispatch"
-                    ? "#efb577"
-                    : element.Status === "Fully_Dispatch"
-                    ? "#34ad65"
-                    : element.Status === "partial_paid"
-                    ? "#34ad65"
-                    : element.Status === "Fully_Recived"
-                    ? "#34ad65"
-                   : "gray";
+                        ? "#34ad65"
+                        : element.Status === "Fully_Recived"
+                            ? "#34ad65"
+                            : element.Status === "partial_Dispatch"
+                                ? "#efb577"
+                                : element.Status === "Fully_Dispatch"
+                                    ? "#34ad65"
+                                    : element.Status === "partial_paid"
+                                        ? "#34ad65"
+                                        : element.Status === "Fully_Recived"
+                                            ? "#34ad65"
+                                            : "gray";
             case "Recived":
                 return element.Status === "order"
                     ? "gray"
                     : element.Status === "partial_Dispatch"
-                    ? "gray"
-                    : element.Status === "Fully_Dispatch"
-                    ? "gray"
-                    : element.Status === "partial_Recived"
-                    ? "#efb577"
-                    : element.Status === "Fully_Recived"
-                    ?"#34ad65"
- 
-                    : element.Status === "partial_paid"
-                    ? "#34ad65"
-                    : element.Status === "fully_paid"
-                    ?"#34ad65"
-                    : "gray";
+                        ? "gray"
+                        : element.Status === "Fully_Dispatch"
+                            ? "gray"
+                            : element.Status === "partial_Recived"
+                                ? "#efb577"
+                                : element.Status === "Fully_Recived"
+                                    ? "#34ad65"
+
+                                    : element.Status === "partial_paid"
+                                        ? "#34ad65"
+                                        : element.Status === "fully_paid"
+                                            ? "#34ad65"
+                                            : "gray";
             case "Paid":
                 return element.Status === "order"
                     ? "gray"
                     : element.Status === "partial_Dispatch"
-                    ? "gray"
-                    : element.Status === "Fully_Dispatch"
-                    ? "gray"
-                  
-                    : element.Status === "partial_Recived"
-                    ? "gray"
-                    : element.Status === "Fully_Recived"
-                    ? "gray"
-                    : element.Status === "partial_paid"
-                    ? "#efb577"
-                    : element.Status === "Fully_Recived"
-                    ?"#34ad65"
-                    : "gray";
+                        ? "gray"
+                        : element.Status === "Fully_Dispatch"
+                            ? "gray"
+
+                            : element.Status === "partial_Recived"
+                                ? "gray"
+                                : element.Status === "Fully_Recived"
+                                    ? "gray"
+                                    : element.Status === "partial_paid"
+                                        ? "#efb577"
+                                        : element.Status === "Fully_Recived"
+                                            ? "#34ad65"
+                                            : "gray";
             default:
                 return "";
         }
@@ -872,72 +873,72 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
     // }
     getTimeline(element: SODetails, StatusFor: string): string {
         switch (StatusFor) {
- 
+
             case "order":
                 return element.Status === "order"
-                ? "green-timeline"
+                    ? "green-timeline"
                     : element.Status === "partial_Dispatch"
-                    ? "green-timeline"
-                    : element.Status === "Fully_Dispatch"
-                    ? "green-timeline"  
-                    : element.Status === "partial_Recived"
-                    ? "green-timeline"
-                : element.Status === "Fully_Recived"
-                ? "green-timeline"   
-                    
-                    : element.Status === "partial_paid"
-                    ? "green-timeline"
-                    : element.Status === "fully_paid"
-                    ? "green-timeline"     
-                    : "white-timeline";
- 
+                        ? "green-timeline"
+                        : element.Status === "Fully_Dispatch"
+                            ? "green-timeline"
+                            : element.Status === "partial_Recived"
+                                ? "green-timeline"
+                                : element.Status === "Fully_Recived"
+                                    ? "green-timeline"
+
+                                    : element.Status === "partial_paid"
+                                        ? "green-timeline"
+                                        : element.Status === "fully_paid"
+                                            ? "green-timeline"
+                                            : "white-timeline";
+
             case "Dispatch":
                 return element.Status === "order"
                     ? "white-timeline"
                     : element.Status === "partial_Dispatch"
-                    ? "orange-timeline"  
-                    : element.Status === "Fully_Dispatch"
-                    ? "green-timeline"     
-                    : element.Status === "partial_Recived"
-                    ? "green-timeline"
-                : element.Status === "Fully_Recived"
-                    ? "green-timeline"    
-                    
-                    : element.Status === "partial_paid"
-                    ? "green-timeline"  
-                    : element.Status === "fully_paid"
-                    ? "green-timeline"     
-                    : "white-timeline";
+                        ? "orange-timeline"
+                        : element.Status === "Fully_Dispatch"
+                            ? "green-timeline"
+                            : element.Status === "partial_Recived"
+                                ? "green-timeline"
+                                : element.Status === "Fully_Recived"
+                                    ? "green-timeline"
+
+                                    : element.Status === "partial_paid"
+                                        ? "green-timeline"
+                                        : element.Status === "fully_paid"
+                                            ? "green-timeline"
+                                            : "white-timeline";
             case "Recived":
                 return element.Status === "order"
                     ? "white-timeline"
                     : element.Status === "partial_Dispatch"
-                    ? "white-timeline"
-                    : element.Status === "Fully_Dispatch"
-                    ? "white-timeline" 
-                     : element.Status === "partial_Recived"
-                    ? "orange-timeline"
-                    : element.Status === "partial_paid"
-                    ? "green-timeline"
-                    : element.Status === "fully_paid"
-                    ? "green-timeline"
-                    : "white-timeline";
+                        ? "white-timeline"
+                        : element.Status === "Fully_Dispatch"
+                            ? "white-timeline"
+                            : element.Status === "partial_Recived"
+                                ? "orange-timeline"
+                                : element.Status === "partial_paid"
+                                    ? "green-timeline"
+                                    : element.Status === "fully_paid"
+                                        ? "green-timeline"
+                                        : "white-timeline";
             case "Paid":
                 return element.Status === "order"
                     ? "white-timeline"
                     : element.Status === "partial_Dispatch"
-                    ? "white-timeline"
-                    : element.Status === "Fully_Dispatch"
-                    ? "white-timeline"
-                    : element.Status === "partial_Recived"
-                    ? "white-timeline"
-                    : element.Status === "Fully_Recived"
-                    ? "white-timeline"
-                    : element.Status === "partial_paid"
-                    ? "orange-timeline"
-                    : element.Status === "fully_paid"
-                    ? "green-timeline"
-                    : "white-timeline";
+                        ? "white-timeline"
+                        : element.Status === "Fully_Dispatch"
+                            ? "white-timeline"
+                            : element.Status === "partial_Recived"
+                                ? "white-timeline"
+                                : element.Status === "Fully_Recived"
+                                    ? "white-timeline"
+                                    : element.Status === "partial_paid"
+                                        ? "orange-timeline"
+                                        : element.Status === "fully_paid"
+                                            ? "green-timeline"
+                                            : "white-timeline";
             default:
                 return "";
         }
@@ -946,59 +947,59 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
         switch (StatusFor) {
             case "order":
                 return element.Status === "order"
-                ? "white-timeline"
+                    ? "white-timeline"
                     : element.Status === "partial_Dispatch"
-                    ? "green-timeline" 
-                    : element.Status === "Fully_Dispatch"
-                    ? "green-timeline"     
-                    : element.Status === "partial_Recived"
-                    ? "green-timeline"
-                : element.Status === "Fully_Recived"
-                    ? "green-timeline"    
-                    
-                    : element.Status === "partial_paid"
-                    ? "green-timeline"  
-                    : element.Status === "fully_paid"
-                    ? "green-timeline"     
-                    : "white-timeline";
- 
+                        ? "green-timeline"
+                        : element.Status === "Fully_Dispatch"
+                            ? "green-timeline"
+                            : element.Status === "partial_Recived"
+                                ? "green-timeline"
+                                : element.Status === "Fully_Recived"
+                                    ? "green-timeline"
+
+                                    : element.Status === "partial_paid"
+                                        ? "green-timeline"
+                                        : element.Status === "fully_paid"
+                                            ? "green-timeline"
+                                            : "white-timeline";
+
             case "Dispatch":
                 return element.Status === "order"
                     ? "white-timeline"
                     : element.Status === "partial_Dispatch"
-                    ? "white-timeline"
-                    : element.Status === "Fully_Dispatch"
-                    ? "white-timeline"
-                    : element.Status === "partial_Recived"
-                    ? "green-timeline"
-                : element.Status === "Fully_Recived"
-                    ? "green-timeline"    
-                    
-                    : element.Status === "partial_paid"
-                    ? "green-timeline"  
-                    : element.Status === "fully_paid"
-                    ? "green-timeline"     
-                    : "white-timeline";
+                        ? "white-timeline"
+                        : element.Status === "Fully_Dispatch"
+                            ? "white-timeline"
+                            : element.Status === "partial_Recived"
+                                ? "green-timeline"
+                                : element.Status === "Fully_Recived"
+                                    ? "green-timeline"
+
+                                    : element.Status === "partial_paid"
+                                        ? "green-timeline"
+                                        : element.Status === "fully_paid"
+                                            ? "green-timeline"
+                                            : "white-timeline";
             case "Recived":
                 return element.Status === "order"
                     ? "white-timeline"
                     : element.Status === "partial_Dispatch"
-                    ? "white-timeline"
-                    : element.Status === "Fully_Dispatch"
-                    ? "white-timeline" 
-                     : element.Status === "partial_Recived"
-                     ? "white-timeline"
-                     : element.Status === "Fully_Recived"
-                     ? "white-timeline"
-                    : element.Status === "partial_paid"
-                    ? "green-timeline"
-                    : element.Status === "fully_paid"
-                    ? "green-timeline"
-                    : "white-timeline";
-                    default:
-                        return "";
-                }
-            }
+                        ? "white-timeline"
+                        : element.Status === "Fully_Dispatch"
+                            ? "white-timeline"
+                            : element.Status === "partial_Recived"
+                                ? "white-timeline"
+                                : element.Status === "Fully_Recived"
+                                    ? "white-timeline"
+                                    : element.Status === "partial_paid"
+                                        ? "green-timeline"
+                                        : element.Status === "fully_paid"
+                                            ? "green-timeline"
+                                            : "white-timeline";
+            default:
+                return "";
+        }
+    }
     // getRestTimeline(element: SODetails, StatusFor: string): string {
     //     switch (StatusFor) {
     //         case "Shipped":

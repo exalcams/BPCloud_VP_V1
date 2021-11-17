@@ -26,7 +26,7 @@
       <div class="content" *ngIf="!isExpanded" @expandCollapse>
         <form autocomplete="off" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" novalidate
           [formGroup]="SearchFormGroup">
-          <div fxFlex fxLayout="row wrap">
+          <div fxFlex fxLayout="row">
             <div fxFlex="20">
               <mat-form-field style="width: 100%;" appearance="outline">
                 <mat-label>From Date</mat-label>
@@ -78,7 +78,7 @@
                 </mat-error>
               </mat-form-field>
             </div>
-            <div fxFlex="20">
+            <div fxFlex="20" class="pl-32">
               <mat-form-field style="width: 100%;" appearance="outline">
                 <!-- <input matInput placeholder="Status" formControlName="Status"> -->
                 <mat-label>Status</mat-label>
@@ -91,7 +91,7 @@
                 </mat-error>
               </mat-form-field>
             </div>
-            <div fxFlex="20" fxLayoutAlign="center center" class="pl-32">
+            <div fxFlex="20" fxLayoutAlign="end center" class="pl-32">
               <button mat-raised-button class="SaveBtn" (click)="SearchClicked()"
                 [ngClass]="BGClassName?.layout?.navbar?.primaryBackground">Search</button>
             </div>

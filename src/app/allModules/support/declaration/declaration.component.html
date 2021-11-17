@@ -17,10 +17,9 @@
           <mat-card fxFlex fxLayout="column" class="mb-32">
             <form name="form" [formGroup]="SupportDeclarationFormGroup">
               <mat-card class="mat_card_msme">
-                <div fxLayout="column" style="width:100%;height:100%;margin-top: -23px;">
+                <div fxLayout="column">
                   <div fxFlex style="width:10%">
-                    <p class="msme_P">
-                      MSME</p>
+                    <span class="boldClass">MSME</span>
                     <p [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="borderbottom"></p>
                   </div>
                   <div fxFlex style="width:100%">
@@ -29,7 +28,8 @@
                     </div>
                     <div fxFlex="10">
                       <mat-form-field style="width: 100%;">
-                        <mat-select matInput matNativeControl (selectionChange)="setValue($event,'MSME')" formControlName="IsMSME">
+                        <mat-select matInput matNativeControl (selectionChange)="MSMESelectionChanged($event)"
+                          formControlName="IsMSME">
                           <mat-option *ngFor="let Declaration of IsDeclaration" [value]="Declaration">
                             <span>{{Declaration}}</span>
                           </mat-option>
@@ -44,14 +44,14 @@
                     </div>
                     <div fxFlex>
                       <mat-form-field style="width: 28%;">
-
-
-                        <mat-select class="select" formControlName="MSMEType">
+                        <mat-select class="select" formControlName="MSMEType" (selectionChange)="MSMEPartChanged()">
                           <mat-option value="OTH">Not Applicable</mat-option>
                           <mat-option value="MIC">Micro Enterprise</mat-option>
                           <mat-option value="SML">Small Enterprise</mat-option>
                           <mat-option value="MID">Medium Enterprise</mat-option>
                         </mat-select>
+                        <mat-error *ngIf=" SupportDeclarationFormGroup.get('MSMEType').hasError('required')">
+                          MSME Type is required </mat-error>
                       </mat-form-field>
                     </div>
                   </div>
@@ -83,9 +83,10 @@
                       </div>
                     </mat-card>
                     <div fxFlex style="align-self: center;">
-                      <button class="button1" [ngClass]="BGClassName?.layout?.navbar?.primaryBackground   "
-                        (click)="fileInput1.click()">Upload</button>
-                      <img src="assets/images/upload.png" class="upload_img">
+                      <button mat-raised-button class="button1"
+                        [ngClass]="BGClassName?.layout?.navbar?.primaryBackground" (click)="fileInput1.click()"><img
+                          src="assets/images/upload.png" class="upload_img"> Upload </button>
+
                       <input hidden type="file" #fileInput1 id="file_msme" (change)="handleFileInput($event)" />
                     </div>
                   </div>
@@ -93,12 +94,10 @@
 
               </mat-card>
 
-              <mat-card class="mat_card_msme">
-                <div fxLayout="column" style="width:100%;height:100%;margin-top: -23px;">
+              <mat-card class="mat_card_msme mt-16">
+                <div fxLayout="column">
                   <div fxFlex style="width:10%">
-                    <p
-                      style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight:600;letter-spacing: 0.3px;font-size: 15px;">
-                      Related Party </p>
+                    <span class="boldClass">Related Party</span>
                     <p [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="borderbottom_relatedParty">
                     </p>
                   </div>
@@ -108,7 +107,8 @@
                     </div>
                     <div fxFlex="10">
                       <mat-form-field style="width: 100%;">
-                        <mat-select matInput matNativeControl (selectionChange)="setValue($event,'RP')" formControlName="IsRP">
+                        <mat-select matInput matNativeControl (selectionChange)="RPSelectionChanged($event)"
+                          formControlName="IsRP">
                           <mat-option *ngFor="let Declaration of IsDeclaration" [value]="Declaration">
                             <span>{{Declaration}}</span>
                           </mat-option>
@@ -125,10 +125,12 @@
                     </div>
                     <div fxFlex>
                       <mat-form-field style="width: 28%;">
-
-                        <input matInput formControlName="RelatedPartyName" class="relatedparty_input">
-
+                        <input matInput formControlName="RelatedPartyName" class="relatedparty_input"
+                          (blur)="RPPartChanged()">
+                        <mat-error *ngIf=" SupportDeclarationFormGroup.get('RelatedPartyName').hasError('required')">
+                          Related Party Name is required </mat-error>
                       </mat-form-field>
+
                     </div>
                   </div>
                   <div fxLayout="row" fxFlex style="width:100%; margin-top: 14px;">
@@ -137,19 +139,17 @@
                     </div>
                     <div fxFlex>
                       <mat-form-field style="width: 28%;">
-
-                        <input matInput formControlName="RelatedPartyType" class="relatedparty_input">
-
+                        <input matInput formControlName="RelatedPartyType" class="relatedparty_input"
+                          (blur)="RPPartChanged()">
+                        <mat-error *ngIf=" SupportDeclarationFormGroup.get('RelatedPartyType').hasError('required')">
+                          Related Party Type is required </mat-error>
                       </mat-form-field>
                     </div>
                   </div>
                   <div fxFlex fxLayout="row" style="width:100%;margin-top: 21px;">
-
-
                     <div fxFlex=16 class="lable_align">
                       <mat-label class="msme">Upload Document :</mat-label>
                     </div>
-
                     <mat-card fxFlex=12 *ngIf="upload_RealtedParty_bool"
                       style="padding: 0px !important;font-size: 5px !important;margin-right: 22px;">
                       <div fxFlex=100 fxLayout="row" style="display: flex;width:100%">
@@ -163,34 +163,29 @@
                         <div fxFlex=100 fxLayout="column" class="uploadfilename_flex">
                           <div fxFlex=100 style="margin-bottom: -11px !important;    font-size: 9px;
                          ">
-                            <p class="invoice" (click)="ViewAttachment(uploadfile_RelatedParty)">{{uploadfile_RelatedParty}}</p>
+                            <p class="invoice" (click)="ViewAttachment(uploadfile_RelatedParty)">
+                              {{uploadfile_RelatedParty}}</p>
                           </div>
                           <!-- <div fxFlex>
                             <p class="kb">{{size_KB_RelatedParty}}</p>
                           </div> -->
                         </div>
                       </div>
-
-
                     </mat-card>
-
                     <div fxFlex style="align-self: center;">
-                      <button class="button1" [ngClass]="BGClassName?.layout?.navbar?.primaryBackground   "
-                        (click)="fileInput2.click()">Upload</button>
-                      <img src="assets/images/upload.png" class="upload_img">
+                      <button mat-raised-button class="button1"
+                        [ngClass]="BGClassName?.layout?.navbar?.primaryBackground" (click)="fileInput2.click()"><img
+                          src="assets/images/upload.png" class="upload_img"> Upload </button>
+
                       <input hidden type="file" #fileInput2 id="file_relatedparty" (change)="handleFileInput($event)" />
                     </div>
                   </div>
                 </div>
-
               </mat-card>
-
-              <mat-card class="mat_card_msme">
-                <div fxLayout="column" style="width:100%;height:100%;margin-top: -23px;">
+              <mat-card class="mat_card_msme mt-16">
+                <div fxLayout="column">
                   <div fxFlex style="width:10%">
-                    <p
-                      style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight:600;letter-spacing: 0.3px;font-size: 15px;">
-                      Lower TDS</p>
+                    <span class="boldClass">Lower TDS</span>
                     <p [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="borderbottom_lowerTDS"></p>
                   </div>
                   <div fxFlex style="width:100%">
@@ -199,8 +194,9 @@
                     </div>
                     <div fxFlex="10" style="margin-left: 36px;margin-top: -5px;">
                       <mat-form-field style="width: 100%;">
-                        <mat-select matInput matNativeControl (selectionChange)="setValue($event,'LDS')" formControlName="IsLDS">
-                          <mat-option *ngFor="let Declaration of IsDeclaration" [value]="Declaration" >
+                        <mat-select matInput matNativeControl (selectionChange)="TDSSelectionChanged($event)"
+                          formControlName="IsLDS">
+                          <mat-option *ngFor="let Declaration of IsDeclaration" [value]="Declaration">
                             <span>{{Declaration}}</span>
                           </mat-option>
                         </mat-select>
@@ -216,7 +212,8 @@
                     <div fxFlex>
                       <mat-form-field style="width: 28%;">
 
-                        <input matInput formControlName="TDS_Cert_No" class="relatedparty_input">
+                        <input matInput formControlName="TDS_Cert_No" class="relatedparty_input"
+                          (blur)="TDSPartChanged()">
                         <mat-error *ngIf=" SupportDeclarationFormGroup.get('TDS_Cert_No').hasError('required')">
                           Certificate Number is required </mat-error>
                       </mat-form-field>
@@ -230,12 +227,12 @@
                     </div>
                     <div fxFlex>
                       <mat-form-field style="width: 28%;">
-
-                        <input matInput formControlName="TDSRate" class="relatedparty_input">
+                        <input matInput formControlName="TDSRate" class="relatedparty_input" (blur)="TDSPartChanged()">
                         <p matSuffix>%</p>
+                        <mat-error *ngIf=" SupportDeclarationFormGroup.get('TDSRate').hasError('required')">
+                          TDS Rate is required </mat-error>
                         <mat-error *ngIf=" SupportDeclarationFormGroup.get('TDSRate').hasError('pattern')">
-                          Invalid </mat-error>
-
+                          Please enter a valid rate </mat-error>
                       </mat-form-field>
                     </div>
                   </div>
@@ -270,10 +267,11 @@
                       </div>
                     </mat-card>
                     <div fxFlex style="align-self: center;">
-                      <button class="button1" [ngClass]="BGClassName?.layout?.navbar?.primaryBackground   "
-                        (click)="fileInput3.click()">Upload</button>
+                      <button mat-raised-button class="button1"
+                        [ngClass]="BGClassName?.layout?.navbar?.primaryBackground" (click)="fileInput3.click()"><img
+                          src="assets/images/upload.png" class="upload_img"> Upload </button>
 
-                      <img src="assets/images/upload.png" class="upload_img">
+
                       <input hidden type="file" #fileInput3 id="file_TDS" (change)="handleFileInput($event)" />
                     </div>
                   </div>
@@ -293,13 +291,11 @@
           Save</button>
       </div>
     </div>
-    <mat-progress-spinner *ngIf="IsProgressBarVisibile" color="accent" class="progressBarPostion" mode="indeterminate">
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile" color="accent" class="ProgressBarPostion" mode="indeterminate">
 
     </mat-progress-spinner>
     <div id="overlay" *ngIf="IsProgressBarVisibile">
     </div>
   </div>
-
-
 
 </div>
