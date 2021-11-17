@@ -13,14 +13,14 @@
 
       <div *ngIf="!isExpanded" @expandCollapse>
         <form autocomplete="off" name="form" novalidate [formGroup]="SearchFormGroup" fxFlex="100">
-          <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px">
+          <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
 
             <mat-form-field appearance="outline" fxFlex="20">
               <mat-label>Invoice Number</mat-label>
               <input matInput formControlName="InvoiceNumber">
             </mat-form-field>
 
-            <mat-form-field appearance="outline" fxFlex="20">
+            <mat-form-field appearance="outline" fxFlex="20" class="pl-32">
               <mat-label>PO Reference</mat-label>
               <input matInput formControlName="DocNumber">
             </mat-form-field>
@@ -34,7 +34,7 @@
               class="inp_Img_date">
           </mat-form-field> -->
 
-            <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-form-field appearance="outline" fxFlex="20" style="width: 100%;" class="pl-32">
               <mat-label>From Date</mat-label>
               <input matInput [matDatepicker]="picker2" formControlName="FromDate" (dateChange)="DateSelected()">
               <mat-datepicker-toggle matSuffix [for]="picker2">
@@ -43,7 +43,7 @@
               <mat-datepicker #picker2></mat-datepicker>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-form-field appearance="outline" fxFlex="20" style="width: 100%;" class="pl-32">
               <mat-label>To Date</mat-label>
               <input matInput [matDatepicker]="picker1" formControlName="ToDate" (dateChange)="DateSelected()">
               <mat-datepicker-toggle matSuffix [for]="picker2">
