@@ -118,8 +118,8 @@ export class POService {
   }
   // Data Migration
   // madhu
-  GetInvoiceByPartnerIdAnDocumentNo(PatnerID: string): Observable<BPCInvoice | any> {
-    return this._httpClient.get<BPCInvoice>(`${this.baseAddress}poapi/Invoice/GetInvoiceByPartnerIdAnDocumentNo?PatnerID=${PatnerID}`)
+  GetInvoiceByPartnerIdAnDocumentNo(PatnerID: string, DocNumber: string): Observable<BPCInvoice | any> {
+    return this._httpClient.get<BPCInvoice>(`${this.baseAddress}poapi/Invoice/GetInvoiceByPartnerIdAnDocumentNo?PatnerID=${PatnerID}&DocNumber=${DocNumber}`)
       .pipe(catchError(this.errorHandler));
   }
   GetPartnerAndRequestIDByPartnerId(PatnerID: string): Observable<BPCRetNew | any> {
@@ -528,20 +528,20 @@ export class POService {
   AddPaymentRecord(InvoicePayment: BPCInvoicePayView, selectedFiles: File[]): Observable<any> {
     const formData: FormData = new FormData();
     if (selectedFiles && selectedFiles.length) {
-        selectedFiles.forEach(x => {
-            formData.append(x.name, x, x.name);
-        });
+      selectedFiles.forEach(x => {
+        formData.append(x.name, x, x.name);
+      });
     }
     formData.append('InvoicePayView', JSON.stringify(InvoicePayment));
     return this._httpClient.post<any>(`${this.baseAddress}poapi/Invoice/AddPaymentRecordWithAttachment`,
-        formData,
-        // {
-        //   headers: new HttpHeaders({
-        //     'Content-Type': 'application/json'
-        //   })
-        // }
+      formData,
+      // {
+      //   headers: new HttpHeaders({
+      //     'Content-Type': 'application/json'
+      //   })
+      // }
     ).pipe(catchError(this.errorHandler));
-}
+  }
 
 
   // end

@@ -50,7 +50,8 @@
         <div fxLayoutAlign="start center" class="pt-8">
           <span class="boldClass orangeBorderBottom pl-8"> Fulfilment </span>
         </div>
-        <div *ngIf="doughnutChartData && doughnutChartData?.length" id="doughnutChart" fxFlex fxLayoutAlign="start" class="pt-8 pl-8 pr-4">
+        <div *ngIf="doughnutChartData && doughnutChartData?.length" id="doughnutChart" fxFlex fxLayoutAlign="start"
+          class="pt-8 pl-8 pr-4">
           <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
             [options]="doughnutChartOptions" [colors]="colors">
           </canvas>
@@ -73,8 +74,8 @@
     <div class="sidenav-content px-24 mt-4" fxFlex>
       <form class="formGroupStyle" autocomplete="off" fxFlex name="form" [formGroup]="poFormGroup" novalidate>
         <div FxLayout="row" class="formRowStyle" fxLayout.xs="column">
-          <div fxFlex="20%" class="mr-20">
-            <mat-form-field>
+          <div fxFlex="25" class="mr-20">
+            <mat-form-field style="width: 100%;">
               <input matInput placeholder="From date" [matDatepicker]="picker1" formControlName="FromDate"
                 (dateChange)="DateSelected()">
               <!-- <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle> -->
@@ -88,8 +89,8 @@
               </mat-error> -->
             </mat-form-field>
           </div>
-          <div fxFlex="20%" class="mx-20">
-            <mat-form-field>
+          <div fxFlex="25" class="mx-20">
+            <mat-form-field style="width: 100%;">
               <input matInput placeholder="To Date" [matDatepicker]="picker2" formControlName="ToDate"
                 (dateChange)="DateSelected()">
               <!-- <mat-datepicker-toggle matSuffix [for]="picker2"> </mat-datepicker-toggle> -->
@@ -106,9 +107,9 @@
               To date should not be less than from date
             </div>
           </div>
-          <div fxFlex="20%" class="mx-20">
-            <mat-form-field>
-              <mat-select style="width:180px" placeholder="Status" formControlName="Status">
+          <div fxFlex="25" class="mx-20">
+            <mat-form-field style="width: 100%;">
+              <mat-select placeholder="Status" formControlName="Status">
                 <!-- <mat-option>None</mat-option> -->
                 <mat-option *ngFor="let doc1 of AllStatus" [value]="doc1.Value">
                   <span>{{doc1.Name}}</span>
@@ -133,9 +134,9 @@
           </mat-error>
             </mat-form-field> -->
           </div>
-          <div fxFlex="40%" class="ml-20">
-            <button class="mt-4" style="background-color: #efb577;color: white;"
-              mat-raised-button (click)="GetAllPOBasedOnDate()">Search</button>
+          <div fxFlex="25%" class="ml-20" fxLayoutAlign="end center">
+            <button class="mt-4" style="background-color: #efb577;color: white;" mat-raised-button
+              (click)="GetAllPOBasedOnDate()">Search</button>
           </div>
         </div>
       </form>
@@ -156,9 +157,9 @@
       <!-- <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator> -->
     </div>
     <div *ngIf="!AllSOs?.length" class="cl_norec">No Record Found</div>
-    <div class="px-20 pb-20" >
-      <table  *ngIf="AllSOs?.length"  class="abnormal" mat-table [dataSource]="SODataSource" matSort>
-<!-- 
+    <div class="px-20 pb-20">
+      <table *ngIf="AllSOs?.length" class="abnormal" mat-table [dataSource]="SODataSource" matSort>
+        <!-- 
         <ng-container matColumnDef="PIRNumber">
           <th mat-header-cell *matHeaderCellDef> PI/Return Number </th>
           <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
@@ -196,23 +197,29 @@
           </td>
         </ng-container>
 
+        <ng-container matColumnDef="PlantName">
+          <th mat-header-cell *matHeaderCellDef> Plant </th>
+          <td mat-cell *matCellDef="let element">
+            <span>{{element.PlantName}}</span>
+          </td>
+        </ng-container>
+
         <ng-container matColumnDef="Status">
-          <th mat-header-cell *matHeaderCellDef style="width: 400px;"> Order Fulfilment Status </th>
-          <td mat-cell *matCellDef="let element" style="width: 400px;">
+          <th mat-header-cell *matHeaderCellDef style="width: 450px;"> Order Fulfilment Status </th>
+          <td mat-cell *matCellDef="let element" style="width: 450px;">
             <div fxLayout class="mx-20 my-8">
               <div fxFlex="30" fxLayout>
                 <div class="round" [style.border-color]="getStatusColor(element,'order')">
                 </div>
-                <div style="width: 10px;margin-left: -1px !important"
-                [class]="getTimeline(element,'order')"></div>
-                <div [class]="getRestTimeline(element,'order')"  fxFlex>
+                <div style="width: 10px;margin-left: -1px !important" [class]="getTimeline(element,'order')"></div>
+                <div [class]="getRestTimeline(element,'order')" fxFlex>
                 </div>
               </div>
               <div fxFlex="30" fxLayout>
                 <div style="width: 10px;margin-right: -1px !important" [class]="getTimeline(element,'Dispatch')"></div>
                 <div class="round" [style.border-color]="getStatusColor(element,'Dispatch')"></div>
                 <div style="width: 10px; margin-left: -1px !important" [class]="getTimeline(element,'Dispatch')"></div>
-                <div [class]="getRestTimeline(element,'Dispatch')"  fxFlex></div>
+                <div [class]="getRestTimeline(element,'Dispatch')" fxFlex></div>
               </div>
               <div fxFlex="30" fxLayout>
                 <div style="width: 10px;margin-right: -1px !important" [class]="getTimeline(element,'Recived')"></div>
@@ -272,8 +279,9 @@
         </ng-container> -->
 
         <ng-container matColumnDef="Document">
-          <th mat-header-cell *matHeaderCellDef style="width: 80px;"> Document </th>
-          <td mat-cell *matCellDef="let element" (click)="viewOfAttachmentClicked(element)" style="text-align: center;cursor: pointer;">
+          <th mat-header-cell *matHeaderCellDef style="width: 110px;"> Document </th>
+          <td mat-cell *matCellDef="let element" (click)="viewOfAttachmentClicked(element)"
+            style="text-align: center;cursor: pointer;width: 110px;">
             <div style="margin-top: 3px; margin-left: 15px;">
               <span [matBadge]="element.DocCount" matBadgeColor="accent" matBadgeOverlap="false"></span>
             </div>
@@ -293,9 +301,9 @@
         </ng-container> -->
 
         <ng-container matColumnDef="Action">
-          <th mat-header-cell *matHeaderCellDef style="width: 120px;">Action </th>
-          <td mat-cell *matCellDef="let element;let i= index;" style="text-align: center;width: 120px;">
-            <mat-form-field appearance="outline" style="width: 120px;">
+          <th mat-header-cell *matHeaderCellDef style="width: 170px;">Action </th>
+          <td mat-cell *matCellDef="let element;let i= index;" style="text-align: center;width: 170px;">
+            <mat-form-field appearance="outline" style="width: 130px;">
               <mat-icon matPrefix svgIcon="thunderBlackIcon" height="20px"></mat-icon>
               <mat-label ng-mouseenter="$mdMenu.open()">Action</mat-label>
               <mat-select ng-mouseleave="$mdMenu.close()">
@@ -329,7 +337,8 @@
           <tr mat-row *matRowDef="let row; columns: posDisplayedColumns;" (click)="Checked(row)" style=" cursor: pointer;" [class.highlight]="row === selectedPORow"></tr> -->
       </table>
       <div>
-        <mat-paginator  [ngStyle]="AllSOs?.length ?  {'visibility': 'visible'} : {'visibility': 'hidden'}" [pageSizeOptions]="[10,50,100,250,500,1000]"></mat-paginator>
+        <mat-paginator [ngStyle]="AllSOs?.length ?  {'visibility': 'visible'} : {'visibility': 'hidden'}"
+          [pageSizeOptions]="[10,50,100,250,500,1000]"></mat-paginator>
       </div>
     </div>
     <!-- <div fxLayout>
@@ -362,9 +371,13 @@
         </div>
       </div>
     </div> -->
-    
-    <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="progressBarPostion" color="accent" mode="indeterminate">
+
+    <mat-progress-spinner
+      *ngIf="IsProgressBarVisibile || IsProgressBarVisibile2 || IsProgressBarVisibile3 || IsProgressBarVisibile4 || IsProgressBarVisibile5"
+      class="progressBarPostion" color="accent" mode="indeterminate">
     </mat-progress-spinner>
-    <div id="overlay" *ngIf="IsProgressBarVisibile"></div>
+    <div id="overlay"
+      *ngIf="IsProgressBarVisibile || IsProgressBarVisibile2 || IsProgressBarVisibile3 || IsProgressBarVisibile4 || IsProgressBarVisibile5">
+    </div>
   </div>
 </div>

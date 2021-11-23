@@ -373,6 +373,7 @@ export class PurchaseIndentComponent implements OnInit {
                     this.PurchaseIndentItemFormGroup.get('HSN').patchValue(selectedProd.HSN);
                     this.PurchaseIndentItemFormGroup.get('HSN').disable();
                 } else {
+                    this.PurchaseIndentItemFormGroup.get('HSN').patchValue('');
                     this.PurchaseIndentItemFormGroup.get('HSN').enable();
                 }
             }

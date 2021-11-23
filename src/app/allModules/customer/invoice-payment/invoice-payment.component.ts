@@ -43,11 +43,12 @@ export class InvoicePaymentComponent implements OnInit {
   InvoiceDisplayedColumns: string[] = [
     // 'Select',
     'InvoiceNo',
-    'PoReference',
+    'DocNumber',
     'Invoicedate',
     'InvoiceAmount',
     'PaidAmount',
     'BalanceAmount',
+    'Status',
     'PODStatus',
     'Payment'
   ];
