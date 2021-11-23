@@ -72,6 +72,10 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
     MenuItems: string[];
     notificationSnackBarComponent: NotificationSnackBarComponent;
     IsProgressBarVisibile: boolean;
+    IsProgressBarVisibile2: boolean;
+    IsProgressBarVisibile3: boolean;
+    IsProgressBarVisibile4: boolean;
+    IsProgressBarVisibile5: boolean;
     AllOwners: UserWithRole[] = [];
     AllTasks: Task[] = [];
     AllTasksCount: number;
@@ -85,6 +89,7 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
         // 'Version',
         // "PIRType",
         "SODate",
+        "PlantName",
         "Status",
         "Document",
         // 'NextProcess',
@@ -270,6 +275,10 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
         );
         this.authenticationDetails = new AuthenticationDetails();
         this.IsProgressBarVisibile = false;
+        this.IsProgressBarVisibile2 = false;
+        this.IsProgressBarVisibile3 = false;
+        this.IsProgressBarVisibile4 = false;
+        this.IsProgressBarVisibile5 = false;
         this.poFormGroup = this._formBuilder.group({
             FromDate: [""],
             ToDate: [""],
@@ -469,7 +478,7 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
     }
 
     GetCustomerOpenProcessCircle(): void {
-        this.IsProgressBarVisibile = true;
+        this.IsProgressBarVisibile2 = true;
         this._dashboardService
             .GetCustomerOpenProcessCircle(this.PartnerID)
             .subscribe(
@@ -480,16 +489,16 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
                             this.progress1(+OpenProcessCircle.KRAValue);
                         }
                     }
-                    this.IsProgressBarVisibile = false;
+                    this.IsProgressBarVisibile2 = false;
                 },
                 (err) => {
                     console.error(err);
-                    this.IsProgressBarVisibile = false;
+                    this.IsProgressBarVisibile2 = false;
                 }
             );
     }
     GetCustomerCreditLimitProcessCircle(): void {
-        this.IsProgressBarVisibile = true;
+        this.IsProgressBarVisibile3 = true;
         this._dashboardService
             .GetCustomerCreditLimitProcessCircle(this.PartnerID)
             .subscribe(
@@ -503,16 +512,16 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
                             this.progress2(+CreditLimitProcessCircle.KRAValue);
                         }
                     }
-                    this.IsProgressBarVisibile = false;
+                    this.IsProgressBarVisibile3 = false;
                 },
                 (err) => {
                     console.error(err);
-                    this.IsProgressBarVisibile = false;
+                    this.IsProgressBarVisibile3 = false;
                 }
             );
     }
     GetCustomerDoughnutChartData(): void {
-        this.IsProgressBarVisibile = true;
+        this.IsProgressBarVisibile4 = true;
         this._dashboardService
             .GetCustomerDoughnutChartData(this.PartnerID)
             .subscribe(
@@ -526,16 +535,16 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
                             (x) => +x.KRAValue
                         );
                     }
-                    this.IsProgressBarVisibile = false;
+                    this.IsProgressBarVisibile4 = false;
                 },
                 (err) => {
                     console.error(err);
-                    this.IsProgressBarVisibile = false;
+                    this.IsProgressBarVisibile4 = false;
                 }
             );
     }
     GetCustomerBarChartData(): void {
-        this.IsProgressBarVisibile = true;
+        this.IsProgressBarVisibile5 = true;
         this._dashboardService
             .GetCustomerBarChartData(this.PartnerID)
             .subscribe(
@@ -554,11 +563,11 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
                             },
                         ];
                     }
-                    this.IsProgressBarVisibile = false;
+                    this.IsProgressBarVisibile5 = false;
                 },
                 (err) => {
                     console.error(err);
-                    this.IsProgressBarVisibile = false;
+                    this.IsProgressBarVisibile5 = false;
                 }
             );
     }

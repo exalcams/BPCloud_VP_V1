@@ -310,47 +310,49 @@
               <div class="p-12 mt-24" >
                 <table *ngIf="AllReturn?.length" class="table" mat-table [dataSource]="ReturnDataSource" matSort>
 
-                  <ng-container matColumnDef="ReturnOrder">
+                  <ng-container matColumnDef="RetReqID">
                     <th mat-header-cell *matHeaderCellDef>ReturnOrder</th>
                     <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
                       <div fxLayout>
                         <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
                         <div fxFlex class="pl-4">
-                          {{element.ReturnOrder}}
+                          {{element.RetReqID}}
                         </div>
                       </div>
                     </td>
                   </ng-container>
 
+                  <ng-container matColumnDef="DocumentNumber">
+                    <th mat-header-cell *matHeaderCellDef>Document Number</th>
+                    <td mat-cell *matCellDef="let element">{{element.DocumentNumber }}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="CreditNote">
+                    <th mat-header-cell *matHeaderCellDef>Credit Note</th>
+                    <td mat-cell *matCellDef="let element">{{element.CreditNote }}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Transporter">
+                    <th mat-header-cell *matHeaderCellDef>Transporter</th>
+                    <td mat-cell *matCellDef="let element">{{element.Transporter}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="TruckNumber">
+                    <th mat-header-cell *matHeaderCellDef>TruckNumber</th>
+                    <td mat-cell *matCellDef="let element">{{element.TruckNumber}}</td>
+                  </ng-container>
                   <ng-container matColumnDef="Date">
                     <th mat-header-cell *matHeaderCellDef>Date</th>
-                    <td mat-cell *matCellDef="let element">{{element.Date|date:'shortDate' }}</td>
+                    <td mat-cell *matCellDef="let element">{{element.Date | date : 'dd/MM/yyyy'}}</td>
                   </ng-container>
-
-                  <ng-container matColumnDef="Material">
-                    <th mat-header-cell *matHeaderCellDef>Material</th>
-                    <td mat-cell *matCellDef="let element">{{element.Material}}</td>
+                  <ng-container matColumnDef="TotalReturnQty">
+                    <th mat-header-cell *matHeaderCellDef>Total Return Qty</th>
+                    <td mat-cell *matCellDef="let element" class="QtyClass">{{element.TotalReturnQty}}</td>
                   </ng-container>
-
-                  <ng-container matColumnDef="Text">
-                    <th mat-header-cell *matHeaderCellDef>Text</th>
-                    <td mat-cell *matCellDef="let element" class="QtyClass">{{element.Text}}</td>
+                  <ng-container matColumnDef="TotalReturnAmount">
+                    <th mat-header-cell *matHeaderCellDef>Total Return Amount</th>
+                    <td mat-cell *matCellDef="let element" class="QtyClass">{{element.TotalReturnAmount}}</td>
                   </ng-container>
-                  <ng-container matColumnDef="Qty">
-                    <th mat-header-cell *matHeaderCellDef>Qty</th>
-                    <td mat-cell *matCellDef="let element" class="QtyClass">{{element.Qty}}</td>
-                  </ng-container>
-                  <ng-container matColumnDef="Status">
-                    <th mat-header-cell *matHeaderCellDef>Status</th>
-                    <td mat-cell *matCellDef="let element" class="QtyClass">{{element.Status}}</td>
-                  </ng-container>
-                  <ng-container matColumnDef="Document">
-                    <th mat-header-cell *matHeaderCellDef>Document</th>
-                    <td mat-cell *matCellDef="let element" class="QtyClass">{{element.Document}}</td>
-                  </ng-container>
-
-
-
 
                   <tr mat-header-row *matHeaderRowDef="ReturnDisplayedColumns;sticky: true"></tr>
                   <tr mat-row *matRowDef="let row; columns: ReturnDisplayedColumns;let even=even">

@@ -21,6 +21,8 @@ import { AttachmentViewDialogComponent } from 'app/notifications/attachment-view
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import * as SecureLS from 'secure-ls';
 import { AuthService } from 'app/services/auth.service';
+import { BPCRetHeader } from 'app/models/customer';
+import { CustomerService } from 'app/services/customer.service';
 
 
 @Component({
@@ -64,7 +66,7 @@ export class CustomerPolookupComponent implements OnInit {
   SOItemDataSource: MatTableDataSource<BPCOFItem>;
   SODocDataSource: MatTableDataSource<DocumentDetails>;
   DocNumberCount: SOItemCount;
-  SODoc: DocumentDetails[] = []
+  SODoc: DocumentDetails[] = [];
   SODocDisplayedColumns: string[] = [
 
     'AttachmentName',
@@ -84,7 +86,8 @@ export class CustomerPolookupComponent implements OnInit {
   ];
   SOGRGIDataSource: MatTableDataSource<BPCOFGRGI>;
   AllPODI: BPCPODItem[] = [];
-  AllReturn: BPCRetNew[] = [];
+  // AllReturn: BPCRetNew[] = [];
+  AllReturn: BPCRetHeader[] = [];
   AllBPCInv: BPCInvoice[] = [];
   PODDisplayedColumns: string[] = [
     'InvoiceNumber',
@@ -95,11 +98,26 @@ export class CustomerPolookupComponent implements OnInit {
     'AttachmentName',
 
   ];
-  InvoiceDisplayedColumns: string[] = ['InvoiceNo', 'InvoiceDate', 'InvoiceAmount', 'Currency']
-  ReturnDisplayedColumns: string[] = ['ReturnOrder', 'Date', 'Material', 'Text', 'Qty', 'Status', 'Document']
+  InvoiceDisplayedColumns: string[] = ['InvoiceNo', 'InvoiceDate', 'InvoiceAmount', 'Currency'];
+  ReturnDisplayedColumns: string[] = [
+    'RetReqID',
+    'DocumentNumber',
+    'CreditNote',
+    'Transporter',
+    'TruckNumber',
+    'Date', 
+    'TotalReturnQty',
+    'TotalReturnAmount'
+    // 'Material', 
+    // 'Text', 
+    // 'Qty', 
+    // 'Status', 
+    // 'Document'
+  ];
   // PODataSource = new MatTableDataSource<BPCPODHeader>([]);
   PODDataSource = new MatTableDataSource<BPCPODItem>([]);
-  ReturnDataSource = new MatTableDataSource<BPCRetNew>([]);
+  // ReturnDataSource = new MatTableDataSource<BPCRetNew>([]);
+  ReturnDataSource = new MatTableDataSource<BPCRetHeader>([]);
   // InvoiceDataSource = new MatTableDataSource<BPCPODItem>([]);
   InvoiceDDataSource = new MatTableDataSource<BPCInvoice>([]);
   OrderFulfilmentDetails: OrderFulfilmentDetails = new OrderFulfilmentDetails();
@@ -129,12 +147,13 @@ export class CustomerPolookupComponent implements OnInit {
   file: string;
   filetype: string;
   SecretKey: string;
-    SecureStorage: SecureLS;
+  SecureStorage: SecureLS;
   constructor(
     private route: ActivatedRoute,
     public _dashboardService: DashboardService,
     public _POService: POService,
     public _PODService: PODService,
+    public _customerService: CustomerService,
     private _masterService: MasterService,
     private _router: Router,
     private formBuilder: FormBuilder,
@@ -236,7 +255,8 @@ export class CustomerPolookupComponent implements OnInit {
     this.tab4 = true;
     this.tab5 = false;
     // this.GetPODsByDocAndPartnerID();
-    this.GetPartnerAndRequestIDByPartnerId();
+    // this.GetPartnerAndRequestIDByPartnerId();
+    this.GetReturnsByDocAndPartnerID();
   }
   tabfive(): void {
     this.tab1 = false;
@@ -247,7 +267,7 @@ export class CustomerPolookupComponent implements OnInit {
     this.GetAttachmentByPatnerIdAndDocNum();
   }
 
-  AttachmentName_clk(AttachmentName, index, ref) {
+  AttachmentName_clk(AttachmentName, index, ref): void {
     this.file = this.SODoc[index].AttachmentFile;
     this.filetype = this.SODoc[index].ContentType;
     const blob = new Blob([this.file], { type: this.filetype });
@@ -317,7 +337,7 @@ export class CustomerPolookupComponent implements OnInit {
         this.sOItemCount.ItemCount = this.SODoc.length;
 
         this.SODocDataSource = new MatTableDataSource(this.SODoc);
-        this.SODocDataSource.paginator = this.DocPaginator
+        this.SODocDataSource.paginator = this.DocPaginator;
       },
       (err) => {
         console.error(err);
@@ -328,13 +348,13 @@ export class CustomerPolookupComponent implements OnInit {
 
   GetPOItemsByDocAndPartnerID(): void {
     this.IsProgressBarVisibile = true;
-    //chng madhu
+    // chng madhu
     this._POService.GetPOItemsByDocAndPartnerID(this.DocNumber, this.PartnerID).subscribe(
       (data) => {
         this.SOtems = data as BPCOFItem[];
         this.sOItemCount.ItemCount = this.SOtems.length;
         this.SOItemDataSource = new MatTableDataSource(this.SOtems);
-        this.SOItemDataSource.paginator = this.ItemPaginator
+        this.SOItemDataSource.paginator = this.ItemPaginator;
         this.IsProgressBarVisibile = false;
       },
       (err) => {
@@ -377,7 +397,7 @@ export class CustomerPolookupComponent implements OnInit {
         this.AllPODI = data as BPCPODItem[];
         this.sOItemCount.PODCount = this.AllPODI.length;
         this.PODDataSource = new MatTableDataSource(this.AllPODI);
-        this.PODDataSource.paginator = this.PODPaginator
+        this.PODDataSource.paginator = this.PODPaginator;
         this.IsProgressBarVisibile = false;
       },
       (err) => {
@@ -386,17 +406,34 @@ export class CustomerPolookupComponent implements OnInit {
       }
     );
   }
-  GetPartnerAndRequestIDByPartnerId(): void {
-    this._POService.GetPartnerAndRequestIDByPartnerId(this.PartnerID).subscribe(
+  // GetPartnerAndRequestIDByPartnerId(): void {
+  //   this._POService.GetPartnerAndRequestIDByPartnerId(this.PartnerID).subscribe(
+  //     (data) => {
+  //       this.AllReturn = data as BPCRetNew[];
+  //       this.sOItemCount.ReturnCount = this.AllReturn.length;
+  //       this.ReturnDataSource = new MatTableDataSource(this.AllReturn);
+  //       this.ReturnDataSource.paginator = this.ReturnPaginator;
+
+  //       this.IsProgressBarVisibile = false;
+  //       // console.log("return:" + data);
+  //       // console.log("return1:" + this.ReturnDataSource);
+  //     },
+  //     (err) => {
+  //       console.error(err);
+  //     }
+  //   );
+  // }
+  GetReturnsByDocAndPartnerID(): void {
+    this._customerService.GetReturnsByDocAndPartnerID(this.DocNumber, this.PartnerID).subscribe(
       (data) => {
-        this.AllReturn = data as BPCRetNew[];
+        this.AllReturn = data as BPCRetHeader[];
         this.sOItemCount.ReturnCount = this.AllReturn.length;
         this.ReturnDataSource = new MatTableDataSource(this.AllReturn);
-        this.ReturnDataSource.paginator = this.ReturnPaginator
+        this.ReturnDataSource.paginator = this.ReturnPaginator;
 
         this.IsProgressBarVisibile = false;
-        console.log("return:" + data)
-        console.log("return1:" + this.ReturnDataSource)
+        // console.log("return:" + data);
+        // console.log("return1:" + this.ReturnDataSource);
       },
       (err) => {
         console.error(err);
@@ -406,13 +443,13 @@ export class CustomerPolookupComponent implements OnInit {
 
   GetInvoiceByPartnerIdAnDocumentNo(): void {
     this.IsProgressBarVisibile = true;
-    this._POService.GetInvoiceByPartnerIdAnDocumentNo(this.PartnerID).subscribe(
+    this._POService.GetInvoiceByPartnerIdAnDocumentNo(this.PartnerID, this.DocNumber).subscribe(
       // this.PartnerID
       (data) => {
         this.AllBPCInv = data as BPCInvoice[];
         this.sOItemCount.InvCount = this.AllBPCInv.length;
         this.InvoiceDDataSource = new MatTableDataSource(this.AllBPCInv);
-        this.InvoiceDDataSource.paginator = this.InvoicePaginator
+        this.InvoiceDDataSource.paginator = this.InvoicePaginator;
         this.IsProgressBarVisibile = false;
       },
       (err) => {

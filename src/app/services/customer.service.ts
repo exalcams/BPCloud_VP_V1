@@ -192,7 +192,10 @@ export class CustomerService {
         return this._httpClient.get<BPCRetItemView[]>(`${this.baseAddress}poapi/Return/GetReturnItemsByReqID?RetReqID=${RetReqID}`)
             .pipe(catchError(this.errorHandler));
     }
-
+    GetReturnsByDocAndPartnerID(DocNumber: string, PatnerID: string): Observable<BPCRetHeader[] | string> {
+        return this._httpClient.get<BPCRetHeader[]>(`${this.baseAddress}poapi/Return/GetReturnsByDocAndPartnerID?DocNumber=${DocNumber}&PatnerID=${PatnerID}`)
+            .pipe(catchError(this.errorHandler));
+    }
     CreateReturnHeader(Return: BPCRetView): Observable<any> {
         return this._httpClient.post<any>(`${this.baseAddress}poapi/Return/CreateReturnHeader`,
             Return,
