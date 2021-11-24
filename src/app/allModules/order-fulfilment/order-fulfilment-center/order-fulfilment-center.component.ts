@@ -1015,7 +1015,7 @@ export class OrderFulFilmentCenterComponent implements OnInit {
     }
 
     doughnutChartClicked(e: any): void {
-        console.log(e);
+        // console.log(e);
         if (e.active.length > 0) {
             const chart = e.active[0]._chart;
             const activePoints = chart.getElementAtEvent(e.event);
@@ -1025,7 +1025,7 @@ export class OrderFulFilmentCenterComponent implements OnInit {
                 const label = chart.data.labels[clickedElementIndex];
                 // get value by index
                 const value = chart.data.datasets[0].data[clickedElementIndex];
-                console.log(clickedElementIndex, label, value);
+                // console.log(clickedElementIndex, label, value);
                 if (label !== null) {
                     const string = "Chart " + label;
                     this.CreateActionLogvalues(string);
