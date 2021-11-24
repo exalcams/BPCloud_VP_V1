@@ -53,7 +53,7 @@
         <div *ngIf="doughnutChartData && doughnutChartData?.length" id="doughnutChart" fxFlex fxLayoutAlign="start"
           class="pt-8 pl-8 pr-4">
           <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
-            [options]="doughnutChartOptions" [colors]="colors">
+            [options]="doughnutChartOptions" [colors]="colors" (chartClick)="doughnutChartClicked($event)">
           </canvas>
         </div>
         <!-- <div fxFlex fxLayout fxLayoutAlign="end center">

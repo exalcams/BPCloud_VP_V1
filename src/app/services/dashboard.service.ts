@@ -373,10 +373,14 @@ export class DashboardService {
     return this._httpClient.get<FulfilmentDetails[]>(`${this.baseAddress}poapi/Dashboard/GetVendorDoughnutChartDataByImportVendor?ImportVendor=${ImportVendor}`)
       .pipe(catchError(this.errorHandler));
   }
-  GetCustomerDoughnutChartData(PartnerID: string): Observable<BPCKRA[] | string> {
-    return this._httpClient.get<BPCKRA[]>(`${this.baseAddress}factapi/Fact/GetCustomerDoughnutChartData?PartnerID=${PartnerID}`)
+  GetCustomerDoughnutChartData(PartnerID: string): Observable<FulfilmentDetails[] | string> {
+    return this._httpClient.get<FulfilmentDetails[]>(`${this.baseAddress}poapi/Dashboard/GetCustomerDoughnutChartData?PartnerID=${PartnerID}`)
       .pipe(catchError(this.errorHandler));
   }
+  // GetCustomerDoughnutChartData(PartnerID: string): Observable<BPCKRA[] | string> {
+  //   return this._httpClient.get<BPCKRA[]>(`${this.baseAddress}factapi/Fact/GetCustomerDoughnutChartData?PartnerID=${PartnerID}`)
+  //     .pipe(catchError(this.errorHandler));
+  // }
 
   GetCustomerOpenProcessCircle(PartnerID: string): Observable<BPCKRA | string> {
     return this._httpClient.get<BPCKRA>(`${this.baseAddress}factapi/Fact/GetCustomerOpenProcessCircle?PartnerID=${PartnerID}`)
