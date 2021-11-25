@@ -4,7 +4,7 @@
       <div class="bg"></div>
       <div fxLayout="row">
         <h3 class="head1"><b>WELCOME</b></h3>
-        <h3 style="margin: 0px;padding-left: 10px;color:#d87060"><b>{{authenticationDetails?.DisplayName | uppercase}}</b></h3>
+        <h3 class="user"><b>{{authenticationDetails?.DisplayName | uppercase}}</b></h3>
       </div>
       <div fxFlex align="end">
         <span><img src="assets/images/logo.svg" class="logoClass"></span>
@@ -16,36 +16,27 @@
         <mat-card fxFlex.lg="100" fxFlex.lt-xl="100" fxFlex.sm="100" fxFlex.gt-sm="100" class="coe_card p-0 px-12">
 
           <div fxFlex>
-
             <div class="coe_message">Welcome Message !</div>
             <div fxLayout fxLayoutAlign="start start">
               <!-- <div  class="colon">“</div> -->
               <div class="messagesty" [innerHtml]="selectedWelcomeMessage?.WelcomeMessage"></div>
               <!-- <div class="colon1 pt-16">”</div> -->
             </div>
-
-
           </div>
-         
+
         </mat-card>
       </div>
-      <div fxLayout="row" class="cl_divcards">
-        <div class="offers_div">
-          <mat-card>
-         <h5 class="offers_h5"> <img src="assets//images/Discount.png" class="cl_discount"> </h5>  
-          </mat-card>
-        </div>
-        <div class="product_div">
-          <mat-card>
-            <h5 class="offers_h5"> <img src="assets//images/launch.png" class="cl_launch"> </h5>  
-          </mat-card>
-        </div>
-        
-       
+      <div fxLayout="row" fxLayoutAlign="space-between center" class="m-24" fxLayoutGap="24px">
+        <mat-card fxFlex="50" fxLayoutAlign="center">
+          <img src="assets/images/Discount.png" class="cl_discount">
+        </mat-card>
+        <mat-card fxFlex="50" fxLayoutAlign="center">
+          <img src="assets/images/launch.png" class="cl_launch">
+        </mat-card>
       </div>
-     
+
     </div>
-   
+
   </div>
- 
+
 </div>

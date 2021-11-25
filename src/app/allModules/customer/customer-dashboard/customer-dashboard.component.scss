@@ -1,20 +1,30 @@
 @import "src/@fuse/scss/fuse";
+
 #cusdash {
     background-color: white;
+
     // font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        padding: 0px;
+    // h1,
+    // h2,
+    // h3,
+    // h4,
+    // h5,
+    // h6 {
+    //     padding: 0px;
+    //     margin: 0px;
+    // }
+
+    .user {
         margin: 0px;
+        padding-left: 10px;
+        color: #d87060
     }
+
     .outer {
         border-bottom: 1px solid rgba(255, 85, 0, 0.1);
         position: relative;
         z-index: 1;
+
         .bg {
             position: absolute;
             z-index: -1;
@@ -26,17 +36,20 @@
             opacity: 0.1;
             background-repeat: no-repeat;
         }
+
         width: 100%;
         object-fit: contain;
         line-height: 50px;
         display: inline-block;
         vertical-align: middle;
     }
+
     .topbarClass {
         background: url("/assets/images/backgrounds/header 2.png") no-repeat;
         background-repeat: no-repeat;
         background-size: cover;
     }
+
     .center {
         padding: 0px !important;
         max-width: 2000px;
@@ -45,6 +58,7 @@
         @include media-breakpoint-down(md) {
             padding: 0 !important;
         }
+
         #headerCard {
             position: fixed;
             height: 50px;
@@ -56,9 +70,11 @@
             margin-bottom: 0px;
             z-index: 100;
         }
+
         .content-pos {
             margin-top: -27px !important;
         }
+
         .content-card1 {
             display: flex;
             flex: 1;
@@ -93,10 +109,12 @@
             //   }
         }
     }
+
     .side-bar {
         display: flex;
         flex: 1;
         flex-direction: column;
+
         .sidenav-content {
             overflow: auto;
             overflow-x: hidden;
@@ -105,6 +123,7 @@
             padding: 15px 15px 0px 15px;
         }
     }
+
     .staySafe {
         background-image: url("assets/images/StaySafe.png");
         background-repeat: no-repeat;
@@ -113,21 +132,25 @@
         display: flex;
         justify-content: center;
         align-items: flex-end;
+
         ul {
             list-style: none;
             margin: 8px;
             padding-left: 13px;
+
             li {
                 line-height: 25px;
             }
         }
     }
+
     .safetyFirst {
         background-image: url("assets/images/SafetyFirst.png");
         background-repeat: no-repeat;
         background-size: cover;
         height: 400px;
     }
+
     .translucentDiv {
         -webkit-backdrop-filter: blur(37.4px);
         backdrop-filter: blur(37.4px);
@@ -138,11 +161,13 @@
         border-radius: 15px;
         margin-bottom: 30px;
     }
+
     table,
     th,
     td {
         border: none;
     }
+
     .rightFlexHr {
         margin: 0px 0px 10px 0px;
         width: 45%;
@@ -157,6 +182,7 @@
         // background-color: #efb577;
         // border: none;
     }
+
     .rightBorder {
         margin: 10px;
         padding: 10px;
@@ -166,10 +192,12 @@
         border-style: none none none solid;
         border-left-width: 5px;
     }
+
     .viewMoreDetails {
         font-weight: 600;
         color: #000000;
     }
+
     #viewMoreDetailsCard {
         position: fixed;
         height: 50px;
@@ -181,6 +209,7 @@
         margin-bottom: 0px;
         z-index: 100;
     }
+
     .theme-options-button {
         background-color: #e6e6e6;
         position: absolute;
@@ -216,12 +245,14 @@
             opacity: 1;
         }
     }
+
     .cardActions {
         // box-shadow: 0 -5px 10px 0 rgba(0, 0, 0, 0.16);
         background-color: #e6e6e6;
         padding: 10px;
     }
-    .mat-tab-body-content{
-       flex-direction: column !important;
+
+    .mat-tab-body-content {
+        flex-direction: column !important;
     }
 }
