@@ -72,7 +72,7 @@ export class CustomerDashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const retrievedObject =  this.SecureStorage.get('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
@@ -225,10 +225,26 @@ export class CustomerDashboardComponent implements OnInit {
           } else if (Actiontype === 'Reject') {
             this.RejectAIACT();
           }
+          else if (Actiontype === 'Increase') {
+            // this.RejectAIACT();
+            // console.log('Increased');
+            this.SendCreditLimitIncreaseRequestMail();
+          }
         }
       });
   }
-
+  SendCreditLimitIncreaseRequestMail(): void {
+    this.IsProgressBarVisibile = true;
+    this._masterService.SendCreditLimitIncreaseRequestMail(this.CurrentUserName, this.SelectedBPCFact.Plant).subscribe(
+      (data) => {
+        this.IsProgressBarVisibile = false;
+      },
+      (err) => {
+        console.error(err);
+        this.IsProgressBarVisibile = false;
+      }
+    );
+  }
   GetBPCFactSubItemValues(): void {
     this.GetBPCKRAValues();
     this.GetBPCFactBankValues();
@@ -295,6 +311,12 @@ export class CustomerDashboardComponent implements OnInit {
       }
     });
 
+  }
+
+  CreditLimitIncreaseClicked(): void {
+    const Actiontype = 'Increase';
+    const Catagory = 'Credit Limit';
+    this.OpenConfirmationDialog(Actiontype, Catagory);
   }
 
   ActionTextClicked(aIACTByPartnerID: BPCAIACT): void {

@@ -394,6 +394,11 @@ export class POService {
     return this._httpClient.get<BPCInvoice[]>(`${this.baseAddress}poapi/Invoice/FilterInvoices?PatnerID=${PatnerID}&DocNumber=${DocNumber}&InvoiceNumber=${InvoiceNumber}&FromDate=${FromDate}&ToDate=${ToDate}`)
       .pipe(catchError(this.errorHandler));
   }
+  FilterPendingInvoices(PatnerID: string, DocNumber: string, InvoiceNumber: string, FromDate: string, ToDate: string): Observable<BPCInvoice[] | string> {
+    // tslint:disable-next-line:max-line-length
+    return this._httpClient.get<BPCInvoice[]>(`${this.baseAddress}poapi/Invoice/FilterPendingInvoices?PatnerID=${PatnerID}&DocNumber=${DocNumber}&InvoiceNumber=${InvoiceNumber}&FromDate=${FromDate}&ToDate=${ToDate}`)
+      .pipe(catchError(this.errorHandler));
+  }
   // (`${this.baseAddress}poapi/Invoice/GetExcel_VendorReconciliation?Excel_val=${Excel_val}&Selectedvendor=${Selectedvendor}`)
   //#region GetExcel_VendorReconciliation
   GetExcel_VendorReconciliationMismatch(Excel_val: InvoiceVendor, Selectedvendor): Observable<InvoiceVendor[]> {

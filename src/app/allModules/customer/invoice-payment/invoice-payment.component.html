@@ -3,7 +3,7 @@
     <div class="outer" fxLayout>
       <div class="bg"></div>
       <div>
-        <h3 class="head1"><b>Invoice payment</b></h3>
+        <h3 class="head1"><b>Invoice list pending for payment</b></h3>
       </div>
       <div fxFlex align="end">
         <span><img src="assets/images/logo.svg" class="logoClass"></span>
@@ -174,17 +174,17 @@
             <ng-container matColumnDef="Status">
               <th mat-header-cell *matHeaderCellDef> Status </th>
               <td mat-cell *matCellDef="let element;">
-                {{element.Status}}
+                <div class="round" [style.background-color]="getStatusColor(element)"></div>
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="PODStatus">
+            <!-- <ng-container matColumnDef="PODStatus">
               <th mat-header-cell *matHeaderCellDef> POD Status </th>
               <td mat-cell *matCellDef="let element;">
                 <p *ngIf="element.PODDate && element.PODConfirmedBy">Confirmed</p>
                 <p *ngIf="!element.PODDate && !element.PODConfirmedBy">Open</p>
               </td>
-            </ng-container>
+            </ng-container> -->
 
             <ng-container matColumnDef="Payment">
               <th mat-header-cell *matHeaderCellDef style="width: 10%;">Action</th>
@@ -195,7 +195,7 @@
                   mat-raised-button style="color:white;">Payment</button>
                 <!-- [disabled]="element.InvoiceAmount ==0 || element.InvoiceAmount==element.PaidAmount || isPayButton " -->
                 <mat-menu #menu="matMenu" yPosition="below">
-                  <button mat-menu-item>Make Payment</button>
+                  <!-- <button mat-menu-item>Make Payment</button> -->
                   <button mat-menu-item (click)="openPaymentdialog(element)">Record Payment</button>
                 </mat-menu>
               </td>

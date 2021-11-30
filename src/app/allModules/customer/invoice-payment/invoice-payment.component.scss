@@ -228,15 +228,16 @@
   .roundCommon {
     height: 20px;
     width: 20px;
-    border-radius: 20px;
-    border-width: 3px;
-    border-style: solid;
+    border-radius: 50%;
+    margin: auto;
+    // border-width: 3px;
+    // border-style: solid;
   }
 
   .round {
     @extend .roundCommon;
     background-color: white;
-    border-color: gray;
+    // border-color: gray;
   }
 
   .hor-timeline {
