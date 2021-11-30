@@ -49,7 +49,7 @@ export class InvoicePaymentComponent implements OnInit {
     'PaidAmount',
     'BalanceAmount',
     'Status',
-    'PODStatus',
+    // 'PODStatus',
     'Payment'
   ];
 
@@ -210,7 +210,7 @@ export class InvoicePaymentComponent implements OnInit {
         //   Status = "";
         // }
         this.IsProgressBarVisibile = true;
-        this.poservice.FilterInvoices(this.currentUserName, DocNumber, InvoiceNumber, FromDate, ToDate).subscribe(
+        this.poservice.FilterPendingInvoices(this.currentUserName, DocNumber, InvoiceNumber, FromDate, ToDate).subscribe(
           (data) => {
             this.IsProgressBarVisibile = false;
             this.AllInvoices = data as BPCInvoice[],
@@ -226,6 +226,17 @@ export class InvoicePaymentComponent implements OnInit {
     } else {
       this.ShowValidationErrors(this.SearchFormGroup);
     }
+  }
+
+  getStatusColor(invoice: BPCInvoice): string {
+    if (invoice) {
+      if (invoice.BalanceAmount === invoice.InvoiceAmount) {
+        return '#f8383f';
+      } else {
+        return '#fc9c18';
+      }
+    }
+    return 'white';
   }
 
   ShowValidationErrors(formGroup: FormGroup): void {

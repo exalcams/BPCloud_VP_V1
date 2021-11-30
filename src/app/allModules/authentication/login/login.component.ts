@@ -1067,7 +1067,7 @@ export class LoginComponent implements OnInit {
         if (this.menuItems.indexOf("PurchaseIndent") >= 0) {
             this.children.push({
                 id: "Purchase",
-                title: "Purchase",
+                title: "Purchase Indent",
                 translate: "NAV.CUSTOMER.PURCHASE_INDENT",
                 type: "collapsable",
                 icon: "purchaseIntentIcon",
@@ -1136,7 +1136,7 @@ export class LoginComponent implements OnInit {
         if (this.menuItems.indexOf("InvoicePayment") >= 0) {
             this.children.push({
                 id: "invoicepayment",
-                title: "Invoice Payment",
+                title: "Invoice List",
                 translate: "NAV.CUSTOMER.INVOICE_PAYMENT",
                 type: "item",
                 icon: "payment",

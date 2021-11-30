@@ -870,4 +870,13 @@ export class MasterService {
             )
             .pipe(catchError(this.errorHandler));
     }
+
+    SendCreditLimitIncreaseRequestMail(PatnerID: string, Plant: string): Observable<any> {
+        return this._httpClient
+            .get(
+                `${this.baseAddress}authenticationapi/Master/SendCreditLimitIncreaseRequestMail?PatnerID=${PatnerID}&Plant=${Plant}`
+            )
+            .pipe(catchError(this.errorHandler));
+    }
+
 }

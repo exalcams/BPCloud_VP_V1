@@ -4,15 +4,15 @@
     background-color: white;
 
     // font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    // h1,
-    // h2,
-    // h3,
-    // h4,
-    // h5,
-    // h6 {
-    //     padding: 0px;
-    //     margin: 0px;
-    // }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        padding: 0px;
+        margin: 0px;
+    }
 
     .user {
         margin: 0px;
@@ -254,5 +254,17 @@
 
     .mat-tab-body-content {
         flex-direction: column !important;
+    }
+
+    .actionBg {
+        background-color: rgb(242, 247, 254);
+    }
+
+    .actionBtn {
+        float: right;
+        // height: 32px;
+        background-color: #efb577;
+        color: white;
+        cursor: pointer;
     }
 }
