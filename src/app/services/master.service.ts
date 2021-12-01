@@ -23,6 +23,7 @@ import {
     AppUsageView,
     UserPreference,
     PO,
+    CreditLimitMaster,
 } from "app/models/master";
 import { BPCDocumentCenterMaster } from "app/models/ASN";
 import { Guid } from "guid-typescript";
@@ -472,6 +473,14 @@ export class MasterService {
             .pipe(catchError(this.errorHandler));
     }
 
+    GetAllBuyers(): Observable<UserView[] | string> {
+        return this._httpClient
+            .get<UserView[]>(
+                `${this.baseAddress}authenticationapi/Master/GetAllBuyers`
+            )
+            .pipe(catchError(this.errorHandler));
+    }
+
     GetAllNotificationByUserID(
         UserID: string
     ): Observable<UserNotification[] | string> {
@@ -757,6 +766,7 @@ export class MasterService {
             .pipe(catchError(this.errorHandler));
     }
     // product end
+
     // SessionMaster
 
     GetSessionMasterByProject(
@@ -820,6 +830,79 @@ export class MasterService {
             .post<any>(
                 `${this.baseAddress}authenticationapi/Master/DeleteSessionMaster`,
                 sessionMaster,
+                {
+                    headers: new HttpHeaders({
+                        "Content-Type": "application/json",
+                    }),
+                }
+            )
+            .pipe(catchError(this.errorHandler));
+    }
+
+    
+      // CreditLimitMaster
+
+      GetCreditLimitMasterByProject(
+        ProjectName: string
+    ): Observable<CreditLimitMaster | string> {
+        return this._httpClient
+            .get<CreditLimitMaster>(
+                `${this.baseAddress}authenticationapi/Master/GetCreditLimitMasterByProject?ProjectName=${ProjectName}`
+            )
+            .pipe(catchError(this.errorHandler));
+    }
+
+    GetAllCreditLimitMasters(): Observable<CreditLimitMaster[] | string> {
+        return this._httpClient
+            .get<CreditLimitMaster[]>(
+                `${this.baseAddress}authenticationapi/Master/GetAllCreditLimitMasters`
+            )
+            .pipe(catchError(this.errorHandler));
+    }
+
+    GetAllCreditLimitMastersByProject(
+        ProjectName: string
+    ): Observable<CreditLimitMaster[] | string> {
+        return this._httpClient
+            .get<CreditLimitMaster[]>(
+                `${this.baseAddress}authenticationapi/Master/GetAllCreditLimitMastersByProject?ProjectName=${ProjectName}`
+            )
+            .pipe(catchError(this.errorHandler));
+    }
+
+    CreateCreditLimitMaster(creditLimitMaster: CreditLimitMaster): Observable<any> {
+        return this._httpClient
+            .post<any>(
+                `${this.baseAddress}authenticationapi/Master/CreateCreditLimitMaster`,
+                creditLimitMaster,
+                {
+                    headers: new HttpHeaders({
+                        "Content-Type": "application/json",
+                    }),
+                }
+            )
+            .pipe(catchError(this.errorHandler));
+    }
+
+    UpdateCreditLimitMaster(creditLimitMaster: CreditLimitMaster): Observable<any> {
+        return this._httpClient
+            .post<any>(
+                `${this.baseAddress}authenticationapi/Master/UpdateCreditLimitMaster`,
+                creditLimitMaster,
+                {
+                    headers: new HttpHeaders({
+                        "Content-Type": "application/json",
+                    }),
+                }
+            )
+            .pipe(catchError(this.errorHandler));
+    }
+
+    DeleteCreditLimitMaster(creditLimitMaster: CreditLimitMaster): Observable<any> {
+        return this._httpClient
+            .post<any>(
+                `${this.baseAddress}authenticationapi/Master/DeleteCreditLimitMaster`,
+                creditLimitMaster,
                 {
                     headers: new HttpHeaders({
                         "Content-Type": "application/json",

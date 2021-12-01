@@ -30,6 +30,7 @@ export class UserPreference {
 export class UserView {
     UserID: Guid;
     UserName: string;
+    Email: string;
 }
 export class RoleWithApp {
     RoleID: Guid;
@@ -157,6 +158,17 @@ export class SessionMaster {
     ID: number;
     ProjectName: string;
     SessionTimeOut: number;
+    IsActive: boolean;
+    CreatedOn: Date | string;
+    CreatedBy: string;
+    ModifiedOn: Date | string | null;
+    ModifiedBy: string;
+}
+export class CreditLimitMaster {
+    ID: number;
+    UserName: string;
+    PlantID: string;
+    Email: string;
     IsActive: boolean;
     CreatedOn: Date | string;
     CreatedBy: string;
