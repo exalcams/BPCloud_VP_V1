@@ -172,7 +172,7 @@ export class LoginComponent implements OnInit {
     loginClicked(): void {
         if (this.loginForm.valid) {
             this.isProgressBarVisibile = true;
-            console.log(new Date().getTimezoneOffset());
+            // console.log(new Date().getTimezoneOffset());
             this._authService
                 .login(
                     this.loginForm.get("userName").value,
@@ -184,7 +184,7 @@ export class LoginComponent implements OnInit {
                             .GetUserPreferenceByUserID(data.UserID as Guid)
                             .subscribe((data1) => {
                                 let userPre = data1 as UserPreference;
-                                console.log(userPre);
+                                // console.log(userPre);
                                 if (!userPre) {
                                     userPre = new UserPreference();
                                     userPre.NavbarPrimaryBackground =
@@ -197,7 +197,7 @@ export class LoginComponent implements OnInit {
                                     "userPreferenceData",
                                     JSON.stringify(userPre)
                                 );
-                                console.log(userPre.ToolbarBackground);
+                                // console.log(userPre.ToolbarBackground);
                                 this.UpdateUserPreference();
                             });
                         this.isProgressBarVisibile = false;
@@ -1477,7 +1477,15 @@ export class LoginComponent implements OnInit {
                 url: "/configuration/session",
             });
         }
-
+        if (true || this.menuItems.indexOf("CreditLimit") >= 0) {
+            this.configSubChildren.push({
+                id: "creditlimit",
+                title: "Credit Limit",
+                translate: "NAV.ADMIN.SESSION",
+                type: "item",
+                url: "/configuration/creditlimit",
+            });
+        }
         if (this.menuItems.indexOf("ExpenseType") >= 0) {
             this.configSubChildren.push({
                 id: "expensetype",

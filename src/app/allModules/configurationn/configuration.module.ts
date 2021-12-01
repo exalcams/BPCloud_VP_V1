@@ -23,6 +23,7 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import { ProductsComponent } from './products/products.component';
 import { CutomerWelcomeMessageComponent } from './cutomer-welcome-message/cutomer-welcome-message.component';
 import { POComponent } from './po/po.component';
+import { CreditLimitMasterComponent } from './credit-limit-master/credit-limit-master.component';
 
 const menuRoutes: Routes = [
     {
@@ -36,6 +37,10 @@ const menuRoutes: Routes = [
     {
         path: 'session',
         component: SessionMasterComponent,
+    },
+    {
+        path: 'creditlimit',
+        component: CreditLimitMasterComponent,
     },
     {
         path: 'supportmaster',
@@ -82,7 +87,8 @@ const menuRoutes: Routes = [
         DataMigrationComponent,
         ProductsComponent,
         CutomerWelcomeMessageComponent,
-        POComponent
+        POComponent,
+        CreditLimitMasterComponent
     ],
     imports: [
         MatButtonModule,

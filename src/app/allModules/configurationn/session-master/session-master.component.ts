@@ -36,9 +36,9 @@ export class SessionMasterComponent implements OnInit {
     private dialog: MatDialog,
     private _formBuilder: FormBuilder,
     private _authService: AuthService,
-    ) {
-      this.SecretKey = this._authService.SecretKey;
-      this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
+  ) {
+    this.SecretKey = this._authService.SecretKey;
+    this.SecureStorage = new SecureLS({ encodingType: 'des', isCompression: true, encryptionSecret: this.SecretKey });
     this.selectedSessionMaster = new SessionMaster();
     this.authenticationDetails = new AuthenticationDetails();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -48,7 +48,7 @@ export class SessionMasterComponent implements OnInit {
 
   ngOnInit(): void {
     // Retrive authorizationData
-    const retrievedObject =this.SecureStorage.get('authorizationData');
+    const retrievedObject = this.SecureStorage.get('authorizationData');
     if (retrievedObject) {
       this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
       this.menuItems = this.authenticationDetails.MenuItemNames.split(',');
