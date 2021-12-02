@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MenuApp, AuthenticationDetails, AppUsage } from 'app/models/master';
 import { Guid } from 'guid-typescript';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
@@ -9,17 +9,75 @@ import { MasterService } from 'app/services/master.service';
 import { FactService } from 'app/services/fact.service';
 import { VendorMasterService } from 'app/services/vendor-master.service';
 import { Router } from '@angular/router';
-import { MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
+import { MatSnackBar, MatDialog, MatDialogConfig, MatTabChangeEvent } from '@angular/material';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { NotificationDialogComponent } from 'app/notifications/notification-dialog/notification-dialog.component';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import * as SecureLS from 'secure-ls';
 import { AuthService } from 'app/services/auth.service';
+import { BPCOffer } from 'app/models/OrderFulFilment';
+import { POService } from 'app/services/po.service';
+import { triggerId } from 'async_hooks';
+import { animate, animateChild, query, stagger, state, style, transition, trigger } from '@angular/animations';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-customer-dashboard',
   templateUrl: './customer-dashboard.component.html',
-  styleUrls: ['./customer-dashboard.component.scss']
+  styleUrls: ['./customer-dashboard.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  // animations: fuseAnimations,
+  animations: [
+    trigger('items', [
+      transition(':enter', [
+        style({ transform: 'scale(0.5)', opacity: 0 }),  // initial
+        animate('1s cubic-bezier(.8, -0.6, 0.2, 1.5)',
+          style({ transform: 'scale(1)', opacity: 1 }))  // final
+      ]),
+      transition(':leave', [
+        style({ transform: 'scale(1)', opacity: 1, height: '*' }),
+        animate('1s cubic-bezier(.8, -0.6, 0.2, 1.5)',
+          style({
+            transform: 'scale(0.5)', opacity: 0,
+            height: '0px', margin: '0px'
+          }))
+      ]),
+    ]),
+    trigger('offerFade', [
+      transition('void=>*', [
+        style({ opacity: 0 }),
+        animate(1000, style({ opacity: 1 }))
+      ]),
+      transition('*=>void', [
+        style({ opacity: 1 }),
+        animate(1000, style({ opacity: 0 }))
+      ]),
+    ]),
+    trigger('list', [
+      transition(':enter', [
+        query('@items', stagger(300, animateChild()))
+      ]),
+    ])
+  ]
+
+  // animations: [
+  //   // trigger('offerFade', [
+  //   //   transition('void=>*', [
+  //   //     style({ opacity: 0 }),
+  //   //     animate(5000, style({ opacity: 1 }))
+  //   //   ]),
+  //   //   transition('*=>void', [
+  //   //     style({ opacity: 1 }),
+  //   //     animate(5000, style({ opacity: 0 }))
+  //   //   ]),
+  //   // ]),
+  //   trigger('slideUpDown', [
+  //     state('0', style({ 'max-height': '*', opacity: 1 })),
+  //     state('1', style({ 'max-height': '0px', opacity: 0 })),
+  //     transition(':enter', animate('400ms ease-in-out')),
+  //     transition('* => *', animate('400ms ease-in-out')),
+  //   ])
+  // ]
 })
 export class CustomerDashboardComponent implements OnInit {
 
@@ -34,6 +92,7 @@ export class CustomerDashboardComponent implements OnInit {
   IsProgressBarVisibile: boolean;
   searchText = '';
   AllFacts: BPCFact[] = [];
+  AllOffers: BPCOffer[] = [];
   selectID: string;
   SelectedBPCFact: BPCFact;
   SelectedBPCFactView: BPCFactView;
@@ -48,11 +107,13 @@ export class CustomerDashboardComponent implements OnInit {
   SelectedBPCAIACTByPartnerID: BPCAIACT;
   SecretKey: string;
   SecureStorage: SecureLS;
+  SelectedTabIndex = 0;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _masterService: MasterService,
     private _FactService: FactService,
     private _vendorMasterService: VendorMasterService,
+    private _poService: POService,
     private _router: Router,
     public snackBar: MatSnackBar,
     private dialog: MatDialog,
@@ -86,6 +147,7 @@ export class CustomerDashboardComponent implements OnInit {
         this._router.navigate(['/auth/login']);
       }
       this.CreateAppUsage();
+      this.GetOffersByPatnerID();
       this.GetFactByPartnerIDAndType();
     } else {
       this._router.navigate(['/auth/login']);
@@ -105,6 +167,25 @@ export class CustomerDashboardComponent implements OnInit {
         console.error(err);
       }
     );
+  }
+  GetOffersByPatnerID(): void {
+    this._poService.GetOffersByPatnerID(this.CurrentUserName).subscribe(
+      (data) => {
+        this.AllOffers = data as BPCOffer[];
+        // console.log(fact);
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
+  }
+  remove(index: number): void {
+    this.AllOffers.splice(index, 1);
+  }
+  tabChanged(tabChangeEvent: MatTabChangeEvent): void {
+    this.SelectedTabIndex = tabChangeEvent.index;
+    // console.log('tabChangeEvent => ', tabChangeEvent);
+    // console.log('index => ', tabChangeEvent.index);
   }
   GetFactByPartnerIDAndType(): void {
     // console.log(this.authenticationDetails.EmailAddress);

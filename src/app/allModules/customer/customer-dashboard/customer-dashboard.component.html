@@ -1,4 +1,4 @@
-<div id="cusdash" class="page-layout carded fullwidth" fusePerfectScrollbar>
+<div id="cusdash" class="page-layout carded fullwidth">
   <div class="center">
     <div class="outer" fxLayout>
       <div class="bg"></div>
@@ -10,10 +10,10 @@
         <span><img src="assets/images/logo.svg" class="logoClass"></span>
       </div>
     </div>
-    <div class="content-card1" fxLayoutGap="15px" style="background-color: #F1F1F6;">
+    <div class="content-card1" fxLayoutGap="15px" style="background-color: #F1F1F6;overflow-y:hidden ;">
       <!-- <div fxLayout fxLayoutGap="15px" style="margin-top: 0px;background-color: #F1F1F6;"> -->
       <!-- First Div -->
-      <mat-card fxFlex="30" class="side-bar p-0">
+      <mat-card fxFlex="30" class="side-bar p-0" fusePerfectScrollbar>
         <div class="sidenav-content" fxFlex>
           <div fxLayout="column" fxLayoutGap="15px">
 
@@ -141,7 +141,7 @@
       <!-- First Div -->
 
       <!-- Second Div -->
-      <div fxFlex="40">
+      <div fxFlex="40" fusePerfectScrollbar>
         <div fxLayout="column" fxLayoutGap="15px" style="height: 100%;padding-top: 15px;">
           <mat-card fxFlex="50%" style="padding: 10px;">
             <mat-card-content class="staySafe">
@@ -193,10 +193,10 @@
           </div>
           <hr class="rightFlexHr">
           <div fxFlex>
-            <mat-tab-group>
+            <mat-tab-group (selectedTabChange)="tabChanged($event)">
               <!-- <mat-tab label="Action ({{AllActions?.length}})"> -->
               <mat-tab label="Action">
-                <div class="mat-tab-body-content">
+                <div class="mat-tab-body-content" fusePerfectScrollbar>
                   <mat-card class="actionBg" fxLayout="column">
                     <div>{{ 'Credit limit Increase Request' | uppercase }}</div>
                     <div fxFlex fxLayoutAlign="end end">
@@ -264,9 +264,28 @@
                     </mat-card-content>
                   </mat-card> -->
               </mat-tab>
-              <mat-tab label="Notifications ({{AllNotifications?.length}})">
-                <div class="mat-tab-body-content">
-                  <mat-card *ngFor="let aIACTByPartnerID of AllNotifications" fxFlex="100%" fxLayout="column"
+              <mat-tab label="Notifications ({{AllOffers?.length}})">
+                <div class="mat-tab-body-content" fusePerfectScrollbar>
+                  <div fxLayout="row wrap" @list *ngIf="SelectedTabIndex===1"
+                    style="overflow-x: hidden;overflow-y: hidden;">
+                    <div @items *ngFor="let offer of AllOffers;let index=index" class="offerContainer" fxFlex="100">
+                      <mat-card class="offerCard m-8 p-8" fxLayout fxLayoutAlign="space-between center">
+                        <div fxFlex class="title p-16">
+                          <div fxLayout="column" fxLayoutAlign="center center">
+                            <div> {{offer.ConditionType}}</div>
+                            <div class="discount"> Discount</div>
+                          </div>
+                        </div>
+                        <!-- <div class="divider"></div> -->
+                        <div fxFlex fxLayout="column" class="subtitle">
+                          <div class="py-4">on {{offer.Material}}</div>
+                          <div class="py-4">* above {{offer.Amount}} {{offer.Currency}}</div>
+                        </div>
+                      </mat-card>
+                    </div>
+
+                  </div>
+                  <!-- <mat-card *ngFor="let aIACTByPartnerID of AllNotifications" fxFlex="100%" fxLayout="column"
                     class="rightBorder"
                     style="height: 80px;margin: 20px 5px 5px 2px;padding: 10px;border-color:#67c18b;">
                     <mat-card-content>
@@ -275,10 +294,8 @@
                       </h5>
                       <i style="padding:5px 0px 5px 5px;font-size: smaller;">{{aIACTByPartnerID.Date |
                         date:'dd/MM/yy'}},{{aIACTByPartnerID.Time}}</i>
-                      <!-- <button (click)="ActionTextClicked(aIACTByPartnerID)" mat-raised-button
-                        style="float:right;height:32px;background-color:#efb577;color: white; cursor: pointer;">{{aIACTByPartnerID.ActionText}}</button> -->
                     </mat-card-content>
-                  </mat-card>
+                  </mat-card> -->
                 </div>
               </mat-tab>
             </mat-tab-group>

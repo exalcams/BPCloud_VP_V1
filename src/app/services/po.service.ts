@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
 // BPCOFItemView, BPCInvoice, BPCRetNew, BPCOFHeaderView } from 'app/models/OrderFulFilment';
 import {
   BPCOFHeader, BPCOFItem, BPCOFHeaderXLSX, BPCOFItemXLSX, BPCOFScheduleLineXLSX, BPCOFGRGIXLSX, BPCOFQMXLSX, BPCOFGRGI, SOItemCount,
-  BPCOFItemView, BPCInvoice, BPCRetNew, InvoiceVendor, BPCOFHeaderView
+  BPCOFItemView, BPCInvoice, BPCRetNew, InvoiceVendor, BPCOFHeaderView, BPCOffer
 } from 'app/models/OrderFulFilment';
 import { BPCCEOMessage, BPCSCOCMessage, BPCWelcomeMessage } from 'app/models/Message.model';
 import { BPCFact } from 'app/models/fact';
@@ -547,6 +547,18 @@ export class POService {
       // }
     ).pipe(catchError(this.errorHandler));
   }
+
+  // Offers
+  GetAllOffers(): Observable<BPCOffer[] | string> {
+    return this._httpClient.get<BPCOffer[]>(`${this.baseAddress}/poapi/PO/GetAllOffers`)
+      .pipe(catchError(this.errorHandler));
+  }
+  GetOffersByPatnerID(PatnerID: string): Observable<BPCOffer[] | string> {
+    return this._httpClient.get<BPCOffer[]>(`${this.baseAddress}/poapi/PO/GetOffersByPatnerID?PatnerID=${PatnerID}`)
+      .pipe(catchError(this.errorHandler));
+  }
+
+  //
 
 
   // end

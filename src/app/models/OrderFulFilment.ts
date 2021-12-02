@@ -474,3 +474,19 @@ export class BPCOFHeaderView1 extends CommonClass {
     TransitQty: number | null;
     OpenQty: number | null;
 }
+
+export class BPCOffer extends CommonClass {
+    Client: string;
+    Company: string;
+    Type: string;
+    PatnerID: string;
+    ConditionType: string;
+    Material: string;
+    Currency: string;
+    Amount: number | null;
+    ConditionValue: number | null;
+    Name: string;
+    RateUnit: string;
+    PricingUnit: string;
+    UOM: string;
+}

@@ -272,4 +272,54 @@
         cursor: pointer;
         color: #efb577;
     }
+
+    .offerContainer:nth-child(odd) {
+        .offerCard {
+            background-color: #eef2ff;
+            color: #3730a3;
+
+            .title {
+                font-weight: bolder;
+                font-size: 48px;
+                // box-shadow: 2px 2px 2px 2px #0303031a;
+
+                .discount {
+                    font-size: 24px;
+                }
+            }
+
+            .subtitle {
+                color: lighten(#3730a3, 10%);
+                font-weight: 500;
+                font-size: 14px;
+                margin: 0px 20px 0px 0px;
+            }
+
+        }
+    }
+
+    .offerContainer:nth-child(even) {
+        .offerCard {
+            background-color: #f0fdf4;
+            color: #166534;
+
+            .title {
+                font-weight: bolder;
+                font-size: 48px;
+                // box-shadow: 2px 2px 2px 2px #0303031a;
+
+                .discount {
+                    font-size: 24px;
+                }
+            }
+
+            .subtitle {
+                color: lighten(#166534, 10%);
+                font-weight: 500;
+                font-size: 14px;
+                margin: 0px 20px 0px 0px;
+            }
+
+        }
+    }
 }
