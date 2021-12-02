@@ -57,7 +57,7 @@ export class AccountStatementComponent implements OnInit {
   ];
   fuseConfig: any;
   BGClassName: any;
-  isAccepted: boolean = false;
+  isAccepted = false;
   render = false;
   tableDataSource: MatTableDataSource<BPCPayAccountStatement>;
   @ViewChild(MatPaginator) tablePaginator: MatPaginator;
@@ -205,7 +205,7 @@ export class AccountStatementComponent implements OnInit {
         const DocumentID = this.SearchFormGroup.get('DocumentID').value;
         const ProfitCenter = this.SearchFormGroup.get('ProfitCenter').value;
         this.IsProgressBarVisibile = true;
-        this.paymentService.FilterAccountStatementByPartnerID(this.currentUserName, DocumentID,ProfitCenter, FromDate, ToDate).subscribe(
+        this.paymentService.FilterAccountStatementByPartnerID(this.currentUserName, DocumentID, ProfitCenter, FromDate, ToDate).subscribe(
           (data) => {
             this.AccountStatements = data as BPCPayAccountStatement[];
             // this.BPCPayAccountStatement=this.AccountStatements;
