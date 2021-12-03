@@ -4,6 +4,7 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
+import { customAnimation } from 'app/animations/custom-animations';
 import { BPCPIHeader, BPCRetHeader } from 'app/models/customer';
 import { AuthenticationDetails } from 'app/models/master';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
@@ -20,7 +21,7 @@ import * as SecureLS from 'secure-ls';
   templateUrl: './customer-return-list.component.html',
   styleUrls: ['./customer-return-list.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations
+  animations: [fuseAnimations, customAnimation]
 })
 export class CustomerReturnListComponent implements OnInit {
   authenticationDetails: AuthenticationDetails;
@@ -204,6 +205,8 @@ export class CustomerReturnListComponent implements OnInit {
           Status = '';
         }
         this.IsProgressBarVisibile = true;
+        this.AllReturns = [];
+        this.ReturnDataSource = new MatTableDataSource(this.AllReturns);
         this._customerService.FilterReturns(this.currentUserName, DocumentNumber, Status, FromDate, ToDate).subscribe(
           (data) => {
             this.AllReturns = data as BPCRetHeader[];

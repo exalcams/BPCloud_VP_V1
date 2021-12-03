@@ -3,6 +3,14 @@
 #cusdash {
     background-color: white;
 
+    // .ps {
+    //     >.ps__rail-x {
+
+    //         display: none;
+
+    //     }
+
+    // }
     // font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     h1,
     h2,
@@ -114,11 +122,14 @@
         display: flex;
         flex: 1;
         flex-direction: column;
+        overflow: scroll;
+        // -webkit-overflow-scrolling: touch;
+        height: calc(100vh - 50px) !important;
 
         .sidenav-content {
-            overflow: auto;
-            overflow-x: hidden;
-            -webkit-overflow-scrolling: touch;
+            // overflow: auto;
+            // overflow-x: hidden;
+            // -webkit-overflow-scrolling: touch;
             background-color: white;
             padding: 15px 15px 0px 15px;
         }
@@ -252,9 +263,19 @@
         padding: 10px;
     }
 
-    .mat-tab-body-content {
-        flex-direction: column !important;
+    .tab-grp {
+        .mat-tab-body-content {
+            overflow-x: hidden !important;
+        }
     }
+
+    // .tab-grp ::-webkit-scrollbar {
+    //     overflow-x: hidden !important;
+    // }
+    // .mat-tab-body-content {
+    //     flex-direction: column !important;
+
+    // }
 
     .actionBg {
         background-color: rgb(242, 247, 254);
@@ -273,29 +294,54 @@
         color: #efb577;
     }
 
-    .offerContainer:nth-child(odd) {
-        .offerCard {
-            background-color: #eef2ff;
-            color: #3730a3;
+    // .offerContainer:nth-child(odd) {
+    //     .offerCard {
+    //         background-color: #eef2ff;
+    //         border-radius: 10px;
+    //         color: #3730a3;
 
-            .title {
-                font-weight: bolder;
-                font-size: 48px;
-                // box-shadow: 2px 2px 2px 2px #0303031a;
+    //         .title {
+    //             font-weight: bolder;
+    //             font-size: 48px;
+    //             // box-shadow: 2px 2px 2px 2px #0303031a;
 
-                .discount {
-                    font-size: 24px;
-                }
+    //             .discount {
+    //                 font-size: 24px;
+    //             }
+    //         }
+
+    //         .subtitle {
+    //             color: lighten(#3730a3, 10%);
+    //             font-weight: 500;
+    //             font-size: 14px;
+    //             margin: 0px 20px 0px 0px;
+    //         }
+
+    //     }
+    // }
+
+    .offerCard {
+        background-color: #eef2ff;
+        border-radius: 10px;
+        color: #3730a3;
+
+        .title {
+            font-weight: bolder;
+            font-size: 48px;
+            // box-shadow: 2px 2px 2px 2px #0303031a;
+
+            .discount {
+                font-size: 24px;
             }
-
-            .subtitle {
-                color: lighten(#3730a3, 10%);
-                font-weight: 500;
-                font-size: 14px;
-                margin: 0px 20px 0px 0px;
-            }
-
         }
+
+        .subtitle {
+            color: lighten(#3730a3, 10%);
+            font-weight: 500;
+            font-size: 14px;
+            margin: 0px 20px 0px 0px;
+        }
+
     }
 
     .offerContainer:nth-child(even) {
@@ -303,21 +349,8 @@
             background-color: #f0fdf4;
             color: #166534;
 
-            .title {
-                font-weight: bolder;
-                font-size: 48px;
-                // box-shadow: 2px 2px 2px 2px #0303031a;
-
-                .discount {
-                    font-size: 24px;
-                }
-            }
-
             .subtitle {
                 color: lighten(#166534, 10%);
-                font-weight: 500;
-                font-size: 14px;
-                margin: 0px 20px 0px 0px;
             }
 
         }

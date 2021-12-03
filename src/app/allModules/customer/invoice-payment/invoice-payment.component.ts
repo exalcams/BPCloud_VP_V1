@@ -19,6 +19,7 @@ import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { DatePipe } from '@angular/common';
 import { ExcelService } from 'app/services/excel.service';
+import { customAnimation } from 'app/animations/custom-animations';
 
 
 @Component({
@@ -26,7 +27,7 @@ import { ExcelService } from 'app/services/excel.service';
   templateUrl: './invoice-payment.component.html',
   styleUrls: ['./invoice-payment.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations
+  animations: [fuseAnimations, customAnimation]
 
 })
 export class InvoicePaymentComponent implements OnInit {
@@ -210,6 +211,8 @@ export class InvoicePaymentComponent implements OnInit {
         //   Status = "";
         // }
         this.IsProgressBarVisibile = true;
+        this.AllInvoices = [];
+        this.InvoiceDataSource = new MatTableDataSource(this.AllInvoices);
         this.poservice.FilterPendingInvoices(this.currentUserName, DocNumber, InvoiceNumber, FromDate, ToDate).subscribe(
           (data) => {
             this.IsProgressBarVisibile = false;
@@ -284,8 +287,8 @@ export class InvoicePaymentComponent implements OnInit {
     this.poservice.GetAllInvoicesByPartnerID(this.currentUserName).subscribe(
       (data) => {
         this.IsProgressBarVisibile = false;
-        this.AllInvoices = data as BPCInvoice[],
-          this.InvoiceDataSource = new MatTableDataSource(this.AllInvoices);
+        this.AllInvoices = data as BPCInvoice[];
+        this.InvoiceDataSource = new MatTableDataSource(this.AllInvoices);
         this.InvoiceDataSource.paginator = this.InvoicePaginator;
         // console.log(this.AllInvoices);
       },
