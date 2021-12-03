@@ -20,6 +20,7 @@ import { POService } from 'app/services/po.service';
 import { triggerId } from 'async_hooks';
 import { animate, animateChild, query, stagger, state, style, transition, trigger } from '@angular/animations';
 import { fuseAnimations } from '@fuse/animations';
+import { customAnimation } from 'app/animations/custom-animations';
 
 @Component({
   selector: 'app-customer-dashboard',
@@ -27,57 +28,7 @@ import { fuseAnimations } from '@fuse/animations';
   styleUrls: ['./customer-dashboard.component.scss'],
   encapsulation: ViewEncapsulation.None,
   // animations: fuseAnimations,
-  animations: [
-    trigger('items', [
-      transition(':enter', [
-        style({ transform: 'scale(0.5)', opacity: 0 }),  // initial
-        animate('1s cubic-bezier(.8, -0.6, 0.2, 1.5)',
-          style({ transform: 'scale(1)', opacity: 1 }))  // final
-      ]),
-      transition(':leave', [
-        style({ transform: 'scale(1)', opacity: 1, height: '*' }),
-        animate('1s cubic-bezier(.8, -0.6, 0.2, 1.5)',
-          style({
-            transform: 'scale(0.5)', opacity: 0,
-            height: '0px', margin: '0px'
-          }))
-      ]),
-    ]),
-    trigger('offerFade', [
-      transition('void=>*', [
-        style({ opacity: 0 }),
-        animate(1000, style({ opacity: 1 }))
-      ]),
-      transition('*=>void', [
-        style({ opacity: 1 }),
-        animate(1000, style({ opacity: 0 }))
-      ]),
-    ]),
-    trigger('list', [
-      transition(':enter', [
-        query('@items', stagger(300, animateChild()))
-      ]),
-    ])
-  ]
-
-  // animations: [
-  //   // trigger('offerFade', [
-  //   //   transition('void=>*', [
-  //   //     style({ opacity: 0 }),
-  //   //     animate(5000, style({ opacity: 1 }))
-  //   //   ]),
-  //   //   transition('*=>void', [
-  //   //     style({ opacity: 1 }),
-  //   //     animate(5000, style({ opacity: 0 }))
-  //   //   ]),
-  //   // ]),
-  //   trigger('slideUpDown', [
-  //     state('0', style({ 'max-height': '*', opacity: 1 })),
-  //     state('1', style({ 'max-height': '0px', opacity: 0 })),
-  //     transition(':enter', animate('400ms ease-in-out')),
-  //     transition('* => *', animate('400ms ease-in-out')),
-  //   ])
-  // ]
+  animations: customAnimation
 })
 export class CustomerDashboardComponent implements OnInit {
 

@@ -156,9 +156,8 @@
 
       <!-- <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator> -->
     </div>
-    <div *ngIf="!AllSOs?.length" class="cl_norec">No Record Found</div>
     <div class="px-20 pb-20">
-      <table *ngIf="AllSOs?.length" class="abnormal" mat-table [dataSource]="SODataSource" matSort>
+      <table [@listAnimation]="AllSOs.length" class="abnormal" mat-table [dataSource]="SODataSource" matSort>
         <!-- 
         <ng-container matColumnDef="PIRNumber">
           <th mat-header-cell *matHeaderCellDef> PI/Return Number </th>
@@ -336,6 +335,8 @@
         <!-- <tr [ngClass]="BGClassName?.layout?.toolbar?.background" mat-header-row *matHeaderRowDef="posDisplayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: posDisplayedColumns;" (click)="Checked(row)" style=" cursor: pointer;" [class.highlight]="row === selectedPORow"></tr> -->
       </table>
+      <div *ngIf="!AllSOs?.length" class="cl_norec">No Record Found</div>
+
       <div>
         <mat-paginator [ngStyle]="AllSOs?.length ?  {'visibility': 'visible'} : {'visibility': 'hidden'}"
           [pageSizeOptions]="[10,50,100,250,500,1000]"></mat-paginator>

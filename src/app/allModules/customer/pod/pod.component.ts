@@ -29,13 +29,14 @@ import { AuthService } from 'app/services/auth.service';
 import { ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { ExcelService } from 'app/services/excel.service';
+import { customAnimation } from 'app/animations/custom-animations';
 
 @Component({
   selector: 'app-pod',
   templateUrl: './pod.component.html',
   styleUrls: ['./pod.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations
+  animations: [fuseAnimations, customAnimation]
 })
 export class PODComponent implements OnInit {
   @ViewChild(BaseChartDirective) BaseChart: BaseChartDirective;
@@ -313,6 +314,8 @@ export class PODComponent implements OnInit {
         let Status = this.SearchFormGroup.get('Status').value;
         Status = Status === 'All' ? '' : Status;
         this.IsProgressBarVisibile = true;
+        this.FilteredPODHeaders = [];
+        this.PODataSource = new MatTableDataSource(this.FilteredPODHeaders);
         this._PODService.FilterPOD(this.currentUserName, InvoiceNumber, Status, FromDate, ToDate).subscribe(
           (data) => {
             this.AllPODHeaders = data as BPCPODHeader[];
@@ -371,10 +374,14 @@ export class PODComponent implements OnInit {
         const value = chart.data.datasets[0].data[clickedElementIndex];
         // console.log(clickedElementIndex, label, value);
         if (label) {
-          this.FilteredPODHeaders = this.AllPODHeaders.filter(x => x.Status === label);
+          this.FilteredPODHeaders = [];
           this.PODataSource = new MatTableDataSource(this.FilteredPODHeaders);
-          this.PODataSource.paginator = this.POPaginator;
-          this.PODataSource.sort = this.PODSort;
+          setTimeout(() => {
+            this.FilteredPODHeaders = this.AllPODHeaders.filter(x => x.Status === label);
+            this.PODataSource = new MatTableDataSource(this.FilteredPODHeaders);
+            this.PODataSource.paginator = this.POPaginator;
+            this.PODataSource.sort = this.PODSort;
+          }, 100);
         }
       }
     }

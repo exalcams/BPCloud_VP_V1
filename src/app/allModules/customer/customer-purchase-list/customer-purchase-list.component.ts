@@ -19,13 +19,14 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { ExcelService } from 'app/services/excel.service';
 import { fuseAnimations } from '@fuse/animations';
+import { customAnimation } from 'app/animations/custom-animations';
 
 @Component({
   selector: 'app-customer-purchase-list',
   templateUrl: './customer-purchase-list.component.html',
   styleUrls: ['./customer-purchase-list.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations
+  animations: [fuseAnimations, customAnimation]
 })
 export class CustomerPurchaseListComponent implements OnInit {
   authenticationDetails: AuthenticationDetails;
@@ -210,6 +211,8 @@ export class CustomerPurchaseListComponent implements OnInit {
           Status = '';
         }
         this.IsProgressBarVisibile = true;
+        this.AllPurchase = [];
+        this.PurchaseDataSource = new MatTableDataSource(this.AllPurchase);
         this._customerService.FilterPurchaseIndents(this.currentUserName, RefNumber, Status, FromDate, ToDate).subscribe(
           (data) => {
             this.AllPurchase = data as BPCPIHeader[];

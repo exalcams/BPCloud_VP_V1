@@ -137,7 +137,7 @@
           <img class="expandImg" src="assets/images/expand.png" (click)="expandClicked()">
         </div>
       </div>
-      <table class="abnormal" mat-table [dataSource]="ReturnDataSource" matSort>
+      <table [@listAnimation]="AllReturns.length" class="abnormal" mat-table [dataSource]="ReturnDataSource" matSort>
 
         <ng-container matColumnDef="RequestID">
           <th mat-header-cell mat-sort-header *matHeaderCellDef> Request ID </th>

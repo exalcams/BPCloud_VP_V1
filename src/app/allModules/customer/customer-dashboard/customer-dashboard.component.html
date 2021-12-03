@@ -141,9 +141,9 @@
       <!-- First Div -->
 
       <!-- Second Div -->
-      <div fxFlex="40" fusePerfectScrollbar>
+      <div fxFlex="40" class="side-bar" fusePerfectScrollbar>
         <div fxLayout="column" fxLayoutGap="15px" style="height: 100%;padding-top: 15px;">
-          <mat-card fxFlex="50%" style="padding: 10px;">
+          <mat-card fxFlex style="padding: 10px;">
             <mat-card-content class="staySafe">
               <div class="translucentDiv">
                 <div>
@@ -158,7 +158,7 @@
               </div>
             </mat-card-content>
           </mat-card>
-          <mat-card fxFlex="50%" style="padding: 10px;">
+          <mat-card fxFlex style="padding: 10px;">
             <mat-card-content class="safetyFirst">
             </mat-card-content>
           </mat-card>
@@ -167,7 +167,7 @@
       <!-- Second Div -->
 
       <!-- Third Div -->
-      <div fxFlex="30" style="height: 100%;background-color: white;">
+      <div fxFlex="30" class="side-bar" style="background-color: white;overflow-x: hidden;" fusePerfectScrollbar>
         <div fxLayout="column" style="padding: 15px 15px 10px 15px;">
           <div fxFlex>
             <h2 style="font-weight: 500;margin: 0px;"><span style="margin:0px 5px 0px 0px;"><img style="width: 32px;
@@ -193,15 +193,15 @@
           </div>
           <hr class="rightFlexHr">
           <div fxFlex>
-            <mat-tab-group (selectedTabChange)="tabChanged($event)">
+            <mat-tab-group (selectedTabChange)="tabChanged($event)" class="tab-grp">
               <!-- <mat-tab label="Action ({{AllActions?.length}})"> -->
               <mat-tab label="Action">
-                <div class="mat-tab-body-content" fusePerfectScrollbar>
-                  <mat-card class="actionBg" fxLayout="column">
+                <div class="mat-tab-body-content">
+                  <mat-card *ngIf="SelectedTabIndex===0" @items class="offerCard m-8 p-24" fxLayout="column">
                     <div>{{ 'Credit limit Increase Request' | uppercase }}</div>
                     <div fxFlex fxLayoutAlign="end end">
                       <!-- <button class="actionBtn" (click)="CreditLimitIncreaseClicked()" mat-raised-button>Proceed</button> -->
-                      <div (click)="CreditLimitIncreaseClicked()" class="ProceedLink">Proceed</div>
+                      <div (click)="CreditLimitIncreaseClicked()" class="ProceedLink mt-4">Proceed</div>
                     </div>
 
                   </mat-card>
@@ -265,8 +265,8 @@
                   </mat-card> -->
               </mat-tab>
               <mat-tab label="Notifications ({{AllOffers?.length}})">
-                <div class="mat-tab-body-content" fusePerfectScrollbar>
-                  <div fxLayout="row wrap" @list *ngIf="SelectedTabIndex===1"
+                <div class="mat-tab-body-content">
+                  <div fxLayout="row wrap" @list *ngIf="SelectedTabIndex===1 && AllOffers?.length>0"
                     style="overflow-x: hidden;overflow-y: hidden;">
                     <div @items *ngFor="let offer of AllOffers;let index=index" class="offerContainer" fxFlex="100">
                       <mat-card class="offerCard m-8 p-8" fxLayout fxLayoutAlign="space-between center">

@@ -52,13 +52,14 @@ import { AttachmentViewDialogComponent } from 'app/notifications/attachment-view
 import { FactService } from "app/services/fact.service";
 import * as SecureLS from 'secure-ls';
 import { AuthService } from "app/services/auth.service";
+import { customAnimation } from "app/animations/custom-animations";
 
 @Component({
     selector: "app-customer-orderfulfilment",
     templateUrl: "./customer-orderfulfilment.component.html",
     styleUrls: ["./customer-orderfulfilment.component.scss"],
     encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations,
+    animations: [fuseAnimations, customAnimation]
 })
 export class CustomerOrderfulfilmentComponent implements OnInit {
     BGClassName: any;
@@ -459,7 +460,8 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
     }
     GetSODetails(): void {
         this.IsProgressBarVisibile = true;
-
+        this.AllSOs = [];
+        this.SODataSource = new MatTableDataSource(this.AllSOs);
         this._dashboardService.GetSODetails(this.client, this.company, this.type, this.patnerid).subscribe(
             // this.type
             // "C", this.PartnerID
@@ -615,6 +617,8 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
                     ToDate = this.datePipe.transform(TDate, "yyyy-MM-dd");
                 }
                 const Status1 = this.poFormGroup.get("Status").value;
+                this.AllSOs = [];
+                this.SODataSource = new MatTableDataSource(this.AllSOs);
                 this._dashboardService
                     .GetFilteredSODetailsByPartnerID(
                         "C",
@@ -1128,10 +1132,13 @@ export class CustomerOrderfulfilmentComponent implements OnInit {
         // } else if (label === "Fully Paid") {
         //     filteredOfDetails = this.AllSOs.filter(x => x.Status === '70');
         // }
-        filteredOfDetails = this.AllSOs.filter(x => x.Status === label);
         this.SODataSource = new MatTableDataSource(filteredOfDetails);
-        this.SODataSource.paginator = this.SOPaginator;
-        this.SODataSource.sort = this.SOSort;
+        setTimeout(() => {
+            filteredOfDetails = this.AllSOs.filter(x => x.Status === label);
+            this.SODataSource = new MatTableDataSource(filteredOfDetails);
+            this.SODataSource.paginator = this.SOPaginator;
+            this.SODataSource.sort = this.SOSort;
+        }, 100);
     }
 
     viewOfAttachmentClicked(element: SODetails): void {

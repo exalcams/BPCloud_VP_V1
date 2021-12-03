@@ -70,7 +70,8 @@
           <span [ngClass]="BGClassName?.layout?.navbar?.secondaryBackground" class="orangeBorderBottom"></span>
           <div fxFlex fxLayoutAlign="center" class="p-12" *ngIf="PODPieChartData.length">
             <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [options]="pieChartOptions"
-              [colors]="pieChartColors" [legend]="pieChartLegend" [chartType]="pieChartType" (chartClick)="pieChartClicked($event)">
+              [colors]="pieChartColors" [legend]="pieChartLegend" [chartType]="pieChartType"
+              (chartClick)="pieChartClicked($event)">
             </canvas>
           </div>
         </div>
@@ -104,15 +105,16 @@
         </div>
       </div>
 
-      <table mat-table [dataSource]="PODataSource" matSort>
+      <table [@listAnimation]="FilteredPODHeaders.length" mat-table [dataSource]="PODataSource" matSort>
+        
         <ng-container matColumnDef="InvoiceNumber">
           <th mat-header-cell *matHeaderCellDef> Invoice Number </th>
           <td mat-cell *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
             <div fxLayout>
               <div class="tableCellBorder" [style.background-color]="odd?'#6f52ed':'#d87e39'"></div>
               <div fxFlex class="pl-4">
-                <span class="pdfLinkClass"
-                  (click)="GotoPODDetails(element.InvoiceNumber)">{{element.InvoiceNumber | removeLeadingZero}}</span>
+                <span class="pdfLinkClass" (click)="GotoPODDetails(element.InvoiceNumber)">{{element.InvoiceNumber |
+                  removeLeadingZero}}</span>
               </div>
             </div>
           </td>
@@ -173,8 +175,9 @@
           </td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="PODDisplayedColumns;sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: PODDisplayedColumns;let even=even">
+        <tr mat-header-row @enterExitLeft *matHeaderRowDef="PODDisplayedColumns;sticky: true"></tr>
+        <tr mat-row 
+          *matRowDef="let row; columns: PODDisplayedColumns;let even=even;let odd=odd">
         </tr>
       </table>
       <div>
@@ -273,7 +276,8 @@
       </mat-card>
     </div> -->
 
-    <mat-progress-spinner *ngIf="IsProgressBarVisibile || IsProgressBarVisibile1" class="progressBarPostion" color="accent" mode="indeterminate">
+    <mat-progress-spinner *ngIf="IsProgressBarVisibile || IsProgressBarVisibile1" class="progressBarPostion"
+      color="accent" mode="indeterminate">
     </mat-progress-spinner>
     <div id="overlay" *ngIf="IsProgressBarVisibile || IsProgressBarVisibile1">
     </div>

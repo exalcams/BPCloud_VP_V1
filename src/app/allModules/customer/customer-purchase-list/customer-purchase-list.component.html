@@ -147,7 +147,7 @@
           <img class="expandImg" src="assets/images/expand.png" (click)="expandClicked()">
         </div>
       </div>
-      <table class="abnormal" mat-table [dataSource]="PurchaseDataSource" matSort>
+      <table [@listAnimation]="AllPurchase.length" class="abnormal" mat-table [dataSource]="PurchaseDataSource" matSort>
 
         <ng-container matColumnDef="PIRNumber">
           <th mat-header-cell mat-sort-header *matHeaderCellDef> Order </th>

@@ -104,7 +104,7 @@
           </mat-menu>
         </div> -->
         <div fxFlex fxLayout="column" class="table">
-          <table mat-table [dataSource]="InvoiceDataSource" matSort>
+          <table [@listAnimation]="AllInvoices.length" mat-table [dataSource]="InvoiceDataSource" matSort>
             <!-- <ng-container matColumnDef="Select">
               <th mat-header-cell *matHeaderCellDef style="width: 5%;"> </th>
               <td mat-cell style="width: 5%;" *matCellDef="let element;let odd=odd" class="tableLeftBorder pl-0">
